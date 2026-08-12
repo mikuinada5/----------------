@@ -1,5 +1,67 @@
 # CHANGELOG
 
+## Ver1.2｜2026-08-13
+
+### 変更
+
+- 承認済みのProfessional マスター教育設計 Ver0.2、Session 1〜6教育設計、およびProfessional全6回の最終横断監査結果を統合し、`Aコース Professional 全体教育設計 Ver0.1` を作成した。
+- `Aコース Professional 全体教育設計 Ver0.1` は監査で正式承認され、追加修正不要と判定された。
+- 承認済み版を `02_Professional/00_Design` 配下へ配置する正式な全体教育設計として確定した。
+- 本文書は、Professional全体について以下を横断的に保持する教育設計書とした。
+  - Professionalの教育上の位置づけ
+  - 対象と教育範囲
+  - Professional Mission
+  - 3か月後の最終到達
+  - Professionalで目指さないこと
+  - 全6回を貫く教育原則
+  - 「見る → 関わる → 支える → 翻訳する → 判断する → 続ける」の学習ストーリー
+  - Session 1〜6の教育責任と接続
+  - 知識と関係性の統合
+  - 自己決定と養育責任
+  - 発達に応じた知識の翻訳
+  - 家庭実践と学習循環
+  - 修復
+  - 援助要請
+  - 感情設計・心理的安全性
+  - Primary Sourcesと根拠管理
+  - Professional終了後への接続
+  - 制作・レビュー時の非変更領域
+- `Aコース Professional 全体教育設計 Ver0.1` は、Professional マスター教育設計 Ver0.2またはSession 1〜6の詳細教育設計を置き換えるものではなく、確定済みProfessional全体を横断参照する統合文書として位置づけた。
+- 各Sessionの90分構造、Block責任、問い、ワーク、ケース、家庭実践、個別Primary不足フラグ等の詳細仕様は、引き続き各Sessionの承認済み教育設計を正とする。
+- Professionalの教育設計段階で必要なPrimaryは充足済みであるという既存判定を維持した。
+- 制作段階で具体的な医学・医療情報、日本法制度、日本の相談・支援制度等を正式教材へ掲載する場合に追加Primaryを確認する既存方針を維持した。
+- 今回の統合に伴い、Professional マスター教育設計 Ver0.2、Session 1〜6教育設計、CourseOSその他上位基準への変更は行っていない。
+
+### 理由
+
+Professional教育設計フェーズの正式完了後、マスター教育設計とSession 1〜6の承認済み詳細設計が個別ファイルとして確定している一方、制作・レビュー工程でProfessional全体のMission、学習線、家庭実践循環、非変更領域等を横断的に参照できる確定文書が必要となった。
+
+そのため、新しい教育設計を追加するのではなく、すでに承認済みのマスターVer0.2、Session 1〜6、最終横断監査結果を統合し、**「確定したAコース Professionalが、一本の教育プログラムとして何であるか」**を保持する `Aコース Professional 全体教育設計 Ver0.1` を正式化した。
+
+本統合は既存設計の再設計・上書きではなく、Professional全体の確定状態を横断参照可能にするための責任整理である。
+
+### 影響範囲
+
+- `01_Education/01_Courses/Aコース/02_Professional/00_Design`
+- Aコース Professional 全体の制作・レビュー時に参照する横断教育設計
+- Professional マスター教育設計 Ver0.2とSession 1〜6承認済み教育設計の参照関係
+
+Aコースの教育思想・到達目標・知識基準・カリキュラム等を定める `00_CourseOS` の内容自体は変更していない。
+
+Professional マスター教育設計 Ver0.2およびSession 1〜6の承認済み教育設計にも変更を加えていない。
+
+ルートCHANGELOG、CourseOS CHANGELOG、Front CHANGELOG、各Session教育設計、制作物には変更を加えていない。
+
+### 承認状態
+
+**🟢 Aコース Professional 全体教育設計 Ver0.1 正式承認・配置確定**
+
+`Aコース Professional 全体教育設計 Ver0.1` は、Professional全体の確定した教育プログラム像を横断的に保持する承認済み教育設計として扱う。
+
+Professional教育設計フェーズは引き続き正式完了状態とし、次工程は制作フェーズとする。
+
+---
+
 ## Ver1.1｜2026-08-13
 
 ### 変更
