@@ -1,5 +1,79 @@
 # CHANGELOG
 
+## Ver1.4｜2026-08-23
+
+### 変更
+
+- Professionalの承認済み教育設計8ファイルについて、正式Sourceとして不適切な会話文、作業工程上の状態説明およびChatGPT固有の無効な引用記号を除去した。
+- `00_Professional_マスター教育設計_Ver0.2.md` から、ChatGPT内でのみ有効であった引用記号22件を除去した。
+- 除去した旧ChatGPT引用22件に対応する正式なファイル・ページ・節参照の復旧は、別工程で実施する未完了事項として扱う。現時点では推測による参照追加を行わない。
+- `01_Professional_全体教育設計_Ver0.1.md` から、Markdown保存・制作・CHANGELOG更新へ進んでいない旨の作業工程メタ情報を除去した。
+- Session 1〜6の承認済み教育設計から、正式Source本文に含める必要のない会話上の導入文、作業停止情報および初稿状態表示を除去した。
+- 修正後、各ファイルを修正前原文と照合し、承認対象となった不要要素以外に差分がないことを確認した。
+- 教育内容、教育構造、判断基準、到達目標、知識深度、問い、ワーク、家庭実践、感情設計、Session責任および承認状態には変更を加えていない。
+
+### 理由
+
+ChatGPT上で作成・承認された教育設計の原文には、会話上の応答、当時の作業工程を示す一時的な状態説明およびRepository外では解決できないChatGPT固有の引用記号が含まれていた。
+
+承認済み教育内容を変更せず、現行の正式SourceとしてAIと人間が誤解なく参照できる本文へ整えるため。
+
+### 影響範囲
+
+- `01_Education/01_Courses/Aコース/02_Professional/00_Design`
+- `01_Education/01_Courses/Aコース/02_Professional/01_Sessions/01/00_Design`
+- `01_Education/01_Courses/Aコース/02_Professional/01_Sessions/02/00_Design`
+- `01_Education/01_Courses/Aコース/02_Professional/01_Sessions/03/00_Design`
+- `01_Education/01_Courses/Aコース/02_Professional/01_Sessions/04/00_Design`
+- `01_Education/01_Courses/Aコース/02_Professional/01_Sessions/05/00_Design`
+- `01_Education/01_Courses/Aコース/02_Professional/01_Sessions/06/00_Design`
+
+CourseOS、主任講師AI Core、Primary Sources、教材制作基準および制作成果物には変更を加えていない。
+
+### 承認状態
+
+**🟢 正式Source本文整理・差分監査完了**
+
+Professionalマスター教育設計、全体教育設計およびSession 1〜6の教育上の承認状態は変更しない。
+
+---
+
+## Ver1.3｜2026-08-22
+
+### 変更
+
+- 2026-08-12にChatGPT上で正式出力され、直後に承認された `Aコース Professional全6回 マスター教育設計書 Ver0.2` の原文をChatGPTデータアーカイブから回収した。
+- 回収した原文を、内容を再構築・補完・修正せず、`00_Design/00_Professional_マスター教育設計_Ver0.2.md` として正式配置した。
+- 既存の `00_Professional_全体教育設計_Ver0.1.md` は内容を変更せず、`01_Professional_全体教育設計_Ver0.1.md` へ名称変更した。
+- `00_Design` 内の参照順序を、以下として明示した。
+  - `00_Professional_マスター教育設計_Ver0.2.md`：各Session設計に先立つ、Professional全6回の上位骨格
+  - `01_Professional_全体教育設計_Ver0.1.md`：マスター教育設計および承認済みSession 1〜6を統合した、制作・レビュー時の横断参照文書
+- マスター教育設計、全体教育設計、Session 1〜6の責任は統合せず、既存の責任分離を維持した。
+
+### 理由
+
+ProfessionalのCHANGELOG、全体教育設計およびSession 1〜6は、承認済みのProfessionalマスター教育設計 Ver0.2を正式Sourceとして参照していたが、その実ファイルがRepository上に存在していなかった。
+
+欠落していた正式Sourceの原文を回収して本来の責任位置へ配置し、AIおよび人間が、各Session設計に先立つマスター教育設計と、全Session完成後の全体教育設計を別責任の現行Sourceとして迷わず参照できる状態へ戻すため。
+
+今回の変更は、既存の教育内容・教育判断・承認状態を変更するものではない。
+
+### 影響範囲
+
+- `01_Education/01_Courses/Aコース/02_Professional/00_Design`
+- Professionalマスター教育設計 Ver0.2と全体教育設計 Ver0.1の正式配置および参照順序
+- Professionalの制作・レビュー時に参照する現行Source構成
+
+Session 1〜6の教育設計、CourseOS、主任講師AI Core、教材制作基準および制作成果物には変更を加えていない。
+
+### 承認状態
+
+**🟢 欠落Source回収・正式配置完了**
+
+`00_Professional_マスター教育設計_Ver0.2.md` と `01_Professional_全体教育設計_Ver0.1.md` は、異なる責任を持つ現行の承認済み教育設計として扱う。
+
+---
+
 ## Ver1.2｜2026-08-13
 
 ### 変更
