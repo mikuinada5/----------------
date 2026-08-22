@@ -8,6 +8,36 @@
 
 ------------------------------------------------------------------------
 
+## 2026-08-22｜Human-in-the-loop責任単位の新設・正式Source採用
+
+### 概要
+
+人間とAIの協働における承認境界と停止・進行の横断運用を担う独立したトップレベル責任単位として、`03_Human_in_the_Loop/` を新設した。
+
+19章構成のHuman-in-the-loop運用原則を、`03_Human_in_the_Loop/HUMAN_IN_THE_LOOP.md` として正式配置した。
+
+### 変更内容
+
+- `03_Human_in_the_Loop/HUMAN_IN_THE_LOOP.md` を現行正式Sourceとして配置した。
+- `03_Human_in_the_Loop/CHANGELOG.md` を新設し、Human-in-the-loop領域の意味のある変更履歴を独立管理する構造とした。
+- `REPOSITORY_RULES.md` にHuman-in-the-loop領域のMission、基本構造、正式配置、責任境界および変更管理を追加した。
+- `AI_ORGANIZATION.md` にHuman-in-the-loop Sourceとの責任境界と正式参照先を追加した。
+- 承認済み範囲内の自動進行、commit・push、上位Sourceへの機械的反映、タスク状態更新および将来の外部操作ワークフローに関する承認境界を正式化した。
+
+### 既存上位・専門Sourceへの影響
+
+- Brand OSのAI共創思想および人間の最終責任に変更はない。
+- `AI_ORGANIZATION.md` が担うAI組織構造、各AIの権限・責任・受け渡しに変更はない。
+- Repository、GitおよびCHANGELOGの具体運用は、引き続き `REPOSITORY_RULES.md` が責任を持つ。
+- Education Sourceが担う教育内容・教育設計・教材制作・教育品質・最終承認に変更はない。
+- Voice OSが担う稲田みく本人固有のVoice／コミュニケーション判断に変更はない。
+
+### 承認状態
+
+**🟢 現行Repository構造および正式Sourceとして採用**
+
+------------------------------------------------------------------------
+
 ## 2026-08-22｜Voice OS責任単位の新設・正式Source採用
 
 ### 概要

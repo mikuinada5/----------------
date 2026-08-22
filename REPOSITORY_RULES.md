@@ -155,6 +155,28 @@ Voice OSに関する意味のある変更は `02_Voice_OS/CHANGELOG.md` に記�
 
 ------------------------------------------------------------------------
 
+## 3.2 Human-in-the-loop領域の基本構造
+
+`03_Human_in_the_Loop/` は、人間とAIの協働における承認境界と停止・進行の横断運用を担う正式Sourceを管理する、独立したトップレベル責任単位である。
+
+基本構造は以下とする。
+
+``` text
+03_Human_in_the_Loop/
+├── HUMAN_IN_THE_LOOP.md
+└── CHANGELOG.md
+```
+
+`HUMAN_IN_THE_LOOP.md` のMissionは、人間とAIの協働において、承認の有効範囲、自動進行条件、停止条件、再承認条件、エスカレーション、AI間衝突、自己復旧、スコープ管理および完了判断を横断的に定義することである。
+
+本Sourceは、Brand OS、`AI_ORGANIZATION.md`、Repository運用、Education Source、Voice OSその他の専門Sourceが持つ責任を移管または重複定義しない。個別事項は、その事項の責任本籍を持つ正式Sourceを正とし、本Sourceはその範囲内で人間とAIの停止・進行を接続する。
+
+Brand OSはブランドレベルのAI共創思想および人間の最終責任を担い、`AI_ORGANIZATION.md` はAI組織上の役割・権限・責任分離・受け渡しを担う。本ファイルはRepositoryの構造・Git・CHANGELOGの具体運用を担い、Education Sourceは教育内容・設計・制作・品質・承認を担い、Voice OSは稲田みく本人固有のVoice／コミュニケーション判断を担う。Human-in-the-loop Sourceはこれらを上書きしない。
+
+Human-in-the-loop領域に関する意味のある変更は `03_Human_in_the_Loop/CHANGELOG.md` に記録する。リポジトリ全体の責任構造・配置・参照関係に影響する変更は、あわせてルートの `CHANGELOG.md` に記録する。軽微な変更、現行Source、過去版およびGitの扱いは、本ファイルの共通ルールに従う。
+
+------------------------------------------------------------------------
+
 ## 4. 教育領域の基本構造
 
 教育領域は、全Course共通の教育設計基準、Course固有の教育責任、全Course共通の教材制作責任を分離する。
