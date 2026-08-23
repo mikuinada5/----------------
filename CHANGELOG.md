@@ -8,6 +8,37 @@
 
 ------------------------------------------------------------------------
 
+## 2026-08-23｜AI作業環境・工程接続責任単位の新設・正式Source採用
+
+### 概要
+
+Chat、Work、Codex、VS Code、Repository、Git、GitHubおよび外部AI等の作業環境と工程接続を担う独立したトップレベル責任単位として、`04_AI_Work_Environment/` を新設した。
+
+21章構成のAI作業環境・工程接続原則を、`04_AI_Work_Environment/AI_WORK_ENVIRONMENT.md` として正式配置した。
+
+### 変更内容
+
+- `04_AI_Work_Environment/AI_WORK_ENVIRONMENT.md` を現行正式Sourceとして配置した。
+- `04_AI_Work_Environment/CHANGELOG.md` を新設し、AI作業環境領域の意味のある変更履歴を独立管理する構造とした。
+- `REPOSITORY_RULES.md` にAI作業環境領域のMission、基本構造、正式配置、責任境界および変更管理を追加した。
+- `AI_ORGANIZATION.md` から作業環境・工程接続Sourceへの責任参照を追加した。
+- `03_Human_in_the_Loop/HUMAN_IN_THE_LOOP.md` から作業環境・工程接続Sourceへの責任参照を追加した。
+
+### 既存上位・専門Sourceへの影響
+
+- Brand OSのAI共創思想および人間の最終責任に変更はない。
+- `AI_ORGANIZATION.md` が担うAI組織構造、各AIの役割・権限・責任分離・受け渡しに変更はない。
+- Human-in-the-loop Sourceが担う承認、停止、自己復旧、エスカレーション、個別指示および完了判断に変更はない。
+- Repository、GitおよびCHANGELOGの具体運用は、引き続き `REPOSITORY_RULES.md` が責任を持つ。
+- Education Sourceが担う教育内容・教育設計・教材制作・教育品質・最終承認に変更はない。
+- Voice OSが担う稲田みく本人固有のVoice／コミュニケーション判断に変更はない。
+
+### 承認状態
+
+**🟢 現行Repository構造および正式Sourceとして採用**
+
+------------------------------------------------------------------------
+
 ## 2026-08-22｜Human-in-the-loop責任単位の新設・正式Source採用
 
 ### 概要

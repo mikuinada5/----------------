@@ -69,6 +69,12 @@ AIを成果物の種類だけで細分化しない。
 
 Human-in-the-loop Sourceは新しいAI組織上の役割・部署・権限を定義するものではない。AI組織の構造、各AIの責任、設計・制作・監査の分離および標準受け渡しは、引き続き本ファイルと各専門Sourceを正とする。
 
+## 2.6 AI作業環境Sourceとの責任境界
+
+Chat、Work、Codex、VS Code、Repository、Git、GitHubおよび外部AI等の作業環境の役割と工程接続は、`04_AI_Work_Environment/AI_WORK_ENVIRONMENT.md` を参照する。
+
+AI作業環境Sourceは新しいAI組織上の役割・部署・権限を定義するものではない。AI組織の構造、各AIの責任、設計・制作・監査の分離および標準受け渡しは、引き続き本ファイルと各専門Sourceを正とする。
+
 ---
 
 # 3. 現在の組織構造

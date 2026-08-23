@@ -177,6 +177,26 @@ Human-in-the-loop領域に関する意味のある変更は `03_Human_in_the_Loo
 
 ------------------------------------------------------------------------
 
+## 3.3 AI作業環境領域の基本構造
+
+`04_AI_Work_Environment/` は、Chat、Work、Codex、VS Code、Repository、Git、GitHubおよび外部AI等の作業環境を、どの責任段階で使用し、どのように工程接続するかを担う正式Sourceを管理する、独立したトップレベル責任単位である。
+
+基本構造は以下とする。
+
+``` text
+04_AI_Work_Environment/
+├── AI_WORK_ENVIRONMENT.md
+└── CHANGELOG.md
+```
+
+`AI_WORK_ENVIRONMENT.md` のMissionは、AI組織上の責任を維持したまま、判断、制作、監査、修正、Repository反映および変更管理を適切な作業環境へ接続するための横断原則を定義することである。
+
+本Sourceは、AI組織上の役割・権限、Human-in-the-loopの承認・停止、Repository・Git・CHANGELOGの具体運用、Brand、EducationおよびVoiceの専門責任を移管または重複定義しない。各事項は、その責任本籍を持つ正式Sourceを正とする。
+
+AI作業環境領域に関する意味のある変更は `04_AI_Work_Environment/CHANGELOG.md` に記録する。リポジトリ全体の責任構造・配置・参照関係に影響する変更は、あわせてルートの `CHANGELOG.md` に記録する。軽微な変更、現行Source、過去版およびGitの扱いは、本ファイルの共通ルールに従う。
+
+------------------------------------------------------------------------
+
 ## 4. 教育領域の基本構造
 
 教育領域は、全Course共通の教育設計基準、Course固有の教育責任、全Course共通の教材制作責任を分離する。
