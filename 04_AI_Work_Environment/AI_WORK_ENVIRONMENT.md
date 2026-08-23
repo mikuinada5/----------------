@@ -30,9 +30,9 @@
 
 note、SNS、教材制作その他の個別E2Eフローは、それぞれの責任Sourceが必要になった時点で定義する。
 
-本Sourceは、作業環境と工程接続を扱う独立した横断運用責任単位の正式Source候補とする。
+本Sourceは、作業環境と工程接続を扱う独立した横断運用責任単位の正式Sourceである。
 
-Repository上の具体的な配置、ディレクトリ構造、CHANGELOGおよび変更記録は、本Sourceでは定義せず、`REPOSITORY_RULES.md` と正式採用時のRepository判断を正とする。
+Repository上の具体的な配置、ディレクトリ構造、CHANGELOGおよび変更記録は、本Sourceでは定義せず、`REPOSITORY_RULES.md` を正とする。
 
 ---
 
@@ -667,7 +667,7 @@ Work稿とRepository差分の採否、編集競合または現在の作業対象
 
 本Sourceだけを参照して、Brand、Education、Voice、Repositoryまたは個別成果物の内容を決定しない。
 
-本Sourceの正式配置、責任ディレクトリ、CHANGELOGおよびRepository上の参照接続は、`REPOSITORY_RULES.md` と正式採用時のRepository判断を正とする。
+本Sourceの正式配置、責任ディレクトリ、CHANGELOGおよびRepository上の参照接続は、`REPOSITORY_RULES.md` を正とする。
 
 ---
 
