@@ -24,7 +24,12 @@
 - Git
 - GitHub
 - Claude等の外部AI
+- OneDrive上の `AI/00_Inbox` および `AI/04_Personal_Archive`
 - 上記環境間の作業指示、成果物、監査結果および状態情報の受け渡し
+
+OneDrive上のInboxおよびPersonal Archiveは、Repository外の管理対象領域である。受領、配属、検証、ClosedならびにOriginal、ProcessedおよびDerivedの責任境界は、`04_AI_Work_Environment/INBOX_AND_PERSONAL_ARCHIVE.md` を正とする。
+
+これらの領域をRepositoryまたは正式Source置場として扱わない。
 
 本Sourceは、個別サービス固有の制作フロー、公開フロー、アカウント操作、料金支払い、外部送信その他の詳細手順を定義しない。
 
@@ -659,6 +664,7 @@ Work稿とRepository差分の採否、編集競合または現在の作業対象
 - `AI_ORGANIZATION.md`
 - `03_Human_in_the_Loop/HUMAN_IN_THE_LOOP.md`
 - `REPOSITORY_RULES.md`
+- `04_AI_Work_Environment/INBOX_AND_PERSONAL_ARCHIVE.md`
 - `00_Brand/00_ブランドOS概要・参照ガイド.md`
 - `00_Brand/09_AI共創原則.md`
 - `01_Education/` 配下の適用される正式Source

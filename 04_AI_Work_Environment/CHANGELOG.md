@@ -6,6 +6,32 @@
 
 ------------------------------------------------------------------------
 
+## 2026-08-25｜Inbox・Personal Archive受領・配属運用原則の正式採用
+
+### 概要
+
+未配属受領物をOneDrive上のInboxで受領し、評価、分類、必要な人間判断、正式配属、検証およびClosedまで接続する共通運用と、Personal ArchiveにおけるOriginal、ProcessedおよびDerivedの責任境界を、専門Sourceとして正式採用した。
+
+### 正式化した主な内容
+
+- `04_AI_Work_Environment/INBOX_AND_PERSONAL_ARCHIVE.md` を現行正式Sourceとして配置した。
+- OneDrive上の `AI/00_Inbox` および `AI/04_Personal_Archive` を、AI作業環境領域が管理するRepository外の運用対象として位置づけた。
+- Inboxを正式Source、Archive、Temp、長期保存場所または独立したAI部署・承認主体として扱わない責任境界を明確化した。
+- Inbox処理の `Received`、`Assessed`、`AwaitingDecision`、`Placed`、`Verified`、`Closed` を、専門成果物の承認Statusとは異なる運用状態として定義した。
+- Personal ArchiveのOriginal、ProcessedおよびDerivedを分離し、センシティブ情報の通常検索・外部提供への自動混入防止とprovenance要件を定義した。
+- Inbox LedgerとRepository CHANGELOGを分離し、初回E2EではVerified済みInbox重複コピーの恒久自動除去権限を導入しないことを確定した。
+- 現行Skill・Helperの実装状態とSource上の標準要件を分離し、初回Closed E2E前の同期確認結果を新しい承認ゲートとせずChatへ報告する運用を追加した。
+
+### 関連Sourceへの影響
+
+- `AI_WORK_ENVIRONMENT.md` の適用範囲と関連Sourceへ、OneDrive上のInbox・Personal Archiveおよび本専門Sourceとの接続を追加した。
+- `REPOSITORY_RULES.md` のAI作業環境領域の正式構造と責任説明を更新した。
+- Human-in-the-loop、AI組織、Brand、EducationおよびVoiceの既存責任は変更していない。
+
+### 承認状態
+
+**🟢 現行正式Sourceとして採用**
+
 ## 2026-08-23｜AI作業環境・工程接続原則の初回正式採用
 
 ### 概要

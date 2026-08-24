@@ -8,6 +8,32 @@
 
 ------------------------------------------------------------------------
 
+## 2026-08-25｜Inbox・Personal Archive運用Sourceの正式採用・責任接続
+
+### 概要
+
+OneDrive上の未配属受領物を正式な責任領域へ安全に接続するInbox運用と、Personal ArchiveのOriginal、ProcessedおよびDerivedの責任境界を、AI作業環境領域の専門Sourceとして正式採用した。
+
+### 変更内容
+
+- `04_AI_Work_Environment/INBOX_AND_PERSONAL_ARCHIVE.md` を現行正式Sourceとして追加した。
+- `REPOSITORY_RULES.md` の `04_AI_Work_Environment/` 正式構造へ新Sourceを追加した。
+- OneDrive上の `AI/00_Inbox` および `AI/04_Personal_Archive` を、Repository外のAI Work Environment運用対象として正式に接続した。
+- `04_AI_Work_Environment/AI_WORK_ENVIRONMENT.md` から、Inbox・Personal Archiveの詳細運用を新Sourceへ委譲する参照を追加した。
+- AI作業環境領域およびRepository全体のCHANGELOGへ、正式Source構造と参照関係の変更を記録した。
+
+### 既存責任への影響
+
+- OneDrive上のInboxおよびPersonal ArchiveをRepository、正式Source置場または第二Repositoryとして扱わない。
+- `AI_ORGANIZATION.md` が担うAI組織上の役割・権限・責任分離に変更はない。
+- `HUMAN_IN_THE_LOOP.md` が担う承認、停止、再開および完了判断に変更はない。
+- `REPOSITORY_RULES.md` が担う正式配置、GitおよびCHANGELOGの具体運用を維持する。
+- Brand、EducationおよびVoiceの既存専門責任に変更はない。
+
+### 承認状態
+
+**🟢 現行Repository構造および正式Sourceとして採用**
+
 ## 2026-08-23｜AI作業環境・工程接続責任単位の新設・正式Source採用
 
 ### 概要

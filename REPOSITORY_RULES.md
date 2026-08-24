@@ -186,10 +186,15 @@ Human-in-the-loop領域に関する意味のある変更は `03_Human_in_the_Loo
 ``` text
 04_AI_Work_Environment/
 ├── AI_WORK_ENVIRONMENT.md
+├── INBOX_AND_PERSONAL_ARCHIVE.md
 └── CHANGELOG.md
 ```
 
 `AI_WORK_ENVIRONMENT.md` のMissionは、AI組織上の責任を維持したまま、判断、制作、監査、修正、Repository反映および変更管理を適切な作業環境へ接続するための横断原則を定義することである。
+
+`INBOX_AND_PERSONAL_ARCHIVE.md` は、未配属受領物をInboxで受領し、評価、分類、必要な人間判断、正式配属、検証およびClosedまで接続する共通運用と、OneDrive上のPersonal ArchiveにおけるOriginal、ProcessedおよびDerivedの責任境界を定義する専門Sourceである。
+
+OneDrive上の `AI/00_Inbox` および `AI/04_Personal_Archive` は、AI作業環境領域が管理するRepository外の運用対象であり、Repositoryまたは正式Source置場として扱わない。詳細は `INBOX_AND_PERSONAL_ARCHIVE.md` を正とする。
 
 本Sourceは、AI組織上の役割・権限、Human-in-the-loopの承認・停止、Repository・Git・CHANGELOGの具体運用、Brand、EducationおよびVoiceの専門責任を移管または重複定義しない。各事項は、その責任本籍を持つ正式Sourceを正とする。
 
