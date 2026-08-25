@@ -6,6 +6,47 @@
 
 ------------------------------------------------------------------------
 
+## 2026-08-25｜Verified済みInbox重複コピー自動除去制度の正式採用
+
+### 概要
+
+初回Inbox E2Eの実測を踏まえ、Verified済みで安全なauthoritative copyがInbox外へ確立された完全重複コピーについて、全条件を機械確認できる場合だけInbox側コピーを自動除去できる恒久制度を正式採用した。
+
+### 正式化した主な内容
+
+- 自動化対象を、Inbox直下にある単一通常ファイルのVerified済み完全重複コピーに限定し、保持、不保持、配属、競合解消その他の意味判断を人間責任として維持した。
+- folder、recursive delete、Original、Processed、DerivedおよびRepository資産を対象外とした。
+- sourceとauthoritative copyの独立実体、link・hardlink・reparse等の否定、最新の有効なVerified Event、identity evidenceの不変性、同期状態およびhuman overrideの積極確認を必須化した。
+- `Verified → deletion intent → Inbox-side action result → Closed` の追記型履歴と、判定不能・`sync=unknown`・Ledger書込不能その他のfail-closed条件を定義した。
+- 正式runtimeをPowerShell 7以上とし、Source正式採用とSkill・Helper実装およびauto mode Enabledを分離した。
+- Source revisionを監査・provenance用、Policy Contract Versionを実行互換性用として分離し、初期Contractを `inbox-auto-removal-v1` とした。
+- Helperの自己互換宣言だけでは実行資格を認めず、人間承認済みImplementation Contractおよび必要なimplementation identityとの一致を必須化した。
+- human overrideおよびemergency stopをSource上のEnabledより優先し、AI、SkillまたはHelperによる停止解除を禁止した。
+
+### 正式採用時の状態
+
+- `automatic_removal_policy_state: Disabled`
+- `automatic_removal_policy_contract: inbox-auto-removal-v1`
+- `automatic_removal_approved_implementation_contract: none`
+- `automatic_removal_approved_implementation_identity: none`
+
+Source正式採用だけでは自動除去を有効化しない。Skill・Helper同期、implementation identity確定、shadow dry-run、否定テスト、QA、互換性の人間承認およびEnabledの人間承認は後続工程とする。
+
+### 監査
+
+- 内部監査、一意修正および再監査を完了した。
+- Claude OpusによるF-01〜F-06、N-01〜N-03の差分監査を経て、最終判定「🟢 正式採用可能」、必須修正なしを確認した。
+
+### 既存責任への影響
+
+- 人間判断、停止、再承認および個別指示は引き続き `HUMAN_IN_THE_LOOP.md` を正とする。
+- Ledgerを承認主体または制度状態の正としない。
+- Repository、GitおよびCHANGELOGの責任、ならびにAI組織上の役割・権限を変更しない。
+
+### 承認状態
+
+**🟢 現行正式Sourceとして採用。ただし自動除去制度状態はDisabled**
+
 ## 2026-08-25｜Inbox・Personal Archive受領・配属運用原則の正式採用
 
 ### 概要

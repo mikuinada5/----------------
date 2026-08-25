@@ -12,7 +12,7 @@
 - 原本と加工物を混同しない
 - センシティブ情報を不用意に検索・外部提供しない
 - 配属後も原本まで追跡できるprovenanceを保持する
-- 削除、正式採用その他の人間判断をAIが代行しない
+- 削除するべきかという意味判断、正式採用その他の人間判断をAIが代行しない
 - Inboxに処理済み資産を永久滞留させない
 
 本Sourceの正式配置は、`04_AI_Work_Environment/INBOX_AND_PERSONAL_ARCHIVE.md` とする。
@@ -114,6 +114,66 @@ OriginalまたはProcessedを根拠として作成した索引、分類、分析
 ### provenance
 
 Original、ProcessedおよびDerivedの間で、どの原本から、どの条件と方法で生成されたかを追跡できる情報。
+
+### identity evidence
+
+Verified時に確認したAsset、Inbox上のsourceおよびauthoritative copyが、現在も同一であることを確認するための運用証拠。
+
+必要な範囲で、Asset ID、Verified Event ID、SHA algorithmおよびvalue、正規化した絶対パス、サイズ、更新日時、検証日時、同期証拠参照ならびに利用可能なファイル識別情報を含む。
+
+サイズまたは更新日時の一致だけを、内容同一性の証明として扱わない。
+
+### 通常ファイル
+
+本Sourceの初期自動除去対象における通常ファイルとは、pathを通常解決した結果、symlink、junction、reparse pointその他の参照・転送構造を介さず、単独のファイル実体として安全に識別できるものをいう。
+
+通常ファイルとして認識できることだけでは、Inbox上のsourceとauthoritative copyが相互に独立した実体であることを証明しない。hardlinkその他により同一実体を共有していないことは、§19の条件として別途確認する。
+
+具体的なOS APIまたは検出方法は、本Sourceで固定しない。
+
+### formal policy reference
+
+自動処理へ適用した正式Sourceのrevisionと対象制度を一意に識別する運用参照。
+
+少なくとも、Repository相対path、対象節または制度識別子、およびGit commit、Git blob、content hashその他の不変なSource revision識別子を含む。
+
+formal policy referenceは、実際にどの正式Source revisionを根拠として実行したかを追跡するために使用する。Helperとの実行互換性そのものは、Policy Contract Versionと、人間承認済みImplementation Contractおよび必要なimplementation identityによって判定する。
+
+具体的な不変識別方式は、本Sourceで固定しない。
+
+### Source revision
+
+Git commit、Git blob、content hashその他の不変識別子によって識別される、正式Sourceそのもののrevision。
+
+provenance、監査、変更履歴およびformal policy referenceに使用する。Source本文が正式変更されれば変化し得る。
+
+Source revisionは、Helperとの実行互換性を示すPolicy Contract Versionではない。
+
+### Policy Contract Version
+
+自動除去Helperが満たす実行条件、安全条件、入出力責任およびfail-closed条件の互換性境界を識別する、本自動処理制度に限定した安定識別子。
+
+Source revision、Repository全体のVersion、成果物Versionまたは新しい独立Version管理制度として扱わない。
+
+実行互換性に影響する制度変更がある場合だけ更新する。誤字訂正、説明改善、CHANGELOG追記またはEnabledとDisabledの状態変更など、実行Contractを変えない変更だけを理由として更新しない。
+
+変更が実行Contractへ影響するか一意に判断できない場合は、互換性を推定せず、人間判断またはfail-closedへ接続する。
+
+### Implementation Contract
+
+SkillまたはHelper実装が対応するPolicy Contract上の実装責任を識別する識別子。
+
+実装側は対応するImplementation Contractを宣言できるが、その宣言だけでは実行資格または互換承認を得ない。
+
+現在のPolicy Contractで使用できるImplementation Contractは、正式Source側の人間承認済み対応関係と一致する必要がある。Helper自身の自己申告だけを互換性の根拠として扱わない。
+
+### implementation identity
+
+有効化前QAを通過したSkillおよびHelper実装を一意に識別する不変識別情報。
+
+SkillまたはHelper revision、content hash、Git commit、file hash setその他の同等方式を利用できる。具体方式は実装へ委譲する。
+
+正式Source側の承認済みidentityまたは人間承認済みactivation recordへの不変参照と一致する場合だけ、承認済み実装の証拠として使用できる。Helper自身がidentityを書き換えるだけで承認済みにはならない。
 
 ---
 
@@ -237,21 +297,86 @@ Inbox処理の標準工程は次のとおりとする。
 
 ### 8.1 現行実装と標準要件
 
-本Sourceは、現行SkillまたはHelperでまだ自動実装されていない運用要件を含む。
+本Sourceが正式採用されていることと、対応するSkill、Helperその他の実行手段が実装・有効化されていることを区別する。
 
-未実装となり得る項目には、フォルダ再帰、manifest解析、`processing_stage`、Ledger拡張、センシティブ判定、provenance、OneDrive同期確認およびInbox側処理を含む。
+本Sourceに自動処理条件が定義されていることだけを理由として、現在の実装がその条件を機械検証可能、自動実行可能または包括的な実行権限を持つと判断しない。
 
-本Sourceが正式採用されたことだけを理由として、これらが自動実装済み、現在利用可能または包括的に実行可能であると判断しない。
+Verified済みInbox重複コピーの自動除去機能は、少なくとも次を完了するまで有効化しない。
 
-未実装工程は、現在利用可能な実行手段または必要な人間操作によって補完し、実施できなかった確認を完了済みとして記録しない。
+1. 対応するSkillおよびHelperの本Sourceへの同期
+2. 実データを変更しないshadow dry-run
+3. 許可条件および禁止条件に対する否定テスト
+4. 必要な内部QA
+5. 本Sourceの全条件を機械的に検証できることの確認
 
-自動実行する場合は、対応するSkill、Helperその他の実行手段が、本Sourceの適用要件へ同期済みであることを確認する。
+未実装、未対応、判定不能またはCapability不足の条件を、完了または適合として扱わない。
 
-Xアーカイブを使用する初回Closed E2Eの実行前に、その処理に必要なSkillおよびHelperの同期を行う。
+Inbox自動処理を行う正式Helper runtimeは、PowerShell 7以上とする。Windows PowerShell 5.1は正式runtimeとして使用しない。
 
-初回Closed E2Eの開始前に、必要なSkillおよびHelperの同期対象、確認結果ならびに残る未実装事項をChatへ報告する。未解決事項が実行を妨げる場合のみ停止し、問題がない場合は新しい承認ゲートとして扱わず後続工程へ進む。
+具体的な起動コマンド、Version check、fail-fast、文字コード、JSONL入出力その他の実装方法は、対応するSkillおよびHelperの責任とする。
 
-具体的なPowerShell実装、検索エンジン、解析ライブラリその他の実装方式は、本Sourceで固定しない。
+具体的な検索エンジン、解析ライブラリ、ハッシュ実装その他の実装方式は、本Sourceで固定しない。
+
+### 8.2 自動除去制度状態
+
+本SourceにおけるVerified済みInbox重複コピー自動除去制度のauthoritativeな制度情報は、次とする。
+
+`automatic_removal_policy_state: Disabled`
+
+`automatic_removal_policy_contract: inbox-auto-removal-v1`
+
+`automatic_removal_approved_implementation_contract: none`
+
+`automatic_removal_approved_implementation_identity: none`
+
+制度状態はDisabledとEnabledを区別し、初期状態はDisabledとする。`none`は、現時点で自動除去を実行できるImplementation Contractまたはimplementation identityが人間承認されていないことを示す。
+
+`inbox-auto-removal-v1`は、本節で定める条件付き自動除去制度の初期Policy Contract Versionである。
+
+どのImplementation Contractおよびimplementation identityを現在のPolicy Contractで使用可能とするかを許可する権限は、正式Source側の人間承認に属する。
+
+SkillまたはHelperが自ら対応Contractまたはidentityを宣言したことだけでは、互換性も実行資格も成立しない。正式Source上の人間承認済み対応関係と一致する必要がある。
+
+必要なimplementation identityは、正式Sourceに不変識別子を直接保持するか、人間承認済みactivation recordへの不変参照として保持できる。LedgerまたはHelper configだけを承認主体または互換性の正にしない。
+
+activation recordを使用する場合も、正式Source側がその不変参照を保持する。activation recordはQAと人間承認の証拠であり、正式Sourceに代わる制度状態または独立した承認主体にはしない。
+
+Enabledへの変更には、次を順にすべて必要とする。
+
+1. 本Sourceの正式採用
+2. Policy Contract Versionの確定
+3. 対応するSkillおよびHelperの実装
+4. implementation identityの確定
+5. 実データを変更しないshadow dry-run
+6. 許可条件および禁止条件に対する否定テスト
+7. 必要なQAの合格
+8. 人間による当該implementationとPolicy Contractの互換性承認
+9. 人間による自動除去Enabledの明示承認
+10. 承認済みImplementation Contract、必要なimplementation identityおよびEnabled状態の正式Sourceへの反映
+11. 実行時のSource state、Policy Contract、承認済みImplementation Contractおよびimplementation identityの確認
+12. §19の全条件成立
+
+技術条件を満たしたことだけを理由として、AI、Skill、Helperまたは実行環境が制度状態を変更してはならない。
+
+Ledger、SkillまたはHelper configは制度状態、Contractおよびidentityを参照・反映できるが、正式な承認主体、authoritativeな制度状態または互換性の正にはしない。
+
+正式SourceのSource revisionがEnabled反映によって変化しても、実行Contractが変わっていなければPolicy Contract Versionは変更しない。このSource revision変更だけを理由として、QA済み実装へ同じQAを再要求する循環を作らない。
+
+実行互換性に影響する制度変更ではPolicy Contract Versionを更新する。旧Implementation Contractが新しいPolicy Contractに対して人間により明示的に互換承認されていない場合は実行不可とし、新しい実装または同期、shadow dry-run、否定テスト、QAおよび人間承認を経る。
+
+Helperが独自に新しいPolicy Contractとの互換性を判断して実行してはならない。明示的な人間承認済み対応関係がない場合はfail-closedとする。
+
+正式Source上の制度状態、Policy Contract Version、承認済みImplementation Contract、必要なimplementation identity、human overrideまたはemergency stop、現在のformal policy referenceのいずれかを一意に確認できない場合は、自動除去を行わずDisabled相当として扱う。
+
+人間はいつでも、自動除去を停止する明示指示を行うことができる。停止指示は`HUMAN_IN_THE_LOOP.md`に基づき直ちに優先し、SourceがEnabledであっても、有効なhuman overrideまたはemergency stopが存在する間は自動除去しない。
+
+`automatic_removal_policy_state`は正式な制度状態の正であり、human overrideまたはemergency stopは実行可否へ直ちに作用する運用上の停止証拠である。停止証拠を第二のauthoritativeな制度状態として扱わない。
+
+緊急停止後は、正式Sourceの制度状態をDisabledへ反映する。Source更新までの時間差では、human overrideまたはemergency stopをSource上のEnabledより優先する。
+
+AI、SkillまたはHelperは停止を解除してはならない。再度Enabledへ変更する場合は、本節の有効化条件と人間承認を改めて満たす。
+
+自動除去を実行できるのは、正式Source上の制度状態と実装側auto modeが双方とも有効で、Policy Contract、承認済みImplementation Contract、必要なimplementation identity、human overrideおよび§19の全条件を確認できる場合に限る。
 
 ---
 
@@ -324,6 +449,22 @@ Inbox処理の現在状態は、Inbox Ledger上の `processing_stage` として�
 - センシティブ情報の利用範囲と外部提供範囲を確認済み
 - Closed前に必要な未解決事項を特定済み
 
+Verifiedは、Inbox側重複コピーの自動除去適格性を単独で証明するものではない。
+
+自動除去には、§19の制度、Capability、対象範囲、identity evidence、同期、human overrideおよび実行安全条件をすべて満たす必要がある。
+
+deletion intentおよびInbox-side action resultは、新しいprocessing_stageを追加するものではない。これらのイベントを追記している間、processing_stageはVerifiedを維持し、Inbox側処理およびClosed条件の確認後にClosedへ移行する。
+
+VerifiedからInbox-side actionの記録を経ずに直接Closedへ移行しない。
+
+複数の過去Verified Eventが履歴として存在すること自体はエラーとしない。既存履歴を上書きまたは削除しない。
+
+自動除去判断の根拠には、最新の有効なVerified Eventを使用する。
+
+当該Verified Event以後に、identity、path、authoritative copy、conflict、hold、human override、同期証拠、provenanceその他の再評価を必要とする変更またはイベントが存在する場合、そのVerified Eventを自動除去の根拠として使用しない。
+
+必要な再検証を行い、新しいVerified証拠を確立してから自動除去適格性を再評価する。
+
 ### `Closed`
 
 本SourceのClosed条件をすべて満たし、Inbox側処理とLedger記録まで完了した状態。
@@ -352,6 +493,14 @@ Inbox固有の判断対象には、次のような事項を含む。
 - authoritative copyを確定できない
 
 これらの事項における停止、提示、承認および再開条件は、`HUMAN_IN_THE_LOOP.md` を正とする。
+
+§19の条件付き恒久自動除去制度が正式採用され、対応機能が有効化された後、§19の全条件を機械確認できる完全重複コピーの除去は、承認済みの目的、意味および影響範囲内の定型工程として扱う。
+
+この場合、Assetごとの追加削除承認を必須としない。
+
+これは、保持要否、不保持判断、競合解消、配属先決定その他の意味判断をAIへ移管するものではない。
+
+人間が個別の停止、保持または別処理を指定した場合の扱いは、`HUMAN_IN_THE_LOOP.md` を正とする。
 
 ---
 
@@ -549,6 +698,26 @@ Ledgerでは、少なくとも必要な範囲で次を追跡できるように�
 - Inbox側処理結果
 - Closed日時
 - エラーまたは例外
+- 実行mode
+- formal policy reference
+- Policy Contract Version
+- Implementation Contract
+- implementation identityまたは承認済みactivation record参照
+- Policy ContractとImplementation Contractの人間承認済み対応関係の参照
+- 根拠としたVerified Event
+- identity evidence
+- 同期証拠参照
+- deletion holdまたは個別停止状態
+- Inbox-side action intent
+- Inbox-side action result
+- action後の検証結果
+- 根拠とした最新の有効なVerified Event
+- human override状態の同期結果および証拠参照
+- active holdまたは個別停止状態
+- 正式Source上の自動除去制度状態の参照結果
+- Policy Contract、承認済みImplementation Contractおよびimplementation identityの照合結果
+- 実装側auto modeの確認結果
+- human overrideまたはemergency stopの同期結果
 
 Ledgerはイベントを追記する方式を原則とし、段階更新によって過去の判断、失敗、競合、配属、再開またはClosed履歴を上書き・削除しない。
 
@@ -561,6 +730,16 @@ Ledgerへ受領物本文、DM本文、秘密情報または不要な個人情報
 Ledgerの消失を正式Sourceの消失と同一視しない。ただし、処理履歴またはprovenanceの追跡性を確認できなくなった場合は、残存する資産、SHA、配属先記録その他から復旧可能性を確認し、確認不能な状態を完了済みとして扱わない。
 
 具体的な保持年限、バックアップ、ローテーション、保存媒体、ファイル分割および実装方式は、本Sourceでは固定しない。
+
+自動Inbox-side actionでは、実行前のintent、実行結果およびClosedを区別して追記する。
+
+formal policy referenceは、適用した正式SourceのRepository相対path、対象節または制度識別子および不変なrevision識別子を示す参照であり、Ledger自体を正式承認記録、承認主体または制度状態の正にするものではない。
+
+Ledgerへ記録するhuman override状態は、人間指示の意味または承認そのものではなく、自動処理が参照するために現在のAssetへ同期された運用証拠である。
+
+Ledgerのschema Version、排他制御、flush、文字コード、field構造その他の実装方式は、対応するHelperが管理する。
+
+schema非互換、Ledger書込不能または既存履歴との接続不能な状態では、自動除去を行わない。
 
 ---
 
@@ -650,35 +829,255 @@ OneDriveをPC交換後も保持される恒久保存先として使用する場�
 
 同期確認方法を実装できない場合は、同期未確認であることを記録し、必要な保持要件を満たすまでClosedとしない。
 
+Verified時に取得したSHAまたは内容同一性証拠は、現在のAsset、Inbox上のsourceおよびauthoritative copyがVerified時と同一であることをidentity evidenceから確認できる場合に限り、後続のInbox-side actionで再利用できる。
+
+identity evidenceの有効性を確認できない場合は、必要なSHAまたは内容同一性を再確認する。
+
+ファイルが大容量であることだけを理由として、必要なSHAまたは内容同一性確認を省略しない。
+
+Verified時のSHA、内容同一性または同期証拠は、Verified時から現在まで、証拠再利用に必要なAsset、両path、内容識別、identity evidenceおよび根拠となるVerified Eventとの対応関係が不変であることを積極的に確認できる場合に限り再利用できる。
+
+単に新しい変更または競合を観測していないことを、不変性確認として扱わない。
+
+積極的な不変性確認ができない場合は、証拠をunknownとして扱うか、必要な内容同一性または同期状態の再検証へ戻す。
+
+unknownのまま自動除去しない。
+
 ---
 
 ## 19. Inbox側原本の処理
 
-本Sourceの初回正式運用時点では、Verified済みInbox重複コピーの恒久的な自動除去権限を導入しない。
+### 19.1 基本責任
 
-初回E2Eでは、次の順序を使用する。
+Inbox側処理は、保持、配属、同一性、同期、provenanceその他の必要な判断および検証が完了した後、Inboxに残った重複コピーを処理する工程である。
 
-1. 正式配属先へコピー
-2. SHAまたは内容同一性確認
-3. 配属先READ確認
-4. 必要なOneDriveその他の同期確認
-5. その他のClosed前提条件確認
-6. Chatで人間承認
-7. Inbox側重複コピーを承認された方法で処理
-8. Inbox側処理結果を検証
-9. Ledgerへ記録
+本Sourceは、
 
-削除、移動その他の処理方法は、当該時点の人間承認、実行環境の安全機構および適用されるSourceに従う。
+> Verified済みで、安全なauthoritative copyがInbox外へ一意に確立された完全重複コピーについて、必要な条件をすべて機械的に確認できる場合に限り、Assetごとの追加削除承認なしでInbox側重複コピーを自動除去できる
 
-Verified済みで、authoritative copyが別途安全に確立されたInbox重複コピーを、将来自動除去可能とする恒久ルールは、初回E2E成功後に別途検討する。
+ものとする。
 
-本Sourceの採用だけを、その自動除去権限の承認として扱わない。
+自動化対象は、削除するべきかという意味判断ではなく、すでに保持対象とauthoritative copyが確定した後の機械的な重複除去に限定する。
 
-Inboxに処理済み重複コピーを永久に残す運用を標準としない。
+### 19.2 初期適用範囲
 
-ただし、Inbox側処理に必要な人間承認が未確定である間は、`Verified` または必要に応じて `AwaitingDecision` に留める。
+初期Versionの自動除去対象は、Inbox直下に存在する単一の通常ファイルに限定する。
 
-これは正常な停止状態であり、処理異常ではない。正式完了条件を満たしていないためClosedではない、という状態である。
+次は自動除去対象外とする。
+
+- フォルダ
+- 再帰削除
+- `.codex-inbox`
+- Temp
+- partial
+- 制御領域
+- Inbox外の資産
+- Original
+- Processed
+- Derived
+- Repository上の資産
+- 旧Versionその他の保持要否判断が必要な資産
+- 不保持判断そのものが未確定の資産
+
+フォルダまたは再帰削除の自動化は、別途必要なE2E、監査および正式判断を完了するまで導入しない。
+
+### 19.3 自動除去の必須条件
+
+次の条件をすべて満たす場合に限り、自動除去できる。
+
+#### 制度およびCapability
+
+- 正式Source上の`automatic_removal_policy_state`がEnabled
+- 実装側のauto modeが明示的に有効
+- 正式Source上のPolicy Contract Versionを一意に確認できる
+- 人間承認済みImplementation Contractが`none`ではない
+- 実装が宣言するImplementation Contractと、正式Source側で人間承認済みのImplementation Contractとの対応が一致する
+- implementation identityが必要な場合、承認済みidentityが`none`ではなく、正式Sourceまたは人間承認済みactivation recordから参照されるidentityと一致する
+- Helper自身の自己申告だけを互換性または実行資格の根拠としていない
+- 対応するSkillおよびHelperが本Sourceへ同期済み
+- 正式runtime要件を満たしている
+- Ledger schemaが互換
+- 適用したformal policy referenceを記録できる
+- formal policy referenceがRepository相対path、対象節または制度識別子および不変なSource revision識別子を含む
+- formal policy referenceが現在実行へ適用するSource revisionと対象制度を一意に識別する
+- 本節の条件をHelperが機械的に検証できる
+
+#### Asset
+
+- latest processing_stageがVerified
+- Asset IDが一意
+- Inbox上のsource絶対パスが一意
+- 現在の自動除去判断の根拠となる最新の有効なVerified Eventが一意
+- Asset ID、source pathおよび当該Verified Eventの対応が一意
+- 当該Verified Event以後に、その有効性を失わせる変更またはイベントが存在しない
+- 複数の古いVerified Eventが履歴として存在すること自体を競合またはエラーとして扱わない
+- Inbox直下の単一通常ファイル
+- path正規化後も承認済みInbox内部
+- `.codex-inbox`、Temp、partialまたは制御領域ではない
+
+#### authoritative copy
+
+- Inbox外に一意に存在する
+- 最終配属先が確定している
+- READ可能
+- 安定している
+- partialまたはtemporary copyではない
+- conflictがない
+- Inboxだけが唯一の安全なコピーではない
+- Inbox上のsourceとauthoritative copyが、path解決後も相互に独立したファイル実体である
+- symlink、junction、reparse point、hardlink、path replacementその他、両pathが同一実体または依存した実体を指す構成を安全に否定できる
+- 利用可能なFile ID、Volume IDその他のfile identity情報を使用できるが、具体的なOS APIまたは検出方式を本Sourceでは固定しない
+
+#### 内容同一性
+
+- Verified EventにSHA-256その他の適用された内容同一性証拠がある
+- Inbox上のsourceとauthoritative copyの内容同一性を確認済み
+- 証拠がAsset ID、両pathおよびVerified Eventへ一意に接続している
+- Verified時から現在まで、証拠再利用に必要な対応関係およびidentity evidenceが不変であることを積極的に確認できる
+- 単に変更を観測していないことを、不変性確認として扱っていない
+- 証拠を再利用できない場合は、必要な内容同一性を再確認済み
+
+#### 同期および保持
+
+- 必要なOneDriveその他の同期確認が完了している
+- sync stateがunknownではない
+- 同期証拠がAsset、authoritative pathおよび内容識別へ接続している
+- authoritative copyが必要な恒久保持条件を満たす
+
+#### provenanceおよび下流工程
+
+- provenanceがcomplete
+- Originalまたは最終配属先へ追跡可能
+- 必要な下流工程がcomplete、not_requiredまたは正式にhanded_off
+- 未解決の人間判断がない
+
+#### Human override
+
+- 現在のAssetに影響するhuman override状態が、機械判定可能な運用状態へ同期済み
+- override状態の同期結果および証拠参照を積極的に確認できる
+- emergency stop状態が同期済みで、activeではないことを積極的に確認できる
+- activeなdeletion holdがない
+- 削除しない、Inboxへ残す、Verifiedで停止する、別処理へ回すその他の個別停止指示がない
+- hold記録が見つからないことだけを、holdまたは個別指示が存在しないことの証明として扱っていない
+
+#### 実行安全
+
+- dry-runが合格している
+- Ledgerへ安全に追記可能
+- 削除直前に全条件を再確認している
+- 削除対象が厳密な単一絶対パスへ限定されている
+- 削除直前にpathとfile identityを再確認し、path replacementその他のTOCTOUによる対象変化を否定できる
+- 他のInbox資産を処理対象としていない
+- action後の対象不存在とauthoritative copyの健全性を確認できる
+
+### 19.4 自動除去禁止条件
+
+§19.3の条件を一つでも満たさない場合、または条件を判定できない場合は、fail-closedとし、自動除去しない。
+
+少なくとも次の場合は自動除去を禁止する。
+
+- processing_stageがVerified未満
+- Ledgerと実際のファイル状態が一致しない
+- formal policyが未採用または無効
+- 正式Source上の`automatic_removal_policy_state`がDisabledまたは判定不能
+- Policy Contract Versionが不明、未対応または互換性を確認できない
+- 人間承認済みImplementation Contractが`none`
+- 人間承認済みImplementation Contractとの対応を確認できない
+- implementation identityが必要なのに承認済みidentityが`none`、確認不能または実装identityと不一致
+- Helper自身の自己申告以外に互換承認の根拠がない
+- current formal policy referenceを一意に確認または記録できない
+- 実装側auto modeが無効または判定不能
+- 正式runtime要件を満たさない
+- HelperまたはLedger schemaが未対応
+- Asset ID、source pathまたは最新の有効なVerified Eventの対応が曖昧
+- 根拠とするVerified Event以後に無効化事由があり、新しいVerified証拠を確立していない
+- authoritative copyが不明、複数、READ不能または不安定
+- sourceとauthoritative copyの独立したファイル実体を確認できない
+- link、hardlink、reparse、path replacementその他の参照・同一実体構成を安全に否定できない
+- SHAその他の内容同一性証拠がない
+- 内容同一性が一致しない
+- Verified後の変更を否定できず、再確認も完了していない
+- sync stateがunknown
+- conflictがある
+- partialまたはtemporary copyがある
+- 人間判断待ちがある
+- human override状態が現在のAssetへ同期済みであることを積極確認できない
+- emergency stop状態を積極確認できない、またはactiveである
+- deletion holdまたは個別停止指示がある
+- Ledgerへ安全に記録できない
+- 削除対象がInbox外
+- 削除対象が`.codex-inbox`または制御領域
+- 削除対象がフォルダまたは再帰処理を必要とする
+- Helperが安全条件を機械検証できない
+- action後の検証ができない
+
+停止理由が人間判断を必要とする場合は、`AwaitingDecision`へ接続する。
+
+一時的なCapability不足、同期未確認または検証不足の場合は、未確認事項を完了済みとせず、Verifiedその他の実際の状態を維持して再開地点を記録する。
+
+### 19.5 証拠再利用
+
+Verified時に取得したSHAおよび同期証拠は、§18に従い、Verified時から現在まで必要な対応関係およびidentity evidenceが不変であることを積極的に確認できる場合に限り再利用できる。
+
+証拠再利用の根拠は、大容量であること、再計算に時間がかかること、人間負担を減らしたいことまたは単に変更を観測していないことではなく、Verified時と現在の対象および証拠関係が不変であることを積極的に確認できることとする。
+
+証拠再利用条件を満たさない場合は、必要な内容同一性または同期状態を再確認する。
+
+再確認により不一致、競合または新しい人間判断が判明した場合は、自動除去しない。
+
+### 19.6 実行と履歴
+
+自動Inbox-side actionは、次の順序で実行する。
+
+1. 現在状態と最新Ledgerイベントを再取得する
+2. §19.3の全条件をdry-runで確認する
+3. formal policy reference、Policy Contract、承認済みImplementation Contract、必要なimplementation identity、execution mode、根拠となるVerified Eventおよびevidence referenceを確定する
+4. Ledgerへdeletion intentを追記する
+5. 削除直前に対象、path、独立したfile identity、identity evidenceの不変性、同期、conflict、同期済みhuman override状態およびemergency stop状態を再確認する
+6. 厳密な単一絶対パスのInbox重複コピーだけを処理する
+7. Inbox側対象が存在しないことを確認する
+8. authoritative copyが存在し、READ可能で、必要な識別情報が維持されていることを確認する
+9. LedgerへInbox-side action resultを追記する
+10. §20のClosed条件を再評価する
+11. 条件を満たす場合に限り、LedgerへClosedを追記する
+
+deletion intentおよびInbox-side action resultを省略し、Verifiedから直接Closedへ移行しない。
+
+deletion intent後、action前に条件が変化した場合は処理を中止し、削除せず、中止または失敗結果を追記する。
+
+action後に結果記録またはClosed記録へ失敗した場合は、削除を未実施と推測して繰り返さず、§21に従って実ファイル状態とLedgerを照合して再開する。
+
+### 19.7 Human override
+
+恒久自動除去制度が有効な場合も、人間は個別作業について、削除しない、Inboxへ残す、別処理へ回す、Verifiedで停止するその他の指示を行うことができる。
+
+個別指示の優先関係、有効範囲、解除および作業終了後の通常運転への復帰は、`HUMAN_IN_THE_LOOP.md` を正とする。
+
+人間による自動除去の停止指示またはemergency stopは、正式Source上のEnabledより優先する。AI、SkillまたはHelperは、その停止を解除してはならない。
+
+自動処理が参照するhuman override状態は、人間指示そのものではなく、現在のAssetへ同期された運用証拠として扱う。Chatその他の人間指示を運用証拠へ接続する方法は、Skill、Helperまたはorchestrationの実装責任とする。
+
+override状態の同期確認のために、§19.3の全条件を満たすAssetごとの追加人間承認を要求しない。
+
+本節を、包括的な削除権限、保持判断権限、不保持判断権限または競合解消権限として解釈しない。
+
+### 19.8 有効化と将来留保
+
+本節が正式採用されたことだけで、自動除去機能が実装済みまたは有効化済みになったとは扱わない。
+
+正式Source上の制度状態と変更条件は§8.2を正とする。制度状態がDisabledである間は、Skill、Helperまたは実装側設定にかかわらず自動除去しない。
+
+有効化前条件は§8.1および§8.2を満たす必要がある。
+
+現時点では、次を将来留保とする。
+
+- フォルダ自動除去
+- 再帰削除
+- OneDrive同期確認の完全自動化
+- Original、ProcessedまたはDerivedの自動削除
+- Repository資産の自動削除
+- conflictの自動解消
+- 不保持判断の自動化
 
 ---
 
@@ -710,6 +1109,10 @@ Inbox処理は、少なくとも次を満たしたときClosedとする。
 
 ファイルのコピー、Processed生成またはLedger更新の一つだけをもってClosedとしない。
 
+自動Inbox-side actionが成功した場合も、それだけでClosedとしない。
+
+deletion intent、Inbox-side action resultおよびaction後検証を追跡でき、かつ本節の全条件を満たした場合に限りClosedを記録する。
+
 ---
 
 ## 21. エラー・中断・再開
@@ -733,6 +1136,10 @@ Inbox処理では、再開時に少なくとも次の状態を識別できるよ
 Ledger上の状態と実際のファイル状態が異なる場合は、差異を記録し、現在状態を確認せず履歴だけから再開しない。
 
 どの段階から再開するか、不可逆操作を実行できるか、または人間判断が必要かは、`HUMAN_IN_THE_LOOP.md` と適用されるSourceに従う。
+
+deletion intentが存在し、Inbox-side action resultまたはClosedが存在しない場合は、actionを未実施と推測して再実行しない。
+
+Inbox上のsource、authoritative copy、最新Ledgerイベントおよび実際の処理結果を確認し、未実施、中断、実施済み未記録その他の現在状態を一意に確定してから再開する。
 
 ---
 

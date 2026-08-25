@@ -8,6 +8,38 @@
 
 ------------------------------------------------------------------------
 
+## 2026-08-25｜Inbox重複コピー自動除去制度の正式Source反映
+
+### 概要
+
+AI作業環境領域の専門Sourceへ、Verified済みInbox完全重複コピーの条件付き自動除去制度を正式反映した。
+
+### 変更内容
+
+- `04_AI_Work_Environment/INBOX_AND_PERSONAL_ARCHIVE.md` に、Inbox直下の単一通常ファイルだけを対象とする恒久制度を追加した。
+- 独立ファイル実体、内容同一性、同期、provenance、human override、最新の有効なVerified Eventおよび追記型実行履歴を必須条件とした。
+- folder、recursive delete、Original、Processed、DerivedおよびRepository資産への削除権限を追加していない。
+- Source revisionとPolicy Contract Versionを分離し、初期Contractを `inbox-auto-removal-v1` とした。
+- human overrideおよびemergency stopをEnabledより優先し、Helperの自己互換宣言・自己承認・停止解除を禁止した。
+- 内部監査とClaude OpusによるF-01〜F-06、N-01〜N-03の差分監査を完了し、必須修正なし・正式採用可能を確認した。
+
+### 正式採用時の状態
+
+- policy state：`Disabled`
+- approved Implementation Contract：`none`
+- approved implementation identity：`none`
+
+Skill・Helper同期、implementation identity確定、shadow dry-run、否定テスト、QAおよび人間によるEnabled承認は後続工程であり、本変更だけではauto modeを有効化しない。
+
+### 既存責任への影響
+
+- Human-in-the-loop、Repository、Git、CHANGELOGおよびAI組織上の既存責任を変更しない。
+- Ledger、SkillまたはHelperを正式承認主体にしない。
+
+### 承認状態
+
+**🟢 現行正式Sourceとして採用。ただし自動除去制度状態はDisabled**
+
 ## 2026-08-25｜Inbox・Personal Archive運用Sourceの正式採用・責任接続
 
 ### 概要
