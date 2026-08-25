@@ -218,6 +218,45 @@ AI作業環境領域に関する意味のある変更は `04_AI_Work_Environment
 
 ------------------------------------------------------------------------
 
+## 3.4 Human OS領域の基本構造
+
+`05_Human_OS/` は、稲田みく本人の判断原則、保留条件、未知ケースにおける推論境界およびそのEvidence / provenanceを担う独立したトップレベル責任単位である。
+
+基本構造は以下とする。
+
+``` text
+05_Human_OS/
+├── HUMAN_OS.md
+├── HUMAN_OS_EVIDENCE_LOG.md
+└── CHANGELOG.md
+```
+
+`HUMAN_OS.md` はCurrent Human OSのcanonical Sourceとする。`HUMAN_OS_EVIDENCE_LOG.md` は、本文の判断原則を一次Evidenceへ再追跡するSupporting Evidence / provenance Sourceであり、Human OS本体と同じ責任のcanonical OSとして扱わない。
+
+Human OSは、人間による承認、停止、再承認、エスカレーションおよび完了判断を定める `03_Human_in_the_Loop/HUMAN_IN_THE_LOOP.md` を置き換えない。また、Voice、Writing Style、Brand、Education、AI組織、Repositoryの専門判断を再定義しない。
+
+Human OSに関する意味のある変更は `05_Human_OS/CHANGELOG.md` に記録する。リポジトリ全体の責任構造・配置・参照関係に影響する変更は、あわせてルートの `CHANGELOG.md` に記録する。
+
+------------------------------------------------------------------------
+
+## 3.5 Writing Style OS領域の基本構造
+
+`06_Writing_Style_OS/` は、稲田みく本人の公開文章・会話文体における構成、リズム、思考の見え方および媒体別強度を担う独立したトップレベル責任単位である。
+
+基本構造は以下とする。
+
+``` text
+06_Writing_Style_OS/
+├── WRITING_STYLE_OS.md
+└── CHANGELOG.md
+```
+
+`WRITING_STYLE_OS.md` はCurrent Writing Style OSのcanonical Sourceとする。Human OSが担う判断原則、Voice OSが担う個人固有の対話・表出判断、Brand OSが担うブランド共通表現、媒体別SOPが担う制作・公開手順を代替しない。
+
+Writing Style OSに関する意味のある変更は `06_Writing_Style_OS/CHANGELOG.md` に記録する。リポジトリ全体の責任構造・配置・参照関係に影響する変更は、あわせてルートの `CHANGELOG.md` に記録する。
+
+------------------------------------------------------------------------
+
 ## 4. 教育領域の基本構造
 
 教育領域は、全Course共通の教育設計基準、Course固有の教育責任、全Course共通の教材制作責任を分離する。

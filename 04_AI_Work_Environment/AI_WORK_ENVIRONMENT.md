@@ -666,6 +666,9 @@ Work稿とRepository差分の採否、編集競合または現在の作業対象
 本Sourceを使用するときは、作業内容に応じて次を参照する。
 
   - `AI_ORGANIZATION.md`
+  - `05_Human_OS/HUMAN_OS.md`
+  - `05_Human_OS/HUMAN_OS_EVIDENCE_LOG.md`
+  - `06_Writing_Style_OS/WRITING_STYLE_OS.md`
   - `AI_PRODUCTION_PIPELINE.md`
   - `REPOSITORY_CROSS_AUDIT_STANDARD.md`
   - `03_Human_in_the_Loop/HUMAN_IN_THE_LOOP.md`

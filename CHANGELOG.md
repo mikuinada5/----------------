@@ -8,6 +8,41 @@
 
 ------------------------------------------------------------------------
 
+## 2026-08-26｜Human OS・Evidence Log・Writing Style OSの正式採用とPipeline接続
+
+### 概要
+
+Inbox内の完成済み成果物を現行Repositoryへ配属し、Human OS、Supporting Evidence SourceおよびWriting Style OSを、次回のnote制作でSource RouterとSource QAが使用できる正式Sourceとして接続した。
+
+### 追加した正式構造
+
+- `05_Human_OS/HUMAN_OS.md`：Miku本人の判断原則、保留条件および未知ケースにおける推論境界を担うcanonical Human OS。
+- `05_Human_OS/HUMAN_OS_EVIDENCE_LOG.md`：Human OSを一次Evidenceへ再追跡するSupporting Evidence / provenance Source。canonical OSではなく、本体を単独で上書きしない。
+- `06_Writing_Style_OS/WRITING_STYLE_OS.md`：Miku本人の公開文章・会話文体における構成、リズム、思考の見え方および媒体別強度を担うcanonical Writing Style OS。
+
+### Status・Version
+
+- Human OSはVersion `v0.1` を維持し、`Current / Operational v0.1（Evidence-bound Working Model）` とした。Version番号だけでDraft扱いしない。
+- Evidence Logは `Current Supporting Evidence / Human OS v0.1` とした。
+- Writing Style OSはVersion `v1.0` を維持し、旧Status `Draft / growing specification` を `Current / Operational v1.0` へ更新した。
+
+### 運用接続
+
+- `REPOSITORY_RULES.md` にHuman OSおよびWriting Style OSの正式構造・責任境界・CHANGELOG運用を追加した。
+- `AI_ORGANIZATION.md` と `04_AI_Work_Environment/AI_WORK_ENVIRONMENT.md` に、既存責任を代替しないSource接続を追加した。
+- `AI_PRODUCTION_PIPELINE.md` のnote／SNS／壁打ちProfileへ、Human OS、Voice OS、Writing Style OS、Brand OSのcanonical pathを登録し、Source QAから実読確認できる状態にした。
+
+### Inbox処理
+
+- 3資産をAssessment後にcopy-onlyでRepositoryへ配属し、配属時のSHA-256一致を確認した。
+- Inbox Ledgerには`Placed`を追記した。Inbox原本は削除・移動していない。
+
+### 承認状態
+
+**🟢 現行正式Sourceとして採用。Repository横断監査判定：PASS。**
+
+------------------------------------------------------------------------
+
 ## 2026-08-26｜AI Production Pipeline・Repository横断監査の正式運用開始
 
 ### 概要

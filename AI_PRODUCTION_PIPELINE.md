@@ -49,9 +49,9 @@ Voice OS未参照事件では、Voice OSが存在していたにもかかわら�
 
 | Source／工程 | 担う責任 | 担わない責任 |
 |---|---|---|
-| Human OS（正本が採用済みの場合） | みくの判断原則、価値判断、保留条件 | Voice・文体・Repository仕様の再定義 |
+| Human OS | みくの判断原則、価値判断、保留条件 | Voice・文体・Repository仕様の再定義 |
 | Voice OS | 話し方、言葉選び、思考・感情の表出 | note固有の構成、ブランド戦略 |
-| Writing Style OS（正本が採用済みの場合） | 公開文章の文体、構成、リズム | 事業判断、教育内容、正確性の代替 |
+| Writing Style OS | 公開文章の文体、構成、リズム | 事業判断、教育内容、正確性の代替 |
 | Brand OS | 事業の理念、世界観、表現・体験・品質の上位原則 | 専門領域の具体手順の代替 |
 | Education Core／Course OS | 教育倫理、教育設計、Course固有判断 | 人格・ブランド・Repository規則の改変 |
 | AI Organization | AIの役割、権限、責任分離、受け渡し | 個別成果物の内容判断そのもの |
@@ -73,7 +73,7 @@ Evidence、AI推論、改善案、単発の好みを分け、責任Sourceの更�
 
 ### 1.6 未採用Sourceを代替しない
 
-案件種別別Source ProfileがHuman OS、Writing Style OS、媒体別SOPその他の責任Sourceを必読として要求し、現行Repositoryにcanonical Sourceがない場合、その案件はG1またはG2で**HUMAN DECISION REQUIRED**とする。
+案件種別別Source Profileが媒体別SOPその他の責任Sourceを必読として要求し、現行Repositoryにcanonical Sourceがない場合、その案件はG1またはG2で**HUMAN DECISION REQUIRED**とする。
 
 AIは、似た文書、過去の会話、個人の記憶またはBrand／Voice Sourceによって未採用Sourceを代替しない。これは当該案件の制作可否を保留するControlであり、欠けたSourceの新設・採用を自動的に決定するものではない。
 
@@ -224,9 +224,9 @@ flowchart TD
 
 | 案件種別 | 必読Source |
 |---|---|
-| note本文 | Human OS、Voice OS、Writing Style OS、Brand OSの該当責任ファイル、記事一次資料、note制作・公開SOP |
-| SNS展開 | 元の承認済み記事、Human OS、Voice OS、Writing Style OS、Brand言語・表現原則、媒体別仕様 |
-| 壁打ち回答・会話文 | Human OS、Voice OS。事業判断を含む場合はBrand OS／専門Sourceを追加 |
+| note本文 | `05_Human_OS/HUMAN_OS.md`、`02_Voice_OS/VOICE_OS.md`、`06_Writing_Style_OS/WRITING_STYLE_OS.md`、`00_Brand/00_ブランドOS概要・参照ガイド.md` から選択した該当Brand Source、記事一次資料、note制作・公開SOP |
+| SNS展開 | 元の承認済み記事、`05_Human_OS/HUMAN_OS.md`、`02_Voice_OS/VOICE_OS.md`、`06_Writing_Style_OS/WRITING_STYLE_OS.md`、`00_Brand/04_ブランド言語・表現原則.md`、媒体別仕様 |
+| 壁打ち回答・会話文 | `05_Human_OS/HUMAN_OS.md`、`02_Voice_OS/VOICE_OS.md`。事業判断を含む場合はBrand OS／専門Sourceを追加 |
 | 教育設計 | Human OS、Brand OS、Education Core、該当Course OS、一次資料、教育設計基準 |
 | 教材制作 | Brand OS、Education Core、Course OS、承認済み教育設計、成果物別制作基準、成果物間整合基準。講師の語りを含む場合はVoice OSを追加 |
 | Visual制作 | Brand Core、世界観・美意識、Visual表現原則、対象成果物の内容Source、媒体仕様 |
@@ -236,7 +236,7 @@ flowchart TD
 
 案件種別が未登録なら、AIが類似案件から黙って推測しない。新しいSource Profile案を作り、人間承認後に登録する。
 
-現行Repositoryでは、`Human OS`、`Writing Style OS`、note制作・公開SOPおよび媒体別仕様のcanonical Sourceは未登録である。そのため、それらを必読とするnote本文・SNS展開・壁打ち回答のProfileは、必要Sourceが採用・登録されるまでG1で**HUMAN DECISION REQUIRED**とする。教育制作、OS／SOP／AI組織変更、Repository反映のみのProfileは、現行Repositoryに存在する責任SourceだけでRoutingできる。
+現行Repositoryでは、Human OSとWriting Style OSのcanonical Sourceは上表のpathへ登録済みであり、note本文・SNS展開・壁打ち回答で必読とする。note制作・公開SOP、SNS媒体別仕様およびStory Candidate管理Sourceは未登録であるため、それらを必読とする案件はG1で**HUMAN DECISION REQUIRED**とする。教育制作、OS／SOP／AI組織変更、Repository反映のみのProfileは、現行Repositoryに存在する責任SourceだけでRoutingできる。
 
 ### 5.6 Gate
 
@@ -730,7 +730,7 @@ Story Candidate「Voice OSは存在したのに読まれなかった」を、AI�
 
 ### Source Router
 
-必読：Human OS、Voice OS、Writing Style OS、Brand Core／Brand言語／AI共創原則、AI Organization Analysis、Story一次資料、note制作SOP。
+必読：Human OS、Voice OS、Writing Style OS、Brand Core／Brand言語／AI共創原則、`AI_ORGANIZATION.md`、Story一次資料、note制作SOP。
 
 ### Source QA
 
@@ -824,7 +824,9 @@ AコースSessionの承認済み教育設計から、PPT、配布資料、ワー
 | AI Organization | `AI_ORGANIZATION.md`。RepositoryルートのAI組織図 | 役割、権限、責任分離、受け渡しは同Sourceを正とする |
 | Repository Rules | `REPOSITORY_RULES.md`。Repositoryルートの共通運用Source | canonical filename、現行とArchive、CHANGELOG、Git運用を同Sourceに従属させる |
 | Brand OS | `00_Brand/00_ブランドOS概要・参照ガイド.md` を入口とし、`00_Brand/01`〜`09` を責任別正本として確認 | Brandを万能Sourceにせず、入口から必要な責任ファイルへRoutingする |
+| Human OS | `05_Human_OS/HUMAN_OS.md`。Current / Operational v0.1。Supporting Evidenceは `05_Human_OS/HUMAN_OS_EVIDENCE_LOG.md` | 目的、影響範囲、可逆性、復旧、後工程、Human Confirmation、実行後回収をGate設計へ反映 |
 | Voice OS | `02_Voice_OS/VOICE_OS.md`。`Status: Validated Initial Release` を本文で確認 | 稲田みく本人のVoiceを担う箇所で、Brand・Educationとの責任境界を保って適用する |
+| Writing Style OS | `06_Writing_Style_OS/WRITING_STYLE_OS.md`。Current / Operational v1.0 | 会話文体と公開文体の区別、媒体別Formality、正確性優先、表面模倣禁止をProduction／Output QAへ反映 |
 | Education／教材制作 | `01_Education/00_Core/`、各CourseOS、`01_Education/02_Material_Production/` を現行責任領域として確認 | 教育設計、教材制作、成果物間整合および教育QAを各専門Sourceへ委譲する |
 
 ### 20.2 解消済みIssue
@@ -832,28 +834,28 @@ AコースSessionの承認済み教育設計から、PPT、配布資料、ワー
 1. **Voice OSへの直接到達不能**は解消した。現行正本は `02_Voice_OS/VOICE_OS.md` であり、Archiveではない。
 2. **Brand OSのcanonical Source不明**は解消した。`00_Brand/00_ブランドOS概要・参照ガイド.md` が入口であり、責任内容は同ディレクトリの `01`〜`09` に分割された正本である。Archive内の旧 `ブランドOS.md` は現行判断Sourceではない。
 3. **Repository Rulesのcanonical Source不明**は解消した。現行正本はRepositoryルートの `REPOSITORY_RULES.md` である。
-4. **Repository working tree未接続**は解消した。本書は現行working treeへ統合し、Repository横断監査、diff、commitおよびpushの対象とする。
+4. **Human OSのcanonical Source不在**は解消した。現行正本は `05_Human_OS/HUMAN_OS.md` であり、Evidence Logは `05_Human_OS/HUMAN_OS_EVIDENCE_LOG.md` にSupporting Evidenceとして分離した。
+5. **Writing Style OSのDraftコピーだけが到達可能**というIssueは解消した。現行正本は `06_Writing_Style_OS/WRITING_STYLE_OS.md` であり、StatusはCurrent / Operational v1.0である。
+6. **Repository working tree未接続**は解消した。本書は現行working treeへ統合し、Repository横断監査、diff、commitおよびpushの対象とする。
 
 ### 20.3 残存する安全Control
 
-1. `Human OS` のcanonical Sourceは現行Repositoryに存在しない。
-2. `Writing Style OS` のcanonical Sourceは現行Repositoryに存在しない。Draftコピーを現行正本として使用しない。
-3. note制作・公開SOP、SNS媒体別仕様およびStory Candidate管理Sourceは現行Repositoryに存在しない。
+1. note制作・公開SOP、SNS媒体別仕様およびStory Candidate管理Sourceは現行Repositoryに存在しない。
 
-これらは本SOPの正本性を妨げない。ただし、該当Sourceを必読とする案件は、§1.6および§5.5に従い、Sourceを推測で補完せず**HUMAN DECISION REQUIRED**で停止する。未採用Sourceの創設、既存Sourceとの代替関係または公開運用の開始は、本SOPの初回導入範囲外であり、人間判断を必要とする。
+これは本SOPの正本性を妨げない。ただし、該当Sourceを必読とする案件は、§1.6および§5.5に従い、Sourceを推測で補完せず**HUMAN DECISION REQUIRED**で停止する。未採用Sourceの創設、既存Sourceとの代替関係または公開運用の開始は、人間判断を必要とする。
 
 ### 20.4 初回Repository横断監査の結論
 
 | 監査領域 | 判定 | 結論 |
 |---|---|---|
 | Repository Structure | PASS | Repositoryルートのcanonical filenameで配置し、ルート共通運用Sourceとして `REPOSITORY_RULES.md` から到達できる |
-| Responsibility Architecture | PASS | AI Organization、Human-in-the-loop、Repository Rules、Brand、Voice、Educationおよび作業環境の既存責任を移管せず、接続だけを定義した |
-| Source Architecture | PASS | Source Router／Source QA、現行canonical path、Archive除外および未採用Sourceの停止Controlを接続した |
+| Responsibility Architecture | PASS | Human OS、Human-in-the-loop、Writing Style、Voice、Brand、Education、Repositoryおよび作業環境の責任を分離し、接続だけを定義した |
+| Source Architecture | PASS | Source Router／Source QAからHuman OS、Voice OS、Writing Style OS、Brand OSの現行canonical pathへ到達でき、未採用媒体Sourceは停止Controlへ接続した |
 | Version / Status | PASS | v1.0、Current / Operational、Repository配置と専門承認Statusを分離した |
 | Operational Integration | PASS | `AI_ORGANIZATION.md`、`REPOSITORY_RULES.md`、`04_AI_Work_Environment/AI_WORK_ENVIRONMENT.md`、`CHANGELOG.md` から参照可能で、G1／G2の停止条件を実運用に組み込んだ |
 | Change Propagation / Git Readiness | PASS | 関連Source、導線、CHANGELOG、diff自己監査、commit／push／remote確認を同一Integrationで実施する |
 
-**総合判定：PASS。** 未採用のHuman OS、Writing Style OSおよび媒体別Sourceは、未解決の例外として制作を許可するのではなく、設計済みの停止条件として扱う。
+**総合判定：PASS。** 未採用の媒体別Sourceは、未解決の例外として制作を許可するのではなく、設計済みの停止条件として扱う。
 
 ---
 

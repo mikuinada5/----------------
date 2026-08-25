@@ -63,19 +63,27 @@ AIを成果物の種類だけで細分化しない。
 
 一つのAIで責任範囲を安全に扱える間は統合し、専門性・作業量・品質管理上の必要が生じた場合に分割する。
 
-## 2.5 Human-in-the-loop Sourceとの責任境界
+## 2.5 Human OS・Writing Style OSとの責任境界
+
+`05_Human_OS/HUMAN_OS.md` は、稲田みく本人の判断原則、保留条件および未知ケースにおける推論境界を担う。`05_Human_OS/HUMAN_OS_EVIDENCE_LOG.md` は、その判断原則を一次Evidenceへ再追跡するSupporting Evidence Sourceであり、canonical Human OSではない。
+
+`06_Writing_Style_OS/WRITING_STYLE_OS.md` は、稲田みく本人の公開文章・会話文体における構成、リズム、思考の見え方および媒体別強度を担う。
+
+Human OSはHuman-in-the-loopの承認・停止・再承認を、Writing Style OSはVoice OSの個人固有の対話・表出判断、Brand OSの共通表現、媒体別SOPを代替しない。AIは、案件に適用される場合に両SourceをSource RouterおよびSource QAで実読・適用する。
+
+## 2.6 Human-in-the-loop Sourceとの責任境界
 
 人間とAIの協働における承認の有効範囲、自動進行条件、停止条件、再承認条件、エスカレーション、AI間衝突、自己復旧、スコープ管理および完了判断の横断運用は、`03_Human_in_the_Loop/HUMAN_IN_THE_LOOP.md` を参照する。
 
 Human-in-the-loop Sourceは新しいAI組織上の役割・部署・権限を定義するものではない。AI組織の構造、各AIの責任、設計・制作・監査の分離および標準受け渡しは、引き続き本ファイルと各専門Sourceを正とする。
 
-## 2.6 AI作業環境Sourceとの責任境界
+## 2.7 AI作業環境Sourceとの責任境界
 
 Chat、Work、Codex、VS Code、Repository、Git、GitHubおよび外部AI等の作業環境の役割と工程接続は、`04_AI_Work_Environment/AI_WORK_ENVIRONMENT.md` を参照する。
 
 AI作業環境Sourceは新しいAI組織上の役割・部署・権限を定義するものではない。AI組織の構造、各AIの責任、設計・制作・監査の分離および標準受け渡しは、引き続き本ファイルと各専門Sourceを正とする。
 
-## 2.7 AI Production Pipelineとの責任境界
+## 2.8 AI Production Pipelineとの責任境界
 
 `AI_PRODUCTION_PIPELINE.md` は、既存の正式Sourceを案件ごとに選択・実読・適用し、Source QA、Production、Output QA、Repository IntegrationおよびGitまでを接続する共通SOPである。
 
@@ -493,6 +501,8 @@ AIを追加する場合は、まず既存の責任領域へ所属できないか
 - セミナー制作AIによる講座一式制作工程
 - 教材制作・品質保証フロー
 - Aコース主任講師AIによる制作後レビュー工程
+- Human OS（判断原則およびSupporting Evidence）
+- Writing Style OS（公開文章・会話文体）
 - AI Production Pipeline（Source Router／Source QA／Repository Integrationの共通SOP）
 - Repository横断監査（Repository全体へ影響する正式Source変更時）
 
