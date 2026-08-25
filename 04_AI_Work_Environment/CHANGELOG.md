@@ -6,6 +6,30 @@
 
 ------------------------------------------------------------------------
 
+## 2026-08-25｜Inbox自動除去Implementation互換性承認の正式反映
+
+### 概要
+
+Policy Contract `inbox-auto-removal-v1` に対応するQA済みSkill・Helper実装について、人間による互換性承認を正式Sourceへ反映した。
+
+### 承認済みImplementation
+
+- Implementation Contract：`chat-artifact-inbox-auto-removal-v1`
+- implementation identity：`sha256:75a688846e24b29ed475053d47a89f518be4cdb607864a26fa434adbcbe6bf00`
+- identity方式：`sha256-canonical-file-manifest-v1`
+- 旧identity `sha256:fc4f8cc6faacaf6bbf6664d694d2c63a36ada045cf2bd23cceed24f9cc9d5caf` の承認は継承しない。
+
+### QAおよび有効化状態
+
+- Global Emergency StopをAsset overrideから分離し、全Assetへの優先適用、generic clearからの解除禁止、process再起動後の保持およびfail-closedを隔離E2Eで確認した。
+- Inbox回帰31件、auto-removal専用72件およびGlobal Emergency Stop E2E 9件の合格を確認した。
+- `automatic_removal_policy_state` は `Disabled` のまま維持する。
+- Skill runtimeも`Disabled`であり、本承認はEnabled承認、automatic execution permissionまたは実データ削除開始を意味しない。
+
+### 承認状態
+
+**🟢 Implementation互換性承認済み。ただし自動除去制度状態はDisabled**
+
 ## 2026-08-25｜Verified済みInbox重複コピー自動除去制度の正式採用
 
 ### 概要

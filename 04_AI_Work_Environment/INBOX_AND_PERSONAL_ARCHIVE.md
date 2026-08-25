@@ -325,9 +325,9 @@ Inbox自動処理を行う正式Helper runtimeは、PowerShell 7以上とする�
 
 `automatic_removal_policy_contract: inbox-auto-removal-v1`
 
-`automatic_removal_approved_implementation_contract: none`
+`automatic_removal_approved_implementation_contract: chat-artifact-inbox-auto-removal-v1`
 
-`automatic_removal_approved_implementation_identity: none`
+`automatic_removal_approved_implementation_identity: sha256:75a688846e24b29ed475053d47a89f518be4cdb607864a26fa434adbcbe6bf00`
 
 制度状態はDisabledとEnabledを区別し、初期状態はDisabledとする。`none`は、現時点で自動除去を実行できるImplementation Contractまたはimplementation identityが人間承認されていないことを示す。
 
