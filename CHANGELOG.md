@@ -8,6 +8,37 @@
 
 ------------------------------------------------------------------------
 
+## 2026-08-26｜AI Production Pipeline・Repository横断監査の正式運用開始
+
+### 概要
+
+既存の正式Sourceを制作時に確実に選択・実読・適用し、Repository全体へ影響する正式Source変更を構造・責任・参照・運用・Gitまで横断確認する運用を、Repository共通の正式Sourceとして導入した。
+
+### 追加した正式Source
+
+- `AI_PRODUCTION_PIPELINE.md`：Source Router、Source QA、Production、Output QA、人間承認、Repository Integration、Git、Feedbackを接続する共通SOP。
+- `REPOSITORY_CROSS_AUDIT_STANDARD.md`：Repository全体へ影響する正式Source変更の監査領域、Gate、戻り先、Human Decision Required条件およびGit準備を定義する基準。
+
+### 初回監査・修正
+
+- AI Production Pipeline v1.0へRepository横断監査を適用し、Voice OS、Brand OS、Repository RulesおよびRepository working treeのcanonical path・状態を現行Repositoryから再確認した。
+- Voice OSの直接到達不能、Brand OS／Repository Rulesのcanonical Source不明、Repository未接続は解消済みIssueとしてPipelineへ記録した。
+- Human OS、Writing Style OS、note制作・公開SOP、SNS媒体別仕様およびStory Candidate管理Sourceは現行Repositoryにcanonical Sourceがないことを確認した。これらを必読とする案件は、推測で代替せずG1／G2でHuman Decision Requiredとして停止するControlを正式化した。
+
+### 関連Sourceへの接続
+
+- `REPOSITORY_RULES.md` にRepository共通運用Sourceの責任・配置・横断監査の適用開始条件を追加した。
+- `AI_ORGANIZATION.md` にPipelineの工程上の機能担当と既存AI組織上の責任・承認を混同しない境界を追加した。
+- `04_AI_Work_Environment/AI_WORK_ENVIRONMENT.md` にPipelineと横断監査の責任Sourceへの参照を追加した。
+
+### 承認状態
+
+**🟢 AI Production Pipeline v1.0およびRepository横断監査基準を現行正式Sourceとして採用。**
+
+note／SNS等で未採用の必読Sourceを要求するProfileは、当該Sourceの正式採用または人間による代替方針の決定まで開始しない。
+
+------------------------------------------------------------------------
+
 ## 2026-08-25｜Inbox重複コピー自動除去制度の正式Source反映
 
 ### 概要

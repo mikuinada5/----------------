@@ -6,6 +6,28 @@
 
 ------------------------------------------------------------------------
 
+## 2026-08-26｜AI Production Pipeline・Repository横断監査への環境接続
+
+### 概要
+
+Repository共通のAI Production PipelineおよびRepository横断監査基準の正式採用に伴い、作業環境と工程接続の責任境界を参照接続した。
+
+### 変更内容
+
+- `AI_PRODUCTION_PIPELINE.md` を、案件ごとのSource選択、Source QA、Production、Repository IntegrationおよびGitまでを接続する共通SOPとして関連Sourceへ追加した。
+- `REPOSITORY_CROSS_AUDIT_STANDARD.md` を、Repository全体へ影響する正式Source変更時の横断確認基準として関連Sourceへ追加した。
+- AI作業環境Sourceが担うのは各工程の環境接続であり、Source選択基準、監査基準、人間承認またはRepository配置の具体規則を重複定義しないことを明確化した。
+
+### 既存責任への影響
+
+- AI組織上の役割・権限、Human-in-the-loopの承認境界、Repository Rulesの具体運用、Brand、EducationおよびVoiceの専門責任は変更しない。
+
+### 承認状態
+
+**🟢 現行参照構造として採用**
+
+------------------------------------------------------------------------
+
 ## 2026-08-25｜Inbox自動除去Implementation互換性承認の正式反映
 
 ### 概要

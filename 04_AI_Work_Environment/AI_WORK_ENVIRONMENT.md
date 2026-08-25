@@ -63,6 +63,10 @@ Repository上の具体的な配置、ディレクトリ構造、CHANGELOGおよ�
 
 Repository構造、正式配置、Archive、GitおよびCHANGELOGの具体運用は、`REPOSITORY_RULES.md` を正とする。
 
+案件ごとのSource選択、Source QA、Production、Repository IntegrationおよびGitまでの共通SOPは、`AI_PRODUCTION_PIPELINE.md` を正とする。Repository全体へ影響する正式Source変更の横断確認は、`REPOSITORY_CROSS_AUDIT_STANDARD.md` を正とする。
+
+本Sourceは、これらのSOP・監査基準が要求する作業環境の接続を担うが、Source選択基準、監査基準、正式承認またはRepository配置の具体規則を重複定義しない。
+
 ### Brand
 
 Brand固有の思想、理念、表現、ガバナンスおよびAI共創思想は、Brand各正式Sourceを正とする。
@@ -661,15 +665,17 @@ Work稿とRepository差分の採否、編集競合または現在の作業対象
 
 本Sourceを使用するときは、作業内容に応じて次を参照する。
 
-- `AI_ORGANIZATION.md`
-- `03_Human_in_the_Loop/HUMAN_IN_THE_LOOP.md`
-- `REPOSITORY_RULES.md`
-- `04_AI_Work_Environment/INBOX_AND_PERSONAL_ARCHIVE.md`
-- `00_Brand/00_ブランドOS概要・参照ガイド.md`
-- `00_Brand/09_AI共創原則.md`
-- `01_Education/` 配下の適用される正式Source
-- `02_Voice_OS/VOICE_OS.md`
-- 各責任領域の `CHANGELOG.md`
+  - `AI_ORGANIZATION.md`
+  - `AI_PRODUCTION_PIPELINE.md`
+  - `REPOSITORY_CROSS_AUDIT_STANDARD.md`
+  - `03_Human_in_the_Loop/HUMAN_IN_THE_LOOP.md`
+  - `REPOSITORY_RULES.md`
+  - `04_AI_Work_Environment/INBOX_AND_PERSONAL_ARCHIVE.md`
+  - `00_Brand/00_ブランドOS概要・参照ガイド.md`
+  - `00_Brand/09_AI共創原則.md`
+  - `01_Education/` 配下の適用される正式Source
+  - `02_Voice_OS/VOICE_OS.md`
+  - 各責任領域の `CHANGELOG.md`
 
 本Sourceだけを参照して、Brand、Education、Voice、Repositoryまたは個別成果物の内容を決定しない。
 

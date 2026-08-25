@@ -1,0 +1,891 @@
+# AI Production Pipeline v1.0
+
+**Document type:** Standard Operating Procedure（SOP）<br>
+**Status:** Current / Operational v1.0<br>
+**Owner:** 稲田美来<br>
+**Scope:** Story Candidate、教材、note、SNS、運営文書、Brand／Education／AI Organization関連Source、その他AI制作物<br>
+**Purpose:** 既存OS・Sourceを毎回確実に選択・実読・適用し、成果物と新知見を正しい責任単位へ戻すためのAI組織共通運用<br>
+
+---
+
+## 0. このSOPが解決する問題
+
+SourceがRepositoryに存在することと、制作時に利用されたことは同義ではない。
+
+Voice OS未参照事件では、Voice OSが存在していたにもかかわらず、制作前に必読Source、現行Version、実読証跡を保証する工程がなかった。その結果、渡されたSourceの範囲でOutput QAを通せても、入力段階で欠けていた「みくらしさ」を保証できなかった。
+
+本SOPは、Output QAの前に **Source Router** と **Source QA** を置き、次を標準化する。
+
+1. 案件種別から必要なSourceを選ぶ。
+2. 現行正本・Version・依存関係・実読を確認する。
+3. Source QAがPASSするまで制作を開始しない。
+4. Productionは承認済みSourceを成果物へ変換し、未定義事項を独断で補完しない。
+5. Output QAと人間承認を通過したものだけを正式領域へ昇格させる。
+6. 制作中に得た知見を自動でOSへ書き込まず、更新候補として責任Sourceへ戻す。
+
+> **本SOPは新しいOSではない。既存OSを毎回運用するための実行規約である。**
+
+---
+
+## 1. 基本原則
+
+### 1.1 Source存在とSource利用を分ける
+
+「Repositoryにある」「AIが名前を知っている」「過去に読んだ」は参照証跡にならない。
+
+参照済みと認めるには、案件単位の `Source Manifest` に、現行正本、VersionまたはGit commit、読了、適用箇所が記録されていなければならない。
+
+### 1.2 必須参照を満たした後に最小化する
+
+すべての案件で全Sourceを無制限に読むことは標準としない。
+
+正しい順序は、次のとおりとする。
+
+1. 案件種別と責任本籍から必読Sourceを確定する。
+2. 必読Sourceを漏れなく実読する。
+3. その後、責任と関係しないSourceを参照対象から外す。
+
+### 1.3 責任本籍を越えない
+
+| Source／工程 | 担う責任 | 担わない責任 |
+|---|---|---|
+| Human OS（正本が採用済みの場合） | みくの判断原則、価値判断、保留条件 | Voice・文体・Repository仕様の再定義 |
+| Voice OS | 話し方、言葉選び、思考・感情の表出 | note固有の構成、ブランド戦略 |
+| Writing Style OS（正本が採用済みの場合） | 公開文章の文体、構成、リズム | 事業判断、教育内容、正確性の代替 |
+| Brand OS | 事業の理念、世界観、表現・体験・品質の上位原則 | 専門領域の具体手順の代替 |
+| Education Core／Course OS | 教育倫理、教育設計、Course固有判断 | 人格・ブランド・Repository規則の改変 |
+| AI Organization | AIの役割、権限、責任分離、受け渡し | 個別成果物の内容判断そのもの |
+| Repository Rules | 正本、配置、Version、Archive、CHANGELOG、Gitの運用 | 内容の教育的・ブランド的妥当性判断 |
+| Production | 承認済みInputを成果物へ変換 | 上位Sourceの創設・改変、欠落の推測補完 |
+| QA | Input充足とOutput妥当性の検証 | 新しい価値判断の代行 |
+
+### 1.4 人間承認とRepository保存を分ける
+
+Repositoryは承認を生み出す場所ではなく、承認済み正本・版・履歴を保持する場所である。
+
+ファイルがRepository内に置かれたこと、正式らしいファイル名であること、Git管理されていることだけでは承認済みと判定しない。
+
+### 1.5 Feedbackは候補として戻す
+
+制作中の発見は、即時にHuman OS、Voice OS、Writing Style OS、Brand OS等へ書き込まない。
+
+Evidence、AI推論、改善案、単発の好みを分け、責任Sourceの更新候補としてHuman Reviewへ渡す。
+
+### 1.6 未採用Sourceを代替しない
+
+案件種別別Source ProfileがHuman OS、Writing Style OS、媒体別SOPその他の責任Sourceを必読として要求し、現行Repositoryにcanonical Sourceがない場合、その案件はG1またはG2で**HUMAN DECISION REQUIRED**とする。
+
+AIは、似た文書、過去の会話、個人の記憶またはBrand／Voice Sourceによって未採用Sourceを代替しない。これは当該案件の制作可否を保留するControlであり、欠けたSourceの新設・採用を自動的に決定するものではない。
+
+---
+
+## 2. 全体Pipeline
+
+```mermaid
+flowchart TD
+    A["Story Candidate / Request"] --> B["Intake & Work Charter"]
+    B --> C["Source Router"]
+    C --> D["Source QA"]
+    D -->|PASS| E["Production"]
+    D -->|FAIL| C
+    E --> F["Output QA"]
+    F -->|修正| E
+    F -->|PASS| G["Human Approval"]
+    G -->|差戻し| E
+    G -->|承認| H["Repository Integration"]
+    H --> I["Repository QA & Git"]
+    I --> J["Publish / Deploy"]
+    J --> K["Post-Publish Verification"]
+    K --> L["Knowledge Feedback"]
+    L --> A
+```
+
+### 2.1 標準Gate一覧
+
+| Gate | 判定 | PASS条件 | FAIL時の戻り先 |
+|---|---|---|---|
+| G0 Intake Gate | 依頼定義 | 目的・成果物・対象・公開範囲・承認者が確定 | Intake & Work Charter |
+| G1 Routing Gate | Source選択 | 案件種別・責任本籍・必読Source・任意Sourceが確定 | Source Router／Human Decision |
+| G2 Source QA Gate | Input品質 | 現行正本・Version・実読・漏れ・依存・矛盾が解決 | Source Router／Source管理責任者 |
+| G3 Production Completeness Gate | 制作完了 | 指示された成果物一式と参照証跡が揃う | Production |
+| G4 Output QA Gate | 成果物品質 | 内容・Source整合・形式・安全・媒体要件を満たす | Production |
+| G5 Human Approval Gate | 最終判断 | 人間責任者が採用範囲・公開範囲・変更を承認 | Production／Output QA |
+| G6 Repository Integration Gate | 正式配置 | 保存先・波及更新・Version・INDEX・CHANGELOGが整う | Repository Integration |
+| G7 Git Gate | 正式反映 | diff・テスト・追跡対象・commit範囲が妥当 | Repository Integration |
+| G8 Publish Gate | 公開実行 | 公開版が承認版と一致し、チャネル要件を満たす | Publish |
+| G9 Verification Gate | 公開確認 | URL・表示・リンク・画像・公開範囲・日時を確認 | Publish／緊急訂正 |
+| G10 Feedback Gate | 知見回収 | 発見が分類・重複判定・責任先へRouting済み | Knowledge Feedback |
+
+---
+
+## 3. 役割と実行環境
+
+| 役割 | 主責任 | 標準環境 |
+|---|---|---|
+| Human Owner／Approver | 目的、価値判断、Source矛盾、正式採用、公開の最終承認 | Chat／Work |
+| Story Curator | Story Candidateの抽出、重複整理、優先度候補 | Chat／Work |
+| Source Router | 案件種別から責任Sourceを選択 | Work／Codex |
+| Source Auditor | 現行版・実読・依存・漏れ・矛盾を監査 | Work／Codex |
+| Production AI | 承認済みInputから成果物を制作 | Work |
+| Internal QA | Source反映、内容、形式、成果物間整合を監査 | Work |
+| External Reviewer | 内部組織と異なる視点で高リスク成果物を監査 | Claude等、必要時のみ |
+| Repository Integrator | 正式保存先、波及更新、INDEX、CHANGELOG、Versionを処理 | Codex |
+| Git Operator | diff、status、test、commit、push | Codex |
+| Publisher | note、SNS、Web等へ承認版を展開 | 対象媒体 |
+| Feedback Curator | Evidenceと改善候補を分類し、責任Sourceへ戻す | Chat／Work／Codex |
+
+同一AIが複数役割を連続して担当することはできる。ただし、工程の境界と判定記録は分ける。Production AIが「自分で作ったからPASS」と自己認定してはならない。
+
+---
+
+## 4. Phase 0 — Story Candidate / Request Intake
+
+### 4.1 目的
+
+壁打ち、事件、違和感、失敗、発見、依頼を、制作可能な案件単位へ変換する。
+
+### 4.2 責任
+
+- Storyとして残す価値があるかを候補化する。
+- 制作依頼と単なるメモを分ける。
+- 緊急修正、通常制作、Source変更を区別する。
+
+### 4.3 Input
+
+- 会話ログ、Story Candidate、制作依頼
+- 制作中のIncident、公開後の反応
+- 既存Backlog、事業上の優先順位
+
+### 4.4 Output
+
+`Work Charter`：
+
+- Task ID
+- 案件名
+- 目的
+- 成果物種別
+- 対象読者／利用者
+- 公開範囲
+- 成功条件
+- リスク区分
+- 最終承認者
+- 希望期限
+- 関連Story Candidate ID
+
+### 4.5 必読Source
+
+- 案件受付・Story管理に関する現行Source
+- AI Organization関連Source
+- 依頼に明示されたSource
+
+### 4.6 Gate
+
+**PASS:** 目的、成果物、対象、公開範囲、最終承認者が一意に説明できる。<br>
+**FAIL:** 不足項目だけを人間へ確認し、Intakeへ戻る。制作は開始しない。
+
+---
+
+## 5. Phase 1 — Source Router
+
+### 5.1 目的
+
+今回の成果物に必要なSourceを、案件種別・責任本籍・リスクから選択する。
+
+### 5.2 責任
+
+- 必読Sourceと任意参照Sourceを分ける。
+- Sourceの選択理由を示す。
+- Brand OSの入口から必要な責任ファイルへRoutingする。
+- 教育、文体、Repository、公開媒体等の専門Sourceを接続する。
+
+### 5.3 Input
+
+- G0通過済みWork Charter
+- Source Index／Repository Index
+- `AI_ORGANIZATION.md`
+- Repository Rules
+- 既存の案件種別別Source Profile
+
+### 5.4 Output
+
+`Source Plan`：
+
+| 項目 | 記録内容 |
+|---|---|
+| Source名 | canonical filenameまたは責任単位名 |
+| 責任本籍 | Human／Voice／Writing／Brand／Education／Production／Repository等 |
+| Required | 必読／条件付き必読／任意 |
+| 選択理由 | 成果物のどの判断に必要か |
+| 依存先 | 先に読むSource、関連する下位Source |
+| 適用範囲 | 構成、言葉、教育内容、Visual、保存、公開等 |
+| 除外理由 | 関係しそうだが今回は読まないSourceの理由 |
+
+### 5.5 案件種別別Source Profile
+
+| 案件種別 | 必読Source |
+|---|---|
+| note本文 | Human OS、Voice OS、Writing Style OS、Brand OSの該当責任ファイル、記事一次資料、note制作・公開SOP |
+| SNS展開 | 元の承認済み記事、Human OS、Voice OS、Writing Style OS、Brand言語・表現原則、媒体別仕様 |
+| 壁打ち回答・会話文 | Human OS、Voice OS。事業判断を含む場合はBrand OS／専門Sourceを追加 |
+| 教育設計 | Human OS、Brand OS、Education Core、該当Course OS、一次資料、教育設計基準 |
+| 教材制作 | Brand OS、Education Core、Course OS、承認済み教育設計、成果物別制作基準、成果物間整合基準。講師の語りを含む場合はVoice OSを追加 |
+| Visual制作 | Brand Core、世界観・美意識、Visual表現原則、対象成果物の内容Source、媒体仕様 |
+| 規約・医療・法律・金融等 | 責任Source、現行一次資料、専門監修条件。Voice／Writingより正確性と安全を優先 |
+| OS／SOP／AI組織変更 | Human OS、Brand OSのAI共創・ガバナンス、AI Organization、Repository Rules、変更対象Source、依存Source |
+| Repository反映のみ | 承認済み成果物、承認記録、Repository Rules、関連INDEX／CHANGELOG、Git対象ブランチ規則 |
+
+案件種別が未登録なら、AIが類似案件から黙って推測しない。新しいSource Profile案を作り、人間承認後に登録する。
+
+現行Repositoryでは、`Human OS`、`Writing Style OS`、note制作・公開SOPおよび媒体別仕様のcanonical Sourceは未登録である。そのため、それらを必読とするnote本文・SNS展開・壁打ち回答のProfileは、必要Sourceが採用・登録されるまでG1で**HUMAN DECISION REQUIRED**とする。教育制作、OS／SOP／AI組織変更、Repository反映のみのProfileは、現行Repositoryに存在する責任SourceだけでRoutingできる。
+
+### 5.6 Gate
+
+**PASS:** 必読Sourceの責任層に穴がなく、各Sourceの選択理由と適用先が説明できる。<br>
+**FAIL:** Source Routerへ戻る。責任本籍または公開範囲に関する新規判断が必要ならHuman Ownerへ戻す。
+
+---
+
+## 6. Phase 2 — Source QA
+
+### 6.1 目的
+
+Production開始前に、必要なInputが正しく揃い、実際に読まれたことを保証する。
+
+### 6.2 責任
+
+Source QAは、最低限次の6点を保証する。
+
+1. 必読Sourceの存在と到達可能性
+2. 現行正本とArchive／作業版の識別
+3. Version、Status、Git commit等の確認
+4. Source漏れと依存関係の確認
+5. Source同士・依頼との矛盾検知
+6. 担当AIによる実読と適用箇所の証跡
+
+### 6.3 Input
+
+- Work Charter
+- Source Plan
+- Repository上の現行Source
+- Source Index、各領域INDEX、CHANGELOG
+- 必要に応じGit history／tag／commit
+
+### 6.4 Output
+
+`Source Manifest / Source QA Receipt`：
+
+| Field | 内容 |
+|---|---|
+| Task ID | 案件識別子 |
+| Source | canonical filename／path |
+| Repository location | 現行正本の配置 |
+| Status | Current／Draft／Deprecated／Archive等 |
+| Version evidence | 文書Version、Git commit、更新日。ファイル名だけに依存しない |
+| Read by / Read at | 実読した担当と時刻 |
+| Applied to | 成果物のどの判断へ使うか |
+| Dependency check | 依存Sourceの有無と結果 |
+| Conflict check | 矛盾なし／未解決内容 |
+| Result | PASS／FAIL |
+
+### 6.5 Source QAチェックリスト
+
+- [ ] 必読Sourceがすべて一意に解決されている
+- [ ] canonical filenameとRepository pathを確認した
+- [ ] 現行領域とArchiveを混同していない
+- [ ] Statusが制作利用可能である
+- [ ] VersionまたはGit commitを確認した
+- [ ] 必読Sourceを担当AIが今回のTaskで実読した
+- [ ] 適用箇所をSourceごとに記録した
+- [ ] 依存Sourceを確認した
+- [ ] 指示との矛盾がない
+- [ ] Source間の矛盾がない
+- [ ] 欠落をAI推論で補完していない
+- [ ] Voice／Writing／Brandの責任を相互代替していない
+
+### 6.6 強制停止条件
+
+次のいずれかがあれば **FAIL** とし、Productionを開始しない。
+
+- 必読Sourceが未解決、未読、到達不能、存在場所不明
+- 現行版とArchive版を識別できない
+- ファイル名だけで最新版・承認済みと推定している
+- StatusがDraftなのに正式Sourceとして使用しようとしている
+- 必読Sourceが案件種別に対して未定義
+- 依頼とSource、またはSource同士が矛盾する
+- 依存Sourceが欠けている
+- 欠落をAIが常識・記憶・類似資料で補完しようとしている
+- Voice OS等の人格Sourceを使用できる公開範囲が未決定
+
+### 6.7 FAIL時の戻り先
+
+| FAIL原因 | 戻り先 |
+|---|---|
+| Source選択漏れ | Source Router |
+| Version／正本不明 | Repository管理責任者 |
+| Source矛盾 | Human Owner／当該Source責任者 |
+| 新規価値判断 | Human Owner |
+| 到達不能 | 接続・受け渡し復旧。復旧まで制作停止 |
+| Draftしかない | 正式採用工程または利用可否の人間判断 |
+
+---
+
+## 7. Phase 3 — Production
+
+### 7.1 目的
+
+Source QAを通過したInputを、指定された成果物へ忠実に変換する。
+
+### 7.2 責任
+
+- Sourceの意味・責任境界を保持する。
+- 成果物仕様と媒体要件を満たす。
+- 事実、Evidence、推論、創作を区別する。
+- 未定義事項をDecision Logへ隔離する。
+- Sourceの適用結果を追跡可能にする。
+
+### 7.3 Input
+
+- G2 PASS済みSource Manifest
+- Work Charter
+- 承認済み構成・制作指示
+- 成果物別制作基準、媒体仕様
+
+### 7.4 Output
+
+- 成果物Draft
+- Source Application Log
+- Assumption／Decision Log
+- 必要に応じた成果物間対応表
+- 制作中に発見したFeedback Candidate
+
+### 7.5 Production実行規則
+
+1. Production開始時にSource ManifestのTask IDとPASSを確認する。
+2. 構成、内容、Voice、文体、Brand、教育、Visual、Repositoryの各判断を、対応するSourceへ結びつける。
+3. Sourceにない新しい価値判断・教育判断・ブランド判断を追加しない。
+4. Source不足に気づいたら制作を止め、Source QAへ戻す。
+5. Voiceは表面上の口癖追加ではなく、Meaning、Context、Thought Topology、Formality、Responsibilityを通して反映する。
+6. 正確性・安全性・責任情報は、短文化や口語表現より優先する。
+7. 既存内容を更新する場合は、関係のない既存内容を保持する。
+
+### 7.6 Gate
+
+**PASS:** 必要な成果物一式、Source Application Log、未解決事項一覧が揃い、勝手な上位判断がない。<br>
+**FAIL:** Productionへ戻る。Source欠落を発見した場合はSource QAへ戻る。
+
+---
+
+## 8. Phase 4 — Output QA
+
+### 8.1 目的
+
+完成した成果物が、目的、Source、品質、安全、媒体要件を満たすことを保証する。
+
+### 8.2 責任
+
+Output QAは「良い成果物か」だけでなく、「Source QAで保証したInputが実際に反映されたか」を検証する。
+
+### 8.3 Input
+
+- Production成果物
+- Work Charter
+- Source Manifest
+- Source Application Log
+- 成果物別QA基準
+
+### 8.4 Output
+
+- Output QA Report
+- 指摘一覧と重大度
+- 指摘の採否判断
+- 修正版またはPASS判定
+- 必要時、外部監査Package
+
+### 8.5 監査軸
+
+| 軸 | 主な確認 |
+|---|---|
+| Purpose | Work Charterの目的と成功条件を満たすか |
+| Source fidelity | 必読Sourceの意味が反映され、責任越境がないか |
+| Voice／Writing | 表面模倣、Fake Messiness、過剰AI整文がないか |
+| Brand | 理念、言語、体験、Visual、ガバナンスと矛盾しないか |
+| Education | 学習目標、順序、知識、受講者配慮、成果物間整合 |
+| Accuracy／Safety | 事実、出典、医療・法律・金融等の責任情報 |
+| Format | Markdown、PPT、PDF、note、SNS等の仕様 |
+| Traceability | Source、判断、変更、未解決事項を追跡できるか |
+
+### 8.6 外部監査Trigger
+
+以下では、内部QA後に外部監査を原則追加する。
+
+- Education Core、Course OS、Brand OS、Human OS等の上位Source変更
+- 医療・法律・金融・安全に関する高ステークス成果物
+- 教材の教育内容変更
+- 大規模な公開記事、事業方針、販売表現
+- 内部QAで見解が割れた場合
+- 過去Incidentと同型の再発防止を検証する場合
+
+外部監査の指摘は自動採用しない。内部責任者が正式Sourceと照合して採否を判断し、重大な価値判断はHuman Ownerへ戻す。
+
+### 8.7 Gate
+
+**PASS:** Critical／Major指摘が解決し、必読Sourceの反映証跡があり、未解決リスクをHuman Ownerが認識している。<br>
+**FAIL:** Productionへ戻す。Input起因ならSource QAへ戻す。
+
+---
+
+## 9. Phase 5 — Human Approval
+
+### 9.1 目的
+
+AIが代行できない価値判断、公開判断、正式採用判断を人間責任者が確定する。
+
+### 9.2 人間に残す判断
+
+- 新しい成果物種別の必読Source定義
+- Source同士が矛盾した場合の優先順位
+- Voice OS等の人格Sourceを使用・公開してよい範囲
+- Brand／Education／Human OS等の上位Source変更
+- 正式Sourceまたは正式成果物への昇格
+- 外部監査指摘の最終採否
+- 公開、価格、契約、医療・法律・金融等の高ステークス判断
+
+### 9.3 Input
+
+- 最終Draft
+- Source QA Receipt
+- Output QA Report
+- 差分要約
+- 未解決事項・リスク
+- 外部監査結果と採否案
+
+### 9.4 Output
+
+`Approval Record`：承認／条件付き承認／差戻し／却下、承認対象、承認者、日時、条件、公開範囲。
+
+### 9.5 Gate
+
+**PASS:** 承認対象と条件が一意で、Repository昇格と公開の可否が明示されている。<br>
+**FAIL:** ProductionまたはOutput QAへ戻る。
+
+---
+
+## 10. Phase 6 — Repository Integration
+
+### 10.1 目的
+
+人間承認済みの成果物を、正しい責任単位の現行正本としてRepositoryへ統合する。
+
+### 10.2 Repositoryへ昇格するもの
+
+以下は、当該Repository Rulesと人間承認を満たす場合に昇格できる。
+
+- 正式OS、Core、Course OS、SOP、制作基準
+- 承認済み教育設計・実施用成果物
+- 再利用されるAI組織・Repository運用Source
+- 正式運用で保存が定められたQA・承認記録
+- 変更履歴、INDEX、参照ガイド
+- Repositoryを正本とすることが明示された公開成果物
+
+### 10.3 Repositoryへ昇格しないもの
+
+- 壁打ちログ、未整理メモ
+- Source QA未通過のDraft
+- 人間未承認の監査提出版・修正版
+- 一時的な書き出し、比較用コピー
+- AI推論だけのOS更新案
+- 重複した「最終版」「修正版」「提出版」ファイル
+- note／SNS等の公開パッケージで、別の正式アーカイブが正本と定められているもの
+
+作業途中の成果物はWork内に留める。保持価値のある一次Evidenceや公開パッケージは、Repository RulesでRepository正本と明示されていない限り、指定されたArchiveへ保存する。
+
+### 10.4 Integration手順
+
+1. **承認確認**：Approval Recordと承認対象を照合する。
+2. **責任本籍確認**：成果物の責任を持つ既存ディレクトリを特定する。
+3. **保存先決定**：新しい恒久フォルダを安易に作らず、Repository Rulesと既存構造を使用する。
+4. **canonical filename化**：`最終版`、`修正版`、日時、`(1)` 等を正式名へ残さない。
+5. **現行／Archive整理**：旧版の実物を保持する必要がある場合だけArchiveへ移す。Git履歴だけで十分な一時物は重複保存しない。
+6. **本文反映**：承認済み全文を配置し、無関係な既存内容を保持する。
+7. **依存Source更新**：関連OS、参照ガイド、責任境界、リンク、名称変更の波及を確認する。
+8. **INDEX／README更新**：入口、現行正本、参照順、責任本籍を更新する。
+9. **Version更新**：当該Sourceの規則に従う。ファイル名だけでVersionを表現しない。
+10. **CHANGELOG更新**：意味のある変更だけを責任領域のCHANGELOGへ記録する。誤字・整形等は原則Git履歴へ任せる。
+11. **QA記録配置**：Repository保存対象と定めたSource QA、Output QA、Approval Recordを配置する。
+12. **Integration Manifest作成**：追加・更新・移動・Archive・非変更を一覧化する。
+
+### 10.5 Integration Manifest
+
+| 項目 | 記録内容 |
+|---|---|
+| Primary artifact | 正式成果物と保存先 |
+| Related updates | 波及更新したSource |
+| INDEX／README | 更新有無と理由 |
+| CHANGELOG | 更新先と要約、または更新不要理由 |
+| Version | 旧→新 |
+| Archive | 対象と保持理由 |
+| Approval | Approval Recordへの参照 |
+| Excluded files | 昇格させなかった一時物 |
+
+### 10.6 Gate
+
+**PASS:** canonical path、関連Source、INDEX、Version、CHANGELOG、QA記録が整合し、未承認物が現行領域へ混入していない。<br>
+**FAIL:** Repository Integrationへ戻す。新しい責任単位や恒久フォルダが必要ならHuman Ownerへ戻す。
+
+---
+
+## 11. Phase 7 — Repository QA & Git
+
+### 11.1 目的
+
+Repository統合結果をdiffで検証し、承認された変更だけを正式なGit履歴へ反映する。
+
+### 11.2 Input
+
+- Integration済みworking tree
+- Approval Record
+- Integration Manifest
+- Repository Rules
+
+### 11.3 Output
+
+- Repository QA結果
+- git diff／status確認結果
+- test／lint／link check等の結果
+- commit hash
+- push結果
+
+### 11.4 Git手順
+
+1. `git status --short` で変更全体を確認する。
+2. `git diff --check` と対象diffを確認する。
+3. 変更対象がApproval Recordと一致するか確認する。
+4. 関連テスト、Markdown link、生成物整合等を実行する。
+5. 無関係なユーザー変更を含めない。
+6. 人間の承認または明示された正式Workflowに従ってstageする。
+7. 意味のある単位でcommitする。
+8. push前にbranch、remote、commit範囲を確認する。
+9. push後にLocal HEADとremoteを確認する。
+
+RepositoryへのWRITE、stage、commit、pushは別の権限である。WRITEが依頼されても、自動的にcommit／pushまで許可されたとはみなさない。
+
+### 11.5 Gate
+
+**PASS:** diffが承認範囲内、テストPASS、working tree状態が説明可能で、必要なcommit／pushが完了している。<br>
+**FAIL:** Repository Integrationへ戻す。権限・接続・remote不明は停止してHuman Ownerへ報告する。
+
+---
+
+## 12. Phase 8 — Publish / Deploy
+
+### 12.1 目的
+
+承認済み成果物をnote、SNS、Web、配布環境等へ、内容を変質させずに展開する。
+
+### 12.2 責任
+
+- 公開版と承認版の同一性を守る。
+- 媒体固有の整形と内容変更を区別する。
+- 予約日時、公開範囲、画像、リンク、価格、CTAを確認する。
+- チャネル別展開を新しい制作案件として扱うべき場合は、Source Routerへ戻す。
+
+### 12.3 Input
+
+- G5承認済み成果物
+- Git／Repository反映結果または正式アーカイブ正本
+- 公開承認
+- 媒体別仕様
+
+### 12.4 Output
+
+- 公開URL／配布先
+- 公開日時・予約日時
+- Published Artifact Record
+- 媒体上の最終表示確認用Evidence
+
+### 12.5 Gate
+
+**PASS:** 公開版が承認版と一致し、公開範囲・日時・リンク・画像・CTAが正しい。<br>
+**FAIL:** Publishへ戻す。意味が変わる修正はProductionへ戻し、再承認する。
+
+---
+
+## 13. Phase 9 — Post-Publish Verification
+
+### 13.1 目的
+
+公開操作の成功ではなく、利用者が受け取る最終状態を確認する。
+
+### 13.2 確認項目
+
+- URLが有効
+- 公開／限定公開／予約等の状態が正しい
+- タイトル、本文、見出し、画像、リンク、改行が正しい
+- 課金、価格、CTA、申込導線が正しい
+- スマートフォン等の主要表示で重大な崩れがない
+- 公開版と承認版の意味差分がない
+- 必要な公開記録が保存されている
+
+### 13.3 Gate
+
+**PASS:** Published Artifact Recordへ検証結果を追記する。<br>
+**FAIL:** 軽微な媒体崩れはPublishで訂正。意味・責任情報の誤りは公開停止または訂正判断をHuman Ownerへ戻し、Productionから再実行する。
+
+---
+
+## 14. Phase 10 — Knowledge Feedback
+
+### 14.1 目的
+
+制作・監査・公開・反応から得た知見を、次の制作品質を上げる再利用可能な候補へ変換する。
+
+### 14.2 Feedback分類
+
+| 種別 | 例 | 戻し先 |
+|---|---|---|
+| Human OS更新候補 | 判断条件、保留条件、優先順位の新Evidence | Human OS Evidence Queue |
+| Voice OS更新候補 | 感情・親密度・Formalityに応じた表出の新Evidence | Voice OS Evidence Queue |
+| Writing Style OS更新候補 | noteの導入、構成、リズム、締めの再現可能な特徴 | Writing Style Evidence Queue |
+| Brand OS更新候補 | 理念、言語、体験、Visual、ガバナンスの新判断 | 該当Brand OS責任ファイル |
+| Education更新候補 | 学習目標、理解阻害、教材間不整合、実施Evidence | Education Core／Course OS／教材制作基準 |
+| AI Organization改善候補 | Source漏れ、役割衝突、Gate不備、監査負荷 | AI Organization／本SOP |
+| Repository改善候補 | 正本不明、INDEX不足、Version混乱、Archive誤用 | Repository Rules／Repository Backlog |
+| Story Candidate | 違和感→事件→試行錯誤→発見→Before／After | Story Candidate DB |
+| Publication insight | 読者反応、導線、誤読、媒体差 | note／SNS運用Backlog |
+
+### 14.3 Input
+
+- Source QA／Output QA／External Audit記録
+- Production Decision Log
+- Incident、公開後反応、実利用Evidence
+- 人間による修正と理由
+
+### 14.4 Output
+
+`Feedback Candidate`：
+
+- Candidate ID
+- 発生日／Task ID
+- 事実（Evidence）
+- AI推論
+- 人間の明示判断
+- 変更候補
+- 影響するSource
+- 再発／反復性
+- Confidence
+- 重複候補
+- 緊急度
+- 状態（未審査／採用候補／却下／保留／統合済み）
+
+### 14.5 Feedback手順
+
+1. 制作中の発見をFeedback Candidateとして記録する。
+2. Evidence、AI推論、人間判断を分離する。
+3. 既存Candidateと重複判定する。
+4. 一回性の好みか、再現可能な原則かを判定する。
+5. 責任本籍へRoutingする。
+6. Human Ownerが、無視、保留、追加観察、Source更新を判断する。
+7. Source更新を選んだ場合は、新しいTaskとして本PipelineのIntakeへ戻す。
+8. Source QA、Production、Output QA、人間承認、Repository Integration、Gitを省略しない。
+9. 統合後に元Candidateへ採用先とcommitを記録する。
+
+### 14.6 禁止事項
+
+- 単発の修正を自動でOS原則へ昇格しない。
+- AI推論を本人Evidenceとして記録しない。
+- 公開反応の多寡だけでBrand／Human OSを変更しない。
+- Feedback処理のために上位Sourceの承認Gateを省略しない。
+
+### 14.7 Gate
+
+**PASS:** Candidateが分類・重複判定され、責任先と次アクションが決まっている。<br>
+**FAIL:** Feedback Curatorへ戻す。上位Source変更は必ず新規Task化する。
+
+---
+
+## 15. 運用記録の最小セット
+
+案件ごとに、最低限次を残す。
+
+1. Work Charter
+2. Source Plan
+3. Source Manifest / Source QA Receipt
+4. Production成果物とSource Application Log
+5. Output QA Report
+6. Human Approval Record
+7. Integration Manifest
+8. Git record
+9. Published Artifact Record（公開案件のみ）
+10. Feedback Candidates
+
+すべてを別ファイルに分割する必要はない。小規模案件では一つのExecution Recordに統合できる。ただしGateの判定と責任境界は省略しない。
+
+---
+
+## 16. 運用例1 — note記事
+
+### Intake
+
+Story Candidate「Voice OSは存在したのに読まれなかった」を、AI組織のInput QAに関するnote記事へする。
+
+### Source Router
+
+必読：Human OS、Voice OS、Writing Style OS、Brand Core／Brand言語／AI共創原則、AI Organization Analysis、Story一次資料、note制作SOP。
+
+### Source QA
+
+各Sourceの現行正本、Status、Version、実読をManifestへ記録。Voice OSが到達不能ならFAIL。AI Organization Analysisの要約で代替して制作を進めない。
+
+### Production
+
+Storyの事実、試行錯誤、発見、Before／Afterを構成し、Voice OSとWriting Style OSを別の責任として適用する。
+
+### Output QA
+
+史実、Source反映、みくらしさ、Brand整合、読者理解、AI的な過剰整文を監査する。必要時Claude外部監査。
+
+### Human Approval
+
+本文、タイトル、公開範囲、自己開示範囲をみくが承認する。
+
+### Integration／Git
+
+記事本文の正本がRepositoryか公開アーカイブかをRepository Rulesで判定する。Repository正本でない場合は、公開記録・Story DB・関連SOP更新だけをRepositoryへ反映する。
+
+### Publish／Feedback
+
+noteへ公開し、表示確認。制作中に得たSource QA改善をAI Organization改善候補へ、記事化できる派生事件をStory Candidate DBへ戻す。
+
+---
+
+## 17. 運用例2 — 教材制作
+
+### Intake
+
+AコースSessionの承認済み教育設計から、PPT、配布資料、ワーク、進行表を制作する。
+
+### Source Router
+
+必読：Brand OS、主任講師AI Core、A Course OS、承認済み教育設計、一次資料、全コース共通教材制作基準、成果物別基準、成果物間整合基準。講師台本・語りを含む場合はVoice OS。
+
+### Source QA
+
+教育設計のVersion、各制作基準の現行正本、成果物間依存を確認する。Session違い・旧版・監査提出版の混入はFAIL。
+
+### Production／QA
+
+教育内容を追加・削除・順序変更せず成果物へ変換する。個別QA後、成果物間整合を監査し、主任講師／内部監査／外部監査を通す。
+
+### Approval／Integration
+
+みくの最終承認後、承認済みDesign、現行Outputs、Review記録を各責任ディレクトリへ配置し、必要なCHANGELOGとINDEXを更新する。
+
+### Feedback
+
+受講者が理解しにくかった箇所は、即座にCourse OSへ書かず、実施Evidenceとして教育改善候補へ戻す。
+
+---
+
+## 18. 運用例3 — OS／SOP更新
+
+1. IncidentまたはFeedback CandidateをIntakeする。
+2. 変更対象OSだけでなく、Human OS、Brandガバナンス、AI Organization、Repository Rules、依存SourceをRoutingする。
+3. 現行正本と変更権限をSource QAする。
+4. 変更案と影響範囲を作成する。
+5. 内部監査と必要な外部監査を行う。
+6. Human Ownerが正式採用を判断する。
+7. 正本、関連Source、INDEX、CHANGELOG、Versionを一括更新する。
+8. diff確認後にcommit／pushする。
+9. 変更後の実運用で再発防止が機能したかをFeedbackへ戻す。
+
+---
+
+## 19. Voice OS未参照事件の再発防止Control
+
+| 失敗原因 | Control | 検証Evidence |
+|---|---|---|
+| Sourceが存在するだけで参照済みと扱った | Source Manifestで実読を必須化 | Read by／Read at／Applied to |
+| 案件種別別の必読Sourceがなかった | Source Profileを登録 | Router出力 |
+| VoiceとWritingとBrandを代替可能と扱った | 責任境界を分離 | Source Planの適用先 |
+| 最新版をファイル名で推定した | Status、現行path、Version、commitを確認 | Source QA Receipt |
+| Production開始条件がなかった | G2をBlocking Gate化 | PASS記録なしでは開始不可 |
+| Output QAでInput欠落を救おうとした | Source QAとOutput QAを分離 | 2つの独立Report |
+| 制作中の気づきが運用へ戻らなかった | Feedback Candidate→新規Task化 | Candidate IDと統合commit |
+
+---
+
+## 20. Repository初回監査・Evidence整合
+
+### 20.1 現行正本として確認したSource
+
+| Evidence | canonical path・Status evidence | 本SOPへの反映 |
+|---|---|---|
+| Human-in-the-loop | `03_Human_in_the_Loop/HUMAN_IN_THE_LOOP.md`。現行領域にある正式Source | 承認、停止、再承認、完了判断は同Sourceを正とする |
+| AI Organization | `AI_ORGANIZATION.md`。RepositoryルートのAI組織図 | 役割、権限、責任分離、受け渡しは同Sourceを正とする |
+| Repository Rules | `REPOSITORY_RULES.md`。Repositoryルートの共通運用Source | canonical filename、現行とArchive、CHANGELOG、Git運用を同Sourceに従属させる |
+| Brand OS | `00_Brand/00_ブランドOS概要・参照ガイド.md` を入口とし、`00_Brand/01`〜`09` を責任別正本として確認 | Brandを万能Sourceにせず、入口から必要な責任ファイルへRoutingする |
+| Voice OS | `02_Voice_OS/VOICE_OS.md`。`Status: Validated Initial Release` を本文で確認 | 稲田みく本人のVoiceを担う箇所で、Brand・Educationとの責任境界を保って適用する |
+| Education／教材制作 | `01_Education/00_Core/`、各CourseOS、`01_Education/02_Material_Production/` を現行責任領域として確認 | 教育設計、教材制作、成果物間整合および教育QAを各専門Sourceへ委譲する |
+
+### 20.2 解消済みIssue
+
+1. **Voice OSへの直接到達不能**は解消した。現行正本は `02_Voice_OS/VOICE_OS.md` であり、Archiveではない。
+2. **Brand OSのcanonical Source不明**は解消した。`00_Brand/00_ブランドOS概要・参照ガイド.md` が入口であり、責任内容は同ディレクトリの `01`〜`09` に分割された正本である。Archive内の旧 `ブランドOS.md` は現行判断Sourceではない。
+3. **Repository Rulesのcanonical Source不明**は解消した。現行正本はRepositoryルートの `REPOSITORY_RULES.md` である。
+4. **Repository working tree未接続**は解消した。本書は現行working treeへ統合し、Repository横断監査、diff、commitおよびpushの対象とする。
+
+### 20.3 残存する安全Control
+
+1. `Human OS` のcanonical Sourceは現行Repositoryに存在しない。
+2. `Writing Style OS` のcanonical Sourceは現行Repositoryに存在しない。Draftコピーを現行正本として使用しない。
+3. note制作・公開SOP、SNS媒体別仕様およびStory Candidate管理Sourceは現行Repositoryに存在しない。
+
+これらは本SOPの正本性を妨げない。ただし、該当Sourceを必読とする案件は、§1.6および§5.5に従い、Sourceを推測で補完せず**HUMAN DECISION REQUIRED**で停止する。未採用Sourceの創設、既存Sourceとの代替関係または公開運用の開始は、本SOPの初回導入範囲外であり、人間判断を必要とする。
+
+### 20.4 初回Repository横断監査の結論
+
+| 監査領域 | 判定 | 結論 |
+|---|---|---|
+| Repository Structure | PASS | Repositoryルートのcanonical filenameで配置し、ルート共通運用Sourceとして `REPOSITORY_RULES.md` から到達できる |
+| Responsibility Architecture | PASS | AI Organization、Human-in-the-loop、Repository Rules、Brand、Voice、Educationおよび作業環境の既存責任を移管せず、接続だけを定義した |
+| Source Architecture | PASS | Source Router／Source QA、現行canonical path、Archive除外および未採用Sourceの停止Controlを接続した |
+| Version / Status | PASS | v1.0、Current / Operational、Repository配置と専門承認Statusを分離した |
+| Operational Integration | PASS | `AI_ORGANIZATION.md`、`REPOSITORY_RULES.md`、`04_AI_Work_Environment/AI_WORK_ENVIRONMENT.md`、`CHANGELOG.md` から参照可能で、G1／G2の停止条件を実運用に組み込んだ |
+| Change Propagation / Git Readiness | PASS | 関連Source、導線、CHANGELOG、diff自己監査、commit／push／remote確認を同一Integrationで実施する |
+
+**総合判定：PASS。** 未採用のHuman OS、Writing Style OSおよび媒体別Sourceは、未解決の例外として制作を許可するのではなく、設計済みの停止条件として扱う。
+
+---
+
+## 21. 導入手順
+
+本SOPを正式運用へ組み込む際は、次を一回だけ実施する。
+
+1. `AI Production Pipeline v1.0` の責任本籍とcanonical filenameをRepository Rulesに基づいて決定する。
+2. 案件種別別Source Profileの初期セットを人間承認する。
+3. Source Manifest、QA Receipt、Approval Record、Integration Manifestの最小項目を§6、§9、§10および§15に従って案件記録へ実装する。
+4. AI Organization／Repository共通入口へ本SOPの参照を追加する。
+5. Voice OS未参照を含む否定テストを実施し、G2が確実に停止することを確認する。
+6. canonical Sourceが揃っている教育案件とOS／SOP変更案件でpilot運用する。note／SNS案件は、必要なSourceが正式採用されるまで開始しない。
+7. pilot結果をKnowledge Feedbackへ戻し、必要ならv1.1更新Taskを起票する。
+
+---
+
+## 22. 完了条件
+
+このSOPが運用に組み込まれたと判定できるのは、文書がRepositoryに存在した時ではない。
+
+次のすべてが成立した時である。
+
+- [x] 案件種別別Source Profileが登録され、canonical Source未登録の案件はG1／G2で停止する
+- [x] Production開始前にSource Manifestを生成する最小項目が定義されている
+- [x] Source QA PASSなしではProductionを開始できない
+- [x] Voice OSを外した否定テストでPipelineが停止するControlを定義している
+- [x] Output QAがSource反映を検査する
+- [x] 人間承認前の成果物が現行正式領域へ昇格しない
+- [x] Repository IntegrationでINDEX／CHANGELOG／Version／依存Sourceが確認される
+- [x] commit／pushが承認境界に従う
+- [x] 公開後の知見をFeedback Candidateとして回収する
+- [x] OS更新候補を新規Taskとして同じPipelineへ戻す
+
+> **「SOPを作った」で終わらず、「SOPを通らなければ制作が始まらない」状態になって初めて導入完了とする。**

@@ -75,6 +75,14 @@ Chat、Work、Codex、VS Code、Repository、Git、GitHubおよび外部AI等の
 
 AI作業環境Sourceは新しいAI組織上の役割・部署・権限を定義するものではない。AI組織の構造、各AIの責任、設計・制作・監査の分離および標準受け渡しは、引き続き本ファイルと各専門Sourceを正とする。
 
+## 2.7 AI Production Pipelineとの責任境界
+
+`AI_PRODUCTION_PIPELINE.md` は、既存の正式Sourceを案件ごとに選択・実読・適用し、Source QA、Production、Output QA、Repository IntegrationおよびGitまでを接続する共通SOPである。
+
+同SOPに記載するSource Router、Source Auditor、Repository Integrator、Git Operator等は、工程で必要になる**機能上の担当**であり、本ファイルに定義されていない恒久的なAI部署・人事上の役職・新しい承認者を自動的に創設しない。役割、権限、承認および専門判断は、引き続き本ファイル、`03_Human_in_the_Loop/HUMAN_IN_THE_LOOP.md` および各専門Sourceを正とする。
+
+Repository全体へ影響する正式Source変更では、`REPOSITORY_CROSS_AUDIT_STANDARD.md` を適用する。これは既存の教育品質監査、専門QAまたは人間承認を置き換えず、構造・責任・参照・運用接続・Git準備の不足だけを確認する。
+
 ---
 
 # 3. 現在の組織構造
@@ -485,6 +493,8 @@ AIを追加する場合は、まず既存の責任領域へ所属できないか
 - セミナー制作AIによる講座一式制作工程
 - 教材制作・品質保証フロー
 - Aコース主任講師AIによる制作後レビュー工程
+- AI Production Pipeline（Source Router／Source QA／Repository Integrationの共通SOP）
+- Repository横断監査（Repository全体へ影響する正式Source変更時）
 
 Aコース「はじめの一歩講座」において、
 

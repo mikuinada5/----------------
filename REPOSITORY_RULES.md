@@ -90,6 +90,22 @@ CHANGELOGの書式は可能な限り共通化し、記録対象のみを各責�
 
 ------------------------------------------------------------------------
 
+### 2.6 Repository共通の運用Source
+
+Repository全体に共通するAI組織・制作運用・横断監査は、責任ディレクトリを重複新設せず、Repositoryルートの現行正式Sourceとして管理する。
+
+- `AI_ORGANIZATION.md`：AI組織の役割、権限、責任分離および標準受け渡し
+- `AI_PRODUCTION_PIPELINE.md`：既存Sourceを案件ごとに選択・実読・適用し、制作からRepository Integrationまでを接続する共通SOP
+- `REPOSITORY_CROSS_AUDIT_STANDARD.md`：Repository全体へ影響する正式Source変更の構造・責任・Source・運用・Git準備を横断確認する基準
+- `REPOSITORY_RULES.md`：Repository構造、現行／Archive、GitおよびCHANGELOGの具体運用
+- `CHANGELOG.md`：上記を含むRepository全体の意味ある変更履歴
+
+これらはそれぞれの専門責任を代替しない。個別のBrand、Voice、Human-in-the-loop、Education、教材制作、公開その他の判断は、該当する責任Sourceを正とする。
+
+Repository全体へ影響する正式Sourceを新規追加・更新・移動・廃止する場合は、`REPOSITORY_CROSS_AUDIT_STANDARD.md` を適用し、必要な導線・CHANGELOG・Git自己監査まで完了させる。
+
+------------------------------------------------------------------------
+
 ## 3. Brand領域の基本構造
 
 Brand領域は、単一の巨大な仕様書ではなく、責任本籍ごとに分割したBrand OSとして管理する。
