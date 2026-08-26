@@ -1,7 +1,19 @@
 # Section制作台本テンプレート
 
-**Status:** Current / Operational v1.0
+**Status:** Current / Operational v1.2
 **使用先:** 実データ発生後、`01_Sections/<Section-ID>_<短い識別名>/00_Section制作台本.md` として複製して使用する。
+
+## 0. 意味づけ・企画フェーズからの引き継ぎ
+
+このSection制作台本は、Timelineの史実を起点にした意味づけ・企画フェーズで採用された企画の成果物である。意味づけ候補や非採用候補を永続保存する場所ではない。Timelineへ解釈を戻さず、この台本には採用した企画だけを記録する。
+
+| Field | 記録 |
+|---|---|
+| 採用したTimeline史実・一次資料参照 |  |
+| 採用した意味づけ / Series |  |
+| 読者に届ける学び・順番 |  |
+| 企画上の採用判断 |  |
+| 引き継ぐHuman Decision |  |
 
 ## 1. 識別と状態
 
@@ -9,7 +21,7 @@
 |---|---|
 | Section ID / 名称 |  |
 | Owner / 最終承認者 |  |
-| Status | Planning / Production / Review / Approved / Scheduled / Published/Complete / Update Candidate |
+| Status | Planning / Production / Review / Decision Pending / Revision Required / Approved / Scheduled / Published/Complete / Update Candidate |
 | Next / Blocker |  |
 | 対象読者・目的 |  |
 | 公開範囲 |  |
@@ -18,7 +30,7 @@
 
 ## 2. Source Plan / Source QA
 
-PipelineのSource PlanとSource Manifestを参照し、必読Source、現行性、実読、適用箇所、矛盾確認、G2結果を記録する。未解決のSource・価格・自己開示・公開範囲はProductionまたはPublishへ持ち込まない。
+PipelineのSource PlanとSource Manifestを参照し、必読Source、現行性、実読、適用箇所、矛盾確認、G2結果を記録する。G0では、Draftを外部公開しない取扱範囲と最終承認者を記録する。未解決の必読SourceまたはG2 FAILはProductionへ持ち込まない。価格、自己開示範囲、最終的な公開範囲の未決はDraft ProductionとReviewを止めず、Publish前Human Decisionとして記録する。
 
 ## 3. Story Hub
 
@@ -38,15 +50,17 @@ Story Candidateは公開許可ではない。本人以外の個人情報、未�
 
 ## 5. Section完成条件と価格キャリブレーション
 
-Sectionは、全Sessionの3記事がProduction・Output QAを通過し、タイトル、公開範囲、自己開示、公開順、各実践編の価格が人間承認できる状態で `Review` とする。3記事の公開確認と公開成果物記録の更新まで完了して `Published/Complete` とする。公開後の修正候補、反応、価格仮説の見直しは `Update Candidate` とし、既存正本を自動変更しない。
+Sectionは、全Sessionの3記事がProduction・Output QAを通過した時点で `Review` とする。Reviewが完了し、本文、タイトル、公開範囲、自己開示、公開順、各実践編の価格についてPublish前Human Decisionを待つ状態を `Decision Pending` とする。すべてのPublish前Human Decisionが承認され、必要な再ReviewがPASSした時だけ `Approved` とする。3記事の公開確認と公開成果物記録の更新まで完了して `Published/Complete` とする。
+
+Publish前Human Decisionで一部が差し戻された場合は `Revision Required` とする。差し戻し理由、修正対象、所有者、再開条件を§6へ記録し、未変更のDraft、Output QAおよびReview結果は有効なまま保持する。変更が必要な成果物だけを修正し、修正範囲だけを再Reviewして `Decision Pending` へ戻す。公開後の修正候補、反応、価格仮説の見直しは `Update Candidate` とし、既存正本を自動変更しない。
 
 Section 1の全Sessionの実践編Draftが揃った後、各Sessionの実践編価格を単独で固定せず、Section 1内の全実践編を横並びにして、読者価値、深度、重複、無料Hubとの役割、既存商品の導線との整合をキャリブレーションする。AIは価格を決定・変更・設定しない。
 
 ## 6. Production / QA / Approval
 
-| Session ID | G2 Source QA | 3記事のG4 Output QA | 本文・タイトル承認 | 実践編価格承認 | 自己開示承認 | 3記事公開承認 | 次アクション |
-|---|---|---|---|---|---|---|---|
-|  |  |  |  |  |  |  |  |
+| Session ID | G2 Source QA | 3記事Draft / G4 Output QA | Review | 価格 | 自己開示・公開範囲 | 差し戻し対象・修正範囲 | 再Review | Publish承認 | 次アクション |
+|---|---|---|---|---|---|---|---|---|---|
+|  |  |  |  | Pending / Approved / Returned | Pending / Approved / Returned |  | Not Required / Pending / PASS |  |  |
 
 ## 7. 公開後・Feedback
 

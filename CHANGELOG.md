@@ -8,6 +8,73 @@
 
 ------------------------------------------------------------------------
 
+## 2026-08-26｜Production・Review・Publishの状態遷移をNote Productionへ追加
+
+### 概要
+
+Draft Production、Review、Publish前Human Decision、差し戻し、必要最小限の修正・再Review、再承認、Publishを分離し、差し戻し時に未変更成果物を有効なまま保持する状態遷移を正式化した。
+
+### 変更内容
+
+- 価格、自己開示範囲、公開範囲の未決をProductionの停止条件から外し、Publish前Human Decisionに限定した。
+- `Decision Pending`と`Revision Required`をSection・公開成果物の状態として追加した。
+- 差し戻し対象、修正範囲、再Review条件をSection制作台本と公開成果物記録で追跡できるようにした。
+- Note ProductionのSOP、README、全体ロードマップ、Section制作台本、公開成果物記録テンプレートの状態定義を同期した。
+- PipelineのG0では非公開Draftの取扱範囲を確定し、最終的な公開範囲をPublish前Human Decisionとして扱う接続を追加した。
+
+### Status
+
+**I-03修正済み。Repository横断監査およびGit自己監査：I-03対象範囲でPASS。I-01〜I-03統合Repository横断監査：PASS。**
+
+------------------------------------------------------------------------
+
+## 2026-08-26｜意味づけ・企画フェーズをNote Productionへ接続
+
+### 概要
+
+Timelineの史実を直接Sectionへ変換せず、意味づけと企画を経て、採用された企画だけをSection制作台本と全体ロードマップへ渡す責任構造を正式化した。
+
+### 変更内容
+
+- Note Productionの責任フローを、`一次資料 → Timeline → 意味づけ → 企画 → Section制作台本 → 制作`へ更新した。
+- 意味づけ候補と非採用候補は永続管理せず、必要時にTimelineから再生成する方針を明確化した。
+- Section制作台本を、採用された意味づけ・企画の成果物として更新し、全体ロードマップは採用済みSectionだけを扱うようにした。
+- `REPOSITORY_RULES.md` とNote Production READMEの責任・入口導線を同期した。
+
+### 対象外
+
+- Production・Review・Publishの状態遷移（I-03）
+
+### Status
+
+**I-02修正済み。Repository横断監査およびGit自己監査：I-02対象範囲でPASS。**
+
+------------------------------------------------------------------------
+
+## 2026-08-26｜Timelineの一次資料生成・現在地復元をv1.1へ更新
+
+### 概要
+
+Note ProductionのTimelineを、一次資料から必要最小限の史実と参照情報を抽出して生成・更新する史実正本として明確化し、note制作の再開手順へ接続した。
+
+### 変更内容
+
+- `07_Note_Production/01_Timeline.md` の記録項目に、一次資料識別子、一次資料参照位置、抽出日、確認状態および実際の利用状態を追加した。
+- `noteやるよ`を、一次資料の未反映確認、Timelineの生成・更新、既存のロードマップ・Section・公開成果物との照合から開始する手順へ更新した。
+- 原本は原本の保管先に維持し、Timelineは原文を複製しない方針を明確化した。
+- `REPOSITORY_RULES.md` とNote Production READMEを、Timelineの正式な責任とVersionに同期した。
+
+### 対象外
+
+- Timelineから開始する意味づけ・企画フェーズ（I-02）
+- Production・Review・Publishの状態遷移（I-03）
+
+### Status
+
+**I-01修正済み。Repository横断監査およびGit自己監査：I-01対象範囲でPASS。**
+
+------------------------------------------------------------------------
+
 ## 2026-08-26｜Note Production責任領域の正式採用・Pipeline接続
 
 ### 概要

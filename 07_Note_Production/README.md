@@ -1,6 +1,6 @@
 # 07_Note_Production
 
-**Status:** Current / Operational v1.0
+**Status:** Current / Operational v1.3
 **責任:** noteの企画・制作・公開準備・公開後記録およびSession単位のSNS展開を、既存AI Production Pipelineへ接続する媒体別運用
 
 ## この領域の入口
@@ -10,10 +10,10 @@
 | 正本 | 用途 |
 |---|---|
 | `00_note制作・公開システム.md` | noteの制作・公開・再開・復旧を接続するSOP |
-| `01_Timeline.md` | **唯一のTimeline正本**。実際に起きた出来事を時系列で保持 |
-| `02_全体ロードマップ.md` | **全体ロードマップ正本**。Sectionの優先順位・現在地・企画の見通しを管理 |
+| `01_Timeline.md` | **唯一のTimeline正本**。一次資料から抽出した実際の出来事と参照情報を時系列で保持 |
+| `02_全体ロードマップ.md` | **全体ロードマップ正本**。採用済みSectionの優先順位・現在地を管理 |
 | `03_SNS展開基準.md` | Session単位のSNS制作・投稿承認・接続状態 |
-| `10_Section制作台本テンプレート.md` | Section一括Production用のテンプレート |
+| `10_Section制作台本テンプレート.md` | 意味づけ・企画で採用されたSectionの制作台本テンプレート |
 | `11_公開成果物記録テンプレート.md` | 公開済み最終稿と公開事実の記録テンプレート |
 | `CHANGELOG.md` | 本領域の意味ある変更履歴 |
 
@@ -31,7 +31,7 @@
 
 `<Section-ID>` は全体ロードマップで採番する `S01` 形式、`<Session-ID>` は同Section内の `S01-01` 形式とする。日本語の識別名は内容が分かる短いcanonical nameとし、日付・`完成版`・`更新版`・連番をファイル名へ付けない。制作中の稿、未承認の公開情報、認証情報はこれらの正本領域へ保存しない。
 
-Statusは、Section制作台本と全体ロードマップで `Planning`／`Production`／`Review`／`Approved`／`Scheduled`／`Published/Complete`／`Update Candidate` を記録する。公開済み最終稿では `Published`、公開停止または置換済みでは `Superseded` と記録する。`Published` は公開事実であり、上位Sourceの承認を代替しない。公開済み最終稿だけが将来の参照・SNS再展開・Repository還元に用いる記事本文の正本であり、Work稿や下書きを代替正本にしない。
+Statusは、Section制作台本と全体ロードマップで `Planning`／`Production`／`Review`／`Decision Pending`／`Revision Required`／`Approved`／`Scheduled`／`Published/Complete`／`Update Candidate` を記録する。`Decision Pending`と`Revision Required`はPublish前の状態であり、外部公開を意味しない。公開済み最終稿では `Published`、公開停止または置換済みでは `Superseded` と記録する。`Published` は公開事実であり、上位Sourceの承認を代替しない。公開済み最終稿だけが将来の参照・SNS再展開・Repository還元に用いる記事本文の正本であり、Work稿や下書きを代替正本にしない。
 
 実データの作成・更新はProduction／Repository Integrationが担い、公開可否・価格・自己開示はHuman Owner／Approverが担う。配置、Archive、CHANGELOG、Gitは `REPOSITORY_RULES.md` に従う。
 

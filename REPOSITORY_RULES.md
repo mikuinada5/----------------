@@ -275,7 +275,7 @@ Writing Style OSに関する意味のある変更は `06_Writing_Style_OS/CHANGE
 └── CHANGELOG.md
 ```
 
-`01_Timeline.md` は実際に起きた出来事を時系列で保持する唯一の史実Source、`02_全体ロードマップ.md` はSectionレベルの優先順位・現在地を扱う全体ロードマップ正本とする。`00_note制作・公開システム.md` は媒体固有の制作・公開・再開・復旧を定め、Source Router／Source QA／Output QA、Human Approval、Repository横断監査、Gitを再定義せず、該当する既存正式Sourceを呼び出す。
+`01_Timeline.md` は、GPTログ、Codexログ、音声、壁打ち、Git履歴、CHANGELOGその他の一次資料から抽出した実際の出来事と参照情報を時系列で保持する、note制作における唯一の史実Sourceとする。一次資料の原本をTimelineへ全文複製せず、原本と該当箇所へ戻れる参照を保持する。Timelineの史実は、媒体別SOPで定める意味づけ・企画フェーズを経て、採用された企画だけをSection制作台本へ渡す。意味づけ候補・非採用候補はRepositoryの永続成果物とせず、必要時にTimelineから再生成する。`02_全体ロードマップ.md` は、採用済みSectionの優先順位・現在地を扱う全体ロードマップ正本とする。`00_note制作・公開システム.md` は媒体固有の制作・公開・再開・復旧を定め、Source Router／Source QA／Output QA、Human Approval、Repository横断監査、Gitを再定義せず、該当する既存正式Sourceを呼び出す。
 
 新規Sectionや公開記事の実データ用ディレクトリは、実データが生じるまで作らない。実データが生じた場合のcanonical path、命名、Status、現行／Archiveの扱いは `07_Note_Production/README.md` を正とする。1 SessionはStory（無料Hub）・実践編（単品有料）・MS奮闘記（メンバーシップ限定）の3記事を同時配布し、公開済み最終稿の3ファイルだけを将来参照する記事本文の正本とする。Work稿、下書き、SNS短縮稿を代替正本にしない。
 
