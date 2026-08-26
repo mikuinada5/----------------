@@ -408,7 +408,7 @@ SNS、note、リール、LP等の外部発信は、セミナー制作AIとは別
 
 ただし、教育内容をマーケティング上の都合で歪めたり、不安・恐怖・罪悪感等を不適切に利用して販売へ誘導したりしない。
 
-詳細なAI構造は、実際の運用設計時に定義する。
+note制作・公開およびSession単位のSNS展開に固有の運用は、`07_Note_Production/` を正とする。同領域は、既存AI Production PipelineのSource Router／Source QA／Output QA、Human-in-the-loopの承認、Repository／Gitの責任を呼び出すものであり、新しいAI組織上の役職・部署・承認者を作らない。発信制作は既存のProduction、QA、Publisher等の工程上の機能担当を案件に応じて用い、役割・権限は本ファイルと各正式Sourceを正とする。
 
 ---
 
@@ -505,6 +505,7 @@ AIを追加する場合は、まず既存の責任領域へ所属できないか
 - Writing Style OS（公開文章・会話文体）
 - AI Production Pipeline（Source Router／Source QA／Repository Integrationの共通SOP）
 - Repository横断監査（Repository全体へ影響する正式Source変更時）
+- note制作・公開システムおよびSession単位のSNS展開基準（`07_Note_Production/`）
 
 Aコース「はじめの一歩講座」において、
 
@@ -525,7 +526,6 @@ Aコース「はじめの一歩講座」において、
 - Bコース CourseOS・主任講師機能
 - Cコース CourseOS・主任講師機能
 - Research・情報収集機能
-- SNS・note・リール等の発信制作機能
 - LP等のマーケティング制作機能
 - Discord等の運営機能
 - 必要に応じた専門品質監査

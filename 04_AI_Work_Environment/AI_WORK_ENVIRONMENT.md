@@ -259,6 +259,12 @@ Work中に新しい人間判断が必要になった場合に使用する。
 
 Chatで判断確定後、Workが制作・監査を再開し、完成稿をCodexへ渡す。
 
+### note制作・公開の接続
+
+noteの長文制作では、Workを制作・監査の司令塔として使用できる。Workは `07_Note_Production/00_note制作・公開システム.md` と既存Pipelineに従って、対象Section、稿、未解決Decision、Source QA／Output QAの状態をCodexへ渡す。CodexはRepository上の現行Source、canonical path、CHANGELOGおよび差分を確認し、承認候補を正しく配置する。
+
+本文、価格、自己開示、公開範囲、実投稿はHuman Approvalを経る。承認後のGit／Publishは、既存Pipelineと `REPOSITORY_RULES.md` の条件に従う。Work、Codex、本節のいずれも承認・Git・公開の責任を重複定義せず、認証・接続のない外部投稿を完了として扱わない。
+
 ### Codex → Chat → Codex
 
 Repository調査または実装中に、人間判断が必要な未定義事項が判明した場合に使用する。

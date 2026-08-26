@@ -8,6 +8,31 @@
 
 ------------------------------------------------------------------------
 
+## 2026-08-26｜Note Production責任領域の正式採用・Pipeline接続
+
+### 概要
+
+note制作・公開・SNS展開を既存AI Production Pipelineへ接続する正式な責任領域として、`07_Note_Production/` を追加した。
+
+### 追加・接続内容
+
+- 入口README、実際に起きた出来事を時系列で保持する唯一のTimeline正本、全体ロードマップ正本、note制作・公開システム、SNS展開基準、Section制作台本テンプレート、公開成果物記録テンプレート、領域CHANGELOGを現行Sourceとして配置した。
+- Sectionを最上位制作単位とし、1 SessionをStory（無料Hub）・実践編（無料部分に詳細目次を掲示する単品有料）・MS奮闘記（生の声・壁打ち・失敗・感情・制作裏側を扱うメンバーシップ限定）の3記事として同時配布するモデルを定義した。SNS投稿案はSession全体を入口にする別成果物とした。
+- Timelineは史実だけを扱い、Sectionの優先順位・現在地・制作状態・Next／Blockerは全体ロードマップ、Section制作台本、公開成果物記録を正とした。`noteやるよ`、`note記事書いて`、Section完成条件、Section 1後の実践編価格横並びキャリブレーション、3記事それぞれの公開済み最終稿pathを接続した。
+- `AI_PRODUCTION_PIPELINE.md` のnote本文・SNS展開Profile、note運用例、未採用Sourceの残存Controlを、新Source採用済みの状態へ更新した。
+- `AI_ORGANIZATION.md` に、note／SNS制作はセミナー制作と別の責任領域であり、新しいAI役職を創設しない接続を追加した。
+- `04_AI_Work_Environment/AI_WORK_ENVIRONMENT.md` に、Workの制作・監査からCodex、Human Approval、Git／Publishへ接続する媒体別の環境導線を追加した。
+
+### 承認・公開境界
+
+AIはHuman Approval、外部公開、価格、自己開示を代行しない。Instagramの自動化は利用可能な正式投稿／予約手段が確認できる場合に限り、X／Threadsの実投稿はユーザーの「投稿お願い」Gateを要する。接続・認証がない投稿を実施済みと扱わない。
+
+### Status
+
+**🟢 v1.0 / Current / Operational として正式採用。Repository横断監査の対象として接続済み。**
+
+------------------------------------------------------------------------
+
 ## 2026-08-26｜Human OS・Evidence Log・Writing Style OSの正式採用とPipeline接続
 
 ### 概要

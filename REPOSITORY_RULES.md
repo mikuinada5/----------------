@@ -257,6 +257,34 @@ Writing Style OSに関する意味のある変更は `06_Writing_Style_OS/CHANGE
 
 ------------------------------------------------------------------------
 
+## 3.6 Note Production領域の基本構造
+
+`07_Note_Production/` は、noteの企画・制作・公開準備・公開後記録およびSession単位のSNS展開を、既存AI Production Pipelineへ接続する独立したトップレベル責任単位である。
+
+基本構造は以下とする。
+
+``` text
+07_Note_Production/
+├── README.md
+├── 00_note制作・公開システム.md
+├── 01_Timeline.md
+├── 02_全体ロードマップ.md
+├── 03_SNS展開基準.md
+├── 10_Section制作台本テンプレート.md
+├── 11_公開成果物記録テンプレート.md
+└── CHANGELOG.md
+```
+
+`01_Timeline.md` は実際に起きた出来事を時系列で保持する唯一の史実Source、`02_全体ロードマップ.md` はSectionレベルの優先順位・現在地を扱う全体ロードマップ正本とする。`00_note制作・公開システム.md` は媒体固有の制作・公開・再開・復旧を定め、Source Router／Source QA／Output QA、Human Approval、Repository横断監査、Gitを再定義せず、該当する既存正式Sourceを呼び出す。
+
+新規Sectionや公開記事の実データ用ディレクトリは、実データが生じるまで作らない。実データが生じた場合のcanonical path、命名、Status、現行／Archiveの扱いは `07_Note_Production/README.md` を正とする。1 SessionはStory（無料Hub）・実践編（単品有料）・MS奮闘記（メンバーシップ限定）の3記事を同時配布し、公開済み最終稿の3ファイルだけを将来参照する記事本文の正本とする。Work稿、下書き、SNS短縮稿を代替正本にしない。
+
+AIは、人間承認、外部公開、価格、自己開示を代行しない。SNSの接続・認証または正式投稿手段がない場合は、投稿済みと扱わず、未実施状態を記録する。媒体別の制作・実投稿Gateは `03_SNS展開基準.md` を正とする。
+
+Note Production領域に関する意味のある変更は `07_Note_Production/CHANGELOG.md` に記録する。リポジトリ全体の責任構造・配置・参照関係に影響する変更は、あわせてルートの `CHANGELOG.md` に記録する。軽微な変更、現行Source、ArchiveおよびGitの扱いは、本ファイルの共通ルールに従う。
+
+------------------------------------------------------------------------
+
 ## 4. 教育領域の基本構造
 
 教育領域は、全Course共通の教育設計基準、Course固有の教育責任、全Course共通の教材制作責任を分離する。

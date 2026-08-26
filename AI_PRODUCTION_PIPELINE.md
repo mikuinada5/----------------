@@ -224,8 +224,8 @@ flowchart TD
 
 | 案件種別 | 必読Source |
 |---|---|
-| note本文 | `05_Human_OS/HUMAN_OS.md`、`02_Voice_OS/VOICE_OS.md`、`06_Writing_Style_OS/WRITING_STYLE_OS.md`、`00_Brand/00_ブランドOS概要・参照ガイド.md` から選択した該当Brand Source、記事一次資料、note制作・公開SOP |
-| SNS展開 | 元の承認済み記事、`05_Human_OS/HUMAN_OS.md`、`02_Voice_OS/VOICE_OS.md`、`06_Writing_Style_OS/WRITING_STYLE_OS.md`、`00_Brand/04_ブランド言語・表現原則.md`、媒体別仕様 |
+| note本文 | `05_Human_OS/HUMAN_OS.md`、`02_Voice_OS/VOICE_OS.md`、`06_Writing_Style_OS/WRITING_STYLE_OS.md`、`00_Brand/00_ブランドOS概要・参照ガイド.md` から選択した該当Brand Source、記事一次資料、`07_Note_Production/00_note制作・公開システム.md`、対象Sectionの制作台本 |
+| SNS展開 | 元の公開済み最終稿、`05_Human_OS/HUMAN_OS.md`、`02_Voice_OS/VOICE_OS.md`、`06_Writing_Style_OS/WRITING_STYLE_OS.md`、`00_Brand/04_ブランド言語・表現原則.md`、`07_Note_Production/03_SNS展開基準.md`、公開成果物記録 |
 | 壁打ち回答・会話文 | `05_Human_OS/HUMAN_OS.md`、`02_Voice_OS/VOICE_OS.md`。事業判断を含む場合はBrand OS／専門Sourceを追加 |
 | 教育設計 | Human OS、Brand OS、Education Core、該当Course OS、一次資料、教育設計基準 |
 | 教材制作 | Brand OS、Education Core、Course OS、承認済み教育設計、成果物別制作基準、成果物間整合基準。講師の語りを含む場合はVoice OSを追加 |
@@ -236,7 +236,7 @@ flowchart TD
 
 案件種別が未登録なら、AIが類似案件から黙って推測しない。新しいSource Profile案を作り、人間承認後に登録する。
 
-現行Repositoryでは、Human OSとWriting Style OSのcanonical Sourceは上表のpathへ登録済みであり、note本文・SNS展開・壁打ち回答で必読とする。note制作・公開SOP、SNS媒体別仕様およびStory Candidate管理Sourceは未登録であるため、それらを必読とする案件はG1で**HUMAN DECISION REQUIRED**とする。教育制作、OS／SOP／AI組織変更、Repository反映のみのProfileは、現行Repositoryに存在する責任SourceだけでRoutingできる。
+現行Repositoryでは、Human OS、Writing Style OS、note制作・公開SOP、SNS展開基準およびSection内のStory Hub／制作台本がcanonical Sourceとして登録済みであり、note本文・SNS展開・壁打ち回答で必要に応じて必読とする。媒体別のアカウント接続、認証、正式投稿・予約手段、対象アカウントの承認範囲が未登録または到達不能な場合は、`07_Note_Production/03_SNS展開基準.md` に従い、実投稿をせずG1またはG8で**HUMAN DECISION REQUIRED**とする。教育制作、OS／SOP／AI組織変更、Repository反映のみのProfileは、現行Repositoryに存在する責任SourceだけでRoutingできる。
 
 ### 5.6 Gate
 
@@ -650,8 +650,8 @@ RepositoryへのWRITE、stage、commit、pushは別の権限である。WRITEが
 | Education更新候補 | 学習目標、理解阻害、教材間不整合、実施Evidence | Education Core／Course OS／教材制作基準 |
 | AI Organization改善候補 | Source漏れ、役割衝突、Gate不備、監査負荷 | AI Organization／本SOP |
 | Repository改善候補 | 正本不明、INDEX不足、Version混乱、Archive誤用 | Repository Rules／Repository Backlog |
-| Story Candidate | 違和感→事件→試行錯誤→発見→Before／After | Story Candidate DB |
-| Publication insight | 読者反応、導線、誤読、媒体差 | note／SNS運用Backlog |
+| Story Candidate | 違和感→事件→試行錯誤→発見→Before／After | 対象SectionのStory Hub／次SectionのIntake |
+| Publication insight | 読者反応、導線、誤読、媒体差 | `07_Note_Production/` のFeedback Candidate／次Production Task |
 
 ### 14.3 Input
 
@@ -722,7 +722,7 @@ RepositoryへのWRITE、stage、commit、pushは別の権限である。WRITEが
 
 ---
 
-## 16. 運用例1 — note記事
+## 16. 運用例1 — note Session
 
 ### Intake
 
@@ -730,7 +730,7 @@ Story Candidate「Voice OSは存在したのに読まれなかった」を、AI�
 
 ### Source Router
 
-必読：Human OS、Voice OS、Writing Style OS、Brand Core／Brand言語／AI共創原則、`AI_ORGANIZATION.md`、Story一次資料、note制作SOP。
+必読：Human OS、Voice OS、Writing Style OS、Brand Core／Brand言語／AI共創原則、`AI_ORGANIZATION.md`、Story一次資料、`07_Note_Production/00_note制作・公開システム.md`、対象Sectionの制作台本。
 
 ### Source QA
 
@@ -738,23 +738,23 @@ Story Candidate「Voice OSは存在したのに読まれなかった」を、AI�
 
 ### Production
 
-Storyの事実、試行錯誤、発見、Before／Afterを構成し、Voice OSとWriting Style OSを別の責任として適用する。
+対象Sessionで、Story（無料Hub）・実践編（無料部分に詳細目次を掲示する単品有料）・MS奮闘記（生の声・壁打ち・失敗・感情・制作裏側を扱うメンバーシップ限定）の3記事を制作する。3記事は同一Session内の同時配布単位とし、SNS投稿案はSession全体を入口にする別成果物として制作する。Voice OSとWriting Style OSを別の責任として適用する。
 
 ### Output QA
 
-史実、Source反映、みくらしさ、Brand整合、読者理解、AI的な過剰整文を監査する。必要時Claude外部監査。
+3記事の史実、Source反映、みくらしさ、Brand整合、無料／有料／メンバーシップの責任分離、読者理解、AI的な過剰整文を監査する。必要時Claude外部監査。
 
 ### Human Approval
 
-本文、タイトル、公開範囲、自己開示範囲をみくが承認する。
+3記事の本文・タイトル、実践編の価格、公開範囲、自己開示範囲をみくが承認する。
 
 ### Integration／Git
 
-記事本文の正本がRepositoryか公開アーカイブかをRepository Rulesで判定する。Repository正本でない場合は、公開記録・Story DB・関連SOP更新だけをRepositoryへ反映する。
+Story・実践編・MS奮闘記それぞれの公開済み最終稿と公開成果物記録を `07_Note_Production/` のcanonical pathへ配置する。Work稿や下書きを将来参照する正本にせず、価格・自己開示・公開範囲はHuman Approval Recordと照合する。
 
 ### Publish／Feedback
 
-noteへ公開し、表示確認。制作中に得たSource QA改善をAI Organization改善候補へ、記事化できる派生事件をStory Candidate DBへ戻す。
+Human Approval後に同一Session内の3記事をnoteへ同時配布し、表示確認する。Session単位のSNS展開は `07_Note_Production/03_SNS展開基準.md` に従い、接続不能時は未投稿として記録する。制作中に得たSource QA改善をAI Organization改善候補へ、記事化できる派生事件を対象SectionのStory Hubへ戻す。
 
 ---
 
@@ -840,9 +840,9 @@ AコースSessionの承認済み教育設計から、PPT、配布資料、ワー
 
 ### 20.3 残存する安全Control
 
-1. note制作・公開SOP、SNS媒体別仕様およびStory Candidate管理Sourceは現行Repositoryに存在しない。
+1. note制作・公開SOP、SNS展開基準およびSection内のStory Hub／制作台本は `07_Note_Production/` に正式配置済みである。
 
-これは本SOPの正本性を妨げない。ただし、該当Sourceを必読とする案件は、§1.6および§5.5に従い、Sourceを推測で補完せず**HUMAN DECISION REQUIRED**で停止する。未採用Sourceの創設、既存Sourceとの代替関係または公開運用の開始は、人間判断を必要とする。
+これらのSourceは本文・SNS展開の制作責任を接続するが、個別アカウントの認証、正式投稿・予約手段、対象アカウント、投稿権限または包括的な外部操作権限を証明しない。未登録または到達不能な接続は、§1.6および§5.5に従い推測で補完せず、媒体別Gateで**HUMAN DECISION REQUIRED**とする。
 
 ### 20.4 初回Repository横断監査の結論
 
@@ -868,7 +868,7 @@ AコースSessionの承認済み教育設計から、PPT、配布資料、ワー
 3. Source Manifest、QA Receipt、Approval Record、Integration Manifestの最小項目を§6、§9、§10および§15に従って案件記録へ実装する。
 4. AI Organization／Repository共通入口へ本SOPの参照を追加する。
 5. Voice OS未参照を含む否定テストを実施し、G2が確実に停止することを確認する。
-6. canonical Sourceが揃っている教育案件とOS／SOP変更案件でpilot運用する。note／SNS案件は、必要なSourceが正式採用されるまで開始しない。
+6. canonical Sourceが揃っている教育案件、OS／SOP変更案件およびnote／SNS案件でpilot運用する。note／SNSの実投稿は、個別媒体の接続・認証・承認範囲が確認できるまで開始しない。
 7. pilot結果をKnowledge Feedbackへ戻し、必要ならv1.1更新Taskを起票する。
 
 ---
