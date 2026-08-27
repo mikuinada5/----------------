@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.invalid/external-audit/audit-response.schema.json",
+  "title": "External Audit Response",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["audit_status", "summary", "issues", "strengths", "do_not_change"],
+  "properties": {
+    "audit_status": {
+      "enum": ["PASS", "PASS_WITH_MINOR", "REVISE", "HUMAN_DECISION_REQUIRED"]
+    },
+    "summary": { "type": "string", "minLength": 1, "maxLength": 1000 },
+    "issues": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "severity",
+          "category",
+          "location",
+          "problem",
+          "reason",
+          "suggested_fix",
+          "human_decision_required"
+        ],
+        "properties": {
+          "id": { "type": "string", "pattern": "^EXT-[0-9]{3,}$" },
+          "severity": { "enum": ["BLOCKER", "MAJOR", "MINOR", "NOTE"] },
+          "category": {
+            "enum": [
+              "Technical Accuracy",
+              "Beginner Accessibility",
+              "Story-Practice Continuity",
+              "Responsibility Separation",
+              "Evidence Integrity",
+              "Terminology",
+              "Scope Control",
+              "Safety",
+              "Redundancy",
+              "Voice Preservation",
+              "Article Title Fit"
+            ]
+          },
+          "location": { "type": "string", "minLength": 1, "maxLength": 500 },
+          "problem": { "type": "string", "minLength": 1, "maxLength": 3000 },
+          "reason": { "type": "string", "minLength": 1, "maxLength": 3000 },
+          "suggested_fix": { "type": "string", "minLength": 1, "maxLength": 3000 },
+          "human_decision_required": { "type": "boolean" }
+        }
+      }
+    },
+    "strengths": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1, "maxLength": 1000 }
+    },
+    "do_not_change": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1, "maxLength": 1000 }
+    }
+  }
+}

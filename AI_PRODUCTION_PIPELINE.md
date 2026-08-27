@@ -1,7 +1,7 @@
-# AI Production Pipeline v1.0
+# AI Production Pipeline v1.1
 
 **Document type:** Standard Operating Procedure（SOP）<br>
-**Status:** Current / Operational v1.0<br>
+**Status:** Current / Operational v1.1<br>
 **Owner:** 稲田美来<br>
 **Scope:** Story Candidate、教材、note、SNS、運営文書、Brand／Education／AI Organization関連Source、その他AI制作物<br>
 **Purpose:** 既存OS・Sourceを毎回確実に選択・実読・適用し、成果物と新知見を正しい責任単位へ戻すためのAI組織共通運用<br>
@@ -431,6 +431,14 @@ Output QAは「良い成果物か」だけでなく、「Source QAで保証し�
 
 **PASS:** Critical／Major指摘が解決し、必読Sourceの反映証跡があり、未解決リスクをHuman Ownerが認識している。<br>
 **FAIL:** Productionへ戻す。Input起因ならSource QAへ戻す。
+
+### 8.8 External Audit API接続
+
+個別成果物の責任Sourceが外部監査を要求し、内部QAがPASSした場合は、`04_AI_Work_Environment/External_Audit_Pipeline/README.md` を実行契約として使用できる。
+
+PipelineはFinal Candidate、必要最小限の正式Source、Evidence Note、責任境界および変更禁止事項から監査Inputを構築する。Repository全文、無関係なSource、認証情報、個人情報または外部共有未承認資料を機械的に送信しない。
+
+外部AI応答はSchemaとSeverity整合を検証する。BLOCKERまたは `human_decision_required = true` はHuman Decisionへ停止し、MAJOR／MINORで既存Sourceから一意に修正できるものは内部制作側へ戻す。外部AIの提案自体を採用済み修正、承認または正式Sourceとして扱わない。再監査要否は対象PipelineのPolicyを正とする。
 
 ---
 

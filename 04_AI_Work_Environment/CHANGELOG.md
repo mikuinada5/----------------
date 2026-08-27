@@ -6,6 +6,27 @@
 
 ------------------------------------------------------------------------
 
+## 2026-08-28｜External Audit API Pipeline v1.0実装
+
+### 概要
+
+内部監査PASS後のFinal CandidateをClaude等の助言的外部AIへAPI接続し、監査結果を構造化して内部制作側へ戻す再利用可能な実装を追加した。
+
+### 変更内容
+
+- Provider Adapter、Model明示、Timeout、Retry、API Errorの本文非ログ化を実装した。
+- Promptをコードから分離し、Request / Input / Response SchemaとSeverity意味整合を検証するようにした。
+- Repository外Source path、Source範囲超過、内部監査未PASS、外部共有未承認または実行時確認なしをfail-closedとした。
+- BLOCKERまたはHuman Decisionは停止し、MAJOR／MINORは内部制作側へ戻し、初期再監査PolicyをMAJOR修正後とした。
+- PowerShell回帰テスト7件、Section 1 S1-1〜S1-6 PrepareOnly E2EおよびClaude Live E2EをPASSした。
+- 長文監査では接続待ちも明示Timeoutへ統一し、AnthropicのThinking無効化と構造化JSONの最大出力を実行時指定できるようにした。
+
+### 現在状態
+
+**Operational / PrepareOnly E2E PASS / Claude Live E2E PASS（S1-1〜S1-6、BLOCKER・Human Decision 0件）**
+
+------------------------------------------------------------------------
+
 ## 2026-08-26｜Human OS・Writing Style OSの正式Source接続
 
 ### 概要

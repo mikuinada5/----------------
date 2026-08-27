@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.invalid/external-audit/audit-input.schema.json",
+  "title": "External Audit Input",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "series_name",
+    "section_number",
+    "session_number",
+    "article_title",
+    "story",
+    "practice",
+    "session_archive",
+    "evidence_notes",
+    "series_policy",
+    "session_scope",
+    "downstream_boundary",
+    "voice_archive_rules"
+  ],
+  "properties": {
+    "series_name": { "type": "string", "minLength": 1 },
+    "section_number": { "type": "string", "minLength": 1 },
+    "session_number": { "type": "string", "minLength": 1 },
+    "article_title": { "type": "string", "minLength": 1 },
+    "story": { "type": "string", "minLength": 1 },
+    "practice": { "type": "string", "minLength": 1 },
+    "session_archive": { "type": "string", "minLength": 1 },
+    "evidence_notes": { "$ref": "#/$defs/sourceList" },
+    "series_policy": { "$ref": "#/$defs/sourceList" },
+    "session_scope": { "$ref": "#/$defs/sourceList" },
+    "downstream_boundary": { "$ref": "#/$defs/sourceList" },
+    "voice_archive_rules": { "$ref": "#/$defs/sourceList" },
+    "reaudit_context": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["previous_audit", "revision_summary"],
+      "properties": {
+        "previous_audit": { "type": "string", "minLength": 1 },
+        "revision_summary": { "type": "string", "minLength": 1 }
+      }
+    }
+  },
+  "$defs": {
+    "sourceList": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["label", "source_path", "content"],
+        "properties": {
+          "label": { "type": "string", "minLength": 1 },
+          "source_path": { "type": "string", "minLength": 1 },
+          "content": { "type": "string", "minLength": 1 }
+        }
+      }
+    }
+  }
+}

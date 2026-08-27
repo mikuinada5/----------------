@@ -4,6 +4,25 @@
 
 ---
 
+## 2026-08-28｜AI Organization Series External Audit接続をv1.4へ追加
+
+### 概要
+
+Human指摘反映と内部再監査PASS後のFinal Candidateを、Session単位でExternal Audit APIへ渡し、Severityに応じて内部修正、External Re-AuditまたはHuman Decisionへ接続する工程を追加した。
+
+### 変更内容
+
+- Story、Practice、Session Archive、Candidate Title、Evidence Note、Series方針、Session責任範囲、後続境界、Voice / Archiveルールだけを監査Inputへ抽出する。
+- 外部AIへ全文再設計、文体均質化、Historical Evidence補完または正式稿への直接WRITEを許可しない。
+- BLOCKER／Human Decisionだけを停止条件とし、既存Sourceから一意に処理できるMAJOR／MINORは内部制作側へ戻す。
+- MAJOR修正後は原則External Re-Audit、MINORだけなら内部再監査で完了できるPolicyとした。
+
+### 現在状態
+
+**Current / Operational v1.4。PrepareOnly E2EとSection 1 S1-1〜S1-6のClaude Live E2EはPASS。全SessionのMINORを内部照合・必要最小限で反映済み。**
+
+---
+
 ## 2026-08-26｜Production・Review・Publishの状態遷移をv1.3へ更新
 
 ### 概要

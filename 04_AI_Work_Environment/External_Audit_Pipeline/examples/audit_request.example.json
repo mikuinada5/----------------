@@ -1,0 +1,70 @@
+{
+  "series_name": "AI Organization Series",
+  "section_number": "S01",
+  "session_number": "S01-01",
+  "article_title": "Final Candidateの記事タイトル",
+  "internal_audit": {
+    "status": "PASS",
+    "report_ref": "Work上の内部監査記録IDまたはRepository相対path"
+  },
+  "external_sharing": {
+    "approved": false,
+    "approval_ref": "外部送信を許可したApproval Record ID"
+  },
+  "content": {
+    "story": {
+      "path": "path/to/S01-01_story_final_candidate.md",
+      "max_chars": 30000
+    },
+    "practice": {
+      "path": "path/to/S01-01_practice_final_candidate.md",
+      "max_chars": 50000
+    },
+    "session_archive": {
+      "path": "path/to/S01-01_session_archive_final_candidate.md",
+      "max_chars": 50000
+    }
+  },
+  "sources": {
+    "evidence_notes": [
+      {
+        "label": "S01-01確認済みEvidence",
+        "path": "07_Note_Production/01_Sections/AIORG-S01_AI基礎工事/00_Section制作台本.md",
+        "start_marker": "#### Evidence確認済みScene",
+        "end_marker": "####",
+        "max_chars": 12000
+      }
+    ],
+    "series_policy": [
+      {
+        "label": "AI Organization Series Section 1方針",
+        "path": "07_Note_Production/01_Sections/AIORG-S01_AI基礎工事/00_Section制作台本.md",
+        "start_marker": "## 1.",
+        "end_marker": "## 2.",
+        "max_chars": 12000
+      }
+    ],
+    "session_scope": [
+      {
+        "label": "当該Session責任範囲",
+        "path": "path/to/session_scope.md",
+        "max_chars": 10000
+      }
+    ],
+    "downstream_boundary": [
+      {
+        "label": "後続Session・Section境界",
+        "path": "path/to/downstream_boundary.md",
+        "max_chars": 10000
+      }
+    ],
+    "voice_archive_rules": [
+      {
+        "label": "Voice / Archive適用ルール",
+        "path": "path/to/voice_archive_rules.md",
+        "max_chars": 12000
+      }
+    ]
+  },
+  "reaudit_context": null
+}

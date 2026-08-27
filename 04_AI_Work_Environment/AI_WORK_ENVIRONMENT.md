@@ -432,6 +432,14 @@ Repository全体を機械的に渡さない。
 
 単に外部監査へ使用したことだけを理由として、制作・修正・承認またはWRITE権限が付与されたとはみなさない。
 
+### 12.1 External Audit API Pipeline
+
+内部監査PASS後のFinal Candidateを外部AIへAPI接続し、監査結果を構造化して回収する実装は、`04_AI_Work_Environment/External_Audit_Pipeline/README.md` を入口とする。
+
+この実装は本節の責任境界を変更しない。送信前に対象、必要Source、外部共有承認および内部監査PASSを機械確認し、API Keyは環境変数からだけ参照する。監査本文、Evidence、API KeyまたはProvider response本文を運用メタデータログへ保存しない。
+
+Provider Adapterは差し替え可能とし、初期実装はAnthropicとGeminiを扱う。Providerを変更しても、External Auditorの助言的責任、Response Schema、Severity Gate、内部側の採否・修正責任およびHuman Decision停止条件を維持する。
+
 ---
 
 ## 13. 環境間受け渡し

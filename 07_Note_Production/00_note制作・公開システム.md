@@ -1,6 +1,6 @@
-# note制作・公開システム v1.3
+# note制作・公開システム v1.4
 
-**Status:** Current / Operational v1.3
+**Status:** Current / Operational v1.4
 **Scope:** note制作、公開準備、公開後記録、Session単位のSNS展開、Repositoryへの知見還元
 
 ## 1. 責任と非責任
@@ -71,6 +71,12 @@ Timelineが未生成または未更新であることは、史実が存在しな
 5. **Publish / Verification**：すべてのPublish前Human Decisionが承認された版だけを公開し、承認版との一致、URL、表示、リンク、価格、公開範囲、日時を既存PipelineのG8／G9で確認する。
 6. **Record / Resume**：3記事の公開済み最終稿と公開成果物記録をcanonical pathへ配置し、ロードマップまたは制作台本の状態と次アクションを更新する。公開されなかった場合も理由と再開地点を残す。
 7. **Feedback / Repository還元**：反応、誤読、導線、制作上の発見をFeedback Candidateとして分類する。単発反応を自動でOSやSOPへ反映しない。
+
+### 4.1 AI Organization SeriesのExternal Audit
+
+AI Organization Seriesでは、Human指摘反映、内部監査、自動修正、内部再監査PASSを完了した稿をFinal Candidateとし、`04_AI_Work_Environment/External_Audit_Pipeline/README.md` へ渡す。Session単位でStory、Practice、Session Archive、Candidate Title、必要なEvidence Note、Series方針、当該Session責任範囲、後続境界およびVoice / Archiveルールだけを抽出する。
+
+外部監査のBLOCKERまたはHuman Decisionが必要なIssueは停止してChatへ戻す。MAJOR／MINORで既存Sourceから一意に修正できるIssueは内部制作側が採否を照合し、採用する場合だけ必要最小限に修正する。外部AIへ全文再設計、文体均質化、Historical Evidence補完または正式稿への直接WRITEをさせない。MAJOR修正後は原則としてExternal Re-Auditし、MINORだけなら内部再監査で完了できる。
 
 ## 5. 再開状態とエラー復旧
 
