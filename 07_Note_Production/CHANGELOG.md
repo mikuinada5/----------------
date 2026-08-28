@@ -4,6 +4,25 @@
 
 ---
 
+## 2026-08-28｜Work HistoryをTimeline v1.2へ正式反映
+
+### 概要
+
+Personal ArchiveでHuman Review・QA済みのWork History 23イベントを、原本本文を複製せず、一次資料へ戻れるDataset ID、event IDおよびconversation IDとともに唯一の史実正本へ統合した。
+
+### 変更内容
+
+- `01_Timeline.md` をv1.2へ更新し、2025-06-02から2026-08-20までの `WH-001`〜`WH-023` を既存Git史実と重複しない粒度で統合した。
+- 同一出来事をWork HistoryとGitの双方で確認できる行は、一次会話とcommitを一行へまとめ、第二のTimeline正本を作らない構造を維持した。
+- Repository外Archiveのsnapshot、checkpointおよび反映地点は `04_AI_Work_Environment/ARCHIVE_PROVENANCE_INDEX.md`、史実はTimelineという責任分離を追加した。
+- Section 1制作台本の採用史実参照を、日付範囲内の全行ではなく、同Sectionの利用状態が`制作済み`である7史実へ限定した。
+
+### 現在状態
+
+**Current / Operational v1.2。新規追加史実は`未使用`であり、候補化だけで制作済みとは扱わない。**
+
+---
+
 ## 2026-08-28｜Section記事制作仕様 Source QAをv1.6へ反映
 
 ### 概要

@@ -203,6 +203,7 @@ Human-in-the-loop領域に関する意味のある変更は `03_Human_in_the_Loo
 04_AI_Work_Environment/
 ├── AI_WORK_ENVIRONMENT.md
 ├── INBOX_AND_PERSONAL_ARCHIVE.md
+├── ARCHIVE_PROVENANCE_INDEX.md
 ├── External_Audit_Pipeline/
 │   ├── README.md
 │   ├── prompts/
@@ -217,6 +218,8 @@ Human-in-the-loop領域に関する意味のある変更は `03_Human_in_the_Loo
 `AI_WORK_ENVIRONMENT.md` のMissionは、AI組織上の責任を維持したまま、判断、制作、監査、修正、Repository反映および変更管理を適切な作業環境へ接続するための横断原則を定義することである。
 
 `INBOX_AND_PERSONAL_ARCHIVE.md` は、未配属受領物をInboxで受領し、評価、分類、必要な人間判断、正式配属、検証およびClosedまで接続する共通運用と、OneDrive上のPersonal ArchiveにおけるOriginal、ProcessedおよびDerivedの責任境界を定義する専門Sourceである。
+
+`ARCHIVE_PROVENANCE_INDEX.md` は、Repository外に保持する増分型一次資料について、原本識別子、Processed checkpoint、正式Sourceへの反映状態および再追跡経路をRepository側から確認するための運用メタデータ正本である。生ログ、個人資料またはProcessed本文をRepositoryへ複製せず、Personal Archiveそのもの、Inbox Ledger、Timelineまたは各専門Sourceを代替しない。
 
 `External_Audit_Pipeline/` は、内部監査PASS後のFinal Candidateから必要最小限の監査Inputを構築し、助言的外部AIへAPI送信し、応答Schema検証とSeverity Routingを行う再利用可能な自動化実装である。外部AIへ制作、承認またはRepository WRITE責任を付与しない。
 

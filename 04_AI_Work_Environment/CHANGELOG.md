@@ -6,6 +6,25 @@
 
 ------------------------------------------------------------------------
 
+## 2026-08-28｜Repository外Archive provenance indexを正式採用
+
+### 概要
+
+Personal Archiveの生ログをRepositoryへ複製せず、Local / Cloud双方が最終取得地点、前回処理地点、正式Sourceへの反映状態および原本への再追跡経路を確認できる運用メタデータ正本を追加した。
+
+### 変更内容
+
+- `ARCHIVE_PROVENANCE_INDEX.md` にChatGPT Original snapshot、Gemini / Google AI Mode資料、Processed baselineおよびDerived Work HistoryのDataset ID、SHA、件数、checkpointと反映状態を登録した。
+- GPT Archiveの増分取得を、Inbox、Original、Processed、Derived review、Timeline、専門Sourceの順に接続した。
+- `AI_WORK_ENVIRONMENT.md` と `INBOX_AND_PERSONAL_ARCHIVE.md` から同Indexへ到達できる導線を追加した。
+- Original、Processed、Derived、Inbox Ledger、Timelineおよび各専門Sourceの既存責任は変更していない。
+
+### 現在状態
+
+**Current / Operational v1.0。生ログ本文と個人一次資料はRepository外を維持。**
+
+------------------------------------------------------------------------
+
 ## 2026-08-28｜Immediate Execution Ruleの環境接続
 
 ### 概要

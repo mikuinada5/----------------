@@ -8,7 +8,7 @@
 
 | Field | 記録 |
 |---|---|
-| 採用したTimeline史実・一次資料参照 | `01_Timeline.md`の2026-08-07〜2026-08-26の7行。Brand OSと教育設計の確立、AコースProfessional教育設計、教材制作基準の独立、Voice OS・Human-in-the-loop・作業環境の正式採用、Pipeline・note制作領域の正式運用、今回共有されたSeries／Section設計。 |
+| 採用したTimeline史実・一次資料参照 | `01_Timeline.md`のうち利用状態が本Sectionの`制作済み`である7史実。Brand OSと教育設計の確立、AコースProfessional教育設計、教材制作基準の独立、Voice OS・Human-in-the-loop・作業環境の正式採用、Pipeline・note制作領域の正式運用、今回共有されたSeries／Section設計。 |
 | 採用した意味づけ / Series | **AI組織シリーズ**。出発点は「AI組織を作る」ことではない。女性が生涯を通して学び続け、自ら選べる教育を届けるために、「これをやりたい。どうやる？」をAIと反復した史実を扱う。その結果として、目的・判断・制作・復旧を分担できるAI組織が立ち上がった。 |
 | 読者に届ける学び・順番 | S1-1からS1-6の順に、AIへ任せたい仕事候補、AI仕事場、会話からのDecision抽出、MarkdownとRepository、Version／Status、Git履歴管理へ進む。各SessionはStoryで問題を自分事化し、Practiceで実行へ接続する。 |
 | 企画上の採用判断 | Section 1は全6 Sessionとする。各Sessionのnote本編はStory＋Practiceをこの順序で結合した1記事とし、Session Archiveは本編から分離した別コンテンツとして保持する。Story、Practiceおよび確定タイトルは保持し、後発のHuman-approved仕様と不一致が確認されたSession Archiveだけを修正・再監査する。 |

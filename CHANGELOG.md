@@ -8,6 +8,36 @@
 
 ------------------------------------------------------------------------
 
+## 2026-08-28｜Repository外Archive provenanceとTimeline反映経路を正式化
+
+### 概要
+
+Local / Cloudが同じ正式Sourceを参照しながら、Repository外に保持するGPT Archive等の原本へ再追跡できるよう、原本識別子、Processed checkpoint、正式Sourceへの反映状態および増分処理経路をRepository側へ接続した。
+
+### 変更内容
+
+- `04_AI_Work_Environment/ARCHIVE_PROVENANCE_INDEX.md` を追加し、Personal Archive原本、Processed、DerivedおよびRepository正式Sourceの責任境界を維持したまま、ChatGPT Export、外部AI資料、Processed baselineおよびWork Historyの識別情報を登録した。
+- 生ログ、個人一次資料、大容量ArchiveはRepositoryへ移さず、OneDrive Personal Archiveをauthoritative copyとして維持した。
+- Human Review・QA済みWork Historyの `WH-001`〜`WH-023` を、唯一の史実正本 `07_Note_Production/01_Timeline.md` v1.2へ統合した。
+- `REPOSITORY_RULES.md`、AI作業環境Source、Inbox / Personal Archive Source、Note Production READMEおよびSection 1制作台本の参照導線を同期した。
+- GPT Archiveの次回取得を、Inbox受領、Original SHA検証、前回 `processing_state.json` との差分比較、新Processed snapshot、確認済み史実のTimeline反映へ接続した。
+
+### 責任境界
+
+Repositoryへ置くのは運用メタデータと加工・確認済み正式Sourceだけであり、原本本文、センシティブ情報、候補、未承認分析またはcredentialを配置しない。Repository配置、commitまたはpushを、原本の公開許可、正式採用または専門承認の代替にしない。
+
+### Repository横断監査
+
+- Repository Structure：既存 `04_AI_Work_Environment/` と `07_Note_Production/` を使用し、新しいトップレベル責任単位またはArchive複製を追加していない。
+- Responsibility / Source Architecture：原本、Processed、Derived、運用メタデータ、Timelineおよび専門Sourceの責任を分離し、入口から相互に再追跡できる。
+- Version / Status：Archive index v1.0、Timeline v1.2および各CHANGELOGを同期した。
+- Change Propagation：Repository Rules、AI作業環境、Inbox / Personal Archive、Note Production READMEおよび既存Section参照を更新した。AI Organization、Production Pipeline、Human-in-the-loop、Brand、Voice、Educationの責任変更はないため更新不要と判定した。
+- Git Readiness：意図しないバイナリ、原本、credentialまたは機密本文の混入なし。`git diff --check` PASS。
+
+**判定：PASS。Current / Operational。**
+
+------------------------------------------------------------------------
+
 ## 2026-08-28｜Immediate Execution Rule・Human API防止の正式運用接続
 
 ### 概要

@@ -665,6 +665,8 @@ DerivedからProcessed、ProcessedからOriginalへ戻れる参照を維持す�
 
 加工物だけを見ても原本を識別できず、変換条件も確認できない状態を完了としない。
 
+Repository外に保持する増分型一次資料について、Local / Cloud双方から最終取得地点、前回処理地点、正式Sourceへの反映状態および原本への再追跡経路を確認する必要がある場合は、`04_AI_Work_Environment/ARCHIVE_PROVENANCE_INDEX.md` へ必要最小限の運用メタデータを記録する。同Indexへ原本本文、個人情報または秘密情報を複製せず、Personal Archive内のprovenance、Inbox Ledger、Timelineまたは専門Sourceの代替にしない。
+
 ---
 
 ## 15. Inbox Ledger
@@ -1177,6 +1179,7 @@ Voice既存資産は、必要な場合に別タスクで実物を監査し、少
 本Sourceを使用するときは、作業内容に応じて次を参照する。
 
 - `04_AI_Work_Environment/AI_WORK_ENVIRONMENT.md`
+- `04_AI_Work_Environment/ARCHIVE_PROVENANCE_INDEX.md`
 - `03_Human_in_the_Loop/HUMAN_IN_THE_LOOP.md`
 - `REPOSITORY_RULES.md`
 - `AI_ORGANIZATION.md`

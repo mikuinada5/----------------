@@ -1,20 +1,37 @@
 # note Production Timeline
 
-**Status:** Current / Operational v1.1
+**Status:** Current / Operational v1.2
 **Role:** 一次資料から抽出した実際の出来事を時系列で保持する、note制作における唯一の史実Source
 
 ## 運用規則
 
 このファイルは、GPTログ、Codexログ、音声、壁打ち、Git履歴、CHANGELOGその他の一次資料から抽出した実際の出来事と、その参照情報を時系列で保持する。Timelineは、一次資料そのものではなく、note制作における史実の正本である。原本は原本の保管先に保持し、会話全文・音声全文その他の原文をTimelineへ複製しない。
 
+Repository外の増分型一次資料について、原本snapshot、Processed checkpoint、Derivedの確認状態および本Timelineへの反映地点を確認するときは、`04_AI_Work_Environment/ARCHIVE_PROVENANCE_INDEX.md` を入口とする。Timelineは史実を保持し、同Indexは原本へ再追跡するための運用メタデータを保持する。
+
 企画上の予定、Section／Sessionの現在地、制作状態、優先順位、Next、Blocker、公開判断、自己開示判断、Series候補その他の解釈は扱わない。これらは `02_全体ロードマップ.md`、Section制作台本、公開成果物記録またはそれぞれの責任Sourceを正とする。本文、公開URL、詳細な承認記録、SNS本文はそれぞれの実データ正本へ置く。
 
 | 発生日 / 時期 | 抽出した史実 | 一次資料識別子 | 一次資料参照位置 | 抽出日 | 確認状態 | 利用状態 | 使用先Section / Session | 最終更新日 |
 |---|---|---|---|---|---|---|---|---|
-| 2026-08-07 | ブランドOS初版が完成した。 | Git commit `4f12008` | commit subject: `Ver1.0 ブランドOS初版完成` | 2026-08-26 | 確認済み | 制作済み | AIORG-S01 / Story Hub | 2026-08-26 |
-| 2026-08-07 | 主任講師AIの教育思想、教育設計原則、感情設計、問い設計が確立された。 | Git commit `b5bf181` | commit subject: `主任講師AIの教育思想を確立（概要・教育設計原則・感情設計・問い設計）` | 2026-08-26 | 確認済み | 制作済み | AIORG-S01 / S01-01 | 2026-08-26 |
-| 2026-08-12〜13 | AコースProfessional Session 1の承認済み教育設計が追加され、Professional教育設計完了が更新ログに記録された。 | Git commits `9ce5dea`, `d11243d` | respective commit subjects | 2026-08-26 | 確認済み | 制作済み | AIORG-S01 / S01-02 | 2026-08-26 |
-| 2026-08-20 | 全コース共通教材制作基準が、独立した責任単位へ配置された。 | Git commit `f85657e` | commit subject: `refactor: 全コース共通教材制作基準を独立責任単位へ配置` | 2026-08-26 | 確認済み | 制作済み | AIORG-S01 / S01-02 | 2026-08-26 |
+| 2025-06-02 | 投資信託教育の価値を確信する一方、「投資信託」という語で警戒され、価値の伝え方に困っていることを相談した。 | Archive dataset `PA-WORK-HISTORY-20260822` / `WH-001` | `work_history_events.jsonl` event `WH-001`; conversation `683cf3e0-09f4-8007-9496-9cbdd750ae02` | 2026-08-22 | 確認済み | 未使用 | — | 2026-08-28 |
+| 2025-07-30 | 金融教育を、投資信託を前面に出すのではなく「自分でお金の置き場所を考える力」を育てるものとして定義した。 | Archive dataset `PA-WORK-HISTORY-20260822` / `WH-002` | `work_history_events.jsonl` event `WH-002`; conversation `688a1592-12f8-8007-977e-7dd26eafeb4d` | 2026-08-22 | 確認済み | 未使用 | — | 2026-08-28 |
+| 2025-09-22 | 性教育を「自分を大切にする」、金融教育を「自分と大切な人を守る」仕事として並列に言語化し、講師コミュニティ構想も提示した。 | Archive dataset `PA-WORK-HISTORY-20260822` / `WH-003` | `work_history_events.jsonl` event `WH-003`; conversation `68d0c233-b62c-8333-8a8e-0b76b9c92f92` | 2026-08-22 | 確認済み | 未使用 | — | 2026-08-28 |
+| 2026-03-03〜05-18 | 「自分を大切にする」を統合軸として、性教育と投資信託教育を組み合わせた子育て世代向け講座を具体化し、Gemini用スライド指示へ受け渡した。 | Archive dataset `PA-WORK-HISTORY-20260822` / `WH-004` | `work_history_events.jsonl` event `WH-004`; conversation `69a687be-a9dc-8320-8564-6c790210329b` | 2026-08-22 | 確認済み | 未使用 | — | 2026-08-28 |
+| 2026-06-22〜23 | 包括的性教育の個別相談と講演について、価格、肩書および申込導線を指定し、サービス案内用チラシを制作した。 | Archive dataset `PA-WORK-HISTORY-20260822` / `WH-005` | `work_history_events.jsonl` event `WH-005`; conversation `6a3946cf-5440-83ee-a523-8840d0575d59` | 2026-08-22 | 確認済み | 未使用 | — | 2026-08-28 |
+| 2026-08-06以前（絶対日時未特定） | Geminiで三講座、Discord、決済、継続コミュニティおよび講師養成を含む女性向け生涯学習サロン構想を形成し、他AIへの引き継ぎ用途を明示した事業・契約・決済設計仕様書を生成した。 | Archive dataset `PA-WORK-HISTORY-20260822` / `WH-006`, `WH-007` | `work_history_events.jsonl` events `WH-006`〜`WH-007`; source `external:gemini:なごみdays ビジネス設定と応援` | 2026-08-22 | 確認済み（絶対日時は未特定） | 未使用 | — | 2026-08-28 |
+| 2026-08-06 | Geminiで生成した仕様書を一部編集してChatGPTへ投入し、事業レビューとフロント展開を開始した。 | Archive dataset `PA-WORK-HISTORY-20260822` / `WH-008` | `work_history_events.jsonl` event `WH-008`; conversation `6a7426b0-2228-83ee-a619-a4f478b336bb` | 2026-08-22 | 確認済み | 未使用 | — | 2026-08-28 |
+| 2026-08-06〜07 | 自由発想の壁打ちと正式基準を分離し、Brand OSを判断・制作の最上位基準として設計し、ブランドOS初版を完成した。 | Archive dataset `PA-WORK-HISTORY-20260822` / `WH-009`; Git commit `4f12008` | event `WH-009`; conversations `6a745b42-e76c-83ee-9a2a-d4bb354342a4`, `6a754fd8-f3e8-83ee-91c0-808b3cced49a`; commit subject `Ver1.0 ブランドOS初版完成` | 2026-08-22 / 2026-08-26 | 確認済み | 制作済み | AIORG-S01 / Story Hub | 2026-08-28 |
+| 2026-08-07〜10 | 一言で講座一式を作る主任講師AI／Course AIを構想し、本人の壁打ちを責任別仕様書群へ変換した。主任講師AIの教育思想、教育設計原則、感情設計および問い設計が確立された。 | Archive dataset `PA-WORK-HISTORY-20260822` / `WH-010`, `WH-012`; Git commit `b5bf181` | events `WH-010`, `WH-012`; conversations `6a755036-42c8-83e8-9fa5-fe3e1d86c2c2`, `6a758d50-68c4-83ee-8124-086e5c3a60f6`, `6a759b38-73b0-83e8-879a-656fcabed61a`, `6a789fd1-c084-83ee-822e-f8b5c469d49b`; commit subject `主任講師AIの教育思想を確立（概要・教育設計原則・感情設計・問い設計）` | 2026-08-22 / 2026-08-26 | 確認済み | 制作済み | AIORG-S01 / S01-01 | 2026-08-28 |
+| 2026-08-07 | 役割、Input / Outputおよび責任によってAIを分けるAI組織設計を開始し、組織図、階層、参照、制作、レビューおよびGitの関係を設計対象とした。 | Archive dataset `PA-WORK-HISTORY-20260822` / `WH-011` | `work_history_events.jsonl` event `WH-011`; conversation `6a7590be-c5b8-83e8-9449-4f332710d7ed` | 2026-08-22 | 確認済み | 未使用 | — | 2026-08-28 |
+| 2026-08-10〜13 | 教育責任と制作責任を分離し、フロント講座で教育設計、制作、条件付き承認、修正、再レビューを実施した。その後、AコースProfessionalを全6回のマスター教育設計と各Session設計へ展開した。 | Archive dataset `PA-WORK-HISTORY-20260822` / `WH-013`, `WH-014`; Git commits `9ce5dea`, `d11243d` | events `WH-013`, `WH-014`; conversations `6a792abf-e3b0-83e8-b53b-452ca2fc4e9d`, `6a79428e-74d0-83ee-8c85-c5196935e411`, `6a789fd1-c084-83ee-822e-f8b5c469d49b`, `6a7a29e1-3968-83e8-9b76-6d8a62b5ddce`; respective commit subjects | 2026-08-22 / 2026-08-26 | 確認済み | 制作済み | AIORG-S01 / S01-02 | 2026-08-28 |
+| 2026-08-13〜20 | 「資料を作らせる」から「制作実務を再現可能にAIへ委譲する」へ目的を定め、全コース共通教材制作基準を設計し、多段QAを経て独立責任単位へ配置した。 | Archive dataset `PA-WORK-HISTORY-20260822` / `WH-015`, `WH-020`; Git commit `f85657e` | events `WH-015`, `WH-020`; conversations `6a7cf7f6-b948-83ee-81ef-387195cae908`, `6a818344-4b40-83e8-a977-743a4e6adb68`, `6a82d5a7-534c-83e8-9362-09017d02384d`, `6a849086-a644-83ee-b675-cd30ec614b40`, `6a852af3-7484-83e8-825e-1eb53343add8`; commit subject `refactor: 全コース共通教材制作基準を独立責任単位へ配置` | 2026-08-22 / 2026-08-26 | 確認済み | 制作済み | AIORG-S01 / S01-02 | 2026-08-28 |
+| 2026-08-13 | 完成物だけでなく、困りごと、失敗、混乱および考えの変化を一次資料化する専用会話を開始した。 | Archive dataset `PA-WORK-HISTORY-20260822` / `WH-016` | `work_history_events.jsonl` event `WH-016`; conversation `6a7d9ff4-e3b0-83ea-a3c2-641d0556db62` | 2026-08-22 | 確認済み | 未使用 | — | 2026-08-28 |
+| 2026-08-15〜20 | X Archive等の本人一次資料から、本人なら言う／言わない境界まで検証してVoice OSを構築した。 | Archive dataset `PA-WORK-HISTORY-20260822` / `WH-017` | `work_history_events.jsonl` event `WH-017`; conversation `6a805ac8-01b0-83e8-bd17-1d94013adb46` | 2026-08-22 | 確認済み | 未使用 | — | 2026-08-28 |
+| 2026-08-16 | 人生史と仕事の思想を接続する際、過去を一貫した成功物語へ加工せず、事実と現時点の仮説を分ける条件を設定した。 | Archive dataset `PA-WORK-HISTORY-20260822` / `WH-018` | `work_history_events.jsonl` event `WH-018`; conversation `6a817a27-9f64-83e8-bf35-456cce6bab6c` | 2026-08-22 | 確認済み | 未使用 | — | 2026-08-28 |
+| 2026-08-16〜19 | 「やりたいこと」と「今やること」を分け、現在地、優先順位、依存関係、状態および次行動を一元管理するタスク管理を導入した。Markdown増加とアップロード上限からGit連携の必要性も顕在化した。 | Archive dataset `PA-WORK-HISTORY-20260822` / `WH-019` | `work_history_events.jsonl` event `WH-019`; conversation `6a817c0b-fb24-83e8-af05-d01c435ce236` | 2026-08-22 | 確認済み | 未使用 | — | 2026-08-28 |
+| 2026-08-19 | 講師セルフチェック制作基準から、講師育成・評価制度を別責任の設計Taskとして分離した。 | Archive dataset `PA-WORK-HISTORY-20260822` / `WH-021` | `work_history_events.jsonl` event `WH-021`; conversation `6a8490be-4990-83e8-956f-04fd18d45562` | 2026-08-22 | 確認済み | 未使用 | — | 2026-08-28 |
+| 2026-08-19〜20 | 増加したMarkdown群をRepositoryの責任構造、正式版および参照順へ整理した。後日、構造理解により指示系統が見え、作業感覚が変わったと本人が回顧した。 | Archive dataset `PA-WORK-HISTORY-20260822` / `WH-022` | `work_history_events.jsonl` event `WH-022`; conversations `6a8564d3-3764-83e8-98d5-8720cb74604e`, `6a86c299-b200-83e9-bbb9-d5e81d73a66e` | 2026-08-22 | 確認済み（構造整理は同時点Evidence、作業感覚は後日回顧） | 未使用 | — | 2026-08-28 |
+| 2026-08-20 | AIを「相談相手」から「仕事の仕組み」へ捉え直した経緯と、人間は頭の中を出すこと・重要判断、AIは既存情報の整理・照合・機械的受け渡しを担う役割分担を本人が回顧した。 | Archive dataset `PA-WORK-HISTORY-20260822` / `WH-023` | `work_history_events.jsonl` event `WH-023`; conversation `6a86c299-b200-83e9-bbb9-d5e81d73a66e` | 2026-08-22 | 確認済み（後日回顧） | 未使用 | — | 2026-08-28 |
 | 2026-08-22〜23 | 分割Brand OS、Voice OS、Human-in-the-loop運用原則、AI作業環境・工程接続原則が正式採用された。 | Git commits `3035621`, `4c70f1e`, `6f121d1`, `88546d8` | respective commit subjects | 2026-08-26 | 確認済み | 制作済み | AIORG-S01 / S01-03 | 2026-08-26 |
 | 2026-08-26 | AI Production PipelineとRepository横断監査、Human OSとWriting Style OSの正式運用接続、note制作・公開・SNS展開の正式運用領域が順に追加された。 | Git commits `22ebeb6`, `c629759`, `88136c0`, `080a572` | respective commit subjects | 2026-08-26 | 確認済み | 制作済み | AIORG-S01 / S01-04、S01-05 | 2026-08-26 |
 | 2026-08-26 | AI組織シリーズのSectionは技術分類ではなく「実現したい仕組み（プロジェクト）」であり、AI組織シリーズは「これをやりたい」からAIとの反復を経て結果としてAI組織になった物語として扱う、という設計が共有された。 | Codex Work `AI組織シリーズ制作｜正式運用開始` | 本Workのユーザー指示「今回壁打ちで新たに判明した設計」「AI組織シリーズの基本思想」 | 2026-08-26 | 確認済み | 制作済み | AIORG-S01 / Section設計 | 2026-08-26 |
@@ -24,6 +41,7 @@
 
 - 事実と推論を分ける。一次資料から確認できる出来事だけを「抽出した史実」に記録し、制作案、意味づけ、予定を混在させない。
 - `一次資料識別子`は原本を一意に特定し、`一次資料参照位置`は会話日・スレッド・発言範囲・録音位置・コミットまたはCHANGELOG節など、原本内の該当箇所へ戻れる情報を記録する。
+- Repository外の一次資料を使用する場合は、`ARCHIVE_PROVENANCE_INDEX.md` のDataset IDと、Derived内のevent ID、conversation ID、message IDその他の該当位置を組み合わせて記録する。Dataset IDだけで原本内の該当箇所を省略しない。
 - `確認状態`は、少なくとも`確認済み`または`要確認`を記録する。`要確認`の行を、確認済みの史実または制作入力として扱わない。
 - `利用状態`は、`未使用`または公開済み／制作済み成果物へ実際に用いた事実を記録する。候補化だけでは使用済みにしない。保留、公開判断、自己開示、Series候補その他の企画・解釈上の状態は記録しない。
 - Timelineが未生成または未更新であることを、史実が存在しない根拠にしない。利用可能な一次資料を確認してから、生成・更新の可否を判断する。

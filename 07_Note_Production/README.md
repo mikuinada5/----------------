@@ -10,7 +10,7 @@
 | 正本 | 用途 |
 |---|---|
 | `00_note制作・公開システム.md` | noteの制作・公開・再開・復旧を接続するSOP |
-| `01_Timeline.md` | **唯一のTimeline正本**。一次資料から抽出した実際の出来事と参照情報を時系列で保持 |
+| `01_Timeline.md` | **唯一のTimeline正本**。一次資料から抽出した実際の出来事と参照情報を時系列で保持。Repository外Archiveのdataset / checkpointは `04_AI_Work_Environment/ARCHIVE_PROVENANCE_INDEX.md` から再追跡 |
 | `02_全体ロードマップ.md` | **全体ロードマップ正本**。採用済みSectionの優先順位・現在地を管理 |
 | `03_SNS展開基準.md` | Session単位のSNS制作・投稿承認・接続状態 |
 | `10_Section制作台本テンプレート.md` | 意味づけ・企画で採用されたSectionの制作台本テンプレート |
