@@ -6,6 +6,22 @@
 
 ------------------------------------------------------------------------
 
+## 2026-08-29｜Source RetrievalとProduction Completionを分離
+
+### 概要
+
+AIORG-S01のスマホWork Cloud Source Retrieval E2E `PASS`を正式記録し、Sourceへ到達できる状態と成果物を最終完成できる状態を別判定にした。
+
+### 変更内容
+
+- `EXTERNAL_REFERENCE_REGISTRY.md`をv1.4、`ARCHIVE_PROVENANCE_INDEX.md`をv1.3へ更新した。
+- 最新Human Decisionと実機結果の原本をRegistry ID `EXT-CODEX-AIORG-PRACTICE-E2E`で追跡可能にした。
+- Private Repository最終HEAD `4c2ea252fa7a78d99ab22c27fe9b8ac0e7975ffa`と、S1-2〜S1-6 Practiceの`Redesign Required`を同期した。
+- `AI_WORK_ENVIRONMENT.md`へSource Retrieval ReadinessとProduction Completion Readinessの責任境界を追加した。
+- PublicへPrivate本文、credential、生ログまたは機微情報を追加していない。
+
+------------------------------------------------------------------------
+
 ## 2026-08-29｜Private SourceとWork Cloudの接続責任を追加
 
 ### 概要

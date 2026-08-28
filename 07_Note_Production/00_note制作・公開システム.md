@@ -1,6 +1,6 @@
-# note制作・公開システム v1.6
+# note制作・公開システム v1.7
 
-**Status:** Current / Operational v1.6
+**Status:** Current / Operational v1.7
 **Scope:** note制作、公開準備、公開後記録、Session単位のSNS展開、Repositoryへの知見還元
 
 ## 1. 責任と非責任
@@ -39,7 +39,7 @@ AIはHuman Approval、外部公開、価格、自己開示の採否を代行し�
 - 各Sessionのnote本編は、同一SessionのStory＋Practiceをこの順序で結合した1記事とする。
 - Session Archiveはnote本編へ混ぜず、別コンテンツとして保持する。
 - Session Archiveの具体的な公開範囲、Membershipでの扱い、自己開示範囲は別途Human Decisionとし、未決のまま自動公開しない。
-- note本編とSession Archiveの本文・確定タイトルは、Human Final Check完了済みFinal Candidateを起点とする。後から確認されたHuman-approved仕様との不一致がある場合は該当部分だけを`Revision Required`とし、矛盾しない既存本文・タイトル・Human Review結果は保持する。AIが無関係な箇所を再設計しない。
+- Story本文と確定タイトルはHuman Final Check完了済みFinal Candidateを起点とし、S1-1 Practiceの既存Statusは継続する。S1-2〜S1-6 Practiceの現行本文は`Human Review Draft / 再設計baseline / Redesign Required / Final未確定`として保持し、作業マニュアルへ再設計する。Session Archiveは同Final CandidateをHuman-approved baselineとし、後発仕様との不一致箇所だけを`Revision Required`とする。対象外の本文・タイトル・Human Review結果を変更しない。
 - 価格、公開日時および外部公開は別Gateとし、下書き保存または公開準備だけでは決定・実行しない。
 
 ### 2.2 Section記事制作仕様
@@ -69,7 +69,7 @@ Storyは、読者をSessionの問題へ招き入れ、自分事化からPractice
 
 #### 2.2.2 Practice
 
-Practiceは、読者が実際に手を動かし、Session Goalへ到達するための商品上の実装パートである。StoryやSession Archiveのように会話へ崩しすぎず、初心者がその記事だけを見て実行できる、整理された文章を優先する。
+Practiceは、読者が記事を横に置いて実際に手を動かし、Session Goalの環境・成果物を完成させるための商品上の作業マニュアルである。StoryやSession Archiveのように会話へ崩しすぎず、初心者がその記事だけを見て完遂できる、整理された文章を優先する。価値は文字数、情報量または高度機能ではなく、初心者の完遂率で判定する。
 
 基本構造は、**Goal → 最初に覚える言葉 → Step → AIへの依頼例 → 出力テンプレート → 完成例 → Completion Check**とする。実行結果や使用環境によって進み方が変わる場合は分岐を示し、つまずきが予想される箇所にはTroubleshootingを置く。
 
@@ -77,17 +77,22 @@ AIへの依頼例だけで終わらせず、各StepでAIが支援することと
 
 専門用語は初出で、先に平易な日本語で意味と使う場面を説明し、必要な場合に括弧で正式語を示す。英語をカタカナへ置き換えただけでは説明済みと扱わない。Chat、Work、Codex、Sourceその他の作業環境・概念も、初学者が操作または判断に使える粒度で説明する。ファイルを作成・保存する実践では、正式ファイル名と保存先を一意に示す。
 
-各Sessionの成果を使い捨てにせず、後続Sessionで再利用するSeed、Map、Logまたは同等の中間成果物を残し、何に再利用するかを明記する。
+各Sessionの成果を使い捨てにせず、後続Sessionで再利用するSeed、Map、Logまたは同等の中間成果物を残し、何に再利用するかを明記する。順次積み上げるSectionでは、必要に応じて「ここまでにできているもの／今回作るもの／今回終わったらどうなるか／次に積み上げるもの」を示す。
+
+Primary Evidenceは、初心者が実際に止まった地点を抽出するために使用する。各停止点を本文での先回り説明、FAQ、Troubleshooting、注意事項または今回対象外のいずれかへ分類する。正常状態と異常状態、失敗時の戻り先を明示し、画面操作が完遂条件に影響する場合はScreenshot Needed List、Human実機操作、実Screenshotおよび必要な注釈を制作工程に含める。
 
 **Practice Acceptance Criteria**
 
 - [ ] 初心者が記事単体で開始し、Session Goalまで実行できる。
+- [ ] 読者が完成させる環境・成果物とCompletion Checkが具体的で、Human実機完遂Reviewを通過している。
 - [ ] Goal、用語説明、Step、AIへの依頼例、出力テンプレート、完成例、Completion Checkがある。
 - [ ] 必要な分岐とTroubleshootingがあり、失敗時の戻り先が分かる。
+- [ ] 正常状態／異常状態、FAQ、注意事項、今回対象外の境界が必要な範囲で示されている。
 - [ ] AIが行う支援と、人間が決める箇所が明確に分かれている。
 - [ ] 専門用語の初出説明が平易な日本語から始まり、カタカナ化だけで終わっていない。
 - [ ] ファイルを扱う場合、正式ファイル名と保存先が一意である。
 - [ ] 後続Sessionで使うSeed、Map、Logまたは同等物が残り、再利用先が分かる。
+- [ ] 価格を正当化するためだけの不要な高度機能、専門知識または文字数を追加していない。
 
 #### 2.2.3 Session Archive
 
@@ -162,7 +167,7 @@ AI Organization Seriesでは、Human指摘反映、内部監査、自動修正�
 
 外部監査のBLOCKERまたはHuman Decisionが必要なIssueは停止してChatへ戻す。MAJOR／MINORで既存Sourceから一意に修正できるIssueは内部制作側が採否を照合し、採用する場合だけ必要最小限に修正する。外部AIへ全文再設計、文体均質化、Historical Evidence補完または正式稿への直接WRITEをさせない。MAJOR修正後は原則としてExternal Re-Auditし、MINORだけなら内部再監査で完了できる。
 
-Section 1では、External Auditと有効なMINOR反映後のHuman Final Check済みFinal Candidateから、各SessionのStory＋Practiceだけをnote本編1記事として無改変で抽出する。Session Archiveは別コンテンツとして分離し、具体的な公開範囲とMembershipでの扱いがHuman Decisionで確定するまで、note本編へ混入・公開しない。
+Section 1では、Storyと確定タイトル、S1-1 Practiceの既存Statusを保持する。S1-2〜S1-6 Practiceは再設計・Human完遂Review・Final化後の承認済み本文をStoryと結合してnote本編1記事とする。Session Archiveは別コンテンツとして分離し、必要な改訂・再Reviewと具体的な公開範囲／MembershipのHuman Decisionが完了するまで、note本編へ混入・公開しない。
 
 ## 5. 再開状態とエラー復旧
 

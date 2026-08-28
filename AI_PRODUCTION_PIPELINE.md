@@ -1,7 +1,7 @@
-# AI Production Pipeline v1.3
+# AI Production Pipeline v1.4
 
 **Document type:** Standard Operating Procedure（SOP）<br>
-**Status:** Current / Operational v1.3<br>
+**Status:** Current / Operational v1.4<br>
 **Owner:** 稲田美来<br>
 **Scope:** Story Candidate、教材、note、SNS、運営文書、Brand／Education／AI Organization関連Source、その他AI制作物<br>
 **Purpose:** 既存OS・Sourceを毎回確実に選択・実読・適用し、成果物と新知見を正しい責任単位へ戻すためのAI組織共通運用<br>
@@ -299,11 +299,16 @@ Source QAは、最低限次の6点を保証する。
 | Applied to | 成果物のどの判断へ使うか |
 | Dependency check | 依存Sourceの有無と結果 |
 | Conflict check | 矛盾なし／未解決内容 |
+| Source Retrieval Readiness | 必要な正式Sourceへ対象実行環境から到達できるか。実機経路、結果、未到達Sourceを記録 |
+| Production Completion Readiness | SourceのStatus、改訂要否、未解決Decisionから最終完成まで進められるか。artifact／Session単位で記録 |
 | Result | PASS／FAIL |
+
+`Source Retrieval Readiness`はG2の到達性判定であり、`Production Completion Readiness`は取得したSourceの内容Statusと後続Gateを含む完成可能性の判定である。Source Retrieval `PASS`はHuman approval、Final化またはProduction Completion `READY`を意味しない。`Redesign Required`や`Revision Required`が存在しても、必要Sourceへ実際に到達できた場合のRetrieval結果は`PASS`として別に保持する。
 
 ### 6.5 Source QAチェックリスト
 
 - [ ] 必読Sourceがすべて一意に解決されている
+- [ ] 対象実行環境からcanonical Sourceへ実際に到達でき、Source Retrieval結果を記録した
 - [ ] canonical filenameとRepository pathを確認した
 - [ ] 現行領域とArchiveを混同していない
 - [ ] Statusが制作利用可能である
@@ -313,6 +318,7 @@ Source QAは、最低限次の6点を保証する。
 - [ ] 依存Sourceを確認した
 - [ ] 指示との矛盾がない
 - [ ] Source間の矛盾がない
+- [ ] Source RetrievalとProduction Completionを混同せず、後者のBlockerをartifact／Session単位で記録した
 - [ ] 欠落をAI推論で補完していない
 - [ ] Voice／Writing／Brandの責任を相互代替していない
 

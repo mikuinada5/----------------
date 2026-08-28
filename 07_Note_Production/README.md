@@ -1,6 +1,6 @@
 # 07_Note_Production
 
-**Status:** Current / Operational v1.8
+**Status:** Current / Operational v1.9
 **責任:** noteの企画・制作・公開準備・公開後記録およびSession単位のSNS展開を、既存AI Production Pipelineへ接続する媒体別運用
 
 ## この領域の入口
@@ -25,7 +25,7 @@
 
 - Section制作記録：`07_Note_Production/01_Sections/<Section-ID>_<短い識別名>/00_Section制作台本.md`
 - Section固有Primary Evidence：`07_Note_Production/01_Sections/<Section-ID>_<短い識別名>/01_Primary_Evidence/README.md`とSession別Evidence。Repository外の会話全体を複製せず、Cloud制作に必要な最小抜粋、永続ID、文脈、未取得事項を保持する場合だけ作成する
-- Section固有Human-approved Source Inventory：未公開本文をPublic Repositoryへ配置できない場合、同Section配下の既存責任内で本文を含まないInventoryを置き、Human approval、Private repository／artifact／commit／file SHA、本文locator、provenance、Cloud可読性および正式参照経路を管理する。AIORG-S01の正本は`01_Sections/AIORG-S01_AI基礎工事/02_Human_Approved_Source_Inventory.md`
+- Section固有Formal Baseline Source Inventory：未公開本文をPublic Repositoryへ配置できない場合、同Section配下の既存責任内で本文を含まないInventoryを置き、Human approvalまたは正式baseline指定、Private repository／artifact／commit／file SHA、本文locator、provenance、Cloud可読性および正式参照経路を管理する。AIORG-S01の正本は`01_Sections/AIORG-S01_AI基礎工事/02_Human_Approved_Source_Inventory.md`
 - SessionのStory公開済み最終稿：`07_Note_Production/02_Published/<Section-ID>/<Session-ID>/01_Story無料Hub_最終稿.md`
 - Sessionの実践編公開済み最終稿：`07_Note_Production/02_Published/<Section-ID>/<Session-ID>/02_実践編単品有料_最終稿.md`
 - SessionのMS奮闘記公開済み最終稿：`07_Note_Production/02_Published/<Section-ID>/<Session-ID>/03_MS奮闘記メンバーシップ限定_最終稿.md`
@@ -35,13 +35,13 @@
 
 `<Section-ID>` は全体ロードマップで採番する `S01` 形式、`<Session-ID>` は同Section内の `S01-01` 形式とする。日本語の識別名は内容が分かる短いcanonical nameとし、日付・`完成版`・`更新版`・連番をファイル名へ付けない。制作中の稿、未承認の公開情報、認証情報はこれらの正本領域へ保存しない。
 
-Statusは、Section制作台本と全体ロードマップで `Planning`／`Production`／`Review`／`Decision Pending`／`Revision Required`／`Approved`／`Scheduled`／`Published/Complete`／`Update Candidate` を記録する。`Decision Pending`と`Revision Required`はPublish前の状態であり、外部公開を意味しない。完成判定は固定の3記事数ではなく、当該Sectionの承認済み公開構成Profileに基づく。公開済み最終稿では `Published`、公開停止または置換済みでは `Superseded` と記録する。`Published` は公開事実であり、上位Sourceの承認を代替しない。公開済み最終稿だけが将来の参照・SNS再展開・Repository還元に用いる記事本文の正本であり、Work稿や下書きを代替正本にしない。
+Statusは、Section制作台本と全体ロードマップで `Planning`／`Production`／`Review`／`Decision Pending`／`Redesign Required`／`Revision Required`／`Approved`／`Scheduled`／`Published/Complete`／`Update Candidate` を記録する。`Redesign Required`は現行baselineを保持して構成・完了条件から再設計する状態、`Revision Required`は現行baselineの限定修正が必要な状態であり、どちらもPublish前で外部公開を意味しない。完成判定は固定の3記事数ではなく、当該Sectionの承認済み公開構成Profileに基づく。公開済み最終稿では `Published`、公開停止または置換済みでは `Superseded` と記録する。`Published` は公開事実であり、上位Sourceの承認を代替しない。公開済み最終稿だけが将来の参照・SNS再展開・Repository還元に用いる記事本文の正本であり、Work稿や下書きを代替正本にしない。
 
 実データの作成・更新はProduction／Repository Integrationが担い、公開可否・価格・自己開示はHuman Owner／Approverが担う。配置、Archive、CHANGELOG、Gitは `REPOSITORY_RULES.md` に従う。
 
-Primary Evidence Packageは、記事本文、唯一のTimeline正本、Section制作台本、Human-approved成果物またはPersonal Archiveを代替しない。Packageの`READY`と、Repositoryだけで既存承認済み本文を保持して制作・QAを完了できる`Cloud completion READY`は分けて判定する。
+Primary Evidence Packageは、記事本文、唯一のTimeline正本、Section制作台本、Human-approved成果物またはPersonal Archiveを代替しない。Packageの`READY`、Cloud AIがHumanの資料運搬なしで正式Sourceへ到達できる`Source Retrieval Readiness`、SourceのStatusと必要Gateを含め最終成果物まで進められる`Production Completion Readiness`は分けて判定する。
 
-Public Repositoryでは、Human-approvedであっても未公開・有料予定・公開範囲未決の本文をCloud参照だけのために配置しない。格納基準を満たす本文は全社共通Private Source Repositoryへexact copyで昇格し、Public側Inventoryと外部参照Registryへrepository identifier、path、artifact ID、commit SHA、file SHA、provenance、StatusおよびE2E結果だけを同期する。Private配置だけでCloud Readinessを`READY`にしない。
+Public Repositoryでは、Human-approvedであっても未公開・有料予定・公開範囲未決の本文をCloud参照だけのために配置しない。格納基準を満たす本文は全社共通Private Source Repositoryへexact copyで昇格し、Public側Inventoryと外部参照Registryへrepository identifier、path、artifact ID、commit SHA、file SHA、provenance、StatusおよびE2E結果だけを同期する。Private配置だけでSource Retrievalを`PASS`にせず、実機探索で確認する。Source Retrieval `PASS`だけでHuman approvalまたはProduction Completionを`READY`にしない。
 
 ## 必ず戻る既存Source
 

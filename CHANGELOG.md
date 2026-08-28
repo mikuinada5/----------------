@@ -8,6 +8,25 @@
 
 ------------------------------------------------------------------------
 
+## 2026-08-29｜AIORG-S01 Practice Status・Work Cloud E2Eを同期
+
+### 概要
+
+最新Human DecisionによりS1-2〜S1-6 Practiceを再設計対象へ戻し、スマホWork CloudのPublic→Private Source Retrieval E2E成功をPublic／Privateの管理Sourceへ同期した。
+
+### 変更内容
+
+- S1-2〜S1-6 Practiceを`Human Review Draft / Redesign Required / Final未確定`とし、既存本文は再設計baselineとしてPrivateに保持した。
+- Story、S1-1 PracticeおよびSession Archiveの本文・Statusを対象外として維持し、Archiveの`Revision Required`を継続した。
+- AI Production Pipelineをv1.4へ更新し、Source Retrieval ReadinessとProduction Completion Readinessを別Gateとして正式化した。
+- Private最終HEAD `4c2ea252fa7a78d99ab22c27fe9b8ac0e7975ffa`をPublic Registry／Inventoryへ同期し、Public本文0件とSource of Truthの一意性を維持した。
+
+### Repository横断監査
+
+Source RetrievalはスマホWork Cloud実測`PASS`、Production Completionは全6 Session `NOT READY`である。Private Final CandidateとAuditのSHAは不変で、Public Repositoryへ本文・secret・高リスクPIIを追加していない。
+
+------------------------------------------------------------------------
+
 ## 2026-08-29｜全社共通Private Source Repository経路を正式採用
 
 ### 概要

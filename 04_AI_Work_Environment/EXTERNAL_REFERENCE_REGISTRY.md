@@ -1,6 +1,6 @@
 # Repository外参照資料レジストリ
 
-**Status:** Current / Operational v1.3<br>
+**Status:** Current / Operational v1.4<br>
 **責任:** Repository外に原本を保持する継続参照資料について、Repository正本から再追跡するための非機密メタデータと差分反映状態を管理する
 
 ## 1. 位置づけ
@@ -75,6 +75,20 @@ Personal Archive上の増分型一次資料について、Original snapshotのDa
 | 次回処理 | 取得可能になった時点で永続Task ID、export識別子、原本SHAまたは同等識別情報を確定し、Human Decision 1〜6以後を差分確認する |
 | 取扱い | 会話原本は公開範囲とセンシティブ性を確認できないためRepositoryへ配置しない |
 
+### EXT-CODEX-AIORG-PRACTICE-E2E — Codex Task「AIORG-S01｜Practice最新Human Decision反映＋Work Cloud E2E実測結果更新」
+
+| 項目 | 現在値 |
+|---|---|
+| 資料種別 | Codex Task会話原本／Human Decision・実機E2E結果 |
+| 取得元 | Codex Task。永続Task IDとexport識別子は現Repositoryから未確認 |
+| Repository外原本 | サービス側会話。2026-08-29のHuman instruction §1〜§14 |
+| 最終取得地点 | S1-2〜S1-6 Practiceの最新Status、再設計方針、Section教育導線、18工程、Primary Evidenceの役割、スマホWork Cloud Source Retrieval E2E実測結果まで参照済み |
+| 前回処理地点 | Section制作台本、Source Inventory、Primary Evidence、Timeline、note制作仕様、Pipeline、Work Environment、Registry／IndexおよびPublic／Private管理Sourceへ反映済み |
+| 反映状態 | S1-2〜S1-6 Practiceを`Human Review Draft / Redesign Required / Final未確定`へ更新。Source Retrieval E2E `PASS`とProduction Completion `NOT READY`を分離して記録 |
+| Repository参照先 | `07_Note_Production/01_Sections/AIORG-S01_AI基礎工事/00_Section制作台本.md`、同Sectionの`02_Human_Approved_Source_Inventory.md`、`07_Note_Production/01_Timeline.md` |
+| 次回処理 | S1-2 Practiceから制作台本に記録した18工程を開始し、Human完遂ReviewとFinal化を別Gateで記録する |
+| 取扱い | 会話原本はRepositoryへ配置しない。Human DecisionとE2E結果だけを正式Sourceへ反映し、本文・機密情報を複製しない |
+
 ### EXT-PA-AIORG-S01 — AI Organization Series Section 1制作パッケージ
 
 | 項目 | 現在値 |
@@ -84,14 +98,14 @@ Personal Archive上の増分型一次資料について、Original snapshotのDa
 | Repository外原本 | `AI/04_Personal_Archive/Derived/AI_Organization_Series_Section1_Final_Candidate.md`、`AI/04_Personal_Archive/Derived/AI_Organization_Series_Section1_External_Audit_Reconciliation.md` |
 | 識別情報 | Final Candidate SHA-256 `7E8DDF4E4F7CEC755A99EB123024A12D04883CCD353FF88F8C7A278790185CB2`。External Audit Reconciliation SHA-256 `FC3C79B46C276F14F109EB1AC440FC8E17691EAF5D90EA30E4E4EAE238D9A5F6` |
 | 最終取得地点 | S1-1〜S1-6の確定タイトル、Story、Practice、Session ArchiveおよびExternal Audit MINOR照合まで既存工程で参照済み |
-| 前回処理地点 | Story／Practice本文と確定タイトルのHuman Final Check完了。Session Archiveは後発仕様に対する `Revision Required` |
-| 反映状態 | 18本文のHuman approval、SHA＋見出しlocator、Archive baselineおよびprovenanceをSection Inventoryへ反映済み。本文はPublic Repositoryへ置かず、exact copyをPrivate Source Repositoryへ昇格 |
-| Cloud可読性 | LocalはOneDrive provenance originとPrivate working treeへ到達可能。Private remoteへのpushと現在のGitHub接続からのreadは確認済み。スマホWork Cloud実機Source Discoveryが成功するまで全6 SessionのCloud completionは`NOT READY` |
+| 前回処理地点 | Story 6件と確定タイトルはHuman Final Check完了。S1-1 Practiceは既存Status継続。S1-2〜S1-6 Practiceは`Human Review Draft / Redesign Required / Final未確定`。Session Archiveは後発仕様に対する`Revision Required` |
+| 反映状態 | 18本文のSHA＋見出しlocator、本文種別ごとのStatus、Archive baselineおよびprovenanceをSection Inventoryへ反映済み。本文はPublic Repositoryへ置かず、exact copyをPrivate Source Repositoryへ昇格 |
+| Cloud可読性 | LocalはOneDrive provenance originとPrivate working treeへ到達可能。2026-08-29のスマホWork Cloud実測でPublic→Private Source Retrieval E2E `PASS`。Production Completionは全6 Session `NOT READY` |
 | Repository参照先 | `07_Note_Production/01_Sections/AIORG-S01_AI基礎工事/00_Section制作台本.md`、同Sectionの`01_Primary_Evidence/README.md`、`02_Human_Approved_Source_Inventory.md`、`07_Note_Production/02_全体ロードマップ.md` |
-| 次回処理 | Registry ID `EXT-PSR-AIORG-S01`のWork Cloud接続許可とスマホE2Eを確認する。その後、Session Archive限定修正、全文再監査、Human Reviewへ進む |
+| 次回処理 | S1-2 Practiceの商品品質監査を制作台本の18工程から開始する。Session Archive限定修正、全文再監査、Human Reviewは別工程として維持する |
 | 取扱い | OneDrive版は取得元provenanceとして保持する。Private側の検証済みexact copyを非公開Cloud制作向けcanonical Sourceとし、Public Repositoryへ本文を複製しない |
 
-### EXT-PSR-AIORG-S01 — AIORG-S01 Private Human-approved Source
+### EXT-PSR-AIORG-S01 — AIORG-S01 Private Formal Baseline Source
 
 | 項目 | 現在値 |
 |---|---|
@@ -101,15 +115,15 @@ Personal Archive上の増分型一次資料について、Original snapshotのDa
 | Canonical path | `07_Note_Production/01_Sections/AIORG-S01_AI基礎工事/AI_Organization_Series_Section1_Final_Candidate.md` |
 | Audit path | `07_Note_Production/01_Sections/AIORG-S01_AI基礎工事/AI_Organization_Series_Section1_External_Audit_Reconciliation.md` |
 | Source commit | `0531e32239237b7bd5f011bca62d65f5d9d4317e` |
-| Repository HEAD | `2401696ba1f66d55e4d3b00cc645b0bdf442a2b1` / `main` |
+| Repository HEAD | `4c2ea252fa7a78d99ab22c27fe9b8ac0e7975ffa` / `main` |
 | 識別情報 | Final Candidate SHA-256 `7E8DDF4E4F7CEC755A99EB123024A12D04883CCD353FF88F8C7A278790185CB2`。Audit SHA-256 `FC3C79B46C276F14F109EB1AC440FC8E17691EAF5D90EA30E4E4EAE238D9A5F6` |
-| Version / Status | Story 6・Practice 6はHuman Final Check完了／変更禁止。Session Archive 6はHuman-approved baseline／`Revision Required`。Source QA PASS |
+| Version / Status | Story 6はHuman Final Check完了。S1-1 Practiceは既存Status継続。S1-2〜S1-6 Practiceは`Human Review Draft / Redesign Required / Final未確定`。Session Archive 6はHuman-approved baseline／`Revision Required`。Source QA PASS |
 | Provenance | OneDrive `AI/04_Personal_Archive/Derived/`の2ファイルをexact copy。本文を再生成・改善・分割していない |
 | Source responsibility | 上記Private commitを非公開Cloud制作向けcanonical Source、OneDrive版をprovenance origin、Public側Inventory／Registryをlocator正本とする |
-| Cloud可読性 | GitHub上のPrivate visibility、remote push、現在のGitHub接続からの`SOURCE_INDEX.md` readは確認済み。スマホWork Cloud実機探索は未確認のため`NOT READY` |
+| Cloud可読性 | GitHub上のPrivate visibility、remote push、GitHub接続からのread、およびスマホWork Cloud実機探索を確認済み。Source Retrieval E2E `PASS`。Production Completionは別判定で全6 Session `NOT READY` |
 | Repository参照先 | `07_Note_Production/01_Sections/AIORG-S01_AI基礎工事/02_Human_Approved_Source_Inventory.md`、同Sectionの制作台本とPrimary Evidence README |
-| 次回処理 | スマホWork CloudからPublic台本を起点にPrivate本文へ到達できるかE2E確認し、結果を同期する。到達不能時だけGitHub接続のrepository access設定を確認する |
-| 取扱い | Public側へ本文を複製しない。Cloudはread、Localはwrite。Archiveの`Revision Required`を解消済みと読み替えない |
+| 次回処理 | S1-2 PracticeのHuman Review Draft監査から再設計工程を開始する。Source Retrieval PASSをFinal approvalと読み替えない |
+| 取扱い | Public側へ本文を複製しない。Cloudはread、Localはwrite。S1-2〜S1-6 Practiceの`Redesign Required`とArchiveの`Revision Required`を解消済みと読み替えない |
 
 ### EXT-DEV-GPT-ARCHIVE-RETRIEVAL — GPT Archive Retrieval Connector
 

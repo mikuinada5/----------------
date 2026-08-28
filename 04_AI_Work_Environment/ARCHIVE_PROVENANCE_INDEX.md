@@ -1,6 +1,6 @@
 # Repository外Archive provenance index
 
-**Status:** Current / Operational v1.2<br>
+**Status:** Current / Operational v1.3<br>
 **責任:** Repository外に保持する増分型一次資料について、原本識別子、Processed checkpoint、正式Sourceへの反映状態および再追跡経路をRepository側から確認できるようにする
 
 ## 1. 位置づけ
@@ -69,14 +69,14 @@ Derived内の `WORK_HISTORY_BASELINE.md`、`work_history_events.jsonl`、`SOURCE
 
 この反映は新しいProcessed checkpointを生成していない。元snapshotと処理地点は`PA-PROCESSED-20260822`のままであり、本PackageはSection固有Supporting Sourceである。Timeline、Human-approved成果物またはOriginal / Processed packageの代替にしない。
 
-### 2.6 AIORG-S01 Human-approved制作baseline
+### 2.6 AIORG-S01制作baseline
 
 | Dataset ID | Logical path | SHA-256 / 状態 | Repository反映 |
 |---|---|---|---|
-| `EXT-PA-AIORG-S01-FC` | `Derived/AI_Organization_Series_Section1_Final_Candidate.md` | `7E8DDF4E4F7CEC755A99EB123024A12D04883CCD353FF88F8C7A278790185CB2` / Story 6、Practice 6はHuman Final Check完了。Archive 6はHuman-approved baselineかつ後発仕様に対し`Revision Required` | exact copyをPrivate `PSR-AIORG-S01-FC`、commit `0531e32239237b7bd5f011bca62d65f5d9d4317e`へ昇格。Public側はInventoryとRegistry ID `EXT-PSR-AIORG-S01`へlocatorだけを反映 |
+| `EXT-PA-AIORG-S01-FC` | `Derived/AI_Organization_Series_Section1_Final_Candidate.md` | `7E8DDF4E4F7CEC755A99EB123024A12D04883CCD353FF88F8C7A278790185CB2` / Story 6はHuman Final Check完了。S1-1 Practiceは既存Status継続。S1-2〜S1-6 PracticeはHuman Review Draft／`Redesign Required`／Final未確定。Archive 6はHuman-approved baselineかつ後発仕様に対し`Revision Required` | exact copyをPrivate `PSR-AIORG-S01-FC`、source commit `0531e32239237b7bd5f011bca62d65f5d9d4317e`へ昇格。Public側はInventoryとRegistry ID `EXT-PSR-AIORG-S01`へlocatorだけを反映 |
 | `EXT-PA-AIORG-S01-AUDIT` | `Derived/AI_Organization_Series_Section1_External_Audit_Reconciliation.md` | `FC3C79B46C276F14F109EB1AC440FC8E17691EAF5D90EA30E4E4EAE238D9A5F6` / Internal Re-Audit PASS、Final Candidate SHA一致 | exact copyをPrivate `PSR-AIORG-S01-AUDIT`へ昇格。Registry ID `EXT-PA-AIORG-S01`と`EXT-PSR-AIORG-S01`から再追跡 |
 
-Final Candidate内のSession Archive 6件を現行のHuman-approved baselineとする。note投入用一覧、Session別抽出またはAudit Routingはdownstream／provenanceであり、本文正本として採用しない。Private Repositoryの上記commitを非公開Cloud制作向けcanonical Source、OneDrive版をprovenance originとする。Private visibility、remote pushおよび現在のGitHub接続からのreadは確認済みである。スマホWork Cloud実機探索の成功前はCloud Readinessを`READY`にしない。
+Final Candidate内のSession Archive 6件を現行のHuman-approved baseline、S1-2〜S1-6 Practiceを再設計baselineとする。note投入用一覧、Session別抽出またはAudit Routingはdownstream／provenanceであり、本文正本として採用しない。Private Repositoryの上記source commitを非公開Cloud制作向けcanonical Source、OneDrive版をprovenance originとする。Private visibility、remote pushおよびスマホWork CloudからのSource Retrieval E2Eは確認済みである。Source Retrieval `PASS`はPractice／ArchiveのProduction Completionを意味しない。
 
 ### 2.7 その他のPersonal Archive
 

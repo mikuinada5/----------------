@@ -1,6 +1,6 @@
 # AI組織シリーズ Section 1 制作台本
 
-**Status:** Revision Required<br>
+**Status:** Redesign Required / Source Retrieval E2E PASS / Production Completion NOT READY<br>
 **Section ID:** AIORG-S01<br>
 **Section名称:** 第1章｜AIと仕事を始める前の下準備
 
@@ -11,8 +11,8 @@
 | 採用したTimeline史実・一次資料参照 | `01_Timeline.md`のうち利用状態が本Sectionの`制作済み`である7史実。Brand OSと教育設計の確立、AコースProfessional教育設計、教材制作基準の独立、Voice OS・Human-in-the-loop・作業環境の正式採用、Pipeline・note制作領域の正式運用、今回共有されたSeries／Section設計。 |
 | 採用した意味づけ / Series | **AI組織シリーズ**。出発点は「AI組織を作る」ことではない。女性が生涯を通して学び続け、自ら選べる教育を届けるために、「これをやりたい。どうやる？」をAIと反復した史実を扱う。その結果として、目的・判断・制作・復旧を分担できるAI組織が立ち上がった。 |
 | 読者に届ける学び・順番 | S1-1からS1-6の順に、AIへ任せたい仕事候補、AI仕事場、会話からのDecision抽出、MarkdownとRepository、Version／Status、Git履歴管理へ進む。各SessionはStoryで問題を自分事化し、Practiceで実行へ接続する。 |
-| 企画上の採用判断 | Section 1は全6 Sessionとする。各Sessionのnote本編はStory＋Practiceをこの順序で結合した1記事とし、Session Archiveは本編から分離した別コンテンツとして保持する。Story、Practiceおよび確定タイトルは保持し、後発のHuman-approved仕様と不一致が確認されたSession Archiveだけを修正・再監査する。 |
-| 引き継ぐHuman Decision | Story／Practice本文と確定タイトルのHuman Final Checkは完了済み。Session Archiveは、制作時のHuman Reviewから救出された後発仕様を反映するため`Revision Required`とする。具体的な公開範囲・Membershipでの扱い、価格、公開日時、note投入・公開は引き続き別途Human Decisionとする。 |
+| 企画上の採用判断 | Section 1は全6 Sessionとする。各Sessionのnote本編はStory＋Practiceをこの順序で結合した1記事とし、Session Archiveは本編から分離した別コンテンツとして保持する。Storyと確定タイトルは保持する。S1-1 Practiceの既存Statusは継続し、S1-2〜S1-6 Practiceは順番に一つのAI仕事環境を完成させる作業マニュアルとして再設計する。Session Archiveは後発仕様との不一致箇所だけを修正・再監査する。 |
+| 引き継ぐHuman Decision | Story本文と確定タイトルのHuman Final Checkは完了済み。S1-2〜S1-6 Practiceは`Human Review Draft / 再設計baseline / Redesign Required / Final未確定`であり、変更禁止を解除する。Session Archiveは、制作時のHuman Reviewから救出された後発仕様を反映するため`Revision Required`とする。具体的な公開範囲・Membershipでの扱い、最終価格、公開日時、note投入・公開は引き続き別途Human Decisionとする。 |
 
 ## 1. 識別と状態
 
@@ -20,13 +20,13 @@
 |---|---|
 | Section ID / 名称 | AIORG-S01 / 第1章｜AIと仕事を始める前の下準備 |
 | Owner / 最終承認者 | 稲田美来（企画・自己開示・価格・公開範囲・Publishの最終判断） |
-| Status | Revision Required |
-| Next / Blocker | Story／Practice本文と確定タイトルは保持する。S1-1〜S1-6のSession Archiveだけを、`00_note制作・公開システム.md` §2.2.3のAcceptance Criteriaで監査し、必要最小限に修正した後、各Archive全文を再監査する。Archive修正完了後にStory＋Practiceを6本のnote本編へ分割し、ヘッダー画像と照合する。note投入・価格設定・公開は行わない。 |
+| Status | Redesign Required |
+| Next / Blocker | Story本文と確定タイトル、S1-1 Practiceの既存Statusは保持する。S1-2〜S1-6 Practiceは§2.1の再設計フローでSessionごとに制作・Human完遂Reviewを行う。S1-1〜S1-6 Session Archiveは`00_note制作・公開システム.md` §2.2.3で限定修正・全文再監査する。両方の必要工程が終わるまでnote本編のFinal化、note投入、最終価格設定または公開を行わない。 |
 | 対象読者・目的 | AIを使いたいが、効率化だけでは自分の仕事・思想・品質を預けきれない人。特に、教育・専門性・長期事業のように「何を届けるか」が先にある読者へ、目的から仕組みを育てる見方と最初の実践を届ける。 |
 | 公開構成Profile | 全6 Session。各SessionのStory＋Practiceをnote本編1記事とし、Session Archiveは別コンテンツとして分離する。 |
-| 公開範囲 | note本編のHuman Final Checkは完了。note投入・公開は未実施。Session Archiveの具体的な公開範囲とMembershipでの扱いはPending / Human Decision Required。 |
-| 価格仮説・承認状態 | 未設定 / Pending。今回の整合性修正では決定しない。 |
-| 自己開示の候補・承認状態 | Story／Practice本文はHuman Final Check完了済み。Session Archive本文はスタイル・構造修正後に再Reviewする。実際に公開する範囲とMembershipでの扱いは別途Human Decisionとする。 |
+| 公開範囲 | StoryのHuman Final Checkは完了。S1-2〜S1-6 PracticeとSession Archiveの必要改訂、note投入・公開は未実施。Session Archiveの具体的な公開範囲とMembershipでの扱いはPending / Human Decision Required。 |
+| 価格仮説・承認状態 | Practice標準価格目標は1,480円前後 / Final未確定。価格のために不要な高度機能・専門知識・文字数を追加しない。 |
+| 自己開示の候補・承認状態 | Story本文はHuman Final Check完了済み。S1-2〜S1-6 Practiceは再設計・Human完遂Review待ち。Session Archive本文はスタイル・構造修正後に再Reviewする。実際に公開する範囲とMembershipでの扱いは別途Human Decisionとする。 |
 
 ## 2. Source Plan / Source QA
 
@@ -38,8 +38,8 @@
 | Human Confirmation：企画・壁打ちチャット「AI組織づくりの地図を制作」2026-08-24 | S01-01の初期目的、順番、PPT作成依頼の事実、AIが教える内容を知らないという問題の本人確認 | 実読済み / 本人確認済み | Evidenceと矛盾しないこと、未確認のAI回答・採否・感情を補完しないことを確認 |
 | Repository Source：`07_Note_Production/01_Sections/AIORG-S01_AI基礎工事/00_Section制作台本.md` | S01-01の正式な企画・Source・未解決Decisionの管理 | Current / 更新対象 | 本Session詳細と本文Production時の参照箇所を確認 |
 | Repository Source：`07_Note_Production/01_Sections/AIORG-S01_AI基礎工事/01_Primary_Evidence/README.md` | S01-01〜S01-06の選定一次資料、永続ID、原文抜粋、未取得SourceおよびCloud readiness | Current / Source QA PASS | Session IDから該当Evidenceへ到達し、原文・回顧・AI proposal・Git event・未確認事項を区別 |
-| Repository Source：`07_Note_Production/01_Sections/AIORG-S01_AI基礎工事/02_Human_Approved_Source_Inventory.md` | S01-01〜S01-06のStory／Practice／Session Archive計18本文の同一性、Human approval、provenanceおよびCloud参照経路 | Current / Source QA PASS / Private Source Placed / Work E2E Pending | Private repository、artifact、commit、Final Candidate SHA＋見出しlocator、Archive baselineおよびCloud blockerを確認 |
-| Private Source：`mikuinada5/feminine-wellness-private-sources` / `PSR-AIORG-S01-FC` | S01-01〜S01-06のHuman-approved本文18件 | Source commit `0531e32239237b7bd5f011bca62d65f5d9d4317e` / file SHA `7E8DDF4E4F7CEC755A99EB123024A12D04883CCD353FF88F8C7A278790185CB2` | Private Section READMEでSession locatorを確認し、Story／Practiceは無改変取得、Archiveはbaselineから限定修正工程へ進む |
+| Repository Source：`07_Note_Production/01_Sections/AIORG-S01_AI基礎工事/02_Human_Approved_Source_Inventory.md` | S01-01〜S01-06のStory／Practice／Session Archive計18本文の同一性、Status、provenanceおよびCloud参照経路 | Current / Source QA PASS / Source Retrieval E2E PASS | Private repository、artifact、commit、Final Candidate SHA＋見出しlocator、本文種別ごとのStatusを確認 |
+| Private Source：`mikuinada5/feminine-wellness-private-sources` / `PSR-AIORG-S01-FC` | S01-01〜S01-06の正式baseline本文18件 | Source commit `0531e32239237b7bd5f011bca62d65f5d9d4317e` / Repository HEAD `4c2ea252fa7a78d99ab22c27fe9b8ac0e7975ffa` / file SHA `7E8DDF4E4F7CEC755A99EB123024A12D04883CCD353FF88F8C7A278790185CB2` | Storyは無改変取得、S1-1 Practiceは既存Status、S1-2〜S1-6 Practiceは再設計baseline、ArchiveはHuman-approved baselineから限定修正工程へ進む |
 | `07_Note_Production/01_Timeline.md` | 記事に使える確認済み史実と一次資料参照 | Current / 実読済み | Storyの史実・参照位置をSessionごとに照合 |
 | `07_Note_Production/00_note制作・公開システム.md` | Section固有公開構成Profile、記事制作仕様、公開Gate | Current / v1.6実読済み | Story＋Practice本編とSession Archive分離、および§2.2の成果物別Acceptance Criteriaを確認 |
 | `AI/04_Personal_Archive/Derived/AI_Organization_Series_Section1_Final_Candidate.md` | Private本文正本の取得元provenance | Provenance origin / SHA-256 `7E8DDF4E4F7CEC755A99EB123024A12D04883CCD353FF88F8C7A278790185CB2` | Private exact copyとの同一性照合に使用し、Cloud制作時の別Current正本として編集しない |
@@ -52,11 +52,49 @@
 | 本台本 | 企画・Session構成・未解決Decision | Current / 作成済み | 各Draftが本台本の役割に沿うか確認 |
 
 **G0:** Draftは外部公開しない。最終承認者は稲田美来。<br>
-**Source / Audit QA record:** 既存Final Candidateは、Human Review、Internal Audit、Claude External Audit、Internal Re-AuditおよびHuman Final Checkを通過した履歴を保持する。その後、制作時のHuman ReviewからStory／Practice／Session Archiveの詳細仕様が救出され、現行Sourceには役割概念のみで具体的Acceptance Criteriaが不足していたこと、Final CandidateのSession Archiveに後発仕様との不一致があることを確認した。既存監査履歴を削除または遡及変更せず、Story／Practice本文と確定タイトルは保持し、Session Archiveだけを`Revision Required`へ戻す。旧工程の独立したG2受付記録は本台本に残っていないため、G2完了を遡及して推測しない。公開構成Profile、価格、Session Archive公開範囲、note投入およびPublishは別Gateとして残す。
+**Source / Audit QA record:** 既存Final CandidateのHuman Review、Internal Audit、Claude External Audit、Internal Re-AuditおよびHuman Final Checkの履歴はprovenanceとして保持する。ただし2026-08-29の最新Human Decisionは、S1-2〜S1-6 PracticeをHuman-approved Finalではなく`Human Review Draft / Redesign Required`と確定した。旧監査履歴を削除・遡及変更せず、最新Statusが優先する。Storyと確定タイトル、S1-1 Practiceの既存Statusは変更しない。Session Archiveは`Revision Required`を維持する。旧工程の独立したG2受付記録は本台本に残っていないため、G2完了を遡及して推測しない。公開構成Profile、最終価格、Session Archive公開範囲、note投入およびPublishは別Gateとして残す。
 
-**Primary Evidence / Human-approved Source / Cloud readiness:** 2026-08-28に全6 Sessionの必要最小限の一次資料PackageをSection配下へ配置し、Source QAはPASSとした。2026-08-29にStory 6件、Practice 6件、Session Archive 6件を含むFinal CandidateとAudit Reconciliationのexact copyを全社共通Private Source Repositoryへ配置し、Private source commitとfile SHAへ固定した。本文はPublic Repositoryへ複製していない。Private visibility、remote pushおよび現在のGitHub接続からのreadは確認済み、スマホWork Cloud実機探索は未確認である。Session Archiveは追加で`Revision Required`、S01-03、S01-05、S01-06には一致する一次ログまたは画像本体の不足も残る。したがって全6 SessionのCloud completionは`NOT READY`とする。
+**Primary Evidence / Human-approved Source / Readiness:** 2026-08-28に全6 Sessionの必要最小限の一次資料PackageをSection配下へ配置し、Source QAはPASSとした。2026-08-29に18本文を含むFinal CandidateとAudit Reconciliationのexact copyを全社共通Private Source Repositoryへ配置し、source commitとfile SHAへ固定した。本文はPublic Repositoryへ複製していない。同日のスマホWork Cloud実測で、Public制作台本→Inventory→Private Repository→Section README／Index→artifact→S1-2 Story／Practice／Session ArchiveのSource Retrieval E2Eは`PASS`した。Humanによるファイル・pathの手渡し、Source欠落、推測補完はなかった。
 
-本文探索順は `本台本` → `02_Human_Approved_Source_Inventory.md` → `EXT-PSR-AIORG-S01` → Private Section README → `PSR-AIORG-S01-FC` → `source commit＋file SHA＋本文locator` とする。Local-only OneDrive path、downstream抽出または記憶から本文を補完しない。Private repositoryが存在するだけで接続済みとせず、スマホWork Cloudでの実探索成功後にReadinessを更新する。
+**Readiness分離:** Source Retrieval Readinessは`PASS`。Production Completion Readinessは全6 Session `NOT READY`である。StoryはREADY、S1-1 Practiceは既存Statusを継続、S1-2〜S1-6 Practiceは`Redesign Required`、Session Archiveは`Revision Required`である。S01-03、S01-05、S01-06の一次ログまたは画像本体の不足もPrimary Evidence Packageの制限として維持する。
+
+本文探索順は `本台本` → `02_Human_Approved_Source_Inventory.md` → `EXT-PSR-AIORG-S01` → Private Section README → `PSR-AIORG-S01-FC` → `source commit＋file SHA＋本文locator` とする。Local-only OneDrive path、downstream抽出または記憶から本文を補完しない。この経路はスマホWork Cloudで実探索済みである。
+
+### 2.1 Practice再設計方針（今回は制作未着手）
+
+S1-2〜S1-6 Practiceは、読者が記事を横に置いて一緒に作業し、自分の環境・成果物を完成できる作業マニュアルとして再設計する。価値基準は文字数や高度機能ではなく初心者の完遂率とする。各Sessionで「ここまでにできているもの／今回作るもの／終わった時の状態／次に積み上げるもの」を示し、Section 1終了時に一つのAI仕事環境が完成する構造にする。
+
+| Session | 完成責任 |
+|---|---|
+| S01-01 | 「私はAIと何をしたいのか」を定める根幹・起点。最新Decisionの再設計対象外。 |
+| S01-02 | 考える場所、作る場所、必要ファイル、保存先、AIのアクセス可否、Human運搬要否を判断した`Workplace Map`を完成する。 |
+| S01-03 | Discussion → Candidate → Human Decision → Formal Source Candidateを判断した`Decision Pickup Sheet`を完成する。 |
+| S01-04 | 最初のMarkdown Source、保存場所、Source of Truth、AIからの参照確認を完成する。成熟したRepositoryを初心者の完成状態として押しつけない。 |
+| S01-05 | HumanとAIが正式Sourceを誤認しない最低限のSource Governanceを完成する。 |
+| S01-06 | Git管理開始、status、初回記録、Source変更、diff、Human確認、2回目commit、history、復元概念までを扱い、正式SourceをGitで履歴管理できる状態を完成する。AI操作を主経路、VS Code GUI／Terminalを必要時の代替経路とする。 |
+
+将来の制作は各Sessionごとに次の順で行う。今回はこのフローを実行しない。
+
+1. Human Review Draft監査
+2. 現在の強い部分を特定
+3. 説明不足を特定
+4. Primary Evidenceから初心者停止点を抽出
+5. 必要な公式一次情報を確認
+6. 作業マニュアルとして手順再設計
+7. コピペ可能なAIプロンプト設計
+8. 正常状態／異常状態設計
+9. FAQ / Troubleshooting設計
+10. Screenshot Needed List作成
+11. Human実機操作
+12. 実Screenshot取得
+13. 必要な注釈加工
+14. 本文とScreenshot統合
+15. Human完遂Review
+16. 競合比較
+17. 最終価格決定
+18. Final化
+
+Primary EvidenceはPracticeを読み物化するためではなく、初心者が止まった地点を発見するために使う。各停止点を本文での先回り説明、FAQ、Troubleshooting、注意事項、今回対象外のいずれかへ分類し、Session Archiveの責任と混同しない。Section 2はSection 1の環境を使ってAIとの壁打ち・質問・一仕事の完遂を順に学ぶ。Section 3以降は必要なものを選択する構造を基本とする。
 
 ## 3. Story Hub
 
@@ -74,13 +112,13 @@
 | Session ID | 確定note記事タイトル | Story | Practice | 別コンテンツ：Session Archive | 状態 | 未解決Decision |
 |---|---|---|---|---|---|---|
 | S01-01 | 最初に考えるのは「どのAIを使うか」じゃなかった | 同名Storyをnote本編前半へ使用 | AIにやってほしいことを全部出してみる | 「PowerPoint作ってくれないかな」から始まった | Revision Required（Archive） | Archive全文Acceptance Criteria再監査、価格、公開日時、Session Archiveの公開範囲・Membership |
-| S01-02 | 同じAIなのに、できることが違うのなんで？ | 同名Storyをnote本編前半へ使用 | 自分のAI仕事場マップを作る | 同じAIなのに、なんでここではできないの？？？ | Revision Required（Archive） | Archive全文Acceptance Criteria再監査、価格、公開日時、Session Archiveの公開範囲・Membership |
-| S01-03 | Chatで話したことって、全部AIが覚えてるルールじゃないの？ | 同名Storyをnote本編前半へ使用 | 壁打ちが終わったら「何が決まったか」だけ拾う | 「前に話したじゃん」が通じない | Revision Required（Archive） | Archive全文Acceptance Criteria再監査、価格、公開日時、Session Archiveの公開範囲・Membership |
-| S01-04 | 決まったことをファイルにして、正本の場所を決める | 同名Storyをnote本編前半へ使用 | Chatで決めたことをMarkdownにしてRepositoryへ置く | で、このMarkdownどこに置くの？？？ | Revision Required（Archive） | Archive全文Acceptance Criteria再監査、価格、公開日時、Session Archiveの公開範囲・Membership |
-| S01-05 | 「最新」「最終」「最終2」って、結局どれが正式なの？ | 同名Storyをnote本編前半へ使用 | MarkdownにVersionとStatusを持たせる | 最終、修正版、最終2、本当の最終 | Revision Required（Archive） | Archive全文Acceptance Criteria再監査、価格、公開日時、Session Archiveの公開範囲・Membership |
-| S01-06 | Gitって、コードを書く人のものだと思ってた | 同名Storyをnote本編前半へ使用 | RepositoryをGitで履歴管理する | Gitって何？？？？？から始まった | Revision Required（Archive） | Archive全文Acceptance Criteria再監査、価格、公開日時、Session Archiveの公開範囲・Membership |
+| S01-02 | 同じAIなのに、できることが違うのなんで？ | 同名Storyをnote本編前半へ使用 | 自分のAI仕事場マップを作る | 同じAIなのに、なんでここではできないの？？？ | Redesign Required（Practice）/ Revision Required（Archive） | Practice再設計・Human完遂Review、Archive全文再監査、価格、公開日時、Session Archiveの公開範囲・Membership |
+| S01-03 | Chatで話したことって、全部AIが覚えてるルールじゃないの？ | 同名Storyをnote本編前半へ使用 | 壁打ちが終わったら「何が決まったか」だけ拾う | 「前に話したじゃん」が通じない | Redesign Required（Practice）/ Revision Required（Archive） | Practice再設計・Human完遂Review、Archive全文再監査、価格、公開日時、Session Archiveの公開範囲・Membership |
+| S01-04 | 決まったことをファイルにして、正本の場所を決める | 同名Storyをnote本編前半へ使用 | Chatで決めたことをMarkdownにしてRepositoryへ置く | で、このMarkdownどこに置くの？？？ | Redesign Required（Practice）/ Revision Required（Archive） | Practice再設計・Human完遂Review、Archive全文再監査、価格、公開日時、Session Archiveの公開範囲・Membership |
+| S01-05 | 「最新」「最終」「最終2」って、結局どれが正式なの？ | 同名Storyをnote本編前半へ使用 | MarkdownにVersionとStatusを持たせる | 最終、修正版、最終2、本当の最終 | Redesign Required（Practice）/ Revision Required（Archive） | Practice再設計・Human完遂Review、Archive全文再監査、価格、公開日時、Session Archiveの公開範囲・Membership |
+| S01-06 | Gitって、コードを書く人のものだと思ってた | 同名Storyをnote本編前半へ使用 | RepositoryをGitで履歴管理する | Gitって何？？？？？から始まった | Redesign Required（Practice）/ Revision Required（Archive） | Practice再設計・Human完遂Review、Archive全文再監査、価格、公開日時、Session Archiveの公開範囲・Membership |
 
-各Sessionのnote本編はStory＋Practiceをこの順序で1記事にする。Session Archiveはnote本編へ混ぜず、別コンテンツとして保持する。Story／Practice本文と確定タイトルはFinal Candidateから変更しない。Session Archiveは、Human-approvedの内容・一次ログ・順序・表現を保持したまま、段落・改行・終わり方を含む後発仕様との不一致箇所だけを必要最小限に修正し、全文を再監査する。Session Archiveの具体的な公開範囲とMembershipでの扱いは別途Human Decisionとし、未決のまま公開しない。
+各Sessionのnote本編はStory＋Practiceをこの順序で1記事にする。Session Archiveはnote本編へ混ぜず、別コンテンツとして保持する。Story本文・確定タイトルとS1-1 Practiceの既存Statusは変更しない。S1-2〜S1-6 Practiceの現行本文は再設計baselineとして保持し、§2.1に従って新たなFinal CandidateとHuman approvalを得る。Session Archiveは、Human-approvedの内容・一次ログ・順序・表現を保持したまま、段落・改行・終わり方を含む後発仕様との不一致箇所だけを必要最小限に修正し、全文を再監査する。Session Archiveの具体的な公開範囲とMembershipでの扱いは別途Human Decisionとし、未決のまま公開しない。
 
 ### S01-01 制作台本詳細
 
@@ -131,11 +169,11 @@
 
 ## 5. Section完成条件と価格キャリブレーション
 
-- 全6 SessionにStory、Practice、Session Archiveが各1件存在する。Story／Practice本文と確定タイトルのHuman Final Checkは完了している。
-- note本編は各SessionのStory＋Practiceを無改変で1記事へ分割する。Session Archiveは別コンテンツとして分離し、`00_note制作・公開システム.md` §2.2.3のAcceptance Criteriaに適合させる。
+- 全6 SessionにStory、Practice、Session Archiveが各1件存在する。Story本文と確定タイトルのHuman Final Checkは完了している。S1-2〜S1-6 Practiceは現行本文を再設計baselineとして保持する。
+- S1-2〜S1-6 Practiceは§2.1の完成責任・制作フローと`00_note制作・公開システム.md` §2.2.2に適合し、初心者が実機で成果物を完成できることをHuman完遂Reviewで確認する。Session Archiveは別コンテンツとして分離し、同仕様§2.2.3に適合させる。
 - 各Session Archiveは、後発Human-approved仕様と不一致の箇所だけを修正し、追記・修正・統合後に全文をAcceptance Criteriaで再監査する。
-- note下書き保存前に、6本の本文抽出、ヘッダー画像との対応、Archive非混入を確認する。
-- Story／Practice本文・確定タイトルのHuman Final Check、Session Archiveの修正後再Review、価格、公開範囲、公開日時、Publish承認を分離する。現在Statusは`Revision Required`とする。
+- note下書き保存前に、6本の本文抽出、ヘッダー画像との対応、Archive非混入、Practice FinalのHuman approvalを確認する。
+- Story本文・確定タイトルのHuman Final Check、Practice再設計後のHuman完遂Review、Session Archiveの修正後再Review、価格、公開範囲、公開日時、Publish承認を分離する。Sectionの現在Statusは`Redesign Required / Production Completion NOT READY`、Archive単位は`Revision Required`とする。
 - Session Archiveの公開範囲とMembershipでの扱い、各note本編の価格はHumanのみが決定する。
 - 承認・公開・公開後記録までの状態遷移は`07_Note_Production/00_note制作・公開システム.md`に従う。
 
@@ -143,12 +181,12 @@
 
 | Session ID | Source / Audit QA | Final Candidate / Output QA | Human Final Check | 価格 | Session Archive公開範囲 | 差し戻し対象・修正範囲 | 再Review | Publish承認 | 次アクション |
 |---|---|---|---|---|---|---|---|---|---|
-| S01-01 | 既存Internal / Claude External Audit完了。新仕様Source QA完了 | 既存PASS履歴を保持 / Archive Revision Required | Story／Practice・タイトル完了。Archive再Review待ち | Pending | Pending / Human Decision Required | Session Archiveの後発仕様不一致（段落・改行・末尾を含む） | Pending | 未承認 | Archive限定修正後、全文Acceptance Criteria再監査 |
-| S01-02 | 既存Internal / Claude External Audit完了。新仕様Source QA完了 | 既存PASS履歴を保持 / Archive Revision Required | Story／Practice・タイトル完了。Archive再Review待ち | Pending | Pending / Human Decision Required | Session Archiveの後発仕様不一致（段落・改行・末尾を含む） | Pending | 未承認 | Archive限定修正後、全文Acceptance Criteria再監査 |
-| S01-03 | 既存Internal / Claude External Audit完了。新仕様Source QA完了 | 既存PASS履歴を保持 / Archive Revision Required | Story／Practice・タイトル完了。Archive再Review待ち | Pending | Pending / Human Decision Required | Session Archiveの後発仕様不一致（段落・改行・末尾を含む） | Pending | 未承認 | Archive限定修正後、全文Acceptance Criteria再監査 |
-| S01-04 | 既存Internal / Claude External Audit完了。新仕様Source QA完了 | 既存PASS履歴を保持 / Archive Revision Required | Story／Practice・タイトル完了。Archive再Review待ち | Pending | Pending / Human Decision Required | Session Archiveの後発仕様不一致（段落・改行・末尾を含む） | Pending | 未承認 | Archive限定修正後、全文Acceptance Criteria再監査 |
-| S01-05 | 既存Internal / Claude External Audit完了。新仕様Source QA完了 | 既存PASS履歴を保持 / Archive Revision Required | Story／Practice・タイトル完了。Archive再Review待ち | Pending | Pending / Human Decision Required | Session Archiveの後発仕様不一致（段落・改行・末尾を含む） | Pending | 未承認 | Archive限定修正後、全文Acceptance Criteria再監査 |
-| S01-06 | 既存Internal / Claude External Audit完了。新仕様Source QA完了 | 既存PASS履歴を保持 / Archive Revision Required | Story／Practice・タイトル完了。Archive再Review待ち | Pending | Pending / Human Decision Required | Session Archiveの後発仕様不一致（段落・改行・末尾を含む） | Pending | 未承認 | Archive限定修正後、全文Acceptance Criteria再監査 |
+| S01-01 | Source QA / Retrieval E2E PASS。既存監査履歴を保持 | Story／Practice既存PASS / Archive Revision Required | Story／Practice・タイトル完了。Archive再Review待ち | Pending | Pending / Human Decision Required | Session Archiveの後発仕様不一致（段落・改行・末尾を含む） | Pending | 未承認 | Archive限定修正後、全文Acceptance Criteria再監査 |
+| S01-02 | Source QA / Retrieval E2E PASS。既存監査履歴を保持 | Story READY / Practice Redesign Required / Archive Revision Required | Story・タイトル完了。Practice Final未確定。Archive再Review待ち | Pending | Pending / Human Decision Required | Practice作業マニュアル再設計、Session Archive後発仕様不一致 | Pending | 未承認 | Practice §2.1工程開始。その後Archive限定修正・再監査 |
+| S01-03 | Source QA / Retrieval E2E PASS。既存監査履歴を保持 | Story READY / Practice Redesign Required / Archive Revision Required | Story・タイトル完了。Practice Final未確定。Archive再Review待ち | Pending | Pending / Human Decision Required | Practice作業マニュアル再設計、Session Archive後発仕様不一致、一次ログ制限 | Pending | 未承認 | Practice §2.1工程開始。その後Archive限定修正・再監査 |
+| S01-04 | Source QA / Retrieval E2E PASS。既存監査履歴を保持 | Story READY / Practice Redesign Required / Archive Revision Required | Story・タイトル完了。Practice Final未確定。Archive再Review待ち | Pending | Pending / Human Decision Required | Practice作業マニュアル再設計、Session Archive後発仕様不一致 | Pending | 未承認 | Practice §2.1工程開始。その後Archive限定修正・再監査 |
+| S01-05 | Source QA / Retrieval E2E PASS。既存監査履歴を保持 | Story READY / Practice Redesign Required / Archive Revision Required | Story・タイトル完了。Practice Final未確定。Archive再Review待ち | Pending | Pending / Human Decision Required | Practice作業マニュアル再設計、Session Archive後発仕様不一致、一次ログ制限 | Pending | 未承認 | Practice §2.1工程開始。その後Archive限定修正・再監査 |
+| S01-06 | Source QA / Retrieval E2E PASS。既存監査履歴を保持 | Story READY / Practice Redesign Required / Archive Revision Required | Story・タイトル完了。Practice Final未確定。Archive再Review待ち | Pending | Pending / Human Decision Required | Practice作業マニュアル再設計、Session Archive後発仕様不一致、一次資料制限 | Pending | 未承認 | Practice §2.1工程開始。その後Archive限定修正・再監査 |
 
 ## 7. 公開後・Feedback
 

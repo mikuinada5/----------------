@@ -331,7 +331,9 @@ commitの具体運用とメッセージ規約は `REPOSITORY_RULES.md` を正と
 
 GitHubは、remoteへ反映済みのRepository状態を保持する共有・復旧先である。
 
-Work CloudからPrivate Sourceを読む場合は、GitHub接続へ対象Private Repositoryのread permissionを明示的に与える。repositoryがPrivateで存在することとWork Cloudから探索できることを区別し、スマホ実機でrepository、canonical path、artifact ID、file SHAおよび本文へ到達できるまでCloud Readinessを`READY`にしない。
+Work CloudからPrivate Sourceを読む場合は、GitHub接続へ対象Private Repositoryのread permissionを明示的に与える。repositoryがPrivateで存在することとWork Cloudから探索できることを区別し、スマホ実機でrepository、canonical path、artifact ID、file SHAおよび本文へ到達できた場合だけ`Source Retrieval Readiness`を`PASS`とする。
+
+`Production Completion Readiness`は別判定とし、取得したSourceのStatus、`Redesign Required`／`Revision Required`、必要なHuman Decisionおよび後続Gateをartifact／Session単位で確認する。Source Retrieval `PASS`は、本文のHuman approval、Final化、制作完了または公開許可を発生させない。
 
 ローカル作業ツリーに未pushの変更がある場合、GitHubは現在作業中の最新状態ではない。
 

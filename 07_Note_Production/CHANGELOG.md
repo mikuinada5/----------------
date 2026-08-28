@@ -4,6 +4,22 @@
 
 ---
 
+## 2026-08-29｜Practice最新Human DecisionとSource Retrieval E2Eを反映
+
+### 概要
+
+S1-2〜S1-6 Practiceの正式StatusをHuman Review Draft／`Redesign Required`／Final未確定へ訂正し、スマホWork CloudのPublic→Private Source Retrieval E2E `PASS`とProduction Completion `NOT READY`を分離した。
+
+### 変更内容
+
+- note制作仕様をv1.7、note READMEをv1.9、Timelineをv1.3、全体ロードマップをv1.4へ更新した。
+- Section制作台本へ初心者完遂率を価値基準とする作業マニュアル方針、Section 1の積み上げ構造、S1-2〜S1-6完成責任、18工程およびPrimary Evidenceの役割を記録した。Practice本文制作は開始していない。
+- InventoryとPrimary EvidenceをSource Retrieval／Production Completionの二軸へ更新し、S1-1、Story、Archiveの既存Statusを維持した。
+- スマホWork CloudからHumanのファイル・path手渡し、Source欠落、推測補完なしでS1-2の3本文と関連Sourceへ到達した実測結果を記録した。
+- Private本文をPublic Repositoryへ追加せず、canonical locatorとPrivate HEADだけを同期した。
+
+---
+
 ## 2026-08-29｜AIORG-S01 Human-approved本文をPrivate Sourceへ接続
 
 ### 概要
