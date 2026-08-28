@@ -1,6 +1,6 @@
 # 07_Note_Production
 
-**Status:** Current / Operational v1.6
+**Status:** Current / Operational v1.7
 **責任:** noteの企画・制作・公開準備・公開後記録およびSession単位のSNS展開を、既存AI Production Pipelineへ接続する媒体別運用
 
 ## この領域の入口
@@ -25,6 +25,7 @@
 
 - Section制作記録：`07_Note_Production/01_Sections/<Section-ID>_<短い識別名>/00_Section制作台本.md`
 - Section固有Primary Evidence：`07_Note_Production/01_Sections/<Section-ID>_<短い識別名>/01_Primary_Evidence/README.md`とSession別Evidence。Repository外の会話全体を複製せず、Cloud制作に必要な最小抜粋、永続ID、文脈、未取得事項を保持する場合だけ作成する
+- Section固有Human-approved Source Inventory：未公開本文をRepositoryへ安全に配置できない場合だけ、同Section配下の既存責任内で本文を含まないInventoryを置き、Human approval、file SHA、本文locator、provenance、Cloud可読性および正式参照経路を管理する。AIORG-S01の正本は`01_Sections/AIORG-S01_AI基礎工事/02_Human_Approved_Source_Inventory.md`
 - SessionのStory公開済み最終稿：`07_Note_Production/02_Published/<Section-ID>/<Session-ID>/01_Story無料Hub_最終稿.md`
 - Sessionの実践編公開済み最終稿：`07_Note_Production/02_Published/<Section-ID>/<Session-ID>/02_実践編単品有料_最終稿.md`
 - SessionのMS奮闘記公開済み最終稿：`07_Note_Production/02_Published/<Section-ID>/<Session-ID>/03_MS奮闘記メンバーシップ限定_最終稿.md`
@@ -39,6 +40,8 @@ Statusは、Section制作台本と全体ロードマップで `Planning`／`Prod
 実データの作成・更新はProduction／Repository Integrationが担い、公開可否・価格・自己開示はHuman Owner／Approverが担う。配置、Archive、CHANGELOG、Gitは `REPOSITORY_RULES.md` に従う。
 
 Primary Evidence Packageは、記事本文、唯一のTimeline正本、Section制作台本、Human-approved成果物またはPersonal Archiveを代替しない。Packageの`READY`と、Repositoryだけで既存承認済み本文を保持して制作・QAを完了できる`Cloud completion READY`は分けて判定する。
+
+Public Repositoryでは、Human-approvedであっても未公開・有料予定・公開範囲未決の本文をCloud参照だけのために配置しない。本文をCloud制作へ接続する場合は、Inventoryと外部参照Registryで同一性を確定し、Humanが承認した非公開経路のcanonical Sourceへ昇格してから、repository identifier、path、commit SHA、file SHAおよびE2E結果を同期する。
 
 ## 必ず戻る既存Source
 

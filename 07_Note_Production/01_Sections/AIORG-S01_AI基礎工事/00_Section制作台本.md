@@ -38,6 +38,7 @@
 | Human Confirmation：企画・壁打ちチャット「AI組織づくりの地図を制作」2026-08-24 | S01-01の初期目的、順番、PPT作成依頼の事実、AIが教える内容を知らないという問題の本人確認 | 実読済み / 本人確認済み | Evidenceと矛盾しないこと、未確認のAI回答・採否・感情を補完しないことを確認 |
 | Repository Source：`07_Note_Production/01_Sections/AIORG-S01_AI基礎工事/00_Section制作台本.md` | S01-01の正式な企画・Source・未解決Decisionの管理 | Current / 更新対象 | 本Session詳細と本文Production時の参照箇所を確認 |
 | Repository Source：`07_Note_Production/01_Sections/AIORG-S01_AI基礎工事/01_Primary_Evidence/README.md` | S01-01〜S01-06の選定一次資料、永続ID、原文抜粋、未取得SourceおよびCloud readiness | Current / Source QA PASS | Session IDから該当Evidenceへ到達し、原文・回顧・AI proposal・Git event・未確認事項を区別 |
+| Repository Source：`07_Note_Production/01_Sections/AIORG-S01_AI基礎工事/02_Human_Approved_Source_Inventory.md` | S01-01〜S01-06のStory／Practice／Session Archive計18本文の同一性、Human approval、provenanceおよびCloud参照経路 | Current / Source QA PASS / Route Decision Pending | 本文を複製せず、Final Candidate SHA＋見出しlocator、Archive baselineおよびCloud blockerを確認 |
 | `07_Note_Production/01_Timeline.md` | 記事に使える確認済み史実と一次資料参照 | Current / 実読済み | Storyの史実・参照位置をSessionごとに照合 |
 | `07_Note_Production/00_note制作・公開システム.md` | Section固有公開構成Profile、記事制作仕様、公開Gate | Current / v1.6実読済み | Story＋Practice本編とSession Archive分離、および§2.2の成果物別Acceptance Criteriaを確認 |
 | `AI/04_Personal_Archive/Derived/AI_Organization_Series_Section1_Final_Candidate.md` | S1-1〜S1-6の確定タイトル・Story・Practice・Session Archive本文 | 既存候補 / SHA-256 `7E8DDF4E4F7CEC755A99EB123024A12D04883CCD353FF88F8C7A278790185CB2` | Story／Practice本文と確定タイトルは保持する。Session Archiveは後発Human-approved仕様との不一致箇所だけを修正し、全文Acceptance Criteria再監査後に再Reviewする |
@@ -52,7 +53,9 @@
 **G0:** Draftは外部公開しない。最終承認者は稲田美来。<br>
 **Source / Audit QA record:** 既存Final Candidateは、Human Review、Internal Audit、Claude External Audit、Internal Re-AuditおよびHuman Final Checkを通過した履歴を保持する。その後、制作時のHuman ReviewからStory／Practice／Session Archiveの詳細仕様が救出され、現行Sourceには役割概念のみで具体的Acceptance Criteriaが不足していたこと、Final CandidateのSession Archiveに後発仕様との不一致があることを確認した。既存監査履歴を削除または遡及変更せず、Story／Practice本文と確定タイトルは保持し、Session Archiveだけを`Revision Required`へ戻す。旧工程の独立したG2受付記録は本台本に残っていないため、G2完了を遡及して推測しない。公開構成Profile、価格、Session Archive公開範囲、note投入およびPublishは別Gateとして残す。
 
-**Primary Evidence / Cloud readiness:** 2026-08-28に全6 Sessionの必要最小限の一次資料PackageをSection配下へ配置し、Source QAはPASSとした。ただしHuman-approved本文はRegistry ID `EXT-PA-AIORG-S01`のRepository外資産であり、Session Archiveも`Revision Required`である。S01-03、S01-05、S01-06には一致する一次ログまたは画像本体の不足も残るため、Repositoryだけで既存本文を保持した制作完了・全文QAを行う状態は全6 Sessionとも`NOT READY`とする。
+**Primary Evidence / Human-approved Source / Cloud readiness:** 2026-08-28に全6 Sessionの必要最小限の一次資料PackageをSection配下へ配置し、Source QAはPASSとした。Story 6件、Practice 6件、Session Archive 6件の正式参照元は`02_Human_Approved_Source_Inventory.md`でFinal Candidate SHA＋見出しlocatorへ固定した。ただし本文はPublic Repositoryへ配置せず、Registry ID `EXT-PA-AIORG-S01`のLocal-only資産であるため、Work Cloudからの本文参照経路は未接続である。Session Archiveは追加で`Revision Required`、S01-03、S01-05、S01-06には一致する一次ログまたは画像本体の不足も残る。したがって全6 SessionのCloud completionは`NOT READY`とする。
+
+本文探索順は `本台本` → `02_Human_Approved_Source_Inventory.md` → `EXT-PA-AIORG-S01` → `Final Candidate SHA＋本文locator` とする。Cloud可読なprivate Sourceが正式接続されるまでは、Local-only path、downstream抽出または記憶から本文を補完しない。
 
 ## 3. Story Hub
 

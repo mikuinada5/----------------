@@ -1,6 +1,6 @@
 # Repository外Archive provenance index
 
-**Status:** Current / Operational v1.0<br>
+**Status:** Current / Operational v1.1<br>
 **責任:** Repository外に保持する増分型一次資料について、原本識別子、Processed checkpoint、正式Sourceへの反映状態および再追跡経路をRepository側から確認できるようにする
 
 ## 1. 位置づけ
@@ -68,7 +68,16 @@ Derived内の `WORK_HISTORY_BASELINE.md`、`work_history_events.jsonl`、`SOURCE
 
 この反映は新しいProcessed checkpointを生成していない。元snapshotと処理地点は`PA-PROCESSED-20260822`のままであり、本PackageはSection固有Supporting Sourceである。Timeline、Human-approved成果物またはOriginal / Processed packageの代替にしない。
 
-### 2.6 その他のPersonal Archive
+### 2.6 AIORG-S01 Human-approved制作baseline
+
+| Dataset ID | Logical path | SHA-256 / 状態 | Repository反映 |
+|---|---|---|---|
+| `EXT-PA-AIORG-S01-FC` | `Derived/AI_Organization_Series_Section1_Final_Candidate.md` | `7E8DDF4E4F7CEC755A99EB123024A12D04883CCD353FF88F8C7A278790185CB2` / Story 6、Practice 6はHuman Final Check完了。Archive 6はHuman-approved baselineかつ後発仕様に対し`Revision Required` | 本文はPublic Repositoryへ複製せず、18本文のlocator、approval、Cloud readinessを`07_Note_Production/01_Sections/AIORG-S01_AI基礎工事/02_Human_Approved_Source_Inventory.md`へ反映 |
+| `EXT-PA-AIORG-S01-AUDIT` | `Derived/AI_Organization_Series_Section1_External_Audit_Reconciliation.md` | `FC3C79B46C276F14F109EB1AC440FC8E17691EAF5D90EA30E4E4EAE238D9A5F6` / Internal Re-Audit PASS、Final Candidate SHA一致 | Registry ID `EXT-PA-AIORG-S01`と上記Inventoryから再追跡 |
+
+Final Candidate内のSession Archive 6件を現行のHuman-approved baselineとする。note投入用一覧、Session別抽出またはAudit Routingはdownstream／provenanceであり、本文正本として採用しない。Cloud可読なprivate Sourceへの昇格はHuman Decision後に行い、その時点でcanonical SourceとOneDrive provenanceの責任を更新する。
+
+### 2.7 その他のPersonal Archive
 
 - `Original/X/` のX Archiveは約9.54GBの増分型個人一次資料であり、Repositoryへ置かない。Voice OS等へ採用済みの判断だけを各正式Sourceから参照する。
 - `Voice/` は本運用Source策定前から存在する既存例外であり、`INBOX_AND_PERSONAL_ARCHIVE.md` §22に従い、別監査なしに移動・再分類しない。
@@ -89,7 +98,7 @@ Derived内の `WORK_HISTORY_BASELINE.md`、`work_history_events.jsonl`、`SOURCE
 8. 確認済みの史実だけを `07_Note_Production/01_Timeline.md` へ追加し、本Indexの反映範囲を更新する。Voice、Human OS、Brand、Educationその他の正式判断へ反映する場合は、各責任SourceのProduction、QA、Approval、CHANGELOGおよびGit工程を別途通す。
 9. Inbox側処理とClosedは `INBOX_AND_PERSONAL_ARCHIVE.md` を正とする。自動除去制度がDisabledの間は自動除去しない。
 
-現時点の最終取得地点は2026-08-20 Export、前回処理地点は `PA-PROCESSED-20260822`、Timeline反映地点は `PA-WORK-HISTORY-20260822` の `WH-023`、AIORG-S01選定一次資料のRepository反映地点は同Sectionの`01_Primary_Evidence/`までである。
+現時点の最終取得地点は2026-08-20 Export、前回処理地点は `PA-PROCESSED-20260822`、Timeline反映地点は `PA-WORK-HISTORY-20260822` の `WH-023`、AIORG-S01選定一次資料のRepository反映地点は同Sectionの`01_Primary_Evidence/`、Human-approved本文メタデータの反映地点は同Sectionの`02_Human_Approved_Source_Inventory.md`までである。
 
 ## 4. 更新規則
 

@@ -1,6 +1,6 @@
 # Repository外参照資料レジストリ
 
-**Status:** Current / Operational v1.1<br>
+**Status:** Current / Operational v1.2<br>
 **責任:** Repository外に原本を保持する継続参照資料について、Repository正本から再追跡するための非機密メタデータと差分反映状態を管理する
 
 ## 1. 位置づけ
@@ -85,10 +85,11 @@ Personal Archive上の増分型一次資料について、Original snapshotのDa
 | 識別情報 | Final Candidate SHA-256 `7E8DDF4E4F7CEC755A99EB123024A12D04883CCD353FF88F8C7A278790185CB2`。External Audit Reconciliation SHA-256 `FC3C79B46C276F14F109EB1AC440FC8E17691EAF5D90EA30E4E4EAE238D9A5F6` |
 | 最終取得地点 | S1-1〜S1-6の確定タイトル、Story、Practice、Session ArchiveおよびExternal Audit MINOR照合まで既存工程で参照済み |
 | 前回処理地点 | Story／Practice本文と確定タイトルのHuman Final Check完了。Session Archiveは後発仕様に対する `Revision Required` |
-| 反映状態 | 制作状態、Source／Audit QA、限定修正範囲をSection制作台本とロードマップへ反映済み。本文自体は未公開でRepository正本へ未昇格 |
-| Repository参照先 | `07_Note_Production/01_Sections/AIORG-S01_AI基礎工事/00_Section制作台本.md`、同Sectionの`01_Primary_Evidence/README.md`、`07_Note_Production/02_全体ロードマップ.md` |
-| 次回処理 | Session Archive限定修正、全文再監査、Human Review後、承認済み公開構成に従って公開済み最終稿だけを `07_Note_Production/README.md` で定義されたcanonical pathへ昇格する |
-| 取扱い | Derived候補と監査記録は承認済み公開成果物の正本ではない。公開範囲未決の本文をCloud参照目的だけでRepositoryへ複製しない |
+| 反映状態 | 18本文のHuman approval、SHA＋見出しlocator、Archive baseline、Cloud可読性および経路候補をSection Inventoryへ反映済み。本文自体は未公開でPublic Repositoryへ未配置 |
+| Cloud可読性 | Localは論理pathから到達可能。Work Cloudは本RegistryとInventoryまで到達できるが、Local-only本文は取得不可。全6 SessionのCloud completionは`NOT READY` |
+| Repository参照先 | `07_Note_Production/01_Sections/AIORG-S01_AI基礎工事/00_Section制作台本.md`、同Sectionの`01_Primary_Evidence/README.md`、`02_Human_Approved_Source_Inventory.md`、`07_Note_Production/02_全体ロードマップ.md` |
+| 次回処理 | HumanがCloud参照経路を決定後、Cloud可読なprivate Sourceへexact copyを正式配置し、repository identifier、canonical path、commit SHA、file SHAおよびスマホE2E結果を同期する。その後、Session Archive限定修正、全文再監査、Human Reviewへ進む |
+| 取扱い | Final CandidateはHuman-approved制作baselineだが未公開である。現在のPublic RepositoryへCloud参照目的だけで本文を複製しない。推奨経路とHuman Decision GateはSection Inventoryを正とする |
 
 ## 4. Repository内で継続参照する正本
 

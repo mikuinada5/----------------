@@ -8,6 +8,25 @@
 
 ------------------------------------------------------------------------
 
+## 2026-08-28｜AIORG-S01 Human-approved本文を本文なしInventoryへ接続
+
+### 概要
+
+AIORG-S01のHuman-approved Story、Practice、Session Archive計18本文を棚卸しし、現Public Repositoryへ未公開本文を追加せず、同一性、provenance、Cloud blockerおよび安全な参照経路候補を既存Section責任内へ記録した。
+
+### 変更内容
+
+- `07_Note_Production/01_Sections/AIORG-S01_AI基礎工事/02_Human_Approved_Source_Inventory.md`を追加した。
+- Final Candidate SHA、External Audit Reconciliation、Archive baseline、Section制作台本、Primary Evidenceおよび外部Archive Registryの探索経路を同期した。
+- 現Public Repository全体の公開方針変更を今回へ混ぜず、別private repositoryを推奨案、実装をHuman Decision Gateとした。
+- Human-approved本文は変更・生成・公開していない。全6 SessionのCloud completionは本文経路未接続のため`NOT READY`。
+
+### Repository横断監査
+
+既存のnote ProductionとAI作業環境責任を使用し、新しいトップレベル領域は追加していない。本文、credential、secretまたは第三者情報を追加せず、本文の公開範囲も変更していない。
+
+------------------------------------------------------------------------
+
 ## 2026-08-28｜AIORG-S01一次資料をSection正本へ接続
 
 ### 概要

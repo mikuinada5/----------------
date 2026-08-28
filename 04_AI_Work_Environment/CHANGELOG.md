@@ -6,6 +6,21 @@
 
 ------------------------------------------------------------------------
 
+## 2026-08-28｜AIORG-S01完成本文のprovenanceとCloud経路候補を登録
+
+### 概要
+
+S1-1〜S1-6のStory、Practice、Session Archive計18本文について、Public Repositoryへ本文を複製せず、Human approval、Final Candidate SHA、Archive baseline、Cloud可読性および安全な経路候補を正式追跡へ追加した。
+
+### 変更内容
+
+- `EXTERNAL_REFERENCE_REGISTRY.md`をv1.2、`ARCHIVE_PROVENANCE_INDEX.md`をv1.1へ更新した。
+- Final CandidateとExternal Audit ReconciliationのSHA、18本文の所在、Local／Cloud到達性およびprivate Source昇格後に必要な識別情報を接続した。
+- Archiveのdownstream抽出をSource of Truthにせず、Final Candidate内の6 ArchiveをHuman-approved baselineかつ`Revision Required`として固定した。
+- 現Public Repositoryへ未公開本文を追加せず、別private repositoryを推奨案、実装をHuman Decision Gateとした。
+
+------------------------------------------------------------------------
+
 ## 2026-08-28｜AIORG-S01選定一次資料のCloud接続
 
 ### 概要

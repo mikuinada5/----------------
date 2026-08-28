@@ -4,6 +4,23 @@
 
 ---
 
+## 2026-08-28｜AIORG-S01 Human-approved完成本文Inventoryを追加
+
+### 概要
+
+S1-1〜S1-6のStory、Practice、Session Archive計18本文について、正式参照元、Human approval、SHA＋見出しlocator、provenance、Cloud readinessおよびBlockerをSection配下の本文なしInventoryへ集約した。
+
+### 変更内容
+
+- Story／Practice 12件をHuman Final Check完了・変更禁止、Archive 6件をHuman-approved baseline・後発仕様に対し`Revision Required`として区別した。
+- Final CandidateとExternal Audit Reconciliationを照合し、downstream版ではなく同一Final Candidate内のArchiveをSource of Truth起点に固定した。
+- Section制作台本、Primary Evidence Package、ロードマップ、note READMEおよびAI作業環境RegistryからInventoryへ探索経路を接続した。
+- note READMEをv1.7へ更新し、未公開Human-approved本文のInventoryと非公開経路昇格の責任境界を追加した。
+- 現在のPublic Repositoryへ未公開本文を追加せず、全6 SessionのCloud completionを`NOT READY`のまま維持した。
+- Cloud参照経路を比較し、別private repositoryを推奨、情報共有境界の実装をHuman Decision Gateとした。
+
+---
+
 ## 2026-08-28｜AIORG-S01 Primary Evidence Packageを追加
 
 ### 概要
