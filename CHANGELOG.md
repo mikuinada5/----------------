@@ -8,6 +8,25 @@
 
 ------------------------------------------------------------------------
 
+## 2026-08-29｜全社共通Private Source Repository経路を正式採用
+
+### 概要
+
+Human-approved非公開制作Sourceの正本を保持する全社共通Private RepositoryをPublic Repositoryから責任分離し、AIORG-S01の本文なしlocator、provenance、Version／StatusおよびCloud Gateを同期した。
+
+### 変更内容
+
+- Public側はOS／Rules／SOP／Pipeline／公開可能Evidence／Timeline／制作台本／metadata、Private側は格納基準を満たすHuman-approved非公開制作本文を保持する二Repository責任を正式化した。
+- AIORG-S01 Final CandidateとAudit ReconciliationのPrivate artifact、canonical path、commit、file SHAおよびOneDrive provenance originをRegistryとSection Sourceへ接続した。本文はPublic側へ追加していない。
+- Work CloudはPrivate Sourceをread、Localはwriteとした。Private visibility、remote pushおよび現在のGitHub接続からのreadは確認済みで、スマホ実機Source Discovery成功前は全6 SessionのCloud Readinessを`NOT READY`とした。
+- GPT Archive Retrieval Connectorを別Local開発Backlogへ登録し、GPT Archive OriginalはPrivate Repositoryへ配置しない方針を維持した。
+
+### Repository横断監査
+
+Source of Truthの二重化を避け、Private exact copyを非公開Cloud制作向けcanonical Source、OneDrive版をprovenance origin、Public側をlocator正本として分離した。公開範囲、承認状態およびSession Archiveの`Revision Required`は変更していない。
+
+------------------------------------------------------------------------
+
 ## 2026-08-28｜AIORG-S01 Human-approved本文を本文なしInventoryへ接続
 
 ### 概要

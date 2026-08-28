@@ -499,6 +499,8 @@ AIが代行できない価値判断、公開判断、正式採用判断を人間
 
 人間承認済みの成果物を、正しい責任単位の現行正本としてRepositoryへ統合する。
 
+統合前に公開範囲を確認し、公開可能な会社Sourceは現Public Repository、Human-approvedであっても未公開・有料予定・公開範囲未確定の制作Sourceは格納基準を満たす場合だけPrivate Source Repositoryを選ぶ。Public側にはPrivate本文を複製せず、正式locatorと安全なmetadataを同期する。両Repositoryへ同じCurrent本文を置かない。
+
 ### 10.2 Repositoryへ昇格するもの
 
 以下は、当該Repository Rulesと人間承認を満たす場合に昇格できる。
@@ -526,7 +528,7 @@ AIが代行できない価値判断、公開判断、正式採用判断を人間
 
 1. **承認確認**：Approval Recordと承認対象を照合する。
 2. **責任本籍確認**：成果物の責任を持つ既存ディレクトリを特定する。
-3. **保存先決定**：新しい恒久フォルダを安易に作らず、Repository Rulesと既存構造を使用する。
+3. **保存先決定**：新しい恒久フォルダを安易に作らず、Repository Rulesと既存構造を使用する。Public／Private境界がある場合は公開範囲、格納基準および正本の一意性を確認する。
 4. **canonical filename化**：`最終版`、`修正版`、日時、`(1)` 等を正式名へ残さない。
 5. **現行／Archive整理**：旧版の実物を保持する必要がある場合だけArchiveへ移す。Git履歴だけで十分な一時物は重複保存しない。
 6. **本文反映**：承認済み全文を配置し、無関係な既存内容を保持する。
@@ -536,6 +538,7 @@ AIが代行できない価値判断、公開判断、正式採用判断を人間
 10. **CHANGELOG更新**：意味のある変更だけを責任領域のCHANGELOGへ記録する。誤字・整形等は原則Git履歴へ任せる。
 11. **QA記録配置**：Repository保存対象と定めたSource QA、Output QA、Approval Recordを配置する。
 12. **Integration Manifest作成**：追加・更新・移動・Archive・非変更を一覧化する。
+13. **cross-repository同期**：Private Sourceを昇格した場合は、Public Registryへrepository、path、artifact ID、full commit SHA、file SHA、provenance、Version／StatusおよびCloud Readinessを同期する。
 
 ### 10.5 Integration Manifest
 

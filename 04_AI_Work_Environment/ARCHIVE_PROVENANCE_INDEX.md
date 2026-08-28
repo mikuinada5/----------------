@@ -1,6 +1,6 @@
 # Repository外Archive provenance index
 
-**Status:** Current / Operational v1.1<br>
+**Status:** Current / Operational v1.2<br>
 **責任:** Repository外に保持する増分型一次資料について、原本識別子、Processed checkpoint、正式Sourceへの反映状態および再追跡経路をRepository側から確認できるようにする
 
 ## 1. 位置づけ
@@ -14,6 +14,7 @@
 | 生ログ、サービスExport、個人一次資料 | OneDrive `AI/04_Personal_Archive/Original/` | 対象外。必要時にLocalで限定READ |
 | 正規化・差分処理データ | OneDrive `AI/04_Personal_Archive/Processed/` | 対象外。次回差分処理の入力 |
 | Work History、候補、分析等 | OneDrive `AI/04_Personal_Archive/Derived/` | 正式採用前は通常参照Sourceにしない |
+| Human-approved非公開制作本文 | Private Repository `mikuinada5/feminine-wellness-private-sources`の登録済みcanonical path | 権限を持つLocal / Work Cloudの正式制作Source。OneDrive取得元はprovenance originとして保持 |
 | 加工・確認済みの史実 | `07_Note_Production/01_Timeline.md` | Local / Cloud共通の史実正本 |
 | Human OSの判断原則とSupporting Evidence | `05_Human_OS/HUMAN_OS.md`、`05_Human_OS/HUMAN_OS_EVIDENCE_LOG.md` | Local / Cloud共通の現行正式Source |
 | Voice、Writing Style、Brand、Educationその他の正式判断 | 各責任領域のcanonical Source | Local / Cloud共通の現行正式Source |
@@ -72,10 +73,10 @@ Derived内の `WORK_HISTORY_BASELINE.md`、`work_history_events.jsonl`、`SOURCE
 
 | Dataset ID | Logical path | SHA-256 / 状態 | Repository反映 |
 |---|---|---|---|
-| `EXT-PA-AIORG-S01-FC` | `Derived/AI_Organization_Series_Section1_Final_Candidate.md` | `7E8DDF4E4F7CEC755A99EB123024A12D04883CCD353FF88F8C7A278790185CB2` / Story 6、Practice 6はHuman Final Check完了。Archive 6はHuman-approved baselineかつ後発仕様に対し`Revision Required` | 本文はPublic Repositoryへ複製せず、18本文のlocator、approval、Cloud readinessを`07_Note_Production/01_Sections/AIORG-S01_AI基礎工事/02_Human_Approved_Source_Inventory.md`へ反映 |
-| `EXT-PA-AIORG-S01-AUDIT` | `Derived/AI_Organization_Series_Section1_External_Audit_Reconciliation.md` | `FC3C79B46C276F14F109EB1AC440FC8E17691EAF5D90EA30E4E4EAE238D9A5F6` / Internal Re-Audit PASS、Final Candidate SHA一致 | Registry ID `EXT-PA-AIORG-S01`と上記Inventoryから再追跡 |
+| `EXT-PA-AIORG-S01-FC` | `Derived/AI_Organization_Series_Section1_Final_Candidate.md` | `7E8DDF4E4F7CEC755A99EB123024A12D04883CCD353FF88F8C7A278790185CB2` / Story 6、Practice 6はHuman Final Check完了。Archive 6はHuman-approved baselineかつ後発仕様に対し`Revision Required` | exact copyをPrivate `PSR-AIORG-S01-FC`、commit `0531e32239237b7bd5f011bca62d65f5d9d4317e`へ昇格。Public側はInventoryとRegistry ID `EXT-PSR-AIORG-S01`へlocatorだけを反映 |
+| `EXT-PA-AIORG-S01-AUDIT` | `Derived/AI_Organization_Series_Section1_External_Audit_Reconciliation.md` | `FC3C79B46C276F14F109EB1AC440FC8E17691EAF5D90EA30E4E4EAE238D9A5F6` / Internal Re-Audit PASS、Final Candidate SHA一致 | exact copyをPrivate `PSR-AIORG-S01-AUDIT`へ昇格。Registry ID `EXT-PA-AIORG-S01`と`EXT-PSR-AIORG-S01`から再追跡 |
 
-Final Candidate内のSession Archive 6件を現行のHuman-approved baselineとする。note投入用一覧、Session別抽出またはAudit Routingはdownstream／provenanceであり、本文正本として採用しない。Cloud可読なprivate Sourceへの昇格はHuman Decision後に行い、その時点でcanonical SourceとOneDrive provenanceの責任を更新する。
+Final Candidate内のSession Archive 6件を現行のHuman-approved baselineとする。note投入用一覧、Session別抽出またはAudit Routingはdownstream／provenanceであり、本文正本として採用しない。Private Repositoryの上記commitを非公開Cloud制作向けcanonical Source、OneDrive版をprovenance originとする。Private visibility、remote pushおよび現在のGitHub接続からのreadは確認済みである。スマホWork Cloud実機探索の成功前はCloud Readinessを`READY`にしない。
 
 ### 2.7 その他のPersonal Archive
 
@@ -99,6 +100,10 @@ Final Candidate内のSession Archive 6件を現行のHuman-approved baselineと�
 9. Inbox側処理とClosedは `INBOX_AND_PERSONAL_ARCHIVE.md` を正とする。自動除去制度がDisabledの間は自動除去しない。
 
 現時点の最終取得地点は2026-08-20 Export、前回処理地点は `PA-PROCESSED-20260822`、Timeline反映地点は `PA-WORK-HISTORY-20260822` の `WH-023`、AIORG-S01選定一次資料のRepository反映地点は同Sectionの`01_Primary_Evidence/`、Human-approved本文メタデータの反映地点は同Sectionの`02_Human_Approved_Source_Inventory.md`までである。
+
+### 3.1 Archive Retrieval Connectorの次期タスク
+
+GPT Archive Originalは本Private Source Repositoryへ移動・複製しない。別Local開発タスクで、OneDrive Original、自動Archive Index、Exact-message Store、read-only Archive Retrieval Connector、Work CloudおよびSource QAを接続する。Humanによる事前抽出なしでOriginal conversation / messageへ到達できることを最終E2E条件とし、現在のSection固有事前選定を最終解としない。進捗状態は`EXTERNAL_REFERENCE_REGISTRY.md`の`EXT-DEV-GPT-ARCHIVE-RETRIEVAL`を正とする。
 
 ## 4. 更新規則
 

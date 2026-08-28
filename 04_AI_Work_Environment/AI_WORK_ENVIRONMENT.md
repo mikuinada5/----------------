@@ -301,6 +301,8 @@ Codexと人間が同じファイルを同時に編集しない。
 
 Repositoryは、正式Source、成果物、承認記録、変更履歴ファイルおよび必要な過去資産を、定義された責任構造に従って保持する場所である。
 
+現Public Repositoryは公開可能な会社SourceとPrivate Sourceへの安全なlocatorを保持する。`mikuinada5/feminine-wellness-private-sources`は、格納基準を満たすHuman-approved非公開制作Sourceを保持する。両者の具体的な責任分離、正本の一意性および配置規則は`REPOSITORY_RULES.md`とPrivate側の`PRIVATE_SOURCE_RULES.md`を正とする。
+
 Repositoryへ存在することだけで、成果物がApprovedになるわけではない。
 
 正式使用可否は、適用される専門Sourceと承認工程を正とする。
@@ -315,6 +317,8 @@ Repositoryへ存在することだけで、成果物がApprovedになるわけ�
 
 AIは作業開始時に現在の差分を確認し、既存の未commit変更を保持する。
 
+Private Sourceの本文更新、SHA照合、Source QA、commitおよびpushも、権限を持つLocal working treeで行う。Work CloudからPrivate本文を直接更新・承認しない。
+
 ### 10.3 Git commit
 
 Git commitは、確認済みの変更単位について変更履歴を確定する。
@@ -326,6 +330,8 @@ commitの具体運用とメッセージ規約は `REPOSITORY_RULES.md` を正と
 ### 10.4 GitHub
 
 GitHubは、remoteへ反映済みのRepository状態を保持する共有・復旧先である。
+
+Work CloudからPrivate Sourceを読む場合は、GitHub接続へ対象Private Repositoryのread permissionを明示的に与える。repositoryがPrivateで存在することとWork Cloudから探索できることを区別し、スマホ実機でrepository、canonical path、artifact ID、file SHAおよび本文へ到達できるまでCloud Readinessを`READY`にしない。
 
 ローカル作業ツリーに未pushの変更がある場合、GitHubは現在作業中の最新状態ではない。
 

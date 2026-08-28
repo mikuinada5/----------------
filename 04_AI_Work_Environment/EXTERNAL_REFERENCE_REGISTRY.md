@@ -1,6 +1,6 @@
 # Repository外参照資料レジストリ
 
-**Status:** Current / Operational v1.2<br>
+**Status:** Current / Operational v1.3<br>
 **責任:** Repository外に原本を保持する継続参照資料について、Repository正本から再追跡するための非機密メタデータと差分反映状態を管理する
 
 ## 1. 位置づけ
@@ -85,11 +85,43 @@ Personal Archive上の増分型一次資料について、Original snapshotのDa
 | 識別情報 | Final Candidate SHA-256 `7E8DDF4E4F7CEC755A99EB123024A12D04883CCD353FF88F8C7A278790185CB2`。External Audit Reconciliation SHA-256 `FC3C79B46C276F14F109EB1AC440FC8E17691EAF5D90EA30E4E4EAE238D9A5F6` |
 | 最終取得地点 | S1-1〜S1-6の確定タイトル、Story、Practice、Session ArchiveおよびExternal Audit MINOR照合まで既存工程で参照済み |
 | 前回処理地点 | Story／Practice本文と確定タイトルのHuman Final Check完了。Session Archiveは後発仕様に対する `Revision Required` |
-| 反映状態 | 18本文のHuman approval、SHA＋見出しlocator、Archive baseline、Cloud可読性および経路候補をSection Inventoryへ反映済み。本文自体は未公開でPublic Repositoryへ未配置 |
-| Cloud可読性 | Localは論理pathから到達可能。Work Cloudは本RegistryとInventoryまで到達できるが、Local-only本文は取得不可。全6 SessionのCloud completionは`NOT READY` |
+| 反映状態 | 18本文のHuman approval、SHA＋見出しlocator、Archive baselineおよびprovenanceをSection Inventoryへ反映済み。本文はPublic Repositoryへ置かず、exact copyをPrivate Source Repositoryへ昇格 |
+| Cloud可読性 | LocalはOneDrive provenance originとPrivate working treeへ到達可能。Private remoteへのpushと現在のGitHub接続からのreadは確認済み。スマホWork Cloud実機Source Discoveryが成功するまで全6 SessionのCloud completionは`NOT READY` |
 | Repository参照先 | `07_Note_Production/01_Sections/AIORG-S01_AI基礎工事/00_Section制作台本.md`、同Sectionの`01_Primary_Evidence/README.md`、`02_Human_Approved_Source_Inventory.md`、`07_Note_Production/02_全体ロードマップ.md` |
-| 次回処理 | HumanがCloud参照経路を決定後、Cloud可読なprivate Sourceへexact copyを正式配置し、repository identifier、canonical path、commit SHA、file SHAおよびスマホE2E結果を同期する。その後、Session Archive限定修正、全文再監査、Human Reviewへ進む |
-| 取扱い | Final CandidateはHuman-approved制作baselineだが未公開である。現在のPublic RepositoryへCloud参照目的だけで本文を複製しない。推奨経路とHuman Decision GateはSection Inventoryを正とする |
+| 次回処理 | Registry ID `EXT-PSR-AIORG-S01`のWork Cloud接続許可とスマホE2Eを確認する。その後、Session Archive限定修正、全文再監査、Human Reviewへ進む |
+| 取扱い | OneDrive版は取得元provenanceとして保持する。Private側の検証済みexact copyを非公開Cloud制作向けcanonical Sourceとし、Public Repositoryへ本文を複製しない |
+
+### EXT-PSR-AIORG-S01 — AIORG-S01 Private Human-approved Source
+
+| 項目 | 現在値 |
+|---|---|
+| 資料種別 | 全社共通Private Source Repository内の非公開制作正本 |
+| Repository | `mikuinada5/feminine-wellness-private-sources` / Private |
+| Artifact ID | 本文 `PSR-AIORG-S01-FC`、監査記録 `PSR-AIORG-S01-AUDIT` |
+| Canonical path | `07_Note_Production/01_Sections/AIORG-S01_AI基礎工事/AI_Organization_Series_Section1_Final_Candidate.md` |
+| Audit path | `07_Note_Production/01_Sections/AIORG-S01_AI基礎工事/AI_Organization_Series_Section1_External_Audit_Reconciliation.md` |
+| Source commit | `0531e32239237b7bd5f011bca62d65f5d9d4317e` |
+| Repository HEAD | `2401696ba1f66d55e4d3b00cc645b0bdf442a2b1` / `main` |
+| 識別情報 | Final Candidate SHA-256 `7E8DDF4E4F7CEC755A99EB123024A12D04883CCD353FF88F8C7A278790185CB2`。Audit SHA-256 `FC3C79B46C276F14F109EB1AC440FC8E17691EAF5D90EA30E4E4EAE238D9A5F6` |
+| Version / Status | Story 6・Practice 6はHuman Final Check完了／変更禁止。Session Archive 6はHuman-approved baseline／`Revision Required`。Source QA PASS |
+| Provenance | OneDrive `AI/04_Personal_Archive/Derived/`の2ファイルをexact copy。本文を再生成・改善・分割していない |
+| Source responsibility | 上記Private commitを非公開Cloud制作向けcanonical Source、OneDrive版をprovenance origin、Public側Inventory／Registryをlocator正本とする |
+| Cloud可読性 | GitHub上のPrivate visibility、remote push、現在のGitHub接続からの`SOURCE_INDEX.md` readは確認済み。スマホWork Cloud実機探索は未確認のため`NOT READY` |
+| Repository参照先 | `07_Note_Production/01_Sections/AIORG-S01_AI基礎工事/02_Human_Approved_Source_Inventory.md`、同Sectionの制作台本とPrimary Evidence README |
+| 次回処理 | スマホWork CloudからPublic台本を起点にPrivate本文へ到達できるかE2E確認し、結果を同期する。到達不能時だけGitHub接続のrepository access設定を確認する |
+| 取扱い | Public側へ本文を複製しない。Cloudはread、Localはwrite。Archiveの`Revision Required`を解消済みと読み替えない |
+
+### EXT-DEV-GPT-ARCHIVE-RETRIEVAL — GPT Archive Retrieval Connector
+
+| 項目 | 現在値 |
+|---|---|
+| 資料種別 | Local開発Backlog／全社横断長期記憶検索Capability |
+| Original | OneDrive Personal ArchiveのGPT Archive Originalを維持。Private Source Repositoryへ格納しない |
+| Target route | OneDrive Original → 自動Archive Index → Exact-message Store → read-only Archive Retrieval Connector → Work Cloud → Source QA |
+| E2E要件 | Humanの事前抽出なしでCloud AIがArchive全体を検索し、Original conversation / messageを特定・限定取得し、provenance付きで使用できること |
+| 現在Capability | 未実装。現在はLocal限定READとSection固有の事前選定Evidenceだけであり、最終E2Eではない |
+| Status | `Backlog / Separate Local development task / Not started` |
+| 取扱い | credential、生ログ本文、個人情報または大容量Archiveを本Public RegistryやPrivate Source Repositoryへ複製しない |
 
 ## 4. Repository内で継続参照する正本
 

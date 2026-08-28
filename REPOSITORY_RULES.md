@@ -106,6 +106,18 @@ Repository全体へ影響する正式Sourceを新規追加・更新・移動・�
 
 ------------------------------------------------------------------------
 
+### 2.7 Public / Private Source Repositoryの責任分離
+
+会社Sourceは、公開可能な現Repositoryと、Human-approved非公開制作Sourceを保持するPrivate Repository `mikuinada5/feminine-wellness-private-sources`を責任に応じて併用する。
+
+- 現Public RepositoryはOS、Rules、SOP、Pipeline、公開可能なEvidence、Timeline、制作台本、locator、provenance metadata、SHA、StatusおよびCloud Readinessの正本を保持する。未公開・有料予定・公開範囲未確定の本文はCloud参照だけのために配置しない。
+- Private Repositoryは、格納基準を満たすHuman-approved未公開本文、有料予定本文、公開範囲未確定本文およびCloud制作で正式参照が必要な非公開制作Sourceの正本を保持する。具体規則は同Repositoryの`PRIVATE_SOURCE_RULES.md`を正とする。
+- 同一本文を両RepositoryでCurrentな正本として重複保持しない。Public側はPrivate側のrepository locator、canonical path、artifact ID、full commit SHA、file SHA、provenance、Version／StatusおよびCloud Readinessだけを保持する。
+- Privateであることは、credential、顧客情報、機微な個人情報、生会話、GPT Archive Original、外部サービスOriginal、大容量Archiveまたは端末固有設定の格納を許可しない。
+- Private側の更新・QA・commit・pushはLocalで行い、Work Cloudはread用途とする。実機Source Discovery成功前にCloud Readinessを`READY`にしない。
+
+------------------------------------------------------------------------
+
 ## 3. Brand領域の基本構造
 
 Brand領域は、単一の巨大な仕様書ではなく、責任本籍ごとに分割したBrand OSとして管理する。

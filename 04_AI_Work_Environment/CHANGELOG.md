@@ -6,6 +6,21 @@
 
 ------------------------------------------------------------------------
 
+## 2026-08-29｜Private SourceとWork Cloudの接続責任を追加
+
+### 概要
+
+全社共通Private Source Repositoryを非公開制作本文の正式Sourceとして接続し、Public locator、OneDrive provenance、Local write、Cloud readおよび実機Readiness Gateを分離した。
+
+### 変更内容
+
+- `EXTERNAL_REFERENCE_REGISTRY.md`をv1.3、`ARCHIVE_PROVENANCE_INDEX.md`をv1.2へ更新した。
+- AIORG-S01のPrivate repository、artifact ID、canonical path、source commit、file SHA、Version／Statusおよびprovenanceを登録した。
+- GPT Archive Retrieval Connectorを別Local開発Backlogとして登録し、OriginalはOneDrive保持・Private Repository非格納を維持した。
+- Private visibility、remote pushおよび現在のGitHub接続からのreadを確認した。スマホWork Cloud実機探索が完了するまでCloud Readinessを`NOT READY`とした。
+
+------------------------------------------------------------------------
+
 ## 2026-08-28｜AIORG-S01完成本文のprovenanceとCloud経路候補を登録
 
 ### 概要

@@ -4,6 +4,21 @@
 
 ---
 
+## 2026-08-29｜AIORG-S01 Human-approved本文をPrivate Sourceへ接続
+
+### 概要
+
+S1-1〜S1-6のStory 6、Practice 6、Session Archive 6を含むHuman-approved Final Candidateのexact copyを、全社共通Private Source Repositoryのcanonical artifactへ接続した。
+
+### 変更内容
+
+- note READMEをv1.8へ更新し、Public本文なしInventoryとPrivate本文正本の責任分離を明記した。
+- Section制作台本、Human-approved Source Inventory、Primary Evidence READMEをPrivate repository、artifact、source commit、file SHAおよびSession locatorへ同期した。
+- Story／Practiceの変更禁止とSession ArchiveのHuman-approved baseline／`Revision Required`を維持し、旧downstream版を昇格していない。
+- Public Repositoryへ本文を追加せず、Private visibility、remote pushおよび現在のGitHub接続からのreadを確認した。スマホWork Cloud実機探索の確認前は全6 SessionのCloud Readinessを`NOT READY`とした。
+
+---
+
 ## 2026-08-28｜AIORG-S01 Human-approved完成本文Inventoryを追加
 
 ### 概要
