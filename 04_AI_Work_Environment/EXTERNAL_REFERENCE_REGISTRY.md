@@ -1,6 +1,6 @@
 # Repository外参照資料レジストリ
 
-**Status:** Current / Operational v1.0<br>
+**Status:** Current / Operational v1.1<br>
 **責任:** Repository外に原本を保持する継続参照資料について、Repository正本から再追跡するための非機密メタデータと差分反映状態を管理する
 
 ## 1. 位置づけ
@@ -33,18 +33,18 @@ Personal Archive上の増分型一次資料について、Original snapshotのDa
 
 ## 3. 現行登録
 
-### EXT-GPT-AIORG-MAP — GPT Archive「AI組織づくりの地図を制作」
+### EXT-CODEX-AIORG-MAP — Codex Task「AI組織づくりの地図を制作」
 
 | 項目 | 現在値 |
 |---|---|
-| 資料種別 | ChatGPT会話Archive／増分型一次資料 |
-| 取得元 | ChatGPT data export。恒久的なconversation ID、export file、取得日時は現Repositoryから未確認 |
-| Repository外原本 | Personal ArchiveのOriginal候補。authoritative pathとSHAは未確認 |
-| 最終取得地点 | 2026-08-24の企画・壁打ち会話として参照済み。export全体の最終取得時点は未確認 |
-| 前回処理地点 | 2026-08-24の回顧発言4件（Section台本のHC-01〜HC-04、SC-01〜SC-02）まで制作Sourceへ反映済み |
-| 反映状態 | AIORG-S01制作台本へEvidence／Human Confirmationとして反映済み。発生日、当時のAI回答、採否、成果物状態は未確認。Timelineへの独立行は未反映 |
-| Repository参照先 | `07_Note_Production/01_Sections/AIORG-S01_AI基礎工事/00_Section制作台本.md` |
-| 次回処理 | 新しいexport取得時にconversation ID、原本SHA、取得日時、entry参照を確定し、前回処理地点以後の差分を抽出する |
+| 資料種別 | Codex Task会話原本／後日回顧の一次資料 |
+| 取得元 | Codex Task。thread `01a0317f-f4e8-76c0-9bdd-143d02aa03d3` |
+| Repository外原本 | Codexサービス側Task。turn `01a03180-2578-7f63-92c9-ac3f082f1f6a`、user message `01a03180-27a1-72a2-a5d4-3797d8a78857` |
+| 最終取得地点 | 2026-08-24の上記user messageにある回顧発言4件まで参照済み |
+| 前回処理地点 | Section台本のHC-01〜HC-04、SC-01〜SC-02およびS01-01 Primary Evidenceへ反映済み |
+| 反映状態 | AIORG-S01制作台本へEvidence／Human Confirmation、Primary Evidence Packageへ識別子付き抜粋として反映済み。初期PPT依頼の発生日、当時のAI回答、採否、成果物状態は未確認。Timelineへの独立行は未反映 |
+| Repository参照先 | `07_Note_Production/01_Sections/AIORG-S01_AI基礎工事/00_Section制作台本.md`、同Sectionの`01_Primary_Evidence/S01-01.md` |
+| 次回処理 | 同Taskの新規turnを取得した場合は上記user message以後を差分確認し、初期PPT依頼のOriginalが別途取得できた場合は回顧と分けて登録する |
 | 取扱い | 個人会話・第三者情報を含む可能性があるため原本はRepositoryへ配置しない。通常検索・外部提供へ自動混入させない |
 
 ### EXT-CODEX-AIORG-WORK — Codex Work「AI組織シリーズ制作｜正式運用開始」
@@ -82,17 +82,19 @@ Personal Archive上の増分型一次資料について、Original snapshotのDa
 | 資料種別 | Personal Archive Derived／制作候補・監査照合記録 |
 | 取得元 | AI Organization Series Section 1のProductionおよびExternal Audit工程 |
 | Repository外原本 | `AI/04_Personal_Archive/Derived/AI_Organization_Series_Section1_Final_Candidate.md`、`AI/04_Personal_Archive/Derived/AI_Organization_Series_Section1_External_Audit_Reconciliation.md` |
-| 識別情報 | Final Candidate SHA-256 `7E8DDF4E4F7CEC755A99EB123024A12D04883CCD353FF88F8C7A278790185CB2`。ReconciliationのSHAは現Repositoryから未確認 |
+| 識別情報 | Final Candidate SHA-256 `7E8DDF4E4F7CEC755A99EB123024A12D04883CCD353FF88F8C7A278790185CB2`。External Audit Reconciliation SHA-256 `FC3C79B46C276F14F109EB1AC440FC8E17691EAF5D90EA30E4E4EAE238D9A5F6` |
 | 最終取得地点 | S1-1〜S1-6の確定タイトル、Story、Practice、Session ArchiveおよびExternal Audit MINOR照合まで既存工程で参照済み |
 | 前回処理地点 | Story／Practice本文と確定タイトルのHuman Final Check完了。Session Archiveは後発仕様に対する `Revision Required` |
 | 反映状態 | 制作状態、Source／Audit QA、限定修正範囲をSection制作台本とロードマップへ反映済み。本文自体は未公開でRepository正本へ未昇格 |
-| Repository参照先 | `07_Note_Production/01_Sections/AIORG-S01_AI基礎工事/00_Section制作台本.md`、`07_Note_Production/02_全体ロードマップ.md` |
+| Repository参照先 | `07_Note_Production/01_Sections/AIORG-S01_AI基礎工事/00_Section制作台本.md`、同Sectionの`01_Primary_Evidence/README.md`、`07_Note_Production/02_全体ロードマップ.md` |
 | 次回処理 | Session Archive限定修正、全文再監査、Human Review後、承認済み公開構成に従って公開済み最終稿だけを `07_Note_Production/README.md` で定義されたcanonical pathへ昇格する |
 | 取扱い | Derived候補と監査記録は承認済み公開成果物の正本ではない。公開範囲未決の本文をCloud参照目的だけでRepositoryへ複製しない |
 
 ## 4. Repository内で継続参照する正本
 
 比較的固定的でAIが通常業務から直接参照するOS、SOP、運用基準、Timeline、Evidence Log、Section制作台本および承認済み教育設計は、すでに各責任領域のcanonical pathでGit管理されている。これらはRepository正本をLocal／Cloud共通Sourceとし、Personal Archiveへ参照用複製を作らない。
+
+Section固有の一次資料をCloud制作へ渡す必要がある場合は、会話全体を複製せず、当該Sectionの`01_Primary_Evidence/`へ必要最小限の原文抜粋、永続ID、区分、文脈、未取得事項を配置する。史実はTimeline、企画・状態はSection制作台本、原本checkpointは`ARCHIVE_PROVENANCE_INDEX.md`、Human-approved本文は承認済み成果物の責任をそれぞれ維持する。
 
 新しい固定資料を正式採用する場合は、内容責任を持つ既存領域へ配置し、入口README、依存Source、CHANGELOGおよびGitを更新する。本レジストリは、新しい正式Source置場または汎用資料ディレクトリとして使用しない。
 

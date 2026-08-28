@@ -6,6 +6,24 @@
 
 ------------------------------------------------------------------------
 
+## 2026-08-28｜AIORG-S01選定一次資料のCloud接続
+
+### 概要
+
+Personal Archive全体をRepositoryへ複製せず、AIORG-S01制作に必要な選定一次資料だけをSection固有Primary Evidence Packageへ接続した。
+
+### 変更内容
+
+- `ARCHIVE_PROVENANCE_INDEX.md`へ`PA-PROCESSED-20260822`からの選定範囲、Repository反映先および原本保持境界を追加した。
+- `EXTERNAL_REFERENCE_REGISTRY.md`で「AI組織づくりの地図を制作」をCodex Taskとして訂正し、thread / turn / message IDを確定した。
+- 会話全体、添付画像本体、未公開Human-approved本文はRepository外を維持した。
+
+### 現在状態
+
+**Primary Evidence PackageはSource QA PASS。Human-approved本文と一部未取得原ログがRepository外のため、Cloud completionは全6 SessionともNOT READY。**
+
+------------------------------------------------------------------------
+
 ## 2026-08-28｜Repository外参照資料レジストリの正式採用
 
 ### 概要

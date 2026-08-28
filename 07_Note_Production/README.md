@@ -1,6 +1,6 @@
 # 07_Note_Production
 
-**Status:** Current / Operational v1.5
+**Status:** Current / Operational v1.6
 **責任:** noteの企画・制作・公開準備・公開後記録およびSession単位のSNS展開を、既存AI Production Pipelineへ接続する媒体別運用
 
 ## この領域の入口
@@ -24,6 +24,7 @@
 新規Sectionまたは公開記事の実データ用ディレクトリは、実データが生じるまで作らない。作成時のcanonical pathと命名は次のとおりとする。
 
 - Section制作記録：`07_Note_Production/01_Sections/<Section-ID>_<短い識別名>/00_Section制作台本.md`
+- Section固有Primary Evidence：`07_Note_Production/01_Sections/<Section-ID>_<短い識別名>/01_Primary_Evidence/README.md`とSession別Evidence。Repository外の会話全体を複製せず、Cloud制作に必要な最小抜粋、永続ID、文脈、未取得事項を保持する場合だけ作成する
 - SessionのStory公開済み最終稿：`07_Note_Production/02_Published/<Section-ID>/<Session-ID>/01_Story無料Hub_最終稿.md`
 - Sessionの実践編公開済み最終稿：`07_Note_Production/02_Published/<Section-ID>/<Session-ID>/02_実践編単品有料_最終稿.md`
 - SessionのMS奮闘記公開済み最終稿：`07_Note_Production/02_Published/<Section-ID>/<Session-ID>/03_MS奮闘記メンバーシップ限定_最終稿.md`
@@ -36,6 +37,8 @@
 Statusは、Section制作台本と全体ロードマップで `Planning`／`Production`／`Review`／`Decision Pending`／`Revision Required`／`Approved`／`Scheduled`／`Published/Complete`／`Update Candidate` を記録する。`Decision Pending`と`Revision Required`はPublish前の状態であり、外部公開を意味しない。完成判定は固定の3記事数ではなく、当該Sectionの承認済み公開構成Profileに基づく。公開済み最終稿では `Published`、公開停止または置換済みでは `Superseded` と記録する。`Published` は公開事実であり、上位Sourceの承認を代替しない。公開済み最終稿だけが将来の参照・SNS再展開・Repository還元に用いる記事本文の正本であり、Work稿や下書きを代替正本にしない。
 
 実データの作成・更新はProduction／Repository Integrationが担い、公開可否・価格・自己開示はHuman Owner／Approverが担う。配置、Archive、CHANGELOG、Gitは `REPOSITORY_RULES.md` に従う。
+
+Primary Evidence Packageは、記事本文、唯一のTimeline正本、Section制作台本、Human-approved成果物またはPersonal Archiveを代替しない。Packageの`READY`と、Repositoryだけで既存承認済み本文を保持して制作・QAを完了できる`Cloud completion READY`は分けて判定する。
 
 ## 必ず戻る既存Source
 

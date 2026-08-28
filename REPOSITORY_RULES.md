@@ -297,6 +297,8 @@ Writing Style OSに関する意味のある変更は `06_Writing_Style_OS/CHANGE
 
 新規Sectionや公開記事の実データ用ディレクトリは、実データが生じるまで作らない。実データが生じた場合のcanonical path、命名、Status、現行／Archiveの扱いは `07_Note_Production/README.md` を正とする。既定の1 SessionはStory（無料Hub）・実践編（単品有料）・MS奮闘記（メンバーシップ限定）の3記事とするが、Section制作台本にHuman承認済み公開構成Profileがある場合はそのProfileを正とする。AI Organization Series Section 1では、S1-1〜S1-6それぞれのStory＋Practiceをnote本編1記事とし、Session Archiveは別コンテンツとして分離する。Session Archiveの公開範囲とMembershipでの扱いは別途Human Decisionとし、未決のまま本文へ混入・公開しない。将来参照する記事本文の正本は、当該Profileに従い公開版と照合された公開済み最終稿だけとし、Work稿、下書き、SNS短縮稿を代替正本にしない。
 
+Section固有の一次資料をCloud制作へ渡す必要があり、会話全体・個人Archive全体をRepositoryへ置かない場合は、当該Sectionの`01_Primary_Evidence/`をcanonical supporting pathとする。配置するのは制作・検証に必要な最小原文、永続ID、日時、Original / Processed / Derived区分、文脈、用途および未取得事項に限定する。同PackageはTimeline、Section制作台本、Human-approved成果物、Archive原本または原本checkpointを代替せず、Package readinessとCloudでの制作完了readinessを分けて記録する。
+
 AIは、人間承認、外部公開、価格、自己開示を代行しない。SNSの接続・認証または正式投稿手段がない場合は、投稿済みと扱わず、未実施状態を記録する。媒体別の制作・実投稿Gateは `03_SNS展開基準.md` を正とする。
 
 Note Production領域に関する意味のある変更は `07_Note_Production/CHANGELOG.md` に記録する。リポジトリ全体の責任構造・配置・参照関係に影響する変更は、あわせてルートの `CHANGELOG.md` に記録する。軽微な変更、現行Source、ArchiveおよびGitの扱いは、本ファイルの共通ルールに従う。

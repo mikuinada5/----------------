@@ -4,6 +4,22 @@
 
 ---
 
+## 2026-08-28｜AIORG-S01 Primary Evidence Packageを追加
+
+### 概要
+
+S01-01〜S01-06について、PC内Archiveへ到達できないCloud CodexがSession IDから選定一次資料とprovenanceへ辿れるSection固有Packageを追加した。
+
+### 変更内容
+
+- `01_Sections/AIORG-S01_AI基礎工事/01_Primary_Evidence/`へIndexとSession別Evidenceを配置した。
+- ChatGPT会話12 message、Codex Taskの後日回顧、Repository Git event、S01-06添付asset識別子を、用途・日時・永続ID・未取得事項とともに記録した。
+- 会話全体、添付画像本体、未公開Final Candidate、無関係な私的会話はRepositoryへ複製していない。
+- 一次資料PackageはSource QA PASSとし、Human-approved本文がRepository外でSession Archiveが`Revision Required`のため、全6 SessionのCloud completionは`NOT READY`と判定した。
+- 「AI組織づくりの地図を制作」をGPT ArchiveではなくCodex Taskとして識別子付きで訂正した。
+
+---
+
 ## 2026-08-28｜Repository外一次資料の差分追跡接続
 
 ### 概要

@@ -8,6 +8,25 @@
 
 ------------------------------------------------------------------------
 
+## 2026-08-28｜AIORG-S01一次資料をSection正本へ接続
+
+### 概要
+
+AIORG-S01の全6 Sessionについて、Cloud CodexがRepositoryから必要最小限の一次資料、provenanceおよび不足Sourceを自律発見できるSection固有Primary Evidence Packageを追加した。
+
+### 変更内容
+
+- 既存Section構造内に`01_Primary_Evidence/`を配置し、新しいトップレベル責任領域は作成していない。
+- Personal ArchiveのChatGPT会話から選定した原文、Codex Task識別子、Git commitおよび添付asset識別子をSession別に接続した。
+- Repository Rules、note README、Section制作台本、外部参照レジストリ、Archive provenance indexおよび各CHANGELOGを同期した。
+- 原本全体、添付画像本体、未公開Human-approved本文、不要な私的情報およびcredentialはRepositoryへ配置していない。
+
+### Readiness
+
+選定一次資料PackageのSource QAはPASS。既存のHuman-approved本文をRepositoryだけで保持・完成できないため、全6 SessionのCloud completionは`NOT READY`として明示した。
+
+------------------------------------------------------------------------
+
 ## 2026-08-28｜Repository参照資料の正式配置・外部原本追跡接続
 
 ### 概要

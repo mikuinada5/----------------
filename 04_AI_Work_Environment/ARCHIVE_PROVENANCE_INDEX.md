@@ -60,7 +60,15 @@ SHA、件数および取込状態は、`PA-PROCESSED-20260822` 内の `indexes/s
 
 Derived内の `WORK_HISTORY_BASELINE.md`、`work_history_events.jsonl`、`SOURCE_AND_METHOD.md`、`QA_REPORT.md` および `HUMAN_REVIEW.md` は、原本までの詳細な再追跡と再監査のためPersonal Archiveに保持する。通常業務で参照する史実はTimelineを正とし、Derivedを第二の史実正本にしない。
 
-### 2.5 その他のPersonal Archive
+### 2.5 AIORG-S01選定一次資料のRepository反映
+
+| Source checkpoint | 選定範囲 | Repository反映 | 原本保持 |
+|---|---|---|---|
+| `PA-PROCESSED-20260822` | S01-01〜S01-06に必要なChatGPT message 12件と、S01-06添付5件のasset pointer / size | `07_Note_Production/01_Sections/AIORG-S01_AI基礎工事/01_Primary_Evidence/`へ原文の必要最小限、conversation / message ID、日時、用途、未取得事項を2026-08-28に反映 | 会話全体、添付画像本体、無関係な私的会話はOneDrive Personal Archive外へ移さず、Repositoryへ複製しない |
+
+この反映は新しいProcessed checkpointを生成していない。元snapshotと処理地点は`PA-PROCESSED-20260822`のままであり、本PackageはSection固有Supporting Sourceである。Timeline、Human-approved成果物またはOriginal / Processed packageの代替にしない。
+
+### 2.6 その他のPersonal Archive
 
 - `Original/X/` のX Archiveは約9.54GBの増分型個人一次資料であり、Repositoryへ置かない。Voice OS等へ採用済みの判断だけを各正式Sourceから参照する。
 - `Voice/` は本運用Source策定前から存在する既存例外であり、`INBOX_AND_PERSONAL_ARCHIVE.md` §22に従い、別監査なしに移動・再分類しない。
@@ -81,7 +89,7 @@ Derived内の `WORK_HISTORY_BASELINE.md`、`work_history_events.jsonl`、`SOURCE
 8. 確認済みの史実だけを `07_Note_Production/01_Timeline.md` へ追加し、本Indexの反映範囲を更新する。Voice、Human OS、Brand、Educationその他の正式判断へ反映する場合は、各責任SourceのProduction、QA、Approval、CHANGELOGおよびGit工程を別途通す。
 9. Inbox側処理とClosedは `INBOX_AND_PERSONAL_ARCHIVE.md` を正とする。自動除去制度がDisabledの間は自動除去しない。
 
-現時点の最終取得地点は2026-08-20 Export、前回処理地点は `PA-PROCESSED-20260822`、Timeline反映地点は `PA-WORK-HISTORY-20260822` の `WH-023` までである。
+現時点の最終取得地点は2026-08-20 Export、前回処理地点は `PA-PROCESSED-20260822`、Timeline反映地点は `PA-WORK-HISTORY-20260822` の `WH-023`、AIORG-S01選定一次資料のRepository反映地点は同Sectionの`01_Primary_Evidence/`までである。
 
 ## 4. 更新規則
 
