@@ -1,11 +1,13 @@
-# SNS展開基準 v1.0
+# SNS展開基準 v1.1
 
-**Status:** Current / Operational v1.0
+**Status:** Current / Operational v1.1
 **Scope:** noteの承認済み記事を起点とするSession単位のSNS展開
 
 ## 1. 原則
 
-SNS展開はSession単位で行う。1 Sessionの同時配布単位は、Story（無料Hub）・実践編（単品有料）・MS奮闘記（メンバーシップ限定）の3記事である。SNS投稿案はこの3記事で構成されるSession全体を入口にして制作する**別成果物**であり、3記事のいずれか、または「1記事＋投稿案」の代替物ではない。SNS投稿案は実投稿を意味しない。
+SNS展開はSession単位で行う。既定の同時配布単位はStory（無料Hub）・実践編（単品有料）・MS奮闘記（メンバーシップ限定）の3記事とするが、Section制作台本にHuman承認済み公開構成Profileがある場合は、そのProfileを正とする。SNS投稿案は承認済み公開構成ProfileのSession全体を入口にして制作する**別成果物**であり、本文・別コンテンツ・投稿案を相互に代替しない。SNS投稿案は実投稿を意味しない。
+
+AI Organization Series Section 1では、Story＋Practiceのnote本編1記事を現時点のSNS導線候補とする。Session Archiveは公開範囲とMembershipでの扱いが別途Human承認されるまで、SNSで公開済み・配布対象として扱わない。
 
 本文・SNS案・公開範囲・自己開示・価格の承認は既存のHuman Approval Gateを正とする。SNSは既存のOutput QA、公開済み最終稿、媒体仕様に従う。公開済みでない本文をSNSの参照正本にしない。
 
@@ -24,7 +26,7 @@ Instagramの「自動化」は、正式な投稿／予約手段、認証、ア�
 
 各Sessionで次を揃える。
 
-1. 公開承認済みまたは公開前の承認候補であるStory・実践編・MS奮闘記の3記事
+1. 当該Sectionの承認済み公開構成Profileに基づく、公開承認済みまたは公開前の承認候補成果物
 2. SNS投稿案（必要な本数、各案の目的、媒体候補、CTA、注意点）
 3. 媒体別の実行状態（Draft / Awaiting Approval / Scheduled / Posted / Not Posted / Not Implemented）
 4. 実投稿があればURL・日時・確認結果、なければ未実施理由

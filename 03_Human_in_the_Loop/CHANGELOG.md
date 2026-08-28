@@ -6,6 +6,25 @@
 
 ------------------------------------------------------------------------
 
+## 2026-08-28｜Immediate Execution Rule・Completion Check追加
+
+### 概要
+
+AIが実行可能な成果物または操作を予告だけで終え、人間へ再依頼、再入力、コピー＆ペーストまたは工程間受け渡しを戻す状態を、Human API問題として明示的に禁止した。
+
+### 変更内容
+
+- 次の成果物・操作が明確で、Human Decisionを要せず、現在のAIにTool・権限・接続がある場合は、同一応答・工程内で実行まで行うImmediate Execution Ruleを追加した。
+- 実行不能時は、理由と人間にしかできない最小操作を示し、予告済み作業をCompletedとして扱わない境界を追加した。
+- 応答・工程終了前に、宣言した作業の実施済みを確認するCompletion Checkを完了条件へ追加した。
+- Human Decision、承認、不可逆な対外操作その他の既存Gateは維持した。
+
+### 関連Source
+
+`AI_PRODUCTION_PIPELINE.md` と `04_AI_Work_Environment/AI_WORK_ENVIRONMENT.md` へ実行時の適用接続を追加した。Repository構造、AI組織、Brand、EducationおよびVoiceの責任は変更していない。
+
+------------------------------------------------------------------------
+
 ## 2026-08-23｜AI作業環境Sourceへの責任参照接続
 
 ### 概要

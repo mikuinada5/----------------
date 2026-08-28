@@ -11,7 +11,14 @@
 
 | 発生日 / 時期 | 抽出した史実 | 一次資料識別子 | 一次資料参照位置 | 抽出日 | 確認状態 | 利用状態 | 使用先Section / Session | 最終更新日 |
 |---|---|---|---|---|---|---|---|---|
-| _一次資料から史実を抽出した時点に追加_ |  |  |  |  |  |  |  |  |
+| 2026-08-07 | ブランドOS初版が完成した。 | Git commit `4f12008` | commit subject: `Ver1.0 ブランドOS初版完成` | 2026-08-26 | 確認済み | 制作済み | AIORG-S01 / Story Hub | 2026-08-26 |
+| 2026-08-07 | 主任講師AIの教育思想、教育設計原則、感情設計、問い設計が確立された。 | Git commit `b5bf181` | commit subject: `主任講師AIの教育思想を確立（概要・教育設計原則・感情設計・問い設計）` | 2026-08-26 | 確認済み | 制作済み | AIORG-S01 / S01-01 | 2026-08-26 |
+| 2026-08-12〜13 | AコースProfessional Session 1の承認済み教育設計が追加され、Professional教育設計完了が更新ログに記録された。 | Git commits `9ce5dea`, `d11243d` | respective commit subjects | 2026-08-26 | 確認済み | 制作済み | AIORG-S01 / S01-02 | 2026-08-26 |
+| 2026-08-20 | 全コース共通教材制作基準が、独立した責任単位へ配置された。 | Git commit `f85657e` | commit subject: `refactor: 全コース共通教材制作基準を独立責任単位へ配置` | 2026-08-26 | 確認済み | 制作済み | AIORG-S01 / S01-02 | 2026-08-26 |
+| 2026-08-22〜23 | 分割Brand OS、Voice OS、Human-in-the-loop運用原則、AI作業環境・工程接続原則が正式採用された。 | Git commits `3035621`, `4c70f1e`, `6f121d1`, `88546d8` | respective commit subjects | 2026-08-26 | 確認済み | 制作済み | AIORG-S01 / S01-03 | 2026-08-26 |
+| 2026-08-26 | AI Production PipelineとRepository横断監査、Human OSとWriting Style OSの正式運用接続、note制作・公開・SNS展開の正式運用領域が順に追加された。 | Git commits `22ebeb6`, `c629759`, `88136c0`, `080a572` | respective commit subjects | 2026-08-26 | 確認済み | 制作済み | AIORG-S01 / S01-04、S01-05 | 2026-08-26 |
+| 2026-08-26 | AI組織シリーズのSectionは技術分類ではなく「実現したい仕組み（プロジェクト）」であり、AI組織シリーズは「これをやりたい」からAIとの反復を経て結果としてAI組織になった物語として扱う、という設計が共有された。 | Codex Work `AI組織シリーズ制作｜正式運用開始` | 本Workのユーザー指示「今回壁打ちで新たに判明した設計」「AI組織シリーズの基本思想」 | 2026-08-26 | 確認済み | 制作済み | AIORG-S01 / Section設計 | 2026-08-26 |
+| 2026-08-28 | AI Organization Series Section 1は全6 Sessionとし、各SessionのStory＋Practiceをnote本編1記事、Session Archiveを別コンテンツとして扱う方針がHuman Decisionとして確定した。Human Final Checkは完了し、Session Archiveの具体的な公開範囲とMembershipでの扱いは別途Human Decisionとされた。 | Codex Task `AI Organization Series Section 1 公開準備工程` | ユーザー指示「公開準備工程の整合性修正へ進んでください」内 `Human Decision` 1〜6 | 2026-08-28 | 確認済み | 制作済み | AIORG-S01 / S01-01〜S01-06 / 公開準備 | 2026-08-28 |
 
 ### 記録規則
 

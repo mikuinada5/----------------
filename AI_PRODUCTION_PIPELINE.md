@@ -1,7 +1,7 @@
-# AI Production Pipeline v1.1
+# AI Production Pipeline v1.3
 
 **Document type:** Standard Operating Procedure（SOP）<br>
-**Status:** Current / Operational v1.1<br>
+**Status:** Current / Operational v1.3<br>
 **Owner:** 稲田美来<br>
 **Scope:** Story Candidate、教材、note、SNS、運営文書、Brand／Education／AI Organization関連Source、その他AI制作物<br>
 **Purpose:** 既存OS・Sourceを毎回確実に選択・実読・適用し、成果物と新知見を正しい責任単位へ戻すためのAI組織共通運用<br>
@@ -77,6 +77,12 @@ Evidence、AI推論、改善案、単発の好みを分け、責任Sourceの更�
 
 AIは、似た文書、過去の会話、個人の記憶またはBrand／Voice Sourceによって未採用Sourceを代替しない。これは当該案件の制作可否を保留するControlであり、欠けたSourceの新設・採用を自動的に決定するものではない。
 
+### 1.7 Immediate Execution Rule
+
+人間をAI間・工程間の実行中継へ戻さない原則と、実行予告を同一応答・工程内の実行へ接続する条件は、`03_Human_in_the_Loop/HUMAN_IN_THE_LOOP.md` §5.1を正とする。
+
+PipelineのPhase移行、次Actionの説明または実行予定の表明は停止点ではない。現在のAIが承認済み範囲内で実行可能な後続作業は、予告だけで終了せず、その応答・工程内で実行する。
+
 ---
 
 ## 2. 全体Pipeline
@@ -107,7 +113,7 @@ flowchart TD
 | G0 Intake Gate | 依頼定義 | 目的・成果物・対象・公開範囲・承認者が確定 | Intake & Work Charter |
 | G1 Routing Gate | Source選択 | 案件種別・責任本籍・必読Source・任意Sourceが確定 | Source Router／Human Decision |
 | G2 Source QA Gate | Input品質 | 現行正本・Version・実読・漏れ・依存・矛盾が解決 | Source Router／Source管理責任者 |
-| G3 Production Completeness Gate | 制作完了 | 指示された成果物一式と参照証跡が揃う | Production |
+| G3 Production Completeness Gate | 制作完了 | 指示された成果物一式と参照証跡が揃い、実行を表明した作業が実施済み | Production |
 | G4 Output QA Gate | 成果物品質 | 内容・Source整合・形式・安全・媒体要件を満たす | Production |
 | G5 Human Approval Gate | 最終判断 | 人間責任者が採用範囲・公開範囲・変更を承認 | Production／Output QA |
 | G6 Repository Integration Gate | 正式配置 | 保存先・波及更新・Version・INDEX・CHANGELOGが整う | Repository Integration |
@@ -115,6 +121,14 @@ flowchart TD
 | G8 Publish Gate | 公開実行 | 公開版が承認版と一致し、チャネル要件を満たす | Publish |
 | G9 Verification Gate | 公開確認 | URL・表示・リンク・画像・公開範囲・日時を確認 | Publish／緊急訂正 |
 | G10 Feedback Gate | 知見回収 | 発見が分類・重複判定・責任先へRouting済み | Knowledge Feedback |
+
+### 2.2 Response／Phase Completion Check
+
+AIは応答または工程を終了する前に、次を自己確認する。
+
+> この応答・工程で「やる／作る／出す／直す」と宣言した作業を、実際に完了したか？
+
+NOの場合、現在のAIに実行可能なら終了せず該当作業を実行する。Human Decision、Tool、権限または接続の不足により実行不能なら、理由と人間にしかできない最小操作を明示し、未完了として扱う。
 
 ---
 
@@ -367,6 +381,7 @@ Source QAを通過したInputを、指定された成果物へ忠実に変換す
 5. Voiceは表面上の口癖追加ではなく、Meaning、Context、Thought Topology、Formality、Responsibilityを通して反映する。
 6. 正確性・安全性・責任情報は、短文化や口語表現より優先する。
 7. 既存内容を更新する場合は、関係のない既存内容を保持する。
+8. 次に生成・実行すべき成果物が明確で現在のAIに実行可能な場合は、実行予告だけで停止せず、同じ応答・工程内で生成または実行する。
 
 ### 7.6 Gate
 
@@ -746,23 +761,23 @@ Story Candidate「Voice OSは存在したのに読まれなかった」を、AI�
 
 ### Production
 
-対象Sessionで、Story（無料Hub）・実践編（無料部分に詳細目次を掲示する単品有料）・MS奮闘記（生の声・壁打ち・失敗・感情・制作裏側を扱うメンバーシップ限定）の3記事を制作する。3記事は同一Session内の同時配布単位とし、SNS投稿案はSession全体を入口にする別成果物として制作する。Voice OSとWriting Style OSを別の責任として適用する。
+対象Sectionの制作台本に記録されたHuman承認済み公開構成Profileに従い、Sessionの本文と別コンテンツを制作する。既定ProfileはStory（無料Hub）・実践編（単品有料）・MS奮闘記（メンバーシップ限定）の3記事とする。AI Organization Series Section 1では、Story＋Practiceをnote本編1記事とし、Session Archiveは別コンテンツとして分離する。Session Archiveの公開範囲とMembershipでの扱いはHuman Decisionが完了するまで確定・公開しない。SNS投稿案はSession全体を入口にする別成果物として制作し、Voice OSとWriting Style OSを別の責任として適用する。
 
 ### Output QA
 
-3記事の史実、Source反映、みくらしさ、Brand整合、無料／有料／メンバーシップの責任分離、読者理解、AI的な過剰整文を監査する。必要時Claude外部監査。
+公開構成Profileの全成果物について、史実、Source反映、みくらしさ、Brand整合、本文／別コンテンツの責任分離、読者理解、AI的な過剰整文を監査する。AI Organization Series Section 1ではStory→Practiceの接続とSession Archive非混入を確認する。必要時Claude外部監査。
 
 ### Human Approval
 
-3記事の本文・タイトル、実践編の価格、公開範囲、自己開示範囲をみくが承認する。
+公開構成Profileの本文・別コンテンツ・タイトル、価格、公開範囲、自己開示範囲をみくが承認する。本文のHuman Final Checkと、価格・公開範囲・Publishの承認を同一視しない。
 
 ### Integration／Git
 
-Story・実践編・MS奮闘記それぞれの公開済み最終稿と公開成果物記録を `07_Note_Production/` のcanonical pathへ配置する。Work稿や下書きを将来参照する正本にせず、価格・自己開示・公開範囲はHuman Approval Recordと照合する。
+公開構成Profileに従う公開済み最終稿と公開成果物記録を `07_Note_Production/` のcanonical pathへ配置する。Work稿や下書きを将来参照する正本にせず、価格・自己開示・公開範囲はHuman Approval Recordと照合する。
 
 ### Publish／Feedback
 
-Human Approval後に同一Session内の3記事をnoteへ同時配布し、表示確認する。Session単位のSNS展開は `07_Note_Production/03_SNS展開基準.md` に従い、接続不能時は未投稿として記録する。制作中に得たSource QA改善をAI Organization改善候補へ、記事化できる派生事件を対象SectionのStory Hubへ戻す。
+Human Approval後に、公開構成Profileで承認された同一Session内の成果物だけをnoteへ配布し、表示確認する。未決の別コンテンツを同時公開しない。Session単位のSNS展開は `07_Note_Production/03_SNS展開基準.md` に従い、接続不能時は未投稿として記録する。制作中に得たSource QA改善をAI Organization改善候補へ、記事化できる派生事件を対象SectionのStory Hubへ戻す。
 
 ---
 
@@ -897,5 +912,6 @@ AコースSessionの承認済み教育設計から、PPT、配布資料、ワー
 - [x] commit／pushが承認境界に従う
 - [x] 公開後の知見をFeedback Candidateとして回収する
 - [x] OS更新候補を新規Taskとして同じPipelineへ戻す
+- [x] 実行予告だけで応答・工程を終了せず、Response／Phase Completion Checkで実施済みを確認する
 
 > **「SOPを作った」で終わらず、「SOPを通らなければ制作が始まらない」状態になって初めて導入完了とする。**

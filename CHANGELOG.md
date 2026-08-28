@@ -8,6 +8,47 @@
 
 ------------------------------------------------------------------------
 
+## 2026-08-28｜Immediate Execution Rule・Human API防止の正式運用接続
+
+### 概要
+
+AIが「次に作る・出す・直す」等と予告した作業を実行せず、人間へ再依頼、再入力、コピー＆ペーストまたはAI間・工程間の受け渡しを戻す問題を、Human API問題として正式運用へ接続した。
+
+### 変更内容
+
+- `03_Human_in_the_Loop/HUMAN_IN_THE_LOOP.md` へImmediate Execution Ruleと応答・工程終了前のCompletion Checkを追加した。
+- `AI_PRODUCTION_PIPELINE.md` をv1.3へ更新し、全体原則、Production Completeness Gate、Production実行規則およびCompletion Checkへ接続した。
+- `04_AI_Work_Environment/AI_WORK_ENVIRONMENT.md` のE2E自動進行へ、Chat／Work／Codex等で実行予告だけで停止しない適用文を追加した。
+- Human Decision、承認、Tool・権限・接続の不足および対外操作に関する既存Gateは維持した。
+
+### 関連Sourceへの影響
+
+`REPOSITORY_RULES.md` は、Human-in-the-loop、AI作業環境およびPipelineの既存責任分界で本変更を一意に配置できるため変更していない。`AI_ORGANIZATION.md`、Brand、Education、Voiceその他の専門責任にも変更はない。
+
+### 現在状態
+
+**Current / Operational。Repository WRITE・CHANGELOG更新・自己監査対象。commit / pushは未実施。**
+
+------------------------------------------------------------------------
+
+## 2026-08-28｜AI Organization Series Section 1 公開準備Profile整合
+
+### 概要
+
+Human承認済みの全6 Session、Story＋Practiceのnote本編1記事化、Session Archive分離を、note Productionと共通Pipelineの正式運用へ接続した。
+
+### 変更内容
+
+- `07_Note_Production/` のSOP、README、Section制作台本テンプレート、公開成果物記録テンプレート、SNS展開基準、RoadmapおよびSection 1制作台本を公開構成Profile対応へ更新した。
+- `AI_PRODUCTION_PIPELINE.md` と `REPOSITORY_RULES.md` へ、Section固有Profileを既定3記事モデルより優先する境界を追加した。
+- AI Organization Series Section 1は、S1-1〜S1-6のStory＋Practiceをnote本編1記事、Session Archiveを別コンテンツとし、Archive公開範囲・Membership、価格、公開日時、note投入・Publishは未決のHuman Decisionとして維持した。
+
+### 現在状態
+
+**Formal alignment complete / Decision Pending。Final Candidate本文は未変更。note投入・公開・価格設定・Git commit / pushは未実施。**
+
+------------------------------------------------------------------------
+
 ## 2026-08-28｜External Audit API Pipeline v1.0実装・AI Organization Series接続
 
 ### 概要

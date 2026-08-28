@@ -4,6 +4,62 @@
 
 ---
 
+## 2026-08-28｜Section記事制作仕様 Source QAをv1.6へ反映
+
+### 概要
+
+制作時のHuman Reviewから救出されたStory／Practice／Session ArchiveのHuman-approved仕様を、現行正式Sourceと差分監査した。既存仕様を再設計せず、役割の骨格と矛盾しない既存判断を保持したまま、不足していた媒体固有の実装条件とAcceptance Criteriaを`00_note制作・公開システム.md` §2.2へ追加した。
+
+### 4分類監査
+
+| 対象 | 反映済み | 概念のみで具体度不足 | 欠落 | 矛盾 |
+|---|---|---|---|---|
+| Story | 自分事化、Practiceを読む理由、Section 1のStory＋Practice結合Profile | 導入と実体験の役割、Story／Archiveの責任分離 | 基本構造、実体験を最小限にする条件、無料＝問題と意味／有料＝解決と実装、Archiveより抑えた温度 | 成果物仕様内の直接矛盾なし |
+| Practice | 手順・テンプレート・確認点、Story後半の実践役割 | 読者が取り組めること、初心者への配慮 | GoalからCompletion Checkまでの基本構造、Prompt例・完成例・Troubleshooting・分岐、Human Decision、専門語初出説明、正式ファイル名・保存先、後続Session用Seed／Map／Log | 成果物仕様内の直接矛盾なし |
+| Session Archive | 生の声、壁打ち、失敗、感情、制作裏側、Story／Practiceとの分離 | 理解過程を見せる役割、AI的な過剰整文の監査 | 一次ログ優先・会話捏造禁止、VTR＋現在のみく、S1-2修正版の長段落、短文大量改行禁止、句点でも段落継続、改行理由、罫線禁止、余韻の雑談、修正後の全文再監査 | Writing Style OSの一般的な改行傾向をArchiveへ一律適用すると長段落要件と競合するため、Archiveの段落・改行だけ媒体固有要件を適用。一般則は変更しない |
+| Section 1運用状態 | Story／Practice本文、確定タイトル、既存の監査履歴 | — | — | Final Candidateを無改変で使う`Decision Pending`状態では後発Archive仕様を反映できないため、Archiveだけを`Revision Required`へ変更 |
+
+### 反映内容
+
+- Story、Practice、Session Archiveの役割、基本構造およびAcceptance Criteriaを追加した。
+- 新仕様は該当箇所だけを上書きし、矛盾しない既存仕様・本文・承認結果を保持する更新原則を明文化した。
+- Session Archiveに、一次ログ優先、会話捏造禁止、VTRと現在コメントの自然な統合、S1-2修正版基準の長段落、短文大量改行・罫線テンポの禁止、改行理由、余韻の雑談、修正後の全文再監査を追加した。
+- Section 1制作台本と全体ロードマップを`Revision Required`へ同期し、修正範囲をS1-1〜S1-6のSession Archiveに限定した。Story／Practice本文、確定タイトルおよび既存監査履歴は保持した。
+
+### Repository横断監査
+
+- 責任本籍はnote媒体固有仕様を担う`07_Note_Production/00_note制作・公開システム.md`とした。Voice OSとWriting Style OSの横断責任、Pipeline、Human Approval、公開範囲・価格のHuman Decisionは変更していない。
+- `AI_PRODUCTION_PIPELINE.md`は既にnote本文の必読Sourceとして本SOPを指定しているため、重複実装せず更新不要と判定した。
+- `10_Section制作台本テンプレート.md`、`README.md`、公開成果物記録テンプレート、SNS展開基準は公開構成・状態・配置の一般則が本変更と整合しており、更新不要と判定した。
+- Git自己監査は対象diff確認と`git diff --check`で行う。既存の未コミット変更は保持し、今回変更と無関係なSourceを再設計しない。
+
+### 現在状態
+
+**Revision Required。Story／Practice本文と確定タイトルは保持し、S1-1〜S1-6のSession Archiveだけを修正・全文再監査する。価格、公開範囲、公開日時およびPublishは引き続き未決のHuman Decision。**
+
+---
+
+## 2026-08-28｜AI Organization Series Section 1 公開構成Profileをv1.5へ整合
+
+### 概要
+
+Human Final Check完了後の現行Final Candidateに合わせ、Section 1を全6 Session、各SessionのStory＋Practiceをnote本編1記事、Session Archiveを別コンテンツとするHuman Decisionを正式運用へ反映した。
+
+### 変更内容
+
+- note制作SOPへSection固有の公開構成Profileを追加し、既定3記事Profileを他Section向けに維持したまま、AI Organization Series Section 1の6 Session構成を明記した。
+- Section制作台本と全体ロードマップを旧5 Session／旧仮題／Planningから、確定6 Session／確定タイトル／Decision Pendingへ更新した。
+- StoryとPracticeの責任を維持したままnote本編1記事へ結合し、Session Archiveを本編へ混ぜない境界を追加した。
+- Session Archiveの公開範囲とMembershipでの扱い、価格、公開日時、note投入およびPublishを未決のHuman Decisionとして保持した。
+- Human Final Check完了、Internal／Claude External Audit、MINOR反映、Internal Re-Audit PASSをSection制作台本へ反映した。
+- Section制作台本テンプレート、公開成果物記録テンプレート、SNS展開基準、READMEを公開構成Profile対応へ更新した。
+
+### 現在状態
+
+**Decision Pending。本文・確定タイトルはHuman Final Check済み。note本編6本への無改変分割とヘッダー画像照合へ進める。note投入・公開・価格設定は未実施。**
+
+---
+
 ## 2026-08-28｜AI Organization Series External Audit接続をv1.4へ追加
 
 ### 概要

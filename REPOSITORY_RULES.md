@@ -287,7 +287,7 @@ Writing Style OSに関する意味のある変更は `06_Writing_Style_OS/CHANGE
 
 `01_Timeline.md` は、GPTログ、Codexログ、音声、壁打ち、Git履歴、CHANGELOGその他の一次資料から抽出した実際の出来事と参照情報を時系列で保持する、note制作における唯一の史実Sourceとする。一次資料の原本をTimelineへ全文複製せず、原本と該当箇所へ戻れる参照を保持する。Timelineの史実は、媒体別SOPで定める意味づけ・企画フェーズを経て、採用された企画だけをSection制作台本へ渡す。意味づけ候補・非採用候補はRepositoryの永続成果物とせず、必要時にTimelineから再生成する。`02_全体ロードマップ.md` は、採用済みSectionの優先順位・現在地を扱う全体ロードマップ正本とする。`00_note制作・公開システム.md` は媒体固有の制作・公開・再開・復旧を定め、Source Router／Source QA／Output QA、Human Approval、Repository横断監査、Gitを再定義せず、該当する既存正式Sourceを呼び出す。
 
-新規Sectionや公開記事の実データ用ディレクトリは、実データが生じるまで作らない。実データが生じた場合のcanonical path、命名、Status、現行／Archiveの扱いは `07_Note_Production/README.md` を正とする。1 SessionはStory（無料Hub）・実践編（単品有料）・MS奮闘記（メンバーシップ限定）の3記事を同時配布し、公開済み最終稿の3ファイルだけを将来参照する記事本文の正本とする。Work稿、下書き、SNS短縮稿を代替正本にしない。
+新規Sectionや公開記事の実データ用ディレクトリは、実データが生じるまで作らない。実データが生じた場合のcanonical path、命名、Status、現行／Archiveの扱いは `07_Note_Production/README.md` を正とする。既定の1 SessionはStory（無料Hub）・実践編（単品有料）・MS奮闘記（メンバーシップ限定）の3記事とするが、Section制作台本にHuman承認済み公開構成Profileがある場合はそのProfileを正とする。AI Organization Series Section 1では、S1-1〜S1-6それぞれのStory＋Practiceをnote本編1記事とし、Session Archiveは別コンテンツとして分離する。Session Archiveの公開範囲とMembershipでの扱いは別途Human Decisionとし、未決のまま本文へ混入・公開しない。将来参照する記事本文の正本は、当該Profileに従い公開版と照合された公開済み最終稿だけとし、Work稿、下書き、SNS短縮稿を代替正本にしない。
 
 AIは、人間承認、外部公開、価格、自己開示を代行しない。SNSの接続・認証または正式投稿手段がない場合は、投稿済みと扱わず、未実施状態を記録する。媒体別の制作・実投稿Gateは `03_SNS展開基準.md` を正とする。
 

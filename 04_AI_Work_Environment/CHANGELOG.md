@@ -6,6 +6,23 @@
 
 ------------------------------------------------------------------------
 
+## 2026-08-28｜Immediate Execution Ruleの環境接続
+
+### 概要
+
+Chat、Work、Codex等で現在のAIが実行可能な後続作業を予告だけで終えないよう、Human-in-the-loopのImmediate Execution RuleをE2E自動進行へ接続した。
+
+### 変更内容
+
+- 実行可能な成果物生成、Tool実行、修正またはRepository反映は、同一応答・工程内で実行することを明示した。
+- 実行不能時の停止、Human Decisionおよび人間に求める最小操作は `HUMAN_IN_THE_LOOP.md` を正とし、作業環境Source側で重複定義しない責任境界を維持した。
+
+### 既存責任への影響
+
+Human Gate、AI組織上の権限、Repository・Git・CHANGELOG、Brand、EducationおよびVoiceの既存責任は変更していない。
+
+------------------------------------------------------------------------
+
 ## 2026-08-28｜External Audit API Pipeline v1.0実装
 
 ### 概要
