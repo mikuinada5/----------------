@@ -1180,6 +1180,7 @@ Voice既存資産は、必要な場合に別タスクで実物を監査し、少
 
 - `04_AI_Work_Environment/AI_WORK_ENVIRONMENT.md`
 - `04_AI_Work_Environment/ARCHIVE_PROVENANCE_INDEX.md`
+- `04_AI_Work_Environment/EXTERNAL_REFERENCE_REGISTRY.md`
 - `03_Human_in_the_Loop/HUMAN_IN_THE_LOOP.md`
 - `REPOSITORY_RULES.md`
 - `AI_ORGANIZATION.md`

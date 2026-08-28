@@ -93,6 +93,7 @@ Derived内の `WORK_HISTORY_BASELINE.md`、`work_history_events.jsonl`、`SOURCE
 
 ## 5. 関連Source
 
+- `04_AI_Work_Environment/EXTERNAL_REFERENCE_REGISTRY.md`
 - `04_AI_Work_Environment/INBOX_AND_PERSONAL_ARCHIVE.md`
 - `04_AI_Work_Environment/AI_WORK_ENVIRONMENT.md`
 - `07_Note_Production/01_Timeline.md`

@@ -693,6 +693,7 @@ Work稿とRepository差分の採否、編集競合または現在の作業対象
   - `REPOSITORY_RULES.md`
   - `04_AI_Work_Environment/INBOX_AND_PERSONAL_ARCHIVE.md`
   - `04_AI_Work_Environment/ARCHIVE_PROVENANCE_INDEX.md`
+  - `04_AI_Work_Environment/EXTERNAL_REFERENCE_REGISTRY.md`
   - `00_Brand/00_ブランドOS概要・参照ガイド.md`
   - `00_Brand/09_AI共創原則.md`
   - `01_Education/` 配下の適用される正式Source

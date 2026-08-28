@@ -6,6 +6,25 @@
 
 ------------------------------------------------------------------------
 
+## 2026-08-28｜Repository外参照資料レジストリの正式採用
+
+### 概要
+
+GPT Archive、Codex Work／TaskおよびPersonal Archive Derived等、原本をRepository外に保持する継続参照資料について、Local／Cloudの双方から取得・処理・反映地点を追跡する管理Sourceを正式採用した。
+
+### 変更内容
+
+- `EXTERNAL_REFERENCE_REGISTRY.md` を既存のAI作業環境責任領域へ配置し、新しいトップレベル領域は作成しなかった。
+- 取得元、原本識別情報、最終取得地点、前回処理地点、Timeline／Evidence／制作Sourceへの反映状態および次回差分処理を登録した。
+- 会話原本、Personal Archiveの生ログ、公開範囲未決の制作候補はRepositoryへ複製せず、非機密メタデータだけをRepository正本から追跡可能にした。
+- Inbox Ledger、Personal Archive側provenance、Timeline、専門Sourceおよび承認記録との責任分離を維持した。
+
+### 現在状態
+
+既存Repositoryから確認できない永続conversation／Work／Task ID、原本取得日時、authoritative pathおよび一部SHAは `未確認` とし、次回取得時の確定対象として残した。
+
+------------------------------------------------------------------------
+
 ## 2026-08-28｜Repository外Archive provenance indexを正式採用
 
 ### 概要

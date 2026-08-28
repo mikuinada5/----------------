@@ -34,7 +34,7 @@
 
 | Source | 用途 | 現行性・実読 | G2での確認 |
 |---|---|---|---|
-| Evidence：GPT Archive「AI組織づくりの地図を制作」2026-08-24 | S01-01の初期PPT依頼に関する回顧発言 | 実読済み / 一次資料 | 元会話との区別、引用範囲、発生日不明の明記 |
+| Evidence：GPT Archive「AI組織づくりの地図を制作」2026-08-24（Registry ID `EXT-GPT-AIORG-MAP`） | S01-01の初期PPT依頼に関する回顧発言 | 実読済み / 一次資料 | 元会話との区別、引用範囲、発生日不明の明記 |
 | Human Confirmation：企画・壁打ちチャット「AI組織づくりの地図を制作」2026-08-24 | S01-01の初期目的、順番、PPT作成依頼の事実、AIが教える内容を知らないという問題の本人確認 | 実読済み / 本人確認済み | Evidenceと矛盾しないこと、未確認のAI回答・採否・感情を補完しないことを確認 |
 | Repository Source：`07_Note_Production/01_Sections/AIORG-S01_AI基礎工事/00_Section制作台本.md` | S01-01の正式な企画・Source・未解決Decisionの管理 | Current / 更新対象 | 本Session詳細と本文Production時の参照箇所を確認 |
 | `07_Note_Production/01_Timeline.md` | 記事に使える確認済み史実と一次資料参照 | Current / 実読済み | Storyの史実・参照位置をSessionごとに照合 |

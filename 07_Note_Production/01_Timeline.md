@@ -7,7 +7,7 @@
 
 このファイルは、GPTログ、Codexログ、音声、壁打ち、Git履歴、CHANGELOGその他の一次資料から抽出した実際の出来事と、その参照情報を時系列で保持する。Timelineは、一次資料そのものではなく、note制作における史実の正本である。原本は原本の保管先に保持し、会話全文・音声全文その他の原文をTimelineへ複製しない。
 
-Repository外の増分型一次資料について、原本snapshot、Processed checkpoint、Derivedの確認状態および本Timelineへの反映地点を確認するときは、`04_AI_Work_Environment/ARCHIVE_PROVENANCE_INDEX.md` を入口とする。Timelineは史実を保持し、同Indexは原本へ再追跡するための運用メタデータを保持する。
+Repository外に原本を保持する継続参照資料のRegistry ID、取得元、取得・処理地点および差分反映状態は `04_AI_Work_Environment/EXTERNAL_REFERENCE_REGISTRY.md` から追跡する。そのうちPersonal Archive上の増分型一次資料について、原本snapshot、SHA、Processed checkpointおよびDerivedの確認状態を照合するときは `04_AI_Work_Environment/ARCHIVE_PROVENANCE_INDEX.md` を参照する。Timelineには確認済みの史実と原本内参照位置だけを保持し、取得状態や処理cursorを重複管理しない。
 
 企画上の予定、Section／Sessionの現在地、制作状態、優先順位、Next、Blocker、公開判断、自己開示判断、Series候補その他の解釈は扱わない。これらは `02_全体ロードマップ.md`、Section制作台本、公開成果物記録またはそれぞれの責任Sourceを正とする。本文、公開URL、詳細な承認記録、SNS本文はそれぞれの実データ正本へ置く。
 

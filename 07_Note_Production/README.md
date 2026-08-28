@@ -44,3 +44,4 @@ Statusは、Section制作台本と全体ロードマップで `Planning`／`Prod
 - AIの役割・受け渡し：`AI_ORGANIZATION.md`
 - 構造・履歴・Git：`REPOSITORY_RULES.md`
 - Repository横断変更：`REPOSITORY_CROSS_AUDIT_STANDARD.md`
+- Repository外原本の取得・差分反映地点：`04_AI_Work_Environment/EXTERNAL_REFERENCE_REGISTRY.md`

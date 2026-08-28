@@ -8,6 +8,24 @@
 
 ------------------------------------------------------------------------
 
+## 2026-08-28｜Repository参照資料の正式配置・外部原本追跡接続
+
+### 概要
+
+AIが継続参照する固定資料は既存責任領域のRepository正本を共通Sourceとし、GPT Archive、Codex会話原本およびPersonal Archive資産はRepository外に保持したまま再追跡できる構成を正式化した。
+
+### 変更内容
+
+- `04_AI_Work_Environment/EXTERNAL_REFERENCE_REGISTRY.md` を追加し、Repository外原本の取得元、取得・処理地点、正式Sourceへの反映状態、識別情報および次回差分処理を集約した。
+- `REPOSITORY_RULES.md`、AI作業環境Source、Personal Archive運用Sourceおよびnote Productionの入口・Timeline・Section制作台本へ参照導線を接続した。
+- Personal Archiveの生ログ、個人会話、公開範囲未決のFinal Candidateおよび監査照合記録は、機密性・承認状態・Git管理適性の境界を維持してRepositoryへ複製しなかった。
+
+### 配置方針
+
+新しい汎用資料ディレクトリは設けない。正式採用済み資料は内容責任を持つ既存canonical path、Repository外資産の横断追跡メタデータはAI作業環境領域を正とする。
+
+------------------------------------------------------------------------
+
 ## 2026-08-28｜Repository外Archive provenanceとTimeline反映経路を正式化
 
 ### 概要

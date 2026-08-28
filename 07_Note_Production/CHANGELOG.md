@@ -4,6 +4,21 @@
 
 ---
 
+## 2026-08-28｜Repository外一次資料の差分追跡接続
+
+### 概要
+
+TimelineとAIORG-S01制作台本が参照するGPT ArchiveおよびCodex会話原本を、Repository外参照資料レジストリから再追跡できるようにした。
+
+### 変更内容
+
+- Timelineでは確認済み史実を保持し、原本の取得状態や処理cursorはAI作業環境領域のレジストリへ委譲した。
+- note領域READMEへRepository外原本の取得・差分反映地点を追加した。
+- AIORG-S01のGPT Archive Evidenceを一意なRegistry IDへ接続した。
+- 会話原本および公開範囲未決の制作候補本文はnote正本領域へ複製していない。
+
+---
+
 ## 2026-08-28｜Work HistoryをTimeline v1.2へ正式反映
 
 ### 概要
