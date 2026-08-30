@@ -1,6 +1,6 @@
 # note Production Timeline
 
-**Status:** Current / Operational v1.3
+**Status:** Current / Operational v1.4
 **Role:** 一次資料から抽出した実際の出来事を時系列で保持する、note制作における唯一の史実Source
 
 ## 運用規則
@@ -38,6 +38,7 @@ Repository外に原本を保持する継続参照資料のRegistry ID、取得�
 | 2026-08-28 | AI Organization Series Section 1は全6 Sessionとし、各SessionのStory＋Practiceをnote本編1記事、Session Archiveを別コンテンツとして扱う方針がHuman Decisionとして確定した。Human Final Checkは完了し、Session Archiveの具体的な公開範囲とMembershipでの扱いは別途Human Decisionとされた。 | Codex Task `AI Organization Series Section 1 公開準備工程` | ユーザー指示「公開準備工程の整合性修正へ進んでください」内 `Human Decision` 1〜6 | 2026-08-28 | 確認済み | 制作済み | AIORG-S01 / S01-01〜S01-06 / 公開準備 | 2026-08-28 |
 | 2026-08-29 | S1-2〜S1-6 Practiceは完成原稿ではなくHuman Review Draft／再設計baselineであり、初心者が一緒に作業してAI仕事環境を完成できる作業マニュアルへ順次再設計することがHuman Decisionとして確定した。S1-1は今回のStatus変更対象外とされた。 | Registry ID `EXT-CODEX-AIORG-PRACTICE-E2E` | Human instruction §1〜§8 | 2026-08-29 | 確認済み | 制作済み | AIORG-S01 / S01-02〜S01-06 / Practice設計 | 2026-08-29 |
 | 2026-08-29 | スマホWork CloudがHumanによる本文ファイル・pathの手渡しなしに、Public制作台本からInventory、Private Repository、Section README／Index、canonical artifactを経由し、S1-2 Story／Practice／Session Archiveへ到達した。Source欠落と推測補完はなかった。 | Registry ID `EXT-CODEX-AIORG-PRACTICE-E2E` | Human instruction §9〜§10 | 2026-08-29 | 確認済み | 制作済み | AIORG-S01 / Source Retrieval E2E | 2026-08-29 |
+| 2026-08-30 | note制作Pipelineでは、内容完成稿である第2稿からMarketing Reviewを開始し、Marketingは本文を直接修正せずRequirementをnote制作側へ返すこと、根拠とConfidence付きPublication Decisionを作ること、第3稿をHuman Final Approvalへ渡すこと、β期間中はnote公開ボタン直前で停止することがHuman Decisionとして確定した。 | Codex Task「note制作Pipelineへ『Marketing Review β』を早期実装」 / 永続Task ID未確認 | 2026-08-30の初回ユーザー指示に添付された依頼全文 | 2026-08-30 | 確認済み | 制作済み | AIORG-S01 / S01-02 / Marketing Review β | 2026-08-30 |
 
 ### 記録規則
 

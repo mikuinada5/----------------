@@ -4,6 +4,34 @@
 
 ---
 
+## 2026-08-30｜Marketing Review βをnote制作Pipelineへ接続
+
+### 概要
+
+内容完成稿である第2稿からMarketing Reviewを開始し、Requirement差し戻し、再監査、Publication Decision、第3稿、Human Final Approval、最終稿および公開ボタン直前停止までを既存note制作・Human Approval・Publisher工程へ接続した。
+
+### 変更内容
+
+- note制作SOPをv1.8、Section制作台本テンプレートをv1.4、公開成果物記録テンプレートをv1.3、note READMEをv1.10、Timelineをv1.4、全体ロードマップをv1.5へ更新した。
+- Marketingを新部署・新承認者として作らず、note固有専門監査Gateとして既存QA、Production、Publisher、G5 Human Approvalへ接続した。
+- 初稿、第2稿、第3稿、最終稿を定義し、第2稿・Human完遂Review・実素材不足では`Marketing Input Pending`で停止するControlを追加した。
+- Marketing本文直接WRITEを禁止し、Must Fix／Nice to Improve Requirement、Decision-specific Source、External Research記録、Decision Confidence、Learning Recordおよび一画面のPublication Decision Summaryを実装した。
+- β期間中のnote投入は`Publication Prepared / Not Published`として公開ボタン直前で停止し、設定不能項目・未定義項目・接続不足をPipeline Gapへ記録するようにした。
+- S01-02 Run `MRB-S01-02-001`をPreflight実行し、Practice再設計、Human完遂Review、実素材反映および第2稿が未成立のため、Marketing本文監査を開始せずInput Gateで停止した。
+- Marketing Review βはS01-02専用ではなく、今後のSection／Sessionを含むnote制作全体の共通機構であることを明記し、S01-02を最初のβ検証対象`Test Case #001`として識別した。
+
+### βで確認した不足
+
+- 既存記録は稿名称とMarketing substatusを区別していなかったため、SOP・テンプレート・S01-02実データへ追加した。
+- 未公開本文を含む詳細Marketing ReviewのPublic canonical pathは設けず、本文と同じ承認範囲のWork／Private Source／指定Archiveへ保持し、Public台本には安全なlocatorだけを置く方針とした。
+- 現行note画面とPublisherの設定項目対応は実測未了であり、Human Final Approval後のPublication E2E βで公開ボタン直前まで確認するGapとして残した。
+
+### 自己監査
+
+`CONDITIONAL PASS / Local working tree`。変更対象10ファイルはすべて既存責任内で、新規ファイル・新規恒久フォルダ・未公開本文・詳細Review・credentialの追加はない。Markdown table構造、必須Control、参照Source path、`git diff --check`はPASS。S01-02は第2稿不足で`Marketing Input Pending`となり、Marketing Approved、Publication Decision、G5、G8へ誤昇格していない。現行note画面との項目対応実測とGit Gate（stage／commit／push）は未実施である。
+
+---
+
 ## 2026-08-29｜Practice最新Human DecisionとSource Retrieval E2Eを反映
 
 ### 概要

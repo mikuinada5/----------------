@@ -1,7 +1,7 @@
-# AI Production Pipeline v1.4
+# AI Production Pipeline v1.5
 
 **Document type:** Standard Operating Procedure（SOP）<br>
-**Status:** Current / Operational v1.4<br>
+**Status:** Current / Operational v1.5<br>
 **Owner:** 稲田美来<br>
 **Scope:** Story Candidate、教材、note、SNS、運営文書、Brand／Education／AI Organization関連Source、その他AI制作物<br>
 **Purpose:** 既存OS・Sourceを毎回確実に選択・実読・適用し、成果物と新知見を正しい責任単位へ戻すためのAI組織共通運用<br>
@@ -774,11 +774,15 @@ Story Candidate「Voice OSは存在したのに読まれなかった」を、AI�
 
 ### Output QA
 
-公開構成Profileの全成果物について、史実、Source反映、みくらしさ、Brand整合、本文／別コンテンツの責任分離、読者理解、AI的な過剰整文を監査する。AI Organization Series Section 1ではStory→Practiceの接続とSession Archive非混入を確認する。必要時Claude外部監査。
+公開構成Profileの全成果物について、史実、Source反映、みくらしさ、Brand整合、本文／別コンテンツの責任分離、読者理解、AI的な過剰整文を監査し、初稿を作る。AI Organization Series Section 1ではStory→Practiceの接続とSession Archive非混入を確認する。必要時Claude外部監査。
+
+### Human Content Review／Marketing Review
+
+Humanが初稿の実内容を確認し、Practiceでは実機完遂、壁打ち、Screenshot等の実素材追加を行う。note制作担当が反映した内容完成稿を第2稿とし、ここから`07_Note_Production/00_note制作・公開システム.md`のMarketing Reviewへ渡す。Marketing担当は本文を直接書き換えず、Must Fix／Nice to ImproveのRequirementと根拠・Confidence付きPublication Decisionを返す。必要なProduction修正とMarketing再監査を経て、Marketing Approved＋Publication Decisionが揃った稿を第3稿とする。
 
 ### Human Approval
 
-公開構成Profileの本文・別コンテンツ・タイトル、価格、公開範囲、自己開示範囲をみくが承認する。本文のHuman Final Checkと、価格・公開範囲・Publishの承認を同一視しない。
+第3稿本文と一画面のPublication Decision SummaryをみくがFinal Approvalする。Humanは一括承認または特定Decisionだけを理由付きでOverrideできる。Marketing評価へ影響する本文差分は影響範囲だけ再監査する。内容確認のHuman Reviewと、価格・公開範囲・Publishを含むG5 Final Approvalを同一視しない。
 
 ### Integration／Git
 
@@ -786,7 +790,7 @@ Story Candidate「Voice OSは存在したのに読まれなかった」を、AI�
 
 ### Publish／Feedback
 
-Human Approval後に、公開構成Profileで承認された同一Session内の成果物だけをnoteへ配布し、表示確認する。未決の別コンテンツを同時公開しない。Session単位のSNS展開は `07_Note_Production/03_SNS展開基準.md` に従い、接続不能時は未投稿として記録する。制作中に得たSource QA改善をAI Organization改善候補へ、記事化できる派生事件を対象SectionのStory Hubへ戻す。
+Human Final Approval後に、公開構成Profileで承認された同一Session内の成果物とApproved Publication Decisionだけをnoteへ配布する。Marketing Review β期間中は公開ボタン直前で停止し、`Publication Prepared / Not Published`とPipeline Gapを記録してG8 PASSにしない。未決の別コンテンツを同時公開しない。β終了後に別途承認されたPublishでは表示確認まで行う。Session単位のSNS展開は `07_Note_Production/03_SNS展開基準.md` に従い、接続不能時は未投稿として記録する。制作中に得たSource QA改善をAI Organization改善候補へ、記事化できる派生事件を対象SectionのStory Hubへ戻す。
 
 ---
 

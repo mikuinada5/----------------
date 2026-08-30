@@ -1,7 +1,7 @@
-# note制作・公開システム v1.7
+# note制作・公開システム v1.8
 
-**Status:** Current / Operational v1.7
-**Scope:** note制作、公開準備、公開後記録、Session単位のSNS展開、Repositoryへの知見還元
+**Status:** Current / Operational v1.8 / Marketing Review β
+**Scope:** note制作、Marketing Review、公開準備、公開後記録、Session単位のSNS展開、Repositoryへの知見還元
 
 ## 1. 責任と非責任
 
@@ -12,7 +12,7 @@
 - 役割・権限・受け渡し：`AI_ORGANIZATION.md`
 - 配置、Archive、CHANGELOG、Git：`REPOSITORY_RULES.md`
 
-AIはHuman Approval、外部公開、価格、自己開示の採否を代行しない。認証・接続または正式投稿手段がないSNS投稿を、実施済みと表現してはならない。接続不能時は未実装／未投稿として公開成果物記録へ残す。
+Marketing Reviewは、本Source内のnote固有専門監査Gateとして扱う。新しいAI組織上の部署・役職・承認者は作らず、既存PipelineのQA、Production、PublisherおよびHuman Approvalを責任に応じて接続する。Marketing担当は、Human途中確認なしでPublication Decisionの推奨案を作成できるが、Human Final Approval、外部公開、価格・自己開示・公開範囲の最終採否を代行しない。認証・接続または正式投稿手段がないSNS投稿を、実施済みと表現してはならない。接続不能時は未実装／未投稿として公開成果物記録へ残す。
 
 ## 2. 制作モデル
 
@@ -124,7 +124,83 @@ Session Archiveへ追記・修正・統合を行った後は、変更箇所だ�
 
 Story HubはSection制作台本内で、Story Candidate、一次Evidence、使用Session、重複・未使用、自己開示の人間判断状態を追跡する。Story Candidateがあることは公開許可ではない。
 
-価格はSectionごとに仮説を置き、読者価値、深度、継続性、無料／有料の役割、既存商品の導線との整合を確認してキャリブレーションする。AI Organization Series Section 1では、各Sessionのnote本編価格をSection全体で横並びにして確認する。AIは価格を決定・変更・設定しない。価格、自己開示範囲または公開範囲が未承認でもDraft ProductionとReviewは停止しない。これらが未承認なら、Publishだけを `HUMAN DECISION REQUIRED` として止める。
+価格はSectionごとに仮説を置き、読者価値、深度、継続性、無料／有料の役割、既存商品の導線との整合を確認してキャリブレーションする。AI Organization Series Section 1では、各Sessionの第2稿をSection全体で横並びにして確認する。Marketingは推奨価格を作るが、Human Final Approval前に最終価格として決定・変更・設定しない。価格、自己開示範囲または公開範囲が未承認でもDraft Production、Human ReviewおよびMarketing Reviewは停止しない。これらが未承認なら、Publication E2Eへの引き渡しを `HUMAN DECISION REQUIRED` として止める。
+
+### 2.3 Marketing Review β
+
+本機構はAI Organization Series、Section 1またはS01-02専用ではなく、今後追加されるSection／Sessionを含む**note制作全体の共通Marketing Review機構**とする。個別Section／Sessionは共通Gateと記録様式を再定義せず、Section制作台本へReview Runと、β検証中だけTest Case IDを記録して使用する。
+
+Marketingの最上位目的は、**商品の実際の価値を変えず、必要とする読者にその価値が正しく伝わり、適切な購入または次の行動につながる状態をつくること**である。売上、CTR、購入率その他の指標は改善対象とするが、商品の事実、Purchase Promise、Target Reader、事業上位原則または既存商品設計を破って最大化しない。
+
+煽り、不必要な不安喚起、根拠のない希少性・緊急性、`99％が知らない`、`知らないと損`その他のテンプレート訴求を安易に使用しない。一方、必要な読者へ価値と購入判断材料を明確に伝え、妥当な価格と具体的なCTAを推奨することまで放棄しない。
+
+#### 2.3.1 入場条件と稿名称
+
+Marketingは台本・初稿制作を主導せず、次の工程を通過した**第2稿**から初登場する。
+
+```text
+台本
+→ note制作・Output QA
+→ 初稿
+→ Human Review（実内容確認、Practice実機完遂、壁打ち、実素材追加）
+→ note制作部が反映
+→ 第2稿（内容完成稿）
+→ Marketing Review
+→ Requirement差し戻し／note制作部修正／Marketing再監査
+→ Marketing Approved＋Publication Decision
+→ 第3稿
+→ Human Final Approval
+→ 最終稿
+→ note Publication E2E
+→ β期間中は公開ボタンを押す直前でSTOP
+```
+
+- **初稿**：note制作部がProductionと内部品質工程を通してHumanへ提出した最初の稿。
+- **第2稿**：Human Review、Practice実機完遂、壁打ち、Screenshot等の実素材を反映し、内容として完成した稿。
+- **第3稿**：Marketing Requirementの必要な修正とMarketing再監査を通過し、Publication Decisionまで確定した稿。
+- **最終稿**：Humanが第3稿とPublication DecisionをFinal Approvalした正式稿。
+
+第2稿、Human完遂Reviewまたは必要な実素材が不足している場合、Marketing本文監査を開始しない。`Marketing Input Pending`として不足Input、所有者および再開条件を記録し、既存の未完成稿を第2稿と読み替えない。
+
+#### 2.3.2 Source参照
+
+Marketing Inputは次の3段階で扱う。
+
+1. **Fixed Input**：対象Sessionの第2稿、Target Reader、同SessionのStory／Practice／別コンテンツ、Series／Section内の役割、承認済み公開構成Profileおよび適用される既存Publication Ruleを毎回読む。
+2. **Decision-specific Required Source**：価格には商品設計・価格履歴・販売Evidence・必要時の現在市場、CTAには次Session・Archive・Membership等、Reader Journeyには前後Session設計、Membershipには正式Membership設計というように、各Decisionに必要なSourceだけを読む。
+3. **Additional Source**：上記で不足する場合に限り、読む対象と必要理由をReview Recordへ追加する。
+
+古いDraft、Archive上の発言、未採用案または過去の市場情報を、現行Ruleとして扱わない。変動する市場、競合、価格帯またはnote仕様を外部調査した場合は、調査対象、調査日、Source URLまたは識別子、確認できた事実、Marketing上のInterpretationを分けて記録する。
+
+#### 2.3.3 監査責任と差し戻し
+
+Marketingは、Target Reader、Purchase Promise、商品価値、Story→Practice→次Session等のReader Journey、タイトル、導入、目次・構成、無料／有料境界、価格、CTA、Campaign／Discount、公開日時、SNS Distribution、Magazine／Membership等の既存Publication Rule、市場・競合、Success Metrics／Evaluation PlanおよびPublication Readyを監査・判断する。
+
+Marketing担当は記事本文を直接書き換えない。問題がある場合はnote制作部へ、少なくとも`Requirement ID`、`Must Fix / Nice to Improve`、`問題とEvidence`、`達成すべき状態`、`影響するDecision`、`適用Source`、`再監査範囲`を含むRequirementとして返す。note制作部はVoice、内容、Storyその他の制作責任を守りながら実装し、別の実装方法で同じRequirementを満たせる場合はその根拠を返す。
+
+単なる内容不足はHumanへ即Escalationせず、まずnote制作部へRequirementとして返す。既存Sourceを照合し、代替実装を試してもRequirementと制作責任が両立しない場合だけ、問題、Marketing要求、note制作側の懸念、試した解決策、解決不能理由およびHumanに決めてほしい選択肢を整理して`Human Decision Required`とする。
+
+#### 2.3.4 Publication DecisionとConfidence
+
+Marketing担当はHuman途中確認なしで、推奨価格、無料／有料境界、CTAと優先順位、Campaign実施／非実施、公開日時、SNS Distribution、Success Metricsその他の既存Rule内のPublication Decisionを作成できる。各Decisionには根拠、参照Sourceおよび`High / Medium / Low`のConfidenceを付ける。不明は`Unknown`とし、公開に仮決定が必要なら`検証用仮説 / Confidence Low`として明示する。
+
+Marketing担当は、Target Reader、商品目的、商品の実際の内容・価値、事業上位原則、既存商品設計または既存Publication Ruleを変更しない。既存Ruleがある事項は再判断せず適用し、Ruleがない事項は根拠付き推奨案を作り、Rule変更が必要なら`Human Decision Required`とする。
+
+Review Recordには、少なくとも`Hypothesis`、`Decision`、`Decision Reason`、`Confidence`、`Success Metrics`、`Evaluation Period`を保存する。公開後にHumanから実績値が提供された場合は`Actual Result`、`Interpretation`、`Learning`を追加し、FactとInterpretationを混ぜず、一度の結果だけで一般則化しない。β期間中、主要Marketing施策の変更は原則として一回につき一つとし、品質、事実性、安全性またはRule違反の修正はこの制約から除外する。複数施策を同時変更した場合、その結果を単一要因の効果と断定しない。
+
+#### 2.3.5 Marketing GateとHuman Final Approval
+
+Marketing Gateは、`Marketing Input Pending`、`Marketing Revision Required`、`Marketing Approved`または`Human Decision Required`のいずれかを記録する。`Marketing Approved`の条件は「最大限売れそう」ではなく、Must Fixが解決し、Guardrailsに適合し、Publication Decisionと検証計画が揃い、**市場に出して検証できる品質**に達していることである。Nice to ImproveだけではPublicationを止めない。
+
+第3稿完成時、Humanには第3稿本文と一画面の`Publication Decision Summary`を提示する。Summaryには、Price＋Confidence、Free/Paid Boundary＋Confidence、Campaign、Publication Date/Time、CTA、Magazine、Membership、SNS Distribution、Marketing Gate、unresolved issues、Low Confidence Decisionsおよび今回検証するHypothesisを含める。Humanは一括承認または特定DecisionだけをOverrideでき、Overrideは理由とともに記録する。
+
+Humanが本文、タイトル、導入、無料ライン周辺その他のMarketing評価へ影響する変更を行った場合は、差分と影響範囲だけをMarketing再監査する。
+
+#### 2.3.6 Publication E2E β
+
+Human Final Approval後、最終稿とApproved Publication Decisionを既存PipelineのPublisherへ引き渡す。β期間中は、利用可能な正式操作手段でnote下書きへ設定可能な本文、タイトル、画像、無料／有料境界、価格、CTA、Magazine／Membershipその他の設定を反映し、承認版との一致を確認して、**公開ボタンを押せば公開される最終確認画面の直前でSTOP**する。この状態は`Publication Prepared / Not Published`であり、`Published`またはG8 PASSとして扱わない。
+
+Marketing Decisionにあるが現在のE2Eで設定できない項目、note側にあるがMarketing Decisionにない項目、接続・認証不足、予約投稿その他の利用不能機能は`Pipeline Gap`として記録する。予約投稿を実行できなくても推奨公開日時は決定し、Publication Scheduleへ渡せる形式で保持する。公開操作は、β終了後に別途明示された承認範囲が成立するまで実行しない。
 
 ## 3. 起動コマンドと現在地復元
 
@@ -147,19 +223,22 @@ Timelineが未生成または未更新であることは、史実が存在しな
 
 ### `noteに反映して`
 
-これは外部公開の**Human Approval Gate**を起動する表現であり、AIによる公開実行指示ではない。AIは、対象の公開済み最終稿候補、タイトル、価格、公開範囲、自己開示、SNS展開、公開先の認証・接続状態を提示し、明示承認を確認する。
+これは**Human Final Approval Gate**を起動する表現であり、AIによる公開実行指示ではない。AIは、第3稿、Publication Decision Summary、Marketing Gate、未解決事項、低Confidence Decision、公開先の認証・接続状態を提示し、明示承認を確認する。
 
 明示承認後も、対象媒体の利用可能な正式操作手段と権限を確認する。手段または接続がなければ、AIは公開完了と偽らず、ユーザーが実行できる公開パッケージと未実施状態を記録する。
 
 ## 4. Sectionから公開後まで
 
 1. **Timeline生成・意味づけ・企画／Section設計**：Timelineの確認済み史実から意味づけを開始し、採用する企画だけを`10_Section制作台本テンプレート.md`へ記録する。Section制作台本に基づき、Story Hub、Session、価格仮説、公開条件を壁打ちで設計する。Timelineには実際に起きた出来事だけを記録する。
-2. **Intake / Routing / Source QA**：採用済みSection制作台本を入力としてPipelineを実行し、note本文にはnote制作・公開SOP、SNS展開にはSNS展開基準を必読とする。G0ではDraftを外部公開しない取扱範囲と最終承認者を確定し、最終的な公開範囲、価格、自己開示範囲はPublish前Human Decisionへ残せる。
-3. **Production / Output QA**：Sessionごとに承認済み公開構成Profileの本文・別コンテンツと、Session全体を入口にしたSNS投稿案をDraftとして制作し、既存のOutput QAへ渡す。価格、自己開示範囲または公開範囲の未決は、DraftとReviewを止めず未解決Decisionとして保持する。
-4. **Publish前Human Decision**：Reviewを通過したDraftについて、本文、タイトル、価格、公開範囲、自己開示、公開対象を人間が承認する。未承認ならPublishだけを停止する。差し戻し時は、修正対象を特定して必要最小限の修正・再Reviewへ戻す。
-5. **Publish / Verification**：すべてのPublish前Human Decisionが承認された版だけを公開し、承認版との一致、URL、表示、リンク、価格、公開範囲、日時を既存PipelineのG8／G9で確認する。
-6. **Record / Resume**：承認済み公開構成Profileの公開済み最終稿と公開成果物記録をcanonical pathへ配置し、ロードマップまたは制作台本の状態と次アクションを更新する。公開されなかった場合も理由と再開地点を残す。
-7. **Feedback / Repository還元**：反応、誤読、導線、制作上の発見をFeedback Candidateとして分類する。単発反応を自動でOSやSOPへ反映しない。
+2. **Intake / Routing / Source QA**：採用済みSection制作台本を入力としてPipelineを実行し、note本文にはnote制作・公開SOP、SNS展開にはSNS展開基準を必読とする。G0ではDraftを外部公開しない取扱範囲と最終承認者を確定する。
+3. **Production / Output QA → 初稿**：Sessionごとに承認済み公開構成Profileの本文・別コンテンツと、Session全体を入口にしたSNS投稿案を制作し、既存G4を通過した稿を初稿としてHumanへ渡す。
+4. **Human Review → 第2稿**：Humanが実内容を確認し、Practiceでは実際に手順を完遂し、壁打ち、実Screenshotその他の実素材を追加する。note制作部が反映し、内容完成稿である第2稿を作る。
+5. **Marketing Review → 第3稿**：第2稿だけを入力にMarketing Reviewを行う。Must FixはRequirementとしてnote制作部へ返し、必要な修正とMarketing再監査を経て`Marketing Approved`とPublication Decisionを確定し、第3稿を作る。
+6. **Human Final Approval → 最終稿**：第3稿本文とPublication Decision SummaryをHumanが一括承認またはDecision単位でOverrideする。影響差分があれば必要範囲だけMarketing再監査し、G5 Approval Recordと最終稿を確定する。
+7. **Publication E2E β**：最終稿とApproved Publication Decisionをnote下書きへ反映し、承認版との一致と設定可能項目を確認する。β期間中は公開ボタン直前でSTOPし、`Publication Prepared / Not Published`とPipeline Gapを記録する。
+8. **Publish / Verification**：β終了後に別途承認された場合だけ公開し、承認版との一致、URL、表示、リンク、価格、公開範囲、日時を既存PipelineのG8／G9で確認する。
+9. **Record / Resume**：公開済み最終稿と公開成果物記録をcanonical pathへ配置する。未公開の第2稿・第3稿・最終稿候補や詳細Marketing EvidenceをPublic公開済み正本へ混入させず、Section制作台本には安全な状態・locator・再開条件だけを残す。
+10. **Feedback / Repository還元**：反応、誤読、導線、制作上の発見をFeedback Candidateとして分類する。単発反応を自動でOSやSOPへ反映しない。
 
 ### 4.1 AI Organization SeriesのExternal Audit
 
@@ -173,25 +252,35 @@ Section 1では、Storyと確定タイトル、S1-1 Practiceの既存Statusを�
 
 Sectionの現在地は、全体ロードマップまたはSection制作台本で `Planning`、`Production`、`Review`、`Decision Pending`、`Revision Required`、`Approved`、`Scheduled`、`Published/Complete`、`Update Candidate` のいずれかを記録する。Timelineは史実だけを扱い、状態を記録しない。
 
-### 5.1 Publish前Human Decisionの差し戻しと再開
+### 5.1 Human Final Approvalの差し戻しと再開
 
-状態遷移は次のとおりとする。
+Section Statusとは別に、Marketing Reviewのsubstatusを持つ。状態遷移は次のとおりとする。
 
 ```text
-Production → Review → Decision Pending → Approved → Scheduled / Publish
-                              ↓
-                     Revision Required
-                              ↓
-          修正対象の特定 → 必要最小限の修正 → 必要最小限の再Review
-                              ↓
-                       Decision Pending
+Production → 初稿 → Human Review → 第2稿
+                                   ↓
+                         Marketing Input Pending
+                                   ↓ Input充足
+                         Marketing Review
+                           ↓             ↓
+            Marketing Revision Required  Marketing Approved
+                           ↓             ↓
+                  note制作修正・再監査   第3稿＋Publication Decision
+                           └─────────────┘
+                                         ↓
+                          Human Final Approval / G5
+                                         ↓
+                                  最終稿 / Approved
+                                         ↓
+                  Publication Prepared / Not Published（β STOP）
 ```
 
 - `Production`では、Section制作台本とG2 PASSを入力に、承認済み公開構成ProfileのDraftを作る。価格、自己開示範囲、公開範囲の未決はDraft内の未解決Decisionとして扱い、Productionを止めない。
-- `Review`では、Draftと修正範囲を確認する。Reviewが完了し、Publish前Human Decisionを待つ状態を`Decision Pending`とする。
-- `Decision Pending`で価格、自己開示範囲、公開範囲、本文、タイトルまたは公開対象の一部が差し戻された場合、`Revision Required`へ戻す。差し戻し理由、修正対象、所有者、再開条件をSection制作台本に記録する。
-- `Revision Required`では、未変更のDraft、Output QAおよびReview結果を有効なまま保持する。本文・表示・公開対象の修正が必要な成果物だけを修正し、修正範囲だけを再Reviewする。価格だけ等、本文を変更しない差し戻しでも、価格表示その他の影響範囲を確認してから`Decision Pending`へ戻す。
-- すべてのPublish前Human Decisionが承認され、必要な再ReviewがPASSした場合だけ`Approved`へ進む。`Approved`前のDraft、Review、Decision PendingまたはRevision Requiredを、公開済み・予約済みとして扱わない。
+- `Review`では初稿の実内容、Practice完遂、実素材および修正範囲をHumanが確認する。note制作部の反映が完了した稿だけを第2稿とする。
+- Marketing Inputが不足する場合は`Marketing Input Pending`とし、Marketing担当が未完成稿を直接修正しない。Must Fixがある場合は`Marketing Revision Required`とし、Requirement、所有者および再開条件を記録する。
+- `Marketing Approved`後に第3稿とPublication Decision Summaryを作り、Human Final Approvalを待つ状態をSection Statusの`Decision Pending`とする。
+- Human Final Approvalで本文またはDecisionが差し戻された場合は、未変更の第3稿、Marketing Review結果およびDecisionを有効なまま保持する。影響範囲だけを修正・再監査して`Decision Pending`へ戻す。
+- G5がPASSした場合だけ最終稿を`Approved`とする。β期間中の`Publication Prepared / Not Published`を`Published`、予約済みまたはG8 PASSとして扱わない。
 
 次のいずれかでは、制作台本または公開成果物記録を `Recovery Required` として扱う：公開URLと記録の不一致、承認版と公開候補の不一致、接続／認証失敗、公開直後の表示・リンク・価格異常、Work稿とRepository正本の競合、公開停止を要する安全上の懸念。
 

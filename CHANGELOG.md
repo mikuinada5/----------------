@@ -8,6 +8,25 @@
 
 ------------------------------------------------------------------------
 
+## 2026-08-30｜note Marketing Review βを共通Pipelineへ統合
+
+### 概要
+
+note制作の第2稿からMarketing Reviewを開始し、記事本文の制作責任を侵食せずにRequirement、Publication Decision、Human Final Approvalおよび公開ボタン直前停止へ接続するβ運用を正式Sourceへ反映した。
+
+### 変更内容
+
+- AI Production Pipelineをv1.5へ更新し、note運用例を初稿→Human Content Review→第2稿→Marketing Review→第3稿→G5 Human Final Approval→Publication E2E βへ同期した。
+- `07_Note_Production/`の既存SOP、README、Sectionテンプレート、公開記録テンプレート、ロードマップ、TimelineおよびAIORG-S01制作台本を更新した。
+- Marketingは新しいAI組織上の部署・役職・承認者ではなく、note固有専門監査Gateとした。Humanは価格、公開範囲、自己開示、OverrideおよびPublishの最終責任を維持する。
+- S01-02の実Preflightで、第2稿未成立を`Marketing Input Pending`として停止し、未完成Practiceを第2稿またはMarketing Approvedと誤認しなかった。
+
+### Repository横断監査
+
+判定は`CONDITIONAL PASS / Local working tree`。既存のAI Organization、Human-in-the-loop、Repository Rules、Brand、Voice、Writing Style、Source QA、G4、G5およびG8／G9の責任を再定義していない。変更対象10ファイルはすべて既存責任内で、新規ファイル・新規恒久フォルダ・未公開本文、詳細Review、credentialまたは個人情報の追加はない。Markdown table構造、必須Control、参照Source path、`git diff --check`はPASSし、S01-02の正式Statusは`Redesign Required / Production Completion NOT READY`のまま維持した。現行note画面とPublisherの項目対応はHuman Final Approval後のβ実測Gap、Git Gate（stage／commit／push）は未実施として残した。
+
+------------------------------------------------------------------------
+
 ## 2026-08-29｜AIORG-S01 Practice Status・Work Cloud E2Eを同期
 
 ### 概要

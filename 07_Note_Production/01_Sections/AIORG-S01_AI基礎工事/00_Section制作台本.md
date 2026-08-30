@@ -21,7 +21,7 @@
 | Section ID / 名称 | AIORG-S01 / 第1章｜AIと仕事を始める前の下準備 |
 | Owner / 最終承認者 | 稲田美来（企画・自己開示・価格・公開範囲・Publishの最終判断） |
 | Status | Redesign Required |
-| Next / Blocker | Story本文と確定タイトル、S1-1 Practiceの既存Statusは保持する。S1-2〜S1-6 Practiceは§2.1の再設計フローでSessionごとに制作・Human完遂Reviewを行う。S1-1〜S1-6 Session Archiveは`00_note制作・公開システム.md` §2.2.3で限定修正・全文再監査する。両方の必要工程が終わるまでnote本編のFinal化、note投入、最終価格設定または公開を行わない。 |
+| Next / Blocker | Story本文と確定タイトル、S1-1 Practiceの既存Statusは保持する。S1-2〜S1-6 Practiceは§2.1の再設計フローでSessionごとに制作・Human完遂Reviewを行う。S1-1〜S1-6 Session Archiveは`00_note制作・公開システム.md` §2.2.3で限定修正・全文再監査する。S01-02 Marketing Review βはPreflightまで実施済みだが、第2稿未成立のため`Marketing Input Pending`。第2稿成立までMarketing本文監査、note投入、最終価格設定または公開を行わない。 |
 | 対象読者・目的 | AIを使いたいが、効率化だけでは自分の仕事・思想・品質を預けきれない人。特に、教育・専門性・長期事業のように「何を届けるか」が先にある読者へ、目的から仕組みを育てる見方と最初の実践を届ける。 |
 | 公開構成Profile | 全6 Session。各SessionのStory＋Practiceをnote本編1記事とし、Session Archiveは別コンテンツとして分離する。 |
 | 公開範囲 | StoryのHuman Final Checkは完了。S1-2〜S1-6 PracticeとSession Archiveの必要改訂、note投入・公開は未実施。Session Archiveの具体的な公開範囲とMembershipでの扱いはPending / Human Decision Required。 |
@@ -41,7 +41,7 @@
 | Repository Source：`07_Note_Production/01_Sections/AIORG-S01_AI基礎工事/02_Human_Approved_Source_Inventory.md` | S01-01〜S01-06のStory／Practice／Session Archive計18本文の同一性、Status、provenanceおよびCloud参照経路 | Current / Source QA PASS / Source Retrieval E2E PASS | Private repository、artifact、commit、Final Candidate SHA＋見出しlocator、本文種別ごとのStatusを確認 |
 | Private Source：`mikuinada5/feminine-wellness-private-sources` / `PSR-AIORG-S01-FC` | S01-01〜S01-06の正式baseline本文18件 | Source commit `0531e32239237b7bd5f011bca62d65f5d9d4317e` / Repository HEAD `4c2ea252fa7a78d99ab22c27fe9b8ac0e7975ffa` / file SHA `7E8DDF4E4F7CEC755A99EB123024A12D04883CCD353FF88F8C7A278790185CB2` | Storyは無改変取得、S1-1 Practiceは既存Status、S1-2〜S1-6 Practiceは再設計baseline、ArchiveはHuman-approved baselineから限定修正工程へ進む |
 | `07_Note_Production/01_Timeline.md` | 記事に使える確認済み史実と一次資料参照 | Current / 実読済み | Storyの史実・参照位置をSessionごとに照合 |
-| `07_Note_Production/00_note制作・公開システム.md` | Section固有公開構成Profile、記事制作仕様、公開Gate | Current / v1.6実読済み | Story＋Practice本編とSession Archive分離、および§2.2の成果物別Acceptance Criteriaを確認 |
+| `07_Note_Production/00_note制作・公開システム.md` | Section固有公開構成Profile、記事制作仕様、Marketing Review β、公開Gate | Current / v1.8実読済み | Story＋Practice本編とSession Archive分離、§2.2の成果物別Acceptance Criteria、§2.3の第2稿入場条件とMarketing責任を確認 |
 | `AI/04_Personal_Archive/Derived/AI_Organization_Series_Section1_Final_Candidate.md` | Private本文正本の取得元provenance | Provenance origin / SHA-256 `7E8DDF4E4F7CEC755A99EB123024A12D04883CCD353FF88F8C7A278790185CB2` | Private exact copyとの同一性照合に使用し、Cloud制作時の別Current正本として編集しない |
 | `AI/04_Personal_Archive/Derived/AI_Organization_Series_Section1_External_Audit_Reconciliation.md` | External Audit結果とMINOR採否の取得元provenance | Internal Re-Audit PASS / Private exact copy済み | BLOCKER／Human Decision 0件、Final Candidate SHA一致を確認 |
 | `05_Human_OS/HUMAN_OS.md` | 目的、影響、回復可能性、判断境界 | Current / 実読済み | 本人の判断をAI推論で代替していないか確認 |
@@ -73,7 +73,7 @@ S1-2〜S1-6 Practiceは、読者が記事を横に置いて一緒に作業し、
 | S01-05 | HumanとAIが正式Sourceを誤認しない最低限のSource Governanceを完成する。 |
 | S01-06 | Git管理開始、status、初回記録、Source変更、diff、Human確認、2回目commit、history、復元概念までを扱い、正式SourceをGitで履歴管理できる状態を完成する。AI操作を主経路、VS Code GUI／Terminalを必要時の代替経路とする。 |
 
-将来の制作は各Sessionごとに次の順で行う。今回はこのフローを実行しない。
+各Sessionは次の順で制作する。S01-02はMarketing Review βのPreflightだけを実行し、本文制作は第1工程から再開する。
 
 1. Human Review Draft監査
 2. 現在の強い部分を特定
@@ -90,9 +90,13 @@ S1-2〜S1-6 Practiceは、読者が記事を横に置いて一緒に作業し、
 13. 必要な注釈加工
 14. 本文とScreenshot統合
 15. Human完遂Review
-16. 競合比較
-17. 最終価格決定
-18. Final化
+16. Human Reviewと実素材を反映した第2稿化
+17. Marketing Review（競合比較、価格、無料／有料境界、CTAその他のPublication Decisionを含む）
+18. Marketing Requirementをnote制作側が反映
+19. Marketing再監査
+20. Marketing Approved＋Publication Decision確定／第3稿化
+21. Human Final Approval
+22. 最終稿化
 
 Primary EvidenceはPracticeを読み物化するためではなく、初心者が止まった地点を発見するために使う。各停止点を本文での先回り説明、FAQ、Troubleshooting、注意事項、今回対象外のいずれかへ分類し、Session Archiveの責任と混同しない。Section 2はSection 1の環境を使ってAIとの壁打ち・質問・一仕事の完遂を順に学ぶ。Section 3以降は必要なものを選択する構造を基本とする。
 
@@ -164,7 +168,8 @@ Primary EvidenceはPracticeを読み物化するためではなく、初心者�
 - **Practice:** Storyで生まれた問いを、読者が自分の仕事で試せる手順・テンプレート・確認点に変える。note本編の後半を担う。
 - **Session Archive:** Storyでは圧縮する壁打ち、迷い、修正、失敗、感情、制作裏側を扱う別コンテンツ。note本編へ混ぜず、具体的な公開範囲とMembershipでの扱いは別途Human Decisionとする。
 - **SNS投稿案:** 承認済みの公開対象を入口にし、note本編またはSession Archiveを代替しない。実投稿は別Gateで扱う。
-- **AI:** Timelineからの事実抽出、Source Routing、Draft、QA、記録を担う。シリーズの思想・自己開示・価格・公開の決定は担わない。
+- **note制作担当:** Timelineからの事実抽出、Source Routing、Draft、QA、Human Review反映およびMarketing Requirementの文章実装を担う。
+- **Marketing担当:** 第2稿から監査し、本文を直接書き換えずRequirementと根拠付きPublication Decision推奨案を作る。シリーズの思想、Target Reader、商品価値、自己開示または既存商品設計を変更しない。
 - **人間（稲田美来）:** 企画の最終判断、史実の文脈確認、自己開示、価格、公開範囲、最終Publishを担う。
 
 ## 5. Section完成条件と価格キャリブレーション
@@ -172,9 +177,9 @@ Primary EvidenceはPracticeを読み物化するためではなく、初心者�
 - 全6 SessionにStory、Practice、Session Archiveが各1件存在する。Story本文と確定タイトルのHuman Final Checkは完了している。S1-2〜S1-6 Practiceは現行本文を再設計baselineとして保持する。
 - S1-2〜S1-6 Practiceは§2.1の完成責任・制作フローと`00_note制作・公開システム.md` §2.2.2に適合し、初心者が実機で成果物を完成できることをHuman完遂Reviewで確認する。Session Archiveは別コンテンツとして分離し、同仕様§2.2.3に適合させる。
 - 各Session Archiveは、後発Human-approved仕様と不一致の箇所だけを修正し、追記・修正・統合後に全文をAcceptance Criteriaで再監査する。
-- note下書き保存前に、6本の本文抽出、ヘッダー画像との対応、Archive非混入、Practice FinalのHuman approvalを確認する。
-- Story本文・確定タイトルのHuman Final Check、Practice再設計後のHuman完遂Review、Session Archiveの修正後再Review、価格、公開範囲、公開日時、Publish承認を分離する。Sectionの現在Statusは`Redesign Required / Production Completion NOT READY`、Archive単位は`Revision Required`とする。
-- Session Archiveの公開範囲とMembershipでの扱い、各note本編の価格はHumanのみが決定する。
+- note下書き保存前に、6本の本文抽出、ヘッダー画像との対応、Archive非混入、第2稿、Marketing Approved、第3稿およびHuman Final Approval済み最終稿を確認する。
+- Story本文・確定タイトルのHuman Final Check、Practice再設計後のHuman完遂Review、第2稿、Session Archiveの修正後再Review、Marketing Review、第3稿、Human Final Approval、Publication E2EおよびPublishを分離する。Sectionの現在Statusは`Redesign Required / Production Completion NOT READY`、Archive単位は`Revision Required`、S01-02 Marketing substatusは`Marketing Input Pending`とする。
+- Marketingは価格、無料／有料境界、CTAその他の推奨Decisionを根拠とConfidence付きで作成する。Session Archiveの公開範囲とMembershipでの扱い、各note本編の最終価格およびPublishはHuman Final Approvalで確定する。
 - 承認・公開・公開後記録までの状態遷移は`07_Note_Production/00_note制作・公開システム.md`に従う。
 
 ## 6. Production / QA / Approval
@@ -182,12 +187,40 @@ Primary EvidenceはPracticeを読み物化するためではなく、初心者�
 | Session ID | Source / Audit QA | Final Candidate / Output QA | Human Final Check | 価格 | Session Archive公開範囲 | 差し戻し対象・修正範囲 | 再Review | Publish承認 | 次アクション |
 |---|---|---|---|---|---|---|---|---|---|
 | S01-01 | Source QA / Retrieval E2E PASS。既存監査履歴を保持 | Story／Practice既存PASS / Archive Revision Required | Story／Practice・タイトル完了。Archive再Review待ち | Pending | Pending / Human Decision Required | Session Archiveの後発仕様不一致（段落・改行・末尾を含む） | Pending | 未承認 | Archive限定修正後、全文Acceptance Criteria再監査 |
-| S01-02 | Source QA / Retrieval E2E PASS。既存監査履歴を保持 | Story READY / Practice Redesign Required / Archive Revision Required | Story・タイトル完了。Practice Final未確定。Archive再Review待ち | Pending | Pending / Human Decision Required | Practice作業マニュアル再設計、Session Archive後発仕様不一致 | Pending | 未承認 | Practice §2.1工程開始。その後Archive限定修正・再監査 |
+| S01-02 | Source QA / Retrieval E2E PASS。既存監査履歴を保持 | Story READY / Practice Redesign Required / Archive Revision Required | Story・タイトル完了。Practice Final未確定。Archive再Review待ち | Pending | Pending / Human Decision Required | Practice作業マニュアル再設計、Session Archive後発仕様不一致。Marketing βは第2稿未成立でInput Pending | Pending | 未承認 | Practice §2.1工程開始→Human完遂Review→第2稿化後にMRB-S01-02-001を再開 |
 | S01-03 | Source QA / Retrieval E2E PASS。既存監査履歴を保持 | Story READY / Practice Redesign Required / Archive Revision Required | Story・タイトル完了。Practice Final未確定。Archive再Review待ち | Pending | Pending / Human Decision Required | Practice作業マニュアル再設計、Session Archive後発仕様不一致、一次ログ制限 | Pending | 未承認 | Practice §2.1工程開始。その後Archive限定修正・再監査 |
 | S01-04 | Source QA / Retrieval E2E PASS。既存監査履歴を保持 | Story READY / Practice Redesign Required / Archive Revision Required | Story・タイトル完了。Practice Final未確定。Archive再Review待ち | Pending | Pending / Human Decision Required | Practice作業マニュアル再設計、Session Archive後発仕様不一致 | Pending | 未承認 | Practice §2.1工程開始。その後Archive限定修正・再監査 |
 | S01-05 | Source QA / Retrieval E2E PASS。既存監査履歴を保持 | Story READY / Practice Redesign Required / Archive Revision Required | Story・タイトル完了。Practice Final未確定。Archive再Review待ち | Pending | Pending / Human Decision Required | Practice作業マニュアル再設計、Session Archive後発仕様不一致、一次ログ制限 | Pending | 未承認 | Practice §2.1工程開始。その後Archive限定修正・再監査 |
 | S01-06 | Source QA / Retrieval E2E PASS。既存監査履歴を保持 | Story READY / Practice Redesign Required / Archive Revision Required | Story・タイトル完了。Practice Final未確定。Archive再Review待ち | Pending | Pending / Human Decision Required | Practice作業マニュアル再設計、Session Archive後発仕様不一致、一次資料制限 | Pending | 未承認 | Practice §2.1工程開始。その後Archive限定修正・再監査 |
 
-## 7. 公開後・Feedback
+## 7. Marketing Review β / Publication Decision
+
+### 7.1 S01-02 β試運転Preflight（Test Case #001）
+
+| Field | 記録 |
+|---|---|
+| Review Run ID / Session ID | `MRB-S01-02-001` / S01-02 |
+| β Test Case ID | `Test Case #001`。共通Marketing Review機構の最初のβ検証対象であり、S01-02専用機構を意味しない。 |
+| 実行日 | 2026-08-30 |
+| Marketing Input / 第2稿識別 | **不足**。S01-02 Storyと確定タイトルはREADYだが、Practiceは`Human Review Draft / Redesign Required / Final未確定`、Human完遂Review・実Screenshot・第2稿化は未実施。 |
+| Fixed Input実読 | Target Reader、Section内のS01-02役割、Story／Practice／Session ArchiveのStatus、公開構成Profile、Section制作台本、note制作SOP v1.8を確認。Private本文は今回のMarketing本文監査Inputとして使用していない。 |
+| Decision-specific Required Source | **未開始**。価格、市場・競合、CTA、Membership、公開日時その他は、第2稿成立後にDecision単位で選定する。 |
+| Additional Source / External Research | **未実施**。第2稿の実価値と購入前Promiseを確認できず、現時点の市場比較はDecisionの先行固定になるため。 |
+| Requirement | Marketing Requirementなし。上流の既存Production RequirementであるPractice再設計、Human完遂Review、実素材反映および第2稿化を維持する。 |
+| Marketing Gate | `Marketing Input Pending`。Marketing本文監査・Publication Decision・第3稿化は未実施。 |
+| Human Decision Required | なし。既存Sourceから再開条件を一意に判断できる。 |
+| 再開条件 | §2.1の第1〜16工程を完了し、S01-02 Story＋再設計Practiceの第2稿識別、Human完遂Review結果、Screenshot／実素材状態を本Runへ接続する。 |
+
+### 7.2 βで確認したPipeline Gap
+
+| Gap ID | 発見事項 | 影響 | β対応 / 次の検証 |
+|---|---|---|---|
+| `MRB-GAP-001` | 既存Section記録は初稿・第2稿・第3稿・最終稿およびMarketing substatusを区別していなかった。 | 未完成稿がMarketing Inputまたは公開候補へ進む恐れ。 | note SOP v1.8とSectionテンプレートv1.4で稿名称、入場条件、substatus、戻り先を追加。S01-02でInput Pendingが機能することを確認。 |
+| `MRB-GAP-002` | 詳細Marketing ReviewとRequirementの未公開本文をPublic Repositoryへ安全に保存する既存単一pathはない。 | Public／Private境界違反またはReview evidence消失の恐れ。 | Public台本には安全なRun metadataだけを置く。第2稿成立時、詳細記録は本文と同じ承認範囲のWork／Private Source／指定Archiveへ置き、locatorを本Runへ接続する。 |
+| `MRB-GAP-003` | Repository上のPublication E2EはG8／G9の要件を定義するが、現行note編集画面の各設定と自動操作手段の実測対応表はない。 | Marketing Decisionの設定可否とnote側の未定義項目を事前に断定できない。 | Human Final Approval後の実note下書きで項目対応、接続・認証、利用不能機能を実測し、公開ボタン直前でSTOPしてGapを追記する。 |
+
+S01-02は正しい入力Gateで停止しており、Marketing Approved、第3稿、Human Final Approval、最終稿またはPublication Preparedには到達していない。既存のPractice baselineを第2稿と読み替えず、Publication Decisionはすべて`Unknown / Not Evaluated`とする。
+
+## 8. 公開後・Feedback
 
 未着手。公開後に、各SessionについてHuman承認済み公開構成Profileの公開済み最終稿、公開成果物記録、ロードマップのStatus、Timelineへ追加する新たな史実、Feedback Candidateを記録する。未公開のSession Archiveを公開済みとして記録しない。
