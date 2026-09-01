@@ -6,6 +6,23 @@
 
 ------------------------------------------------------------------------
 
+## 2026-09-01｜成果物承認とPublication Transaction承認を分離
+
+### 概要
+
+note Publication E2E βの実運用結果を受け、G5 Human Final Approvalと、外部公開を実際に発生させるHuman Publication Approvalを別の責任Gateとして明示した。
+
+### 変更内容
+
+- G5は本文、Header、公開境界、Publication Decisionおよび自己開示を含む成果物Packageの承認であり、それだけでは外部公開を許可しない。
+- 非公開のPublication Dry Runは公開権限を生まず、最終公開操作の直前で対象を特定したHuman Publication Approvalを必要とする。
+- G5後の承認対象変更は影響範囲の再Review／再承認へ戻し、承認済みHeaderの無承認差替えを禁止した。
+- Publication Approval後も、差分、想定外UI、認証問題その他の異常では推測回避せず停止する。
+
+具体的なnote媒体手順は`07_Note_Production/00_note制作・公開システム.md`へ委譲し、外部操作一般の責任境界だけを本Sourceへ保持した。
+
+------------------------------------------------------------------------
+
 ## 2026-08-28｜Immediate Execution Rule・Completion Check追加
 
 ### 概要

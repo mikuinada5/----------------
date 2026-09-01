@@ -1,7 +1,7 @@
-# AI Production Pipeline v1.5
+# AI Production Pipeline v1.6
 
 **Document type:** Standard Operating Procedure（SOP）<br>
-**Status:** Current / Operational v1.5<br>
+**Status:** Current / Operational v1.6<br>
 **Owner:** 稲田美来<br>
 **Scope:** Story Candidate、教材、note、SNS、運営文書、Brand／Education／AI Organization関連Source、その他AI制作物<br>
 **Purpose:** 既存OS・Sourceを毎回確実に選択・実読・適用し、成果物と新知見を正しい責任単位へ戻すためのAI組織共通運用<br>
@@ -115,10 +115,10 @@ flowchart TD
 | G2 Source QA Gate | Input品質 | 現行正本・Version・実読・漏れ・依存・矛盾が解決 | Source Router／Source管理責任者 |
 | G3 Production Completeness Gate | 制作完了 | 指示された成果物一式と参照証跡が揃い、実行を表明した作業が実施済み | Production |
 | G4 Output QA Gate | 成果物品質 | 内容・Source整合・形式・安全・媒体要件を満たす | Production |
-| G5 Human Approval Gate | 最終判断 | 人間責任者が採用範囲・公開範囲・変更を承認 | Production／Output QA |
+| G5 Human Approval Gate | 成果物最終判断 | 人間責任者が成果物Package、採用範囲、公開範囲、変更を承認。媒体別Sourceが別の対外実行承認を要求する場合、G5だけでは公開しない | Production／Output QA |
 | G6 Repository Integration Gate | 正式配置 | 保存先・波及更新・Version・INDEX・CHANGELOGが整う | Repository Integration |
 | G7 Git Gate | 正式反映 | diff・テスト・追跡対象・commit範囲が妥当 | Repository Integration |
-| G8 Publish Gate | 公開実行 | 公開版が承認版と一致し、チャネル要件を満たす | Publish |
+| G8 Publish Gate | 公開実行 | 公開版がG5承認版と一致し、必要な明示的対外実行承認とチャネル要件を満たす | Publish／Human Approval |
 | G9 Verification Gate | 公開確認 | URL・表示・リンク・画像・公開範囲・日時を確認 | Publish／緊急訂正 |
 | G10 Feedback Gate | 知見回収 | 発見が分類・重複判定・責任先へRouting済み | Knowledge Feedback |
 
@@ -238,7 +238,7 @@ NOの場合、現在のAIに実行可能なら終了せず該当作業を実行�
 
 | 案件種別 | 必読Source |
 |---|---|
-| note本文 | `05_Human_OS/HUMAN_OS.md`、`02_Voice_OS/VOICE_OS.md`、`06_Writing_Style_OS/WRITING_STYLE_OS.md`、`00_Brand/00_ブランドOS概要・参照ガイド.md` から選択した該当Brand Source、記事一次資料、`07_Note_Production/00_note制作・公開システム.md`、対象Sectionの制作台本 |
+| note本文・Publication Package | `05_Human_OS/HUMAN_OS.md`、`02_Voice_OS/VOICE_OS.md`、`06_Writing_Style_OS/WRITING_STYLE_OS.md`、`00_Brand/00_ブランドOS概要・参照ガイド.md` から選択した該当Brand Source、記事一次資料、`07_Note_Production/00_note制作・公開システム.md`、対象Section／Seriesの制作記録、承認済みHeader AssetとPublication Decision Summary |
 | SNS展開 | 元の公開済み最終稿、`05_Human_OS/HUMAN_OS.md`、`02_Voice_OS/VOICE_OS.md`、`06_Writing_Style_OS/WRITING_STYLE_OS.md`、`00_Brand/04_ブランド言語・表現原則.md`、`07_Note_Production/03_SNS展開基準.md`、公開成果物記録 |
 | 壁打ち回答・会話文 | `05_Human_OS/HUMAN_OS.md`、`02_Voice_OS/VOICE_OS.md`。事業判断を含む場合はBrand OS／専門Sourceを追加 |
 | 教育設計 | Human OS、Brand OS、Education Core、該当Course OS、一次資料、教育設計基準 |
@@ -492,6 +492,8 @@ AIが代行できない価値判断、公開判断、正式採用判断を人間
 
 `Approval Record`：承認／条件付き承認／差戻し／却下、承認対象、承認者、日時、条件、公開範囲。
 
+媒体別Sourceが、成果物PackageのG5承認と外部公開操作への承認を分離する場合は、両者を別記録として保持する。G5 Approval Recordに明記されていない外部公開権限を推測で補わない。
+
 ### 9.5 Gate
 
 **PASS:** 承認対象と条件が一意で、Repository昇格と公開の可否が明示されている。<br>
@@ -619,13 +621,14 @@ RepositoryへのWRITE、stage、commit、pushは別の権限である。WRITEが
 - 公開版と承認版の同一性を守る。
 - 媒体固有の整形と内容変更を区別する。
 - 予約日時、公開範囲、画像、リンク、価格、CTAを確認する。
+- 媒体別Sourceが要求するPublication Dry Runと対外実行承認を区別し、Dry Run完了またはG5だけを公開許可とみなさない。
 - チャネル別展開を新しい制作案件として扱うべき場合は、Source Routerへ戻す。
 
 ### 12.3 Input
 
 - G5承認済み成果物
 - Git／Repository反映結果または正式アーカイブ正本
-- 公開承認
+- 媒体別Sourceが要求する公開承認。G5と別のHuman Publication Approvalを要求する場合は、その対象、公開先、最終操作および影響範囲を特定した承認記録
 - 媒体別仕様
 
 ### 12.4 Output
@@ -633,11 +636,12 @@ RepositoryへのWRITE、stage、commit、pushは別の権限である。WRITEが
 - 公開URL／配布先
 - 公開日時・予約日時
 - Published Artifact Record
+- Publication Transaction Record
 - 媒体上の最終表示確認用Evidence
 
 ### 12.5 Gate
 
-**PASS:** 公開版が承認版と一致し、公開範囲・日時・リンク・画像・CTAが正しい。<br>
+**PASS:** 必要な対外実行承認が有効で、公開版がG5承認版と一致し、公開範囲・日時・リンク・画像・CTAが正しい。<br>
 **FAIL:** Publishへ戻す。意味が変わる修正はProductionへ戻し、再承認する。
 
 ---
@@ -654,6 +658,7 @@ RepositoryへのWRITE、stage、commit、pushは別の権限である。WRITEが
 - 公開／限定公開／予約等の状態が正しい
 - タイトル、本文、見出し、画像、リンク、改行が正しい
 - 課金、価格、CTA、申込導線が正しい
+- 無料／有料またはMembership境界が利用者側で正しく機能し、必要時は非ログイン／非対象ユーザー環境で限定範囲が非表示になる
 - スマートフォン等の主要表示で重大な崩れがない
 - 公開版と承認版の意味差分がない
 - 必要な公開記録が保存されている
@@ -747,7 +752,7 @@ RepositoryへのWRITE、stage、commit、pushは別の権限である。WRITEが
 6. Human Approval Record
 7. Integration Manifest
 8. Git record
-9. Published Artifact Record（公開案件のみ）
+9. Published Artifact Record（公開案件のみ。Publication Dry Run、Human Publication Approval、Publication TransactionおよびPost-Publish Verificationを追跡可能にする）
 10. Feedback Candidates
 
 すべてを別ファイルに分割する必要はない。小規模案件では一つのExecution Recordに統合できる。ただしGateの判定と責任境界は省略しない。
@@ -780,17 +785,17 @@ Story Candidate「Voice OSは存在したのに読まれなかった」を、AI�
 
 Humanが初稿の実内容を確認し、Practiceでは実機完遂、壁打ち、Screenshot等の実素材追加を行う。note制作担当が反映した内容完成稿を第2稿とし、ここから`07_Note_Production/00_note制作・公開システム.md`のMarketing Reviewへ渡す。Marketing担当は本文を直接書き換えず、Must Fix／Nice to ImproveのRequirementと根拠・Confidence付きPublication Decisionを返す。必要なProduction修正とMarketing再監査を経て、Marketing Approved＋Publication Decisionが揃った稿を第3稿とする。
 
-### Human Approval
+### Header Production／Human Approval
 
-第3稿本文と一画面のPublication Decision SummaryをみくがFinal Approvalする。Humanは一括承認または特定Decisionだけを理由付きでOverrideできる。Marketing評価へ影響する本文差分は影響範囲だけ再監査する。内容確認のHuman Reviewと、価格・公開範囲・Publishを含むG5 Final Approvalを同一視しない。
+Marketing Approved後、第3稿と最終タイトルを確定し、`07_Note_Production/00_note制作・公開システム.md`に従ってHeader ProductionとHeader QAを行う。第3稿本文、承認済みHeader Asset、無料／有料またはMembership境界、Publication Decision Summaryおよび必要な自己開示を一つのG5 Approval PackageとしてみくがFinal Approvalする。Humanは一括承認または特定Decisionだけを理由付きでOverrideできる。Marketing評価へ影響する本文差分は影響範囲だけ再監査し、Header差替えはHeader QAとG5再承認へ戻す。内容確認のHuman Review、G5成果物承認、外部公開操作へのHuman Publication Approvalを同一視しない。
 
 ### Integration／Git
 
-公開構成Profileに従う公開済み最終稿と公開成果物記録を `07_Note_Production/` のcanonical pathへ配置する。Work稿や下書きを将来参照する正本にせず、価格・自己開示・公開範囲はHuman Approval Recordと照合する。
+公開前はG5 Approval Package、Header Asset locator、Publication Decision SummaryおよびDry Run状態を、それぞれの承認範囲に合うWork／Private Source／指定Archiveへ保持し、未公開本文をPublic Repositoryの公開済み領域へ先行配置しない。G9 PASS後、公開版と照合済みの最終稿、Header Asset記録および公開成果物記録を`07_Note_Production/`のcanonical pathへ配置する。Work稿や下書きを将来参照する正本にせず、価格・自己開示・公開範囲はG5 Approval Recordと、公開実行はHuman Publication Approvalと照合する。
 
-### Publish／Feedback
+### Publication Dry Run／Publish／Feedback
 
-Human Final Approval後に、公開構成Profileで承認された同一Session内の成果物とApproved Publication Decisionだけをnoteへ配布する。Marketing Review β期間中は公開ボタン直前で停止し、`Publication Prepared / Not Published`とPipeline Gapを記録してG8 PASSにしない。未決の別コンテンツを同時公開しない。β終了後に別途承認されたPublishでは表示確認まで行う。Session単位のSNS展開は `07_Note_Production/03_SNS展開基準.md` に従い、接続不能時は未投稿として記録する。制作中に得たSource QA改善をAI Organization改善候補へ、記事化できる派生事件を対象SectionのStory Hubへ戻す。
+G5後、承認済みPublication Decision SummaryをCanonical Inputとしてnote公開設定を構成し、公開を発生させる最終操作の直前で停止するPublication Dry Runを行う。Dry Run完了はG8 PASSまたは公開承認ではない。対象下書き、設定、差分なしをHumanへ提示し、別のHuman Publication Approval取得後だけPublication Transactionを実行する。Transaction時は下書きへ永続化されない設定をSummaryから再構成し、全設定を再照合する。公開後は利用者側表示、Header、境界、価格、Membership、CTA、タグ、日時をPost-Publication Verificationし、全項目一致で初めてE2E PASSとする。未決の別コンテンツを同時公開しない。Session単位のSNS展開は `07_Note_Production/03_SNS展開基準.md` の別Gateに従い、Publication E2Eへ自動包含しない。制作中に得たSource QA改善をAI Organization改善候補へ、記事化できる派生事件を対象SectionのStory Hubへ戻す。
 
 ---
 

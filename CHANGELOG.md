@@ -8,6 +8,47 @@
 
 ------------------------------------------------------------------------
 
+## 2026-09-02｜AIDAILY-001 Human QA GapとSeries必須所属先を正式反映
+
+### 概要
+
+AIDAILY-001は2026-09-01の初回Post-Publication VerificationでPASS判定されたが、後続Human QAでMagazine`AIとの日常`への未登録が判明した。初回判定を歴史改変せず保持し、note固有Verificationを再オープンした。
+
+### 変更内容
+
+- 「AIとの日常」Series Article Profileに、Membership Plan`AIとの日常`とMagazine`AIとの日常`の双方を必須所属先として追加した。
+- Membership Plan、無料／Membership限定境界およびMagazineを別設定とし、Publication Decision、Dry Run、Transaction、Post-Publication Verificationでそれぞれ照合するようnote SOPと記録テンプレートを更新した。
+- Post-Publication VerificationはDecisionとの機械的一致だけで完了せず、対象Series Publication Profileの必須所属先とも照合するようにした。
+- 公開成果物記録とTimelineへ、`Initial PPV PASS → Human QA Gap Detected / Verification Reopened`の経緯を追記した。原因は操作ミスと断定せず、上流Profile／Decision設計不足を主要改善候補とした。
+- Magazineの現行修正状態は未確認のため、Human Actionを残した。AIDAILY固有設定を他Seriesへ一般化していない。
+
+### Repository横断監査
+
+note固有のSeries ProfileとVerification手順だけを変更対象とし、共通G0〜G10、G5／Human Publication Approval、Header、SNS、Brand、Voice、Writing Styleその他の責任は変更していない。
+
+------------------------------------------------------------------------
+
+## 2026-09-01｜note Publication E2Eと二段階公開承認を正式化
+
+### 概要
+
+「AIとの日常」AIDAILY-001の実運用で、Header Production、Publication Dry Run、Human Publication Approval、Publication Transactionおよび当初のPost-Publication Verificationまで実行したため、共通Pipeline、Human-in-the-loopおよびnote媒体SOPへ正式統合した。2026-09-02の追加Human QAでMagazine Gapが判明し、後続CHANGELOGでVerificationを再オープンしている。
+
+### 変更内容
+
+- AI Production Pipelineをv1.6へ更新し、G5成果物Package承認と媒体別の対外実行承認を分離した。G8は必要なHuman Publication Approval、G9は利用者側のMembership境界を含む表示確認を要求する。
+- Human-in-the-loopへ成果物承認、非公開Dry Run、外部公開操作承認およびG5後変更の再承認境界を追加した。
+- note制作SOPをv2.0へ更新し、「AIとの日常」Series Profile、Header Template／QA、Publication Settingsの再構成、TransactionおよびPost-Publication Verificationを標準化した。
+- Section／Sessionに属さないHuman-approved Series Articleの正式Profileと公開記録pathを追加し、既存Gateを維持したまま`AIDAILY-001`を収容した。
+- `07_Note_Production/02_Published/AIDAILY/AIDAILY-001/`へ公開済み最終稿、Header Asset metadata、Publication Decision、承認、Transactionおよび検証Evidenceを正式記録した。
+- note公式の現行記事見出し画像推奨サイズ1280×670 pxと、AIDAILY-001-H1の同寸法・公開表示成功を照合した。Header binaryはOneDrive AI Archiveを正とし、Repositoryへ複製していない。
+
+### Repository横断監査
+
+既存のG0〜G10、Source Router／QA、Marketing Review、Repository／Git、Brand、Voice、Writing Style、EducationおよびSNS Gateを削除・代替していない。G5だけでは公開不可、Dry Runは公開直前STOP、Header差替えは再QA／再承認、Publication Decision SummaryはSettings再構成のCanonical Input、Post-Publication Verificationは必須、SNS Distributionは別Gateという責任境界を同期した。実測範囲はLocal PC／Browser経路、AIDAILY-001、現行note UIおよび確認済み設定に限定した。
+
+------------------------------------------------------------------------
+
 ## 2026-08-30｜note Marketing Review βを共通Pipelineへ統合
 
 ### 概要

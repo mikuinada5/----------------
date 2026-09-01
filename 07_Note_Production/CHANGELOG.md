@@ -4,6 +4,63 @@
 
 ---
 
+## 2026-09-02｜AIDAILY-001追加Human QAとMagazine必須Profileを反映
+
+### 概要
+
+2026-09-01のAutomated／Post-Publication Verificationでは当時のPublication Decision対象項目との一致によりPASSと判定したが、その後のHuman QAでMagazine`AIとの日常`への未登録を検出した。初回PASSを削除せず時系列を保持し、総合Verificationを`Human QA Gap Detected / Reopened`へ訂正した。
+
+### 変更内容
+
+- note制作SOPをv2.1、公開成果物記録テンプレートをv1.5、Timelineをv1.6へ更新した。
+- AIDAILY Series Articleの標準Publication Profileを、Membership Plan`AIとの日常`とMagazine`AIとの日常`の双方へ登録する構成とした。
+- Membership Plan、無料／Membership境界およびMagazineを別設定として定義し、一方のPASSを他方の代替確認にしないようにした。
+- Publication Decision生成時にSeries Profileの必須所属先を継承し、Dry Run、Transaction、Post-Publication VerificationでDecisionとProfileの双方を照合するよう更新した。
+- AIDAILY-001の公開成果物記録を、`Initial PPV PASS → Human QA Gap Detected / Verification Reopened`へ訂正した。原因は単純な操作ミスと断定せず、Magazineを必須にしなかった上流Profile／Decision設計不足を主要改善候補とした。
+- Humanがnote上でMagazine登録を修正済みかは未確認のため、Current correction stateを`Unknown / Human Action required`として残した。
+
+### 内部監査対象
+
+AIDAILY固有ProfileだけにMagazine`AIとの日常`を設定し、他Seriesへ一般化しない。初回PASSと後続Human QAの両方を保持し、Membership、境界およびMagazineの責任を分離して監査する。
+
+---
+
+## 2026-09-01｜Publication E2E β初回結果を標準Pipelineへ正式統合（後続Human QAで再オープン）
+
+### 概要
+
+「AIとの日常」AIDAILY-001で、Header ProductionからPublication Transaction、非ログイン環境を含む当初のPost-Publication Verificationまで実行し、当時のDecision対象項目に対するPASS結果をnote制作・公開Pipelineの標準ルートへ統合した。2026-09-02の追加Human QAでMagazine Gapが判明し、前項のとおりVerificationを再オープンしている。
+
+### 変更内容
+
+- note制作SOPをv2.0、READMEをv1.11、Section制作台本テンプレートをv1.5、公開成果物記録テンプレートをv1.4、Timelineをv1.5へ更新した。
+- `Marketing Approved → 第3稿／最終タイトル → Header Production → Header QA → G5 Package → Publication Draft E2E → Publication Dry Run → Human Publication Approval → Publication Transaction → Post-Publication Verification`を標準化した。
+- G5 Packageを本文、Header Asset、境界、Publication Decision Summaryおよび必要な自己開示の承認とし、外部公開操作へのHuman Publication Approvalと分離した。
+- Publication Decision SummaryをTransaction時のPublication Settings再構成用Canonical Inputとした。記事タイプ、Magazine、Membership、対象プランおよびTagsが下書きへ永続化されない現行note UI挙動をExpected Behaviorとして記録した。
+- 「AIとの日常」のTarget Reader、Series role、月額1,500円プラン、Header Template固定／可変要素、Header QAおよびAsset管理責任をnote SOPへ正式化した。
+- Section／Sessionに属さない記事は、Human-approvedの既存Series ID／Article IDとWork Charterを用いる`Series Article` Profileで管理する。Sectionを推測採番せず、Source QA、Marketing、Header、G5およびPublication Gateを同じく必須とした。
+- note公式Helpの2026-07-10更新情報に基づき、記事見出し画像の現行推奨サイズ1280×670 pxを確認した。仕様変動を考慮し、制作時の再確認を必須化した。
+- 公開実データとして`02_Published/AIDAILY/AIDAILY-001/`へ本文SHA付き公開済み最終稿、Header Asset記録および公開成果物記録を配置した。Header画像本体はOneDrive AI Archiveを正とし、Public Repositoryへ重複配置していない。
+
+### E2E Evidence
+
+- Article Draft：`AIDAILY-001-D3`
+- Header Asset：`AIDAILY-001-H1`
+- G5 Package：`G5-AIDAILY-001-D3-H1`
+- note Article ID：`n7cf6aee64f0d`
+- 公開URL：`https://note.com/miku_inada/n/n7cf6aee64f0d`
+- 公開日時：2026-09-01 14:15 JST
+- Post-Publication Verification（2026-09-01初回）：当時のDecision対象項目に対してPASS
+- Follow-up Human QA（2026-09-02）：Magazine`AIとの日常`未登録を検出しVerification再オープン
+- SNS外部共有：未実行
+- 公開後差分・異常：初回確認では検出なし。その後Human QAでMagazine assignment漏れを検出
+
+### 自己監査
+
+G5とHuman Publication Approvalを分離し、G5だけでは公開不可、Dry Runでは公開操作不可、G5後のHeader無承認差替え不可、Publication Decision SummaryをSettings再構成の正本、Post-Publication VerificationをE2E必須条件とした。SNS Distributionは別Gateのまま維持し、Cloud→Local接続、未確認のnote詳細設定または本実測を超える挙動を確認済みと断定していない。
+
+---
+
 ## 2026-08-30｜Marketing Review βをnote制作Pipelineへ接続
 
 ### 概要

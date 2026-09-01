@@ -1,6 +1,6 @@
 # note Production Timeline
 
-**Status:** Current / Operational v1.4
+**Status:** Current / Operational v1.6
 **Role:** 一次資料から抽出した実際の出来事を時系列で保持する、note制作における唯一の史実Source
 
 ## 運用規則
@@ -39,6 +39,8 @@ Repository外に原本を保持する継続参照資料のRegistry ID、取得�
 | 2026-08-29 | S1-2〜S1-6 Practiceは完成原稿ではなくHuman Review Draft／再設計baselineであり、初心者が一緒に作業してAI仕事環境を完成できる作業マニュアルへ順次再設計することがHuman Decisionとして確定した。S1-1は今回のStatus変更対象外とされた。 | Registry ID `EXT-CODEX-AIORG-PRACTICE-E2E` | Human instruction §1〜§8 | 2026-08-29 | 確認済み | 制作済み | AIORG-S01 / S01-02〜S01-06 / Practice設計 | 2026-08-29 |
 | 2026-08-29 | スマホWork CloudがHumanによる本文ファイル・pathの手渡しなしに、Public制作台本からInventory、Private Repository、Section README／Index、canonical artifactを経由し、S1-2 Story／Practice／Session Archiveへ到達した。Source欠落と推測補完はなかった。 | Registry ID `EXT-CODEX-AIORG-PRACTICE-E2E` | Human instruction §9〜§10 | 2026-08-29 | 確認済み | 制作済み | AIORG-S01 / Source Retrieval E2E | 2026-08-29 |
 | 2026-08-30 | note制作Pipelineでは、内容完成稿である第2稿からMarketing Reviewを開始し、Marketingは本文を直接修正せずRequirementをnote制作側へ返すこと、根拠とConfidence付きPublication Decisionを作ること、第3稿をHuman Final Approvalへ渡すこと、β期間中はnote公開ボタン直前で停止することがHuman Decisionとして確定した。 | Codex Task「note制作Pipelineへ『Marketing Review β』を早期実装」 / 永続Task ID未確認 | 2026-08-30の初回ユーザー指示に添付された依頼全文 | 2026-08-30 | 確認済み | 制作済み | AIORG-S01 / S01-02 / Marketing Review β | 2026-08-30 |
+| 2026-09-01 | 「AIとの日常」記事AIDAILY-001は、承認済み第3稿、Header Asset、Membership境界およびPublication DecisionをLocal PCからnoteへ反映し、別のHuman Publication Approval後に公開された。公開成功表示、公開URL、非ログイン環境のMembership遮断、月額1,500円プラン、加入導線、Tagsおよび公開日時の照合までPASSし、SNS共有は実行しなかった。 | Published Artifact Record `07_Note_Production/02_Published/AIDAILY/AIDAILY-001/03_公開成果物記録.md` | note Article ID `n7cf6aee64f0d`; 公開URL `https://note.com/miku_inada/n/n7cf6aee64f0d`; G5 Package `G5-AIDAILY-001-D3-H1` | 2026-09-01 | 確認済み | 公開済み | AIとの日常 / AIDAILY-001 / Publication E2E β | 2026-09-01 |
+| 2026-09-02 | AIDAILY-001の追加Human QAで、Membership Plan、月額1,500円、無料／Membership境界、非ログイン遮断、加入導線および4 Tagsは正常だった一方、Magazine「AIとの日常」への登録が未実施だったことを検出した。当初Verificationは当時のPublication Decision対象項目との一致でPASSとしていたため、履歴を保持したままVerificationを再オープンした。HumanによるMagazine修正済みかは未確認である。 | Human Decision / Published Artifact Record `07_Note_Production/02_Published/AIDAILY/AIDAILY-001/03_公開成果物記録.md` | 本Codex Taskの追加Human QA指示 | 2026-09-02 | 確認済み | Gap検出・再監査済み | AIとの日常 / AIDAILY-001 / Follow-up Human QA | 2026-09-02 |
 
 ### 記録規則
 

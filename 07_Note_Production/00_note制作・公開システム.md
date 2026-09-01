@@ -1,7 +1,7 @@
-# note制作・公開システム v1.8
+# note制作・公開システム v2.1
 
-**Status:** Current / Operational v1.8 / Marketing Review β
-**Scope:** note制作、Marketing Review、公開準備、公開後記録、Session単位のSNS展開、Repositoryへの知見還元
+**Status:** Current / Operational v2.1 / Publication E2E verified with Human QA follow-up
+**Scope:** note制作、Marketing Review、Header Production、Publication Dry Run、Publication Transaction、公開後記録、Session単位のSNS展開、Repositoryへの知見還元
 
 ## 1. 責任と非責任
 
@@ -19,14 +19,15 @@ Marketing Reviewは、本Source内のnote固有専門監査Gateとして扱う�
 制作の階層は次の順序で扱う。
 
 ```text
-一次資料 → Timeline → 意味づけ → 企画 → Section制作台本 → Session → 承認済み公開構成Profileの成果物
+一次資料 → Timeline → 意味づけ → 企画 → 承認済み公開構成Profile（Section／SessionまたはSeries Article） → 成果物
 ```
 
 - **Timeline**：GPTログ、Codexログ、音声、壁打ち、Git履歴、CHANGELOGその他の一次資料から、実際に起きた出来事を抽出して時系列で保持する、唯一の史実Source。企画、現在地、制作状態、Next、Blockerは扱わない。一次資料の原本はTimelineへ全文複製せず、原本の保管先と参照位置を追跡できる状態にする。
 - **意味づけ**：Timelineの確認済み史実を起点に、その史実が何を意味するか、どのSeriesで扱いうるか、どのような学びになるか、読者へどの順番で届けうるかを壁打ちするフェーズ。同一の史実から複数候補が並列に成立してよい。候補はその都度再生成する思考材料であり、Repositoryの永続成果物として保存しない。
-- **企画**：意味づけ候補をもとに、今回採用する企画、既存Sectionへの追加または新Section、Session候補、Story／Practice／別コンテンツの役割、公開構成Profile、Human Decisionを整理するフェーズ。採用された企画だけをSection制作台本へ渡し、採用しない候補は保存を要しない。意味づけ・企画はWork Charter、Source Router、Source QAまたはHuman Approvalを代替しない。
-- **Section**：最上位の制作単位。テーマ、対象、目的、Story Hub、Session構成、現在地、優先順位、承認状態を一つにまとめる。Section構成はAIが勝手に確定せず、壁打ちで確定する。
+- **企画**：意味づけ候補をもとに、今回採用する企画、既存Sectionへの追加、新SectionまたはHuman-approved Series Article、Session候補、Story／Practice／別コンテンツの役割、公開構成Profile、Human Decisionを整理するフェーズ。採用された企画だけを対応する制作記録へ渡し、採用しない候補は保存を要しない。意味づけ・企画はWork Charter、Source Router、Source QAまたはHuman Approvalを代替しない。
+- **Section**：Section型企画の最上位制作単位。テーマ、対象、目的、Story Hub、Session構成、現在地、優先順位、承認状態を一つにまとめる。Section構成はAIが勝手に確定せず、壁打ちで確定する。
 - **Session**：1回の制作・公開・展開単位。成果物の本数と結合方法は、Section制作台本に記録されたHuman承認済み公開構成Profileを正とする。
+- **Series Article**：Human-approvedの既存Series ID／Article IDで管理し、Section／Sessionへ属さない単独記事Profile。Sectionを推測採番せず、Work Charter、Source QA、Production、Marketing、Header、G5、Publicationおよび記録Gateは省略しない。
 - **Story**：読者が問題を自分事化し、実体験からSessionテーマへ入り、Practiceを読む理由を作る導入。単独記事またはPracticeと結合したnote本編の前半を担う。
 - **Practice**：読者が実際に取り組める手順・テンプレート・確認点を担う。単独記事またはStoryと結合したnote本編の後半として扱う。
 - **Session Archive / MS奮闘記**：生の声・壁打ち・失敗・感情・制作裏側を扱う別コンテンツ。Story／Practiceとの責任分離を維持し、公開範囲、Membershipでの扱い、自己開示はHuman Decisionを要する。
@@ -42,13 +43,32 @@ Marketing Reviewは、本Source内のnote固有専門監査Gateとして扱う�
 - Story本文と確定タイトルはHuman Final Check完了済みFinal Candidateを起点とし、S1-1 Practiceの既存Statusは継続する。S1-2〜S1-6 Practiceの現行本文は`Human Review Draft / 再設計baseline / Redesign Required / Final未確定`として保持し、作業マニュアルへ再設計する。Session Archiveは同Final CandidateをHuman-approved baselineとし、後発仕様との不一致箇所だけを`Revision Required`とする。対象外の本文・タイトル・Human Review結果を変更しない。
 - 価格、公開日時および外部公開は別Gateとし、下書き保存または公開準備だけでは決定・実行しない。
 
-### 2.2 Section記事制作仕様
+### 2.2 「AIとの日常」Series Profile
+
+「AIとの日常」は、AI活用、AI組織づくり、AIを使った仕事の仕組み化に関心があり、完成したノウハウだけでなく、実際にAIと仕事・事業・生活を進める途中の試行錯誤、失敗、会話、判断過程まで見たい読者をTarget Readerとする。
+
+無料のAI組織Seriesが、AIとの仕事・組織づくりを整理・体系化したStory／Productionとして届けるのに対し、「AIとの日常」は、その裏側で実際に起きているAIとの会話、試行錯誤、失敗、エラー、感情、制作途中の出来事および生活との混在をPrimary Evidenceに基づいて見せるMembership contentである。完成後の成功談へ再構成せず、「現在進行形で何が起きていたか」を残す。
+
+- 現行Membership：`稲田みく｜教育と仕事をAIとつくる のメンバーシップ`
+- 対象プラン：`AIとの日常`
+- 現行価格：月額1,500円
+- 標準Magazine：`AIとの日常`
+- AIDAILY Series Articleの標準Publication Profileは、**MembershipをONにして対象プラン`AIとの日常`へ登録すること**と、**Magazine`AIとの日常`へ登録すること**の双方を必須とする。Publication Decision生成時に二つを別項目として既定入力し、Humanが明示的にOverrideしない限り省略しない。
+- Membership Planは特典記事状態、対象読者、価格および無料／Membership限定境界を制御する。Magazineは記事の収録・Series導線を制御する。両者は別設定であり、Membership Plan登録または境界設定をMagazine登録の代替確認にしない。
+- 価格の正本は現行note管理画面上の実設定とし、旧価格案を自動適用しない。変更はHuman Decisionを要する。
+- 本文内へ強い加入訴求を機械的に追加せず、note標準のMembership加入導線をPrimary CTAとする。
+- 無料／Membership境界は記事ごとのPublication DecisionとHuman Approvalで確定し、編集用マーカーを公開本文へ残さない。
+- 無料AI組織Seriesへの関連リンクは、実在する公開URLを正式Sourceから確認できる場合だけ使用し、未公開URLを捏造しない。
+
+Target Reader、Series role、現行Membership plan、Header Templateおよびnote固有Publication Ruleのcanonical Sourceは本節とする。Human OS、Voice OS、Writing Style OS、Brand OSまたは一般Marketing Ruleへ同じ媒体固有仕様を重複配置しない。
+
+### 2.3 Section記事制作仕様
 
 本節は、Story、PracticeおよびSession Archiveを制作・修正・監査する際の媒体固有仕様である。Voiceの横断判断は`02_Voice_OS/VOICE_OS.md`、公開文章の一般的な文体判断は`06_Writing_Style_OS/WRITING_STYLE_OS.md`を正とし、本節はその範囲内で成果物ごとの役割と実装条件を具体化する。
 
 仕様を更新する場合は、**新しいHuman-approved仕様が対象とする箇所だけを上書きし、矛盾しない既存仕様・本文・承認結果を保持する。** 後発仕様を理由に、対象外の構成、史実、言い回し、公開範囲または商品設計を再設計しない。
 
-#### 2.2.1 Story
+#### 2.3.1 Story
 
 Storyは、読者をSessionの問題へ招き入れ、自分事化からPracticeの実行意欲へつなぐ導入パートである。Section制作台本でStory＋Practiceを1本のnote本編とするProfileが承認されている場合、Story単独で完結させず、Practiceと合わせて1記事として成立させる。
 
@@ -67,7 +87,7 @@ Storyは、読者をSessionの問題へ招き入れ、自分事化からPractice
 - [ ] 有料導線がある場合、無料は問題と意味、有料は解決と実装という責任分離が成立している。
 - [ ] Archiveより抑えた口語温度で、きれいすぎる説明文にも、砕けすぎた会話文にもなっていない。
 
-#### 2.2.2 Practice
+#### 2.3.2 Practice
 
 Practiceは、読者が記事を横に置いて実際に手を動かし、Session Goalの環境・成果物を完成させるための商品上の作業マニュアルである。StoryやSession Archiveのように会話へ崩しすぎず、初心者がその記事だけを見て完遂できる、整理された文章を優先する。価値は文字数、情報量または高度機能ではなく、初心者の完遂率で判定する。
 
@@ -94,7 +114,7 @@ Primary Evidenceは、初心者が実際に止まった地点を抽出するた�
 - [ ] 後続Sessionで使うSeed、Map、Logまたは同等物が残り、再利用先が分かる。
 - [ ] 価格を正当化するためだけの不要な高度機能、専門知識または文字数を追加していない。
 
-#### 2.2.3 Session Archive
+#### 2.3.3 Session Archive
 
 Session Archiveは、完成した答えを説明する記事ではなく、みくがそのSessionのテーマを実際に理解していった過程を見せる別コンテンツである。**分からない → 聞く → 引っかかる → 自分の仕事へ置き換える → 仮説を言う → 修正される → 分かった**という壁打ちの動きを、史実の範囲内で読者が追えるようにする。
 
@@ -126,7 +146,7 @@ Story HubはSection制作台本内で、Story Candidate、一次Evidence、使�
 
 価格はSectionごとに仮説を置き、読者価値、深度、継続性、無料／有料の役割、既存商品の導線との整合を確認してキャリブレーションする。AI Organization Series Section 1では、各Sessionの第2稿をSection全体で横並びにして確認する。Marketingは推奨価格を作るが、Human Final Approval前に最終価格として決定・変更・設定しない。価格、自己開示範囲または公開範囲が未承認でもDraft Production、Human ReviewおよびMarketing Reviewは停止しない。これらが未承認なら、Publication E2Eへの引き渡しを `HUMAN DECISION REQUIRED` として止める。
 
-### 2.3 Marketing Review β
+### 2.4 Marketing Review
 
 本機構はAI Organization Series、Section 1またはS01-02専用ではなく、今後追加されるSection／Sessionを含む**note制作全体の共通Marketing Review機構**とする。個別Section／Sessionは共通Gateと記録様式を再定義せず、Section制作台本へReview Runと、β検証中だけTest Case IDを記録して使用する。
 
@@ -134,7 +154,7 @@ Marketingの最上位目的は、**商品の実際の価値を変えず、必要
 
 煽り、不必要な不安喚起、根拠のない希少性・緊急性、`99％が知らない`、`知らないと損`その他のテンプレート訴求を安易に使用しない。一方、必要な読者へ価値と購入判断材料を明確に伝え、妥当な価格と具体的なCTAを推奨することまで放棄しない。
 
-#### 2.3.1 入場条件と稿名称
+#### 2.4.1 入場条件と稿名称
 
 Marketingは台本・初稿制作を主導せず、次の工程を通過した**第2稿**から初登場する。
 
@@ -149,20 +169,25 @@ Marketingは台本・初稿制作を主導せず、次の工程を通過した**
 → Requirement差し戻し／note制作部修正／Marketing再監査
 → Marketing Approved＋Publication Decision
 → 第3稿
-→ Human Final Approval
+→ Header Production
+→ Header QA
+→ G5 Human Final Approval Package
 → 最終稿
-→ note Publication E2E
-→ β期間中は公開ボタンを押す直前でSTOP
+→ Publication Draft E2E
+→ Publication Dry Run（公開直前STOP）
+→ Human Publication Approval
+→ Publication Transaction
+→ Post-Publication Verification
 ```
 
 - **初稿**：note制作部がProductionと内部品質工程を通してHumanへ提出した最初の稿。
 - **第2稿**：Human Review、Practice実機完遂、壁打ち、Screenshot等の実素材を反映し、内容として完成した稿。
 - **第3稿**：Marketing Requirementの必要な修正とMarketing再監査を通過し、Publication Decisionまで確定した稿。
-- **最終稿**：Humanが第3稿とPublication DecisionをFinal Approvalした正式稿。
+- **最終稿**：Humanが第3稿、Header Asset、境界、Publication Decisionおよび必要な自己開示をG5 Final Approvalした正式Publication Package。
 
 第2稿、Human完遂Reviewまたは必要な実素材が不足している場合、Marketing本文監査を開始しない。`Marketing Input Pending`として不足Input、所有者および再開条件を記録し、既存の未完成稿を第2稿と読み替えない。
 
-#### 2.3.2 Source参照
+#### 2.4.2 Source参照
 
 Marketing Inputは次の3段階で扱う。
 
@@ -172,7 +197,7 @@ Marketing Inputは次の3段階で扱う。
 
 古いDraft、Archive上の発言、未採用案または過去の市場情報を、現行Ruleとして扱わない。変動する市場、競合、価格帯またはnote仕様を外部調査した場合は、調査対象、調査日、Source URLまたは識別子、確認できた事実、Marketing上のInterpretationを分けて記録する。
 
-#### 2.3.3 監査責任と差し戻し
+#### 2.4.3 監査責任と差し戻し
 
 Marketingは、Target Reader、Purchase Promise、商品価値、Story→Practice→次Session等のReader Journey、タイトル、導入、目次・構成、無料／有料境界、価格、CTA、Campaign／Discount、公開日時、SNS Distribution、Magazine／Membership等の既存Publication Rule、市場・競合、Success Metrics／Evaluation PlanおよびPublication Readyを監査・判断する。
 
@@ -180,7 +205,7 @@ Marketing担当は記事本文を直接書き換えない。問題がある場�
 
 単なる内容不足はHumanへ即Escalationせず、まずnote制作部へRequirementとして返す。既存Sourceを照合し、代替実装を試してもRequirementと制作責任が両立しない場合だけ、問題、Marketing要求、note制作側の懸念、試した解決策、解決不能理由およびHumanに決めてほしい選択肢を整理して`Human Decision Required`とする。
 
-#### 2.3.4 Publication DecisionとConfidence
+#### 2.4.4 Publication DecisionとConfidence
 
 Marketing担当はHuman途中確認なしで、推奨価格、無料／有料境界、CTAと優先順位、Campaign実施／非実施、公開日時、SNS Distribution、Success Metricsその他の既存Rule内のPublication Decisionを作成できる。各Decisionには根拠、参照Sourceおよび`High / Medium / Low`のConfidenceを付ける。不明は`Unknown`とし、公開に仮決定が必要なら`検証用仮説 / Confidence Low`として明示する。
 
@@ -188,19 +213,101 @@ Marketing担当は、Target Reader、商品目的、商品の実際の内容・�
 
 Review Recordには、少なくとも`Hypothesis`、`Decision`、`Decision Reason`、`Confidence`、`Success Metrics`、`Evaluation Period`を保存する。公開後にHumanから実績値が提供された場合は`Actual Result`、`Interpretation`、`Learning`を追加し、FactとInterpretationを混ぜず、一度の結果だけで一般則化しない。β期間中、主要Marketing施策の変更は原則として一回につき一つとし、品質、事実性、安全性またはRule違反の修正はこの制約から除外する。複数施策を同時変更した場合、その結果を単一要因の効果と断定しない。
 
-#### 2.3.5 Marketing GateとHuman Final Approval
+#### 2.4.5 Marketing GateとG5 Handoff
 
 Marketing Gateは、`Marketing Input Pending`、`Marketing Revision Required`、`Marketing Approved`または`Human Decision Required`のいずれかを記録する。`Marketing Approved`の条件は「最大限売れそう」ではなく、Must Fixが解決し、Guardrailsに適合し、Publication Decisionと検証計画が揃い、**市場に出して検証できる品質**に達していることである。Nice to ImproveだけではPublicationを止めない。
 
-第3稿完成時、Humanには第3稿本文と一画面の`Publication Decision Summary`を提示する。Summaryには、Price＋Confidence、Free/Paid Boundary＋Confidence、Campaign、Publication Date/Time、CTA、Magazine、Membership、SNS Distribution、Marketing Gate、unresolved issues、Low Confidence Decisionsおよび今回検証するHypothesisを含める。Humanは一括承認または特定DecisionだけをOverrideでき、Overrideは理由とともに記録する。
+第3稿完成後、Header Production／Header QAを行い、Humanには第3稿本文、Header Asset、無料／有料またはMembership境界、一画面の`Publication Decision Summary`および必要な自己開示を一つのG5 Approval Packageとして提示する。Summaryには、Price＋Confidence、Free/Paid Boundary＋Confidence、Campaign、Publication Date/Time、CTA、Magazine、Membership、Tags、SNS Distribution、Marketing Gate、unresolved issues、Low Confidence Decisionsおよび今回検証するHypothesisを含める。Humanは一括承認または特定DecisionだけをOverrideでき、Overrideは理由とともに記録する。
 
-Humanが本文、タイトル、導入、無料ライン周辺その他のMarketing評価へ影響する変更を行った場合は、差分と影響範囲だけをMarketing再監査する。
+Humanが本文、タイトル、導入、無料ライン周辺その他のMarketing評価へ影響する変更を行った場合は、差分と影響範囲だけをMarketing再監査する。G5後のHeader差替えまたは意味が変わる修正は、Header QAまたは該当Reviewへ戻し、変更版をG5再承認する。
 
-#### 2.3.6 Publication E2E β
+#### 2.4.6 Publication Decision Summaryの責任
 
-Human Final Approval後、最終稿とApproved Publication Decisionを既存PipelineのPublisherへ引き渡す。β期間中は、利用可能な正式操作手段でnote下書きへ設定可能な本文、タイトル、画像、無料／有料境界、価格、CTA、Magazine／Membershipその他の設定を反映し、承認版との一致を確認して、**公開ボタンを押せば公開される最終確認画面の直前でSTOP**する。この状態は`Publication Prepared / Not Published`であり、`Published`またはG8 PASSとして扱わない。
+Publication Decision Summaryは、Publication Transaction時にnote上のPublication Settingsを再構成するCanonical Inputである。本文、Header、境界そのものの正本を代替しない。Series Publication Profileに必須所属先がある場合、Decision生成時にそのProfileからMembershipとMagazineを別項目として継承する。必須項目の欠落またはProfileとの不一致は、Decisionとの機械的一致だけで許容せず、Human Decisionまたは`Pipeline Gap`として停止する。Summaryにない設定をUI上で発見した場合も、既存Ruleから一意に決められなければ停止する。
 
-Marketing Decisionにあるが現在のE2Eで設定できない項目、note側にあるがMarketing Decisionにない項目、接続・認証不足、予約投稿その他の利用不能機能は`Pipeline Gap`として記録する。予約投稿を実行できなくても推奨公開日時は決定し、Publication Scheduleへ渡せる形式で保持する。公開操作は、β終了後に別途明示された承認範囲が成立するまで実行しない。
+### 2.5 Header Production
+
+note記事ではHeader Assetを本文と同じPublication Packageの構成要素として扱う。標準位置は、`Marketing Approved → 最終タイトル／第3稿確定 → Header Production → Header QA → G5 Human Final Approval`とする。
+
+Header Asset本体は、公開画像の責任に従って承認済みOneDrive AI Archive等の指定Archiveへ保持し、Public Repositoryへバイナリを重複配置しない。RepositoryにはAsset ID、承認対象、provenance locator、SHA-256、寸法、Header QA、G5 Approval Package ID、note上の公開asset URLおよび表示検証結果を記録する。G5後の差替えは新AssetとしてHeader QAとG5へ戻す。
+
+note公式の現行記事見出し画像推奨サイズは1280×670 pxである（[noteヘルプセンター「登録画像の推奨サイズ一覧」](https://www.help-note.com/hc/ja/articles/360000231642-%E7%99%BB%E9%8C%B2%E7%94%BB%E5%83%8F%E3%81%AE%E6%8E%A8%E5%A5%A8%E3%82%B5%E3%82%A4%E3%82%BA%E4%B8%80%E8%A6%A7)、2026-07-10更新）。仕様は変動し得るため、制作時にはnote公式Helpの現行値を確認する。推奨値と異なる場合はトリミング表示を前提にせず、表示結果と安全領域をQAする。
+
+#### 2.5.1 「AIとの日常」Header Template
+
+**固定要素**
+
+- note記事用の横長Header
+- 左側にHuman、右側にケイ／AIを置く基本構図
+- 漫画調
+- 白〜生成りを基調とし、黒を主要色、ピンクをアクセントにする
+- 記事タイトルを中央の最重要Visual Elementとして配置する
+- マガジン名「AIとの日常」をHeaderへ入れない
+- キャラクターの吹き出し／セリフは原則使用しない
+
+**記事ごとの可変要素**
+
+- 記事タイトル
+- Human／ケイの表情、ポーズ、動き
+- PC、紙、マグ、付箋等の作業小物
+- 小物内の短い文字
+- 記事内容に応じた軽微な演出
+
+小物文字はPrimary Evidenceおよび本文と矛盾させず、未確認事実、過剰な成果、記事にない断定を生成しない。タイトルの意味・表記を勝手に変更しない。
+
+#### 2.5.2 Header QA
+
+- [ ] note公式の現行推奨サイズ／比率と容量要件を確認した
+- [ ] 最終タイトルに誤字・脱字・意味改変がない
+- [ ] タイトルが中央の主役として十分視認できる
+- [ ] マガジン名「AIとの日常」が混入していない
+- [ ] キャラクターの吹き出し／セリフが原則存在しない
+- [ ] Human左／ケイ右の基本配置とSeries Visual Identityを維持している
+- [ ] 小物文字がPrimary Evidence／本文と矛盾しない
+- [ ] 記事内容以上の煽り、成功表現または誇張がない
+- [ ] note下書きへの設定、crop後表示および公開後表示を確認した、または後続Gateの確認項目として記録した
+
+### 2.6 Publication Draft E2E／Dry Run／Transaction
+
+#### 2.6.1 G5 Approval Package
+
+G5では、最終本文、Header Asset、無料／有料またはMembership境界、Publication Decision Summaryおよび必要な自己開示を一括してHumanへ提示する。G5はPublication Packageの採用承認であり、note上で外部公開を発生させる操作への承認ではない。
+
+#### 2.6.2 Publication Draft E2E
+
+G5後、承認済みタイトル、本文、Headerおよび境界をnote新規下書きへ反映し、下書き保存を確認する。Publication Settingsは下書きへ必ず永続化できるAssetと仮定しない。今回の実測では、記事タイプ、Magazine、Membership、対象プランおよびTagsは公開設定画面を離れると保持されず、本文、Headerおよび境界だけが下書き保存された。この挙動は現行note UIのExpected Behaviorとして扱い、保存不能を公開失敗または承認不足と誤認しない。
+
+#### 2.6.3 Publication Dry Run
+
+Publication Decision Summaryから実際のnote公開設定画面へ、記事タイプ、無料／Membership境界、Magazine、Membership ON／OFF、対象プラン、価格、CTA、Tagsその他の必要設定を構成する。Publication Decisionだけでなく対象Series Publication Profileの必須所属先とも照合し、Magazine登録、Membership登録、対象プランおよび境界を別項目として確認する。設定可能性と承認内容との一致を確認し、**「投稿する」等の外部公開を発生させる最終操作の直前でSTOP**する。Dry Run完了は`Publication Prepared / Not Published`であり、G8 PASS、公開済みまたは公開承認とみなさない。
+
+#### 2.6.4 Human Publication Approval
+
+Dry Run結果として、対象Draft／Article ID、公開先、再構成したPublication Settings、差分、未解決Gapおよび最終操作をHumanへ提示する。対象下書きと外部公開操作を明示したHuman Publication Approval取得後のみPublication Transactionへ進む。G5だけを根拠に「投稿する」を実行しない。
+
+#### 2.6.5 Publication Transaction
+
+1. 承認済み下書きを開き、Draft ID／対象記事を照合する。
+2. Publication Decision Summaryを読む。
+3. 下書きへ永続化されないPublication SettingsをSummaryから再構成し、対象Series Profileの必須MagazineとMembership Planを別々に設定する。
+4. タイトル、本文、Header、境界および全設定をG5 Package／Publication Decision／対象Series Publication Profileと照合する。
+5. Human Publication Approvalの対象、公開先および最終操作を照合する。
+6. 公開を発生させる最終操作を一度だけ実行する。
+7. 公開成功表示を確認し、公開URLと公開日時を取得する。
+
+Publication Decisionとの差分、想定外UI、認証問題、対象Draft不一致その他の異常を検出した場合は、推測で回避、別方式へ変更または無承認修正せずSTOPする。
+
+#### 2.6.6 Post-Publication Verification
+
+公開成功表示だけをE2E成功条件にしない。実際の公開ページまたは管理画面で、最低限、公開URL、タイトル、Header、本文、無料／有料またはMembership境界、Membership特典記事状態、対象プラン、表示価格、加入導線、Magazine所属、Tagsおよび公開日時を確認する。Publication Decisionとの一致に加え、対象Series Publication Profileに定義された必須所属先との一致を照合する。Membership境界、Membership Plan登録およびMagazine所属は別項目として確認し、Decisionが必須Profileを欠落していた場合は機械的一致だけでPASSにしない。必要に応じて非ログイン／非対象ユーザー環境を使用し、限定範囲が実際に非表示であることを確認する。全項目一致で初めてPublication E2EをPASSとする。後続Human QAで必須所属先の漏れが判明した場合は、当初PASSの履歴を保持したままVerificationを再オープンし、Gapと現在の修正確認状態を記録する。
+
+SNS Distributionは別成果物・別Gateであり、Publication E2Eへ自動包含しない。実行していないSNS共有を投稿済みと記録しない。
+
+#### 2.6.7 E2E Evidence／Human QA Addendum｜AIDAILY-001
+
+2026-09-01、`AIDAILY-001-D3`／`AIDAILY-001-H1`を対象に、Local PCの認証済みBrowser経路でDraft `n7cf6aee64f0d`を公開した。Automated／Post-Publication Verificationでは、公開URL、タイトル、Header、本文、無料範囲末尾、Membership境界、非ログイン環境での限定本文非表示、Membership Plan`AIとの日常`、月額1,500円、加入導線、4 Tagsおよび公開日時を照合し、当時のPublication Decisionとの一致によりPASSと判定した。
+
+2026-09-02の追加Human QAで、Magazine`AIとの日常`への登録が未実施だったことを検出した。当初DecisionではMagazineを必須条件としていなかったため、これは単純な操作ミスと断定せず、上流のPublication Profile／Decision設計不足を主要改善候補とする。当初PASSの履歴を保持したまま総合Verificationを`Human QA Gap Detected / Reopened`とする。Membership Plan、価格、境界、限定本文非表示、加入導線および4 TagsのPASSは維持する。Humanがnote上でMagazine登録を既に修正済みかは未確認であり、現行状態の確認をHuman Actionとして残す。SNS外部共有は実行していない。詳細は当該Published Artifact Recordを正とする。
 
 ## 3. 起動コマンドと現在地復元
 
@@ -210,8 +317,8 @@ Marketing Decisionにあるが現在のE2Eで設定できない項目、note側�
 2. 一次資料から必要最小限の史実を抽出し、`01_Timeline.md` を生成または更新する。各行で、一次資料識別子、参照位置、抽出日、確認状態を追跡できるようにする。
 3. `01_Timeline.md`、`02_全体ロードマップ.md`、対象Sectionの制作台本、公開済み最終稿、公開成果物記録を照合し、Sectionの現在地、未完了Gate、未解決Decision、公開済み／未公開、SNS接続状態を要約する。
 4. 確認済みかつ未使用のTimeline史実から意味づけを開始する。この段階では、一つの史実を一つのSeries、SectionまたはSessionへ固定せず、Series候補、学び、読者への順番を並列に壁打ちする。意味づけ候補はTimelineへ書き戻さず、永続保存を要しない。
-5. 意味づけをもとに企画を整理する。今回採用する企画についてのみ、既存Sectionへの追加または新Section、Session候補、公開構成Profile、Story／Practice／別コンテンツの役割、必要なHuman Decisionを壁打ちで確定する。採用しない候補は削除してよく、将来必要になればTimelineから意味づけを再開する。
-6. 採用された企画だけをSection制作台本へ記録し、対応するSectionを全体ロードマップへ反映する。Section構成はAIが勝手に確定せず、壁打ちで確定する。採用済みSection制作台本を、PipelineのIntake、Source RouterおよびSource QAへ渡す。意味づけ・企画はPipelineのWork Charter、Source Router／Source QA、Human ApprovalまたはPublishの責任を代替しない。
+5. 意味づけをもとに企画を整理する。今回採用する企画についてのみ、既存Sectionへの追加、新SectionまたはHuman-approved Series Article、Session候補、公開構成Profile、Story／Practice／別コンテンツの役割、必要なHuman Decisionを壁打ちで確定する。採用しない候補は削除してよく、将来必要になればTimelineから意味づけを再開する。
+6. Section型企画はSection制作台本へ記録し、対応するSectionを全体ロードマップへ反映する。Series Article型企画はHuman-approved Series ID／Article IDとWork Charterを制作記録へ保持し、Sectionを推測採番しない。採用済み制作記録をPipelineのIntake、Source RouterおよびSource QAへ渡す。意味づけ・企画はPipelineのWork Charter、Source Router／Source QA、Human ApprovalまたはPublishの責任を代替しない。
 
 Timelineが未生成または未更新であることは、史実が存在しないことを意味しない。AIは、時刻、会話の順番、Work稿の更新日だけから史実または現在地を推測せず、利用可能な一次資料から確認可能な事実だけをTimelineへ反映する。史実Timelineと公開成果物記録が矛盾する場合、または編集競合がある場合は復旧状態へ入り、統合せず停止する。
 
@@ -221,24 +328,28 @@ Timelineが未生成または未更新であることは、史実が存在しな
 
 対象Sectionが壁打ちで未確定、必読Source未読またはG2 Source QAがFAILの場合は制作を始めず、現在地と不足事項を示す。Timeline未登録だけを理由に事実の存在を推測しない。
 
+Human-approved Series Articleを対象とする場合は、承認済みSeries ID／Article ID、Target Reader、Series role、公開構成ProfileおよびWork Charterを入力に同じGateを実行する。Section／Sessionへ属さないことを理由にSource QA、Marketing Review、Header QA、G5またはPublication Gateを省略しない。
+
 ### `noteに反映して`
 
-これは**Human Final Approval Gate**を起動する表現であり、AIによる公開実行指示ではない。AIは、第3稿、Publication Decision Summary、Marketing Gate、未解決事項、低Confidence Decision、公開先の認証・接続状態を提示し、明示承認を確認する。
+これは**G5 Human Final Approval Gate**を起動する表現であり、AIによる公開実行指示ではない。AIは、第3稿、Header Asset、境界、Publication Decision Summary、必要な自己開示、Marketing Gate、未解決事項、低Confidence Decision、公開先の認証・接続状態を一つのApproval Packageとして提示し、明示承認を確認する。
 
-明示承認後も、対象媒体の利用可能な正式操作手段と権限を確認する。手段または接続がなければ、AIは公開完了と偽らず、ユーザーが実行できる公開パッケージと未実施状態を記録する。
+G5明示承認後はPublication Draft E2EとDry Runまで進められるが、Human Publication Approvalなしに外部公開を発生させる最終操作を実行しない。手段または接続がなければ、AIは公開完了と偽らず、未実施状態と最小の再開条件を記録する。
 
-## 4. Sectionから公開後まで
+## 4. 企画から公開後まで
 
-1. **Timeline生成・意味づけ・企画／Section設計**：Timelineの確認済み史実から意味づけを開始し、採用する企画だけを`10_Section制作台本テンプレート.md`へ記録する。Section制作台本に基づき、Story Hub、Session、価格仮説、公開条件を壁打ちで設計する。Timelineには実際に起きた出来事だけを記録する。
-2. **Intake / Routing / Source QA**：採用済みSection制作台本を入力としてPipelineを実行し、note本文にはnote制作・公開SOP、SNS展開にはSNS展開基準を必読とする。G0ではDraftを外部公開しない取扱範囲と最終承認者を確定する。
+1. **Timeline生成・意味づけ・企画／Profile設計**：Timelineの確認済み史実から意味づけを開始し、採用するSection型企画は`10_Section制作台本テンプレート.md`へ記録する。Human-approved Series Article型企画は既存Series ID／Article IDとWork Charterへ記録し、Sectionを推測採番しない。Timelineには実際に起きた出来事だけを記録する。
+2. **Intake / Routing / Source QA**：採用済みSection制作台本またはSeries Article Work Charterを入力としてPipelineを実行し、note本文にはnote制作・公開SOP、SNS展開にはSNS展開基準を必読とする。G0ではDraftを外部公開しない取扱範囲と最終承認者を確定する。
 3. **Production / Output QA → 初稿**：Sessionごとに承認済み公開構成Profileの本文・別コンテンツと、Session全体を入口にしたSNS投稿案を制作し、既存G4を通過した稿を初稿としてHumanへ渡す。
 4. **Human Review → 第2稿**：Humanが実内容を確認し、Practiceでは実際に手順を完遂し、壁打ち、実Screenshotその他の実素材を追加する。note制作部が反映し、内容完成稿である第2稿を作る。
-5. **Marketing Review → 第3稿**：第2稿だけを入力にMarketing Reviewを行う。Must FixはRequirementとしてnote制作部へ返し、必要な修正とMarketing再監査を経て`Marketing Approved`とPublication Decisionを確定し、第3稿を作る。
-6. **Human Final Approval → 最終稿**：第3稿本文とPublication Decision SummaryをHumanが一括承認またはDecision単位でOverrideする。影響差分があれば必要範囲だけMarketing再監査し、G5 Approval Recordと最終稿を確定する。
-7. **Publication E2E β**：最終稿とApproved Publication Decisionをnote下書きへ反映し、承認版との一致と設定可能項目を確認する。β期間中は公開ボタン直前でSTOPし、`Publication Prepared / Not Published`とPipeline Gapを記録する。
-8. **Publish / Verification**：β終了後に別途承認された場合だけ公開し、承認版との一致、URL、表示、リンク、価格、公開範囲、日時を既存PipelineのG8／G9で確認する。
-9. **Record / Resume**：公開済み最終稿と公開成果物記録をcanonical pathへ配置する。未公開の第2稿・第3稿・最終稿候補や詳細Marketing EvidenceをPublic公開済み正本へ混入させず、Section制作台本には安全な状態・locator・再開条件だけを残す。
-10. **Feedback / Repository還元**：反応、誤読、導線、制作上の発見をFeedback Candidateとして分類する。単発反応を自動でOSやSOPへ反映しない。
+5. **Marketing Review → 第3稿**：第2稿だけを入力にMarketing Reviewを行う。Must FixはRequirementとしてnote制作部へ返し、必要な修正とMarketing再監査を経て`Marketing Approved`とPublication Decisionを確定し、第3稿を作る。Series Publication Profileに必須所属先がある場合はDecisionへ継承し、MembershipとMagazineを別項目として保持する。
+6. **Header Production / Header QA**：Marketing Approved後の最終タイトルと第3稿を入力にHeaderを制作し、Asset ID、QA、provenanceおよび表示要件を確定する。
+7. **G5 Human Final Approval → 最終Publication Package**：第3稿本文、Header Asset、境界、Publication Decision Summaryおよび必要な自己開示をHumanが一括承認またはDecision単位でOverrideする。影響差分があれば必要範囲だけ再監査し、G5 Approval Recordを確定する。
+8. **Publication Draft E2E / Dry Run**：G5 Packageをnote下書きへ反映して本文系Assetの保存を確認し、Publication SettingsをSummaryから構成する。Decisionと対象Series Profileに対してMembership、対象プラン、境界およびMagazineを別項目で照合し、公開最終操作の直前でSTOPして`Publication Prepared / Not Published`とGapを記録する。
+9. **Human Publication Approval / Publication Transaction**：対象Draft、公開先、設定および最終操作を明示して承認を得た後、Decisionと対象Series ProfileからSettingsを再構成・再照合して最終操作を実行する。
+10. **Post-Publication Verification**：公開URL、表示、Header、本文、境界、Membership、対象プラン、価格、加入導線、Magazine、Tags、日時をDecisionと対象Series Profileに対して照合し、全項目一致でG9／Publication E2EをPASSとする。後続Human QAでGapが判明した場合は初回判定を保持したまま再オープンする。
+11. **Record / Resume**：公開済み最終稿、Header Asset記録および公開成果物記録をcanonical pathへ配置する。未公開の第2稿・第3稿・最終稿候補や詳細Marketing EvidenceをPublic公開済み正本へ混入させず、制作台本には安全な状態・locator・再開条件だけを残す。
+12. **Feedback / Repository還元**：反応、誤読、導線、制作上の発見をFeedback Candidateとして分類する。単発反応を自動でOSやSOPへ反映しない。SNS Distributionは別Gateで扱う。
 
 ### 4.1 AI Organization SeriesのExternal Audit
 
@@ -252,7 +363,7 @@ Section 1では、Storyと確定タイトル、S1-1 Practiceの既存Statusを�
 
 Sectionの現在地は、全体ロードマップまたはSection制作台本で `Planning`、`Production`、`Review`、`Decision Pending`、`Revision Required`、`Approved`、`Scheduled`、`Published/Complete`、`Update Candidate` のいずれかを記録する。Timelineは史実だけを扱い、状態を記録しない。
 
-### 5.1 Human Final Approvalの差し戻しと再開
+### 5.1 G5／Publicationの差し戻しと再開
 
 Section Statusとは別に、Marketing Reviewのsubstatusを持つ。状態遷移は次のとおりとする。
 
@@ -268,19 +379,32 @@ Production → 初稿 → Human Review → 第2稿
                   note制作修正・再監査   第3稿＋Publication Decision
                            └─────────────┘
                                          ↓
-                          Human Final Approval / G5
+                             Header Production / QA
+                                         ↓
+                          Human Final Approval / G5 Package
                                          ↓
                                   最終稿 / Approved
                                          ↓
-                  Publication Prepared / Not Published（β STOP）
+                           Publication Draft E2E
+                                         ↓
+                  Publication Prepared / Not Published（Dry Run STOP）
+                                         ↓
+                          Human Publication Approval
+                                         ↓
+                        Publication Transaction / G8
+                                         ↓
+                     Post-Publication Verification / G9
+                                         ↓
+                              Published / Complete
 ```
 
 - `Production`では、Section制作台本とG2 PASSを入力に、承認済み公開構成ProfileのDraftを作る。価格、自己開示範囲、公開範囲の未決はDraft内の未解決Decisionとして扱い、Productionを止めない。
 - `Review`では初稿の実内容、Practice完遂、実素材および修正範囲をHumanが確認する。note制作部の反映が完了した稿だけを第2稿とする。
 - Marketing Inputが不足する場合は`Marketing Input Pending`とし、Marketing担当が未完成稿を直接修正しない。Must Fixがある場合は`Marketing Revision Required`とし、Requirement、所有者および再開条件を記録する。
-- `Marketing Approved`後に第3稿とPublication Decision Summaryを作り、Human Final Approvalを待つ状態をSection Statusの`Decision Pending`とする。
-- Human Final Approvalで本文またはDecisionが差し戻された場合は、未変更の第3稿、Marketing Review結果およびDecisionを有効なまま保持する。影響範囲だけを修正・再監査して`Decision Pending`へ戻す。
-- G5がPASSした場合だけ最終稿を`Approved`とする。β期間中の`Publication Prepared / Not Published`を`Published`、予約済みまたはG8 PASSとして扱わない。
+- `Marketing Approved`後に第3稿とPublication Decision Summaryを作り、Header Production／QAを完了してG5を待つ状態をSection Statusの`Decision Pending`とする。
+- G5で本文、HeaderまたはDecisionが差し戻された場合は、未変更の第3稿、Marketing Review結果およびDecisionを有効なまま保持する。影響範囲だけを修正・再監査して`Decision Pending`へ戻す。
+- G5がPASSした場合だけ最終Publication Packageを`Approved`とする。`Publication Prepared / Not Published`はDry Runの停止状態であり、`Published`、予約済み、Human Publication Approval済みまたはG8 PASSとして扱わない。
+- Human Publication Approval後に差分または異常を検出した場合、Approvalを利用して設定を推測変更せずSTOPし、必要なReview／Approvalへ戻す。
 
 次のいずれかでは、制作台本または公開成果物記録を `Recovery Required` として扱う：公開URLと記録の不一致、承認版と公開候補の不一致、接続／認証失敗、公開直後の表示・リンク・価格異常、Work稿とRepository正本の競合、公開停止を要する安全上の懸念。
 
@@ -288,4 +412,4 @@ Production → 初稿 → Human Review → 第2稿
 
 ## 6. 正本の扱い
 
-公開後に将来参照する記事本文の正本は、Section制作台本の承認済み公開構成Profileに従う公開済み最終稿だけである。既定Profileでは `01_Story無料Hub_最終稿.md`、`02_実践編単品有料_最終稿.md`、`03_MS奮闘記メンバーシップ限定_最終稿.md` を使用する。AI Organization Series Section 1では、note本編を `01_note本編_最終稿.md` とし、Session Archiveは公開がHuman承認された場合だけ `02_Session_Archive_最終稿.md` として配置する。note上の表示URLと公開成果物記録を紐付け、Work稿、SNS用短縮稿、旧版、下書き、画面コピーを正本として参照しない。置換や非公開化が生じた場合、旧正本は実データがある場合に限りArchiveへ移し、現行性は公開成果物記録とロードマップで明示する。
+公開後に将来参照する記事本文の正本は、承認済み公開構成Profileに従い公開版と照合された公開済み最終稿だけである。既定Profileでは `01_Story無料Hub_最終稿.md`、`02_実践編単品有料_最終稿.md`、`03_MS奮闘記メンバーシップ限定_最終稿.md` を使用する。AI Organization Series Section 1では、note本編を `01_note本編_最終稿.md` とし、Session Archiveは公開がHuman承認された場合だけ `02_Session_Archive_最終稿.md` として配置する。「AIとの日常」等のSeries articleはREADMEのSeries／Article pathを使用する。note上の表示URLとHeader Asset記録・公開成果物記録を紐付け、Work稿、SNS用短縮稿、旧版、下書き、画面コピーを正本として参照しない。置換や非公開化が生じた場合、旧正本は実データがある場合に限りArchiveへ移し、現行性は公開成果物記録とロードマップで明示する。
