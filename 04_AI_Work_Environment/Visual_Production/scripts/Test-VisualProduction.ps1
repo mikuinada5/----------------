@@ -126,6 +126,10 @@ $negativeRequestIds = @(Get-Values $record.tool_request.negative_requirement_ids
 foreach ($id in $mandatoryIds) {
     if ($contractIds -notcontains $id) { Stop-VisualProductionValidation "Generation Contract omitted required constraint: $id" }
     if ($requestIds -notcontains $id) { Stop-VisualProductionValidation "Actual tool request omitted required constraint: $id" }
+    $requirementText = [string]$requirementById[$id].text
+    if ([string]::IsNullOrWhiteSpace($requirementText) -or -not ([string]$record.tool_request.prompt).Contains($requirementText)) {
+        Stop-VisualProductionValidation "Actual tool request prompt omitted required constraint text: $id"
+    }
 }
 foreach ($id in @($requirements | Where-Object { $_.level -eq 'MUST_NOT' } | ForEach-Object { [string]$_.id })) {
     if ($negativeRequestIds -notcontains $id) { Stop-VisualProductionValidation "Actual tool request omitted negative constraint: $id" }

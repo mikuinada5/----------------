@@ -93,6 +93,8 @@ Production AIは、既知の固定path、過去Taskの読了またはAI memory�
 
 Visual制作でも同じ責任分離を維持する。Production AIは現在Phaseに許可されたToolだけを使用し、媒体・成果物固有SourceからGeneration Contractを組み立てる。Creative Directionは正式Templateを上書きせず、生成物はInternal QAが実物を確認してPASSするまでHuman Review Candidate、Asset ReadyまたはG5へ昇格しない。これらは工程上の機能であり、新しいVisual部署、恒久役職または承認者を作らない。
 
+実行環境は、自身がSourceを読めることだけを根拠に、画像生成ToolまでのControl接続を自己認定しない。Production AIとInternal QAは、`AI_PRODUCTION_PIPELINE.md`のVisual Runtime Receiptで、実行環境Capability、Request bindingおよびPlatform Boundaryを確認する。Repository Skillは既存工程をLocal Codexへ接続する実装であり、新しいAI部署、専門判断者またはHuman承認者ではない。
+
 Repository全体へ影響する正式Source変更では、`REPOSITORY_CROSS_AUDIT_STANDARD.md` を適用する。これは既存の教育品質監査、専門QAまたは人間承認を置き換えず、構造・責任・参照・運用接続・Git準備の不足だけを確認する。
 
 ---

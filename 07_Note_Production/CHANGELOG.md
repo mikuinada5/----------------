@@ -4,6 +4,25 @@
 
 ---
 
+## 2026-09-03｜AIDAILY HeaderをLocal Codex Runtime Bridgeへ接続
+
+### Incident
+
+Current canonical note SOP v2.3をChatが実読した後も、built-in image generationはSeries／Magazine相当表記、複数吹き出し、説明ポスター化、承認済みタイトル変更および未承認説明文字を生成した。Chat側の生成後QAでFAILしたため、当該画像は正式Asset、Human Review CandidateまたはG5構成要素にしていない。
+
+### 変更内容
+
+- note SOPをv2.4、READMEをv1.15へ更新した。
+- 「AIとの日常」Header TemplateのMUST／MUST_NOT／MAYを、本文と同一のcanonical machine-readable profile `aidaily-header-v1`にした。Runtime builderが同profileからRequirement IDs、promptおよびnegative constraintsを生成し、手作業の転記漏れを防ぐ。
+- Chat／Work built-in direct画像生成をgoverned Header制作として使用せず、Local Codex Repository SkillでRuntime Request BindingまでPASSした経路に限定した。
+- v2.3実読後に生成された違反画像をRejected / non-assetとして明記した。画像binaryまたは会話全文をRepositoryへ複製していない。
+
+### AIDAILY-003不変条件
+
+AIDAILY-003本文、D3、Marketing ApprovedおよびPublication Decisionは変更していない。再ProductionはCurrent Source再解決、canonical profileからのContract／Request生成、Runtime binding、生成後実物QAの新経路で実行できる。Header再生成そのものは本改修Taskでは行っていない。
+
+------------------------------------------------------------------------
+
 ## 2026-09-03｜AIDAILY Header Productionを共通Visual Controlへ接続
 
 ### Incident / Scope

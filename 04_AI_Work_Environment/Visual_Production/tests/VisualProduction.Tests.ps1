@@ -50,6 +50,7 @@ function New-VisualRecord {
     }
 
     $mandatory = @($requirements | Where-Object { $_.level -in @('MUST', 'MUST_NOT') } | ForEach-Object { $_.id })
+    $mandatoryText = @($requirements | Where-Object { $_.level -in @('MUST', 'MUST_NOT') } | ForEach-Object { $_.text }) -join "`n"
     $qaChecks = @($mandatory | ForEach-Object { @{ requirement_id = $_; result = 'PASS' } }) + @(@{ requirement_id = 'dimensions'; result = 'PASS' })
     $title = 'AIに仕事を任せたら、私の仕事が増えた話'
 
@@ -80,7 +81,7 @@ function New-VisualRecord {
         tool_route = @{ tool = 'image_gen.imagegen'; capability = 'image-generation'; allowed = $true; rationale = 'approved visual production phase' }
         tool_request = @{
             text_verbatim = $title
-            prompt = "Create a header using the exact title: $title"
+            prompt = "Create a header using the exact title: $title`n$mandatoryText"
             dimensions = @{ width = 1280; height = 670 }
             included_requirement_ids = $mandatory
             negative_requirement_ids = @($requirements | Where-Object { $_.level -eq 'MUST_NOT' } | ForEach-Object { $_.id })
@@ -137,6 +138,12 @@ Describe 'Visual Production Control' {
     It '3. fails when the actual request omits the speech-bubble prohibition' {
         $record = New-VisualRecord -RepositoryRoot $repo
         $record.tool_request.included_requirement_ids = @($record.tool_request.included_requirement_ids | Where-Object { $_ -ne 'no-speech-bubbles' })
+        (Test-RecordFails $record $repo $recordPath) | Should Be $true
+    }
+
+    It '3b. fails when a requirement ID is present but its text is absent from the prompt' {
+        $record = New-VisualRecord -RepositoryRoot $repo
+        $record.tool_request.prompt = $record.tool_request.prompt.Replace('Do not use speech bubbles', '')
         (Test-RecordFails $record $repo $recordPath) | Should Be $true
     }
 

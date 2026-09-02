@@ -1,6 +1,6 @@
-# note制作・公開システム v2.3
+# note制作・公開システム v2.4
 
-**Status:** Current / Operational v2.3 / Visual Production Control compatible
+**Status:** Current / Operational v2.4 / Visual Runtime Bridge compatible
 **Scope:** note制作、Marketing Review、Header Production、Publication Dry Run、Publication Transaction、公開後記録、Session単位のSNS展開、Repositoryへの知見還元
 
 ## 1. 責任と非責任
@@ -243,38 +243,43 @@ note記事ではHeader Assetを本文と同じPublication Packageの構成要素
 
 Header Productionは`AI_PRODUCTION_PIPELINE.md` §7.6のVisual Production Controlを必須とする。画像生成前に、本節の媒体固有Templateを`MUST`、`MUST_NOT`、`MAY`へ解決したGeneration Contractと実際のTool Requestを作り、Prompt Assembly QAをPASSさせる。生成直後の画像は`GENERATED_UNVERIFIED`であり、本節のHeader QAがPASSするまでHuman Review Candidate、Header Asset登録、`ASSET_READY`またはG5 Packageへ進めない。
 
+Chat／WorkでCurrent Sourceを実読できても、built-in image generationへ直接進まない。現行のgoverned Header生成は、Production IntentをLocal CodexのRepository Skill `visual-production-bridge`へ接続し、本節のmachine-readable profileからContract／Requestを生成、Runtime Request BindingをPASSさせた経路に限定する。Runtime Receiptがない、actual request hashが一致しない、またはPlatform BoundaryをPASSと偽装した生成物はRejected / non-assetとして扱う。
+
 Header Asset本体は、公開画像の責任に従って承認済みOneDrive AI Archive等の指定Archiveへ保持し、Public Repositoryへバイナリを重複配置しない。RepositoryにはAsset ID、承認対象、provenance locator、SHA-256、寸法、Header QA、G5 Approval Package ID、note上の公開asset URLおよび表示検証結果を記録する。G5後の差替えは新AssetとしてHeader QAとG5へ戻す。
 
 note公式の現行記事見出し画像推奨サイズは1280×670 pxである（[noteヘルプセンター「登録画像の推奨サイズ一覧」](https://www.help-note.com/hc/ja/articles/360000231642-%E7%99%BB%E9%8C%B2%E7%94%BB%E5%83%8F%E3%81%AE%E6%8E%A8%E5%A5%A8%E3%82%B5%E3%82%A4%E3%82%BA%E4%B8%80%E8%A6%A7)、2026-07-10更新）。仕様は変動し得るため、制作時にはnote公式Helpの現行値を確認する。推奨値と異なる場合はトリミング表示を前提にせず、表示結果と安全領域をQAする。
 
 #### 2.5.1 「AIとの日常」Header Template
 
-**MUST（固定要素）**
+次のmarker内は本文であると同時に、Repository Runtime BridgeがGeneration Contractを機械生成するcanonical profileである。ID、LevelまたはRequirementを変更する場合は、本節の意味変更としてVersion、CHANGELOGおよびVisual回帰テストを同期する。
 
-- note記事用の横長Header
-- 制作時に確認したnote公式の現行推奨寸法／比率。現行確認値は1280×670 px
-- 左側にHuman、右側にケイ／AIを置く基本構図
-- 漫画調
-- 白〜生成りを基調とし、黒を主要色、ピンクをアクセントにする
-- 記事タイトルを中央の最重要Visual Elementとして配置する
-
-**MUST NOT（禁止要素）**
-
-- マガジン名「AIとの日常」をHeaderへ入れない
-- キャラクターの吹き出し／セリフは原則使用しない
-- Primary Evidenceまたは本文にない未確認事実を追加しない
-- 記事内容以上の成功、成果、煽りまたは断定を追加しない
-- 説明ポスターまたはインフォグラフィックのような情報過多構成にしない
-- 承認済み記事タイトルの意味または表記を変更しない
+<!-- VISUAL_PROFILE_BEGIN:aidaily-header-v1 -->
+<!-- VISUAL_PROFILE_META:{"width":1280,"height":670} -->
+| ID | Level | Requirement |
+|---|---|---|
+| note-horizontal | MUST | note記事用の横長Headerにする |
+| current-dimensions | MUST | 制作時に確認したnote公式の現行推奨寸法／比率を使用する。現行確認値は1280×670 px |
+| human-left | MUST | 左側にHumanを置く |
+| kei-right | MUST | 右側にケイ／AIを置く |
+| comic-style | MUST | 漫画調にする |
+| off-white-base | MUST | 白〜生成りを基調にする |
+| black-pink-palette | MUST | 黒を主要色、ピンクをアクセントにする |
+| title-exact | MUST | 承認済み記事タイトルを一字も変更せず使用する |
+| title-central | MUST | 承認済み記事タイトルを中央の最重要Visual Elementにする |
+| no-series-label | MUST_NOT | マガジン名「AIとの日常」またはSeries／Magazine相当の表記をHeaderへ入れない |
+| no-speech-bubbles | MUST_NOT | キャラクターの吹き出し／セリフを使用しない |
+| no-unverified-facts | MUST_NOT | Primary Evidenceまたは本文にない未確認事実を追加しない |
+| no-hype | MUST_NOT | 記事内容以上の成功、成果、煽りまたは断定を追加しない |
+| no-poster-layout | MUST_NOT | 説明ポスターまたはインフォグラフィックのような情報過多構成にしない |
+| no-title-change | MUST_NOT | 承認済み記事タイトルの意味または表記を変更しない |
+| expressions | MAY | Human／ケイの表情を変えてよい |
+| poses | MAY | Human／ケイのポーズまたは動きを変えてよい |
+| small-props | MAY | PC、紙、マグ、付箋等の作業小物を使用してよい |
+| short-prop-text | MAY | Primary Evidenceおよび本文と矛盾しない小物内の短い文字を使用してよい |
+| minor-effects | MAY | 記事内容に応じた軽微な演出を使用してよい |
+<!-- VISUAL_PROFILE_END:aidaily-header-v1 -->
 
 上記MUST／MUST NOTはCreative Directionより優先する。とくに承認済み記事タイトルの完全一致、タイトルを中央の最重要Visual Elementにすること、マガジン名「AIとの日常」を入れないこと、複数を含むキャラクター吹き出し／セリフを入れないことは、実際の画像生成Tool Requestに明記する。単なる内部メモや事後QAへの記載だけではPrompt Assembly QAをPASSしない。
-
-**MAY（記事ごとの可変要素）**
-
-- Human／ケイの表情、ポーズ、動き
-- PC、紙、マグ、付箋等の作業小物
-- 小物内の短い文字
-- 記事内容に応じた軽微な演出
 
 MAYはMUST／MUST NOTと競合しない範囲だけで使用する。小物文字はPrimary Evidenceおよび本文と矛盾させない。記事説明を増やすCreative Directionによって、承認済みタイトルの中心性、余白またはTemplateの識別性を弱めない。
 
@@ -316,6 +321,8 @@ S1-2は本Profileの最初の適用対象とする。StoryはStory Template、Pr
 #### 2.5.5 AIDAILY-003 Header Incident Recovery
 
 2026-09-02に生成・提示されたAIDAILY-003 HeaderはHuman Reject済みであり、`Header Unapproved / ReProduction Required`とする。Marketing Review中に生成されたReview画像およびHeader QA前に提示された違反画像を、Header Asset、Asset Ready、G5または承認Evidenceとして再利用しない。
+
+同日、Current v2.3実読後にChat built-in image generationで生成され、Series／Magazine相当表記、複数吹き出し、説明ポスター化、承認済みタイトル変更および未承認説明文字を含んだ画像も、生成後QA FAIL済みのRejected / non-assetとして同じく登録・再利用しない。画像binaryまたは会話全文をPublic Repositoryへ複製せず、本Incidentの必要最小限のControl evidenceだけをCHANGELOGへ残す。
 
 AIDAILY-003の本文、第3稿識別、Marketing Approved、Publication Decisionおよび既存D3は本Incidentの変更対象外であり、その状態を維持する。再Production時はCurrent Sourceを再解決し、同じHeader Production versionについてGeneration Contract、Prompt Assembly QA、生成物実査、Header QA PASSの順に進める。Humanへ通常のHeader候補として提示できるのは、そのQA PASS済みAssetだけである。
 

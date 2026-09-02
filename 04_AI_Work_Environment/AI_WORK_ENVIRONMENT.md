@@ -123,6 +123,26 @@ Chat、Work、Codex等は作業環境または実行形態であり、それ自�
 
 誰が制作、監査、修正または承認を担うかは、`AI_ORGANIZATION.md` と専門Sourceを正とする。
 
+### 4.6 Visual Runtime CapabilityとPlatform Boundary
+
+RepositoryのVisual Production Controlを実際の画像生成へ接続できるかは、環境名やSource可読性ではなく、当該sessionで実測したCapabilityにより判定する。
+
+| 実行環境 | Repository Current Source | Repository validator／script | actual Tool Request binding | 生成物inspection | 現行のgoverned画像生成 |
+|---|---|---|---|---|---|
+| Chat | GitHub等からREAD可能な場合がある | built-in ChatからLocal scriptを実行する接続は未検証 | built-in image generation requestをRepositoryからinterceptする公開・検証済み経路なし | 生成後確認は可能でもpreflight強制を代替しない | **BLOCKED_PLATFORM_BOUNDARY** |
+| Work | workspace Skill／Plugin等を利用できる場合があるが、Local filesystem Skillとは別配布・別権限 | 対象workspaceで個別検証が必要 | bridge／MCP／Tool policyを実装・配備・E2Eするまで未検証 | 対象Tool構成で個別検証が必要 | 現行はbuilt-in directを**BLOCK** |
+| Local Codex | Repository filesystemから解決・実読可能 | `Source_Resolution/`と`Visual_Production/`を実行可能 | Repository Skillが生成したactual requestをSHA-256で照合可能 | current sessionにinspection toolがある場合に可能 | `visual-production-bridge`のrequest-bound経路だけ許可 |
+| Responses API専用orchestrator | application実装次第 | custom function／MCPとして実装可能 | application ownerがtools／tool choiceを制御可能 | application実装次第 | Repositoryには未実装。登録・E2E前は**BLOCK** |
+
+Local Codexの許可はPlatform全体への強制ではない。Skillを明示または適合依頼で起動し、Source Resolution、Contract生成、Prompt Assembly QA、actual request hash binding、画像生成、Asset inspectionおよびAsset QAを同一Taskで完了した範囲だけをgovernedとする。直接Toolを呼んだ画像、Runtime Receiptのない画像またはrequest hashが一致しない画像はnon-assetとして扱う。
+
+根拠確認（2026-09-03）：OpenAI公式Documentationは、Skillをinstructions・resources・optional scriptsを束ねる再利用workflowとし、Repository Skillを`$REPO_ROOT/.agents/skills`からCodexが読み込むこと、PluginがSkills・connectors・MCPを配布できることを示す。一方、local filesystem Skill、workspace SkillおよびPluginは別のlifecycle／access controlを持つ。Responses APIはapplicationがtoolsとtool choiceを指定できる。これらは専用Bridgeを構築できる根拠であるが、Repository scriptが標準Chatのbuilt-in image generationを自動interceptする根拠ではない。
+
+- OpenAI Skills: `https://learn.chatgpt.com/docs/build-skills`
+- OpenAI Skills and plugins: `https://learn.chatgpt.com/docs/skills-and-plugins`
+- OpenAI workspace skill controls: `https://learn.chatgpt.com/docs/enterprise/skills`
+- OpenAI Responses API create: `https://developers.openai.com/api/reference/resources/responses/methods/create`
+
 ---
 
 ## 5. Chat

@@ -8,6 +8,27 @@
 
 ------------------------------------------------------------------------
 
+## 2026-09-03｜Visual Production Runtime BridgeとPlatform Boundaryを正式化
+
+### Incident / Root Cause
+
+RepositoryのVisual Production Control、AIDAILY Header TemplateおよびPrompt Assembly QAは成立していたが、標準Chatのbuilt-in image generation Tool RequestをRepository validatorへ接続・拘束する実装経路は存在しなかった。ChatがCurrent Sourceを実読した事実を、実Tool Requestのbindingと同一視したため、Source制約を認識しながら違反request／画像生成へ進めるruntime gapが残った。
+
+### 変更内容
+
+- AI Production Pipelineをv1.9、Repository横断監査基準をv1.3へ更新し、実行環境Capability、Runtime implementation、validated request／actual request SHA-256 bindingおよびPlatform BoundaryをVisual Gateへ追加した。
+- `Visual_Production/`をv1.1へ更新し、canonical profileからのGeneration Record機械生成、Runtime Receipt Schema／builder／validatorおよび11件のBridge回帰テストを追加した。
+- Repository rootへLocal Codex用`visual-production-bridge` Skillを追加した。現行のgoverned生成は同Skillのrequest-bound経路に限定し、Chat／Work built-in direct生成と未実装Responses API orchestratorは`BLOCKED_PLATFORM_BOUNDARY`とする。
+- note SOPをv2.4、note READMEをv1.15へ更新し、AIDAILY Header Templateをmachine-readable canonical profileへ統合した。違反生成画像はRejected / non-assetのまま維持し、AIDAILY-003本文、D3、Marketing ApprovedおよびPublication Decisionは変更していない。
+
+### Repository横断監査
+
+共通Runtime GateはAI Production Pipeline、環境能力差はAI Work Environment、実装は既存Visual Production、媒体要件はnote canonical SOPに置いた。Skillへ媒体要件を複製せず、新しいVisual専門Source、部署または承認者を追加していない。Repositoryで制御不能な標準Chat built-in tool境界をPASSとして記録できないことをnegative testで確認した。
+
+Visual Production／Runtime Pester test 25件、Source Resolution regression 8件、Repository Source QA、Schema JSON parse、PowerShell syntax、Skill structure、`git diff --check`およびremote divergence checkをPASSした。AIDAILY-003 Header画像そのものは本Taskで再生成していない。
+
+------------------------------------------------------------------------
+
 ## 2026-09-03｜AIDAILY Header Production Incidentの再発経路を閉鎖
 
 ### Incident / Root Cause

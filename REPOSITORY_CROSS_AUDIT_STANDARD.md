@@ -1,7 +1,7 @@
-# Repository横断監査基準 v1.2
+# Repository横断監査基準 v1.3
 
 **Document type:** Repository Governance Standard<br>
-**Status:** Current / Operational v1.2<br>
+**Status:** Current / Operational v1.3<br>
 **Scope:** Repository全体へ影響する正式Sourceの新規追加・更新・移動・廃止<br>
 **Purpose:** 正式Sourceを「置いただけ」にせず、既存責任・参照構造・運用・履歴へ一貫して接続する
 
@@ -96,6 +96,9 @@
 - [ ] 既存のQAや承認を重複追加せず、足りなかった責任だけを補った
 - [ ] SourceがRepositoryに存在するだけでは運用完了と扱わない
 - [ ] Visual制作を変更する場合、Phase Tool Routing、Generation Contract、実Tool RequestのPrompt Assembly QA、生成後Asset QAおよびHuman提示前Gateが接続されている
+- [ ] Visual生成Runtimeを変更する場合、実行環境別Capability、validated requestとactual requestのbinding、Platform BoundaryおよびBridge implementation evidenceが記録されている
+- [ ] Repository Sourceの実読またはvalidatorの存在だけを、Chat／Work built-in image generationへの直接強制と誤認していない
+- [ ] `platform_enforced`を主張する場合、Repository文書ではなく実際のorchestrator、tool-choice controlおよびE2E evidenceが存在する。未実装境界をPASSにしていない
 - [ ] Review／Source QA／Human Approval／Publish等の非生成Phaseから、画像生成Toolを暗黙起動できない
 - [ ] QA未確認またはQA FAILのAssetをAsset Ready、G5、公開候補または通常のHuman Review Candidateへ昇格できない
 
@@ -112,6 +115,7 @@
 - [ ] Version／Status／CHANGELOG／INDEXの整合を確認した
 - [ ] Source Resolution変更では、Current Delta、固定path取りこぼし、前Task読了流用およびstale fingerprintのnegative testを実行した
 - [ ] Visual Production変更では、誤Phase起動、必須／禁止要件欠落、approved text変更、stale Contract、QA未実施、QA FAIL昇格および専門Source横断解決のnegative／positive testを実行した
+- [ ] Visual Runtime変更では、Contract未生成、Current Source未解決、Contract／Prompt QA未PASS、actual request不一致、QA前昇格、偽装Platform PASSおよび環境Capability記録のnegative／positive testを実行した
 - [ ] commitが意味のある単位で、branch・remote・push対象が正しい
 - [ ] push後にlocal HEADとremoteの一致を確認する計画がある
 

@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://repository.local/schemas/visual-runtime-receipt-v1.json",
+  "title": "Visual Runtime Capability and Request Binding Receipt v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "task_id",
+    "production_version",
+    "environment",
+    "implementation_id",
+    "route",
+    "capabilities",
+    "request_binding",
+    "boundary",
+    "result",
+    "checked_at"
+  ],
+  "properties": {
+    "schema_version": { "const": "visual-runtime-receipt/v1" },
+    "task_id": { "type": "string", "minLength": 1 },
+    "production_version": { "type": "string", "minLength": 1 },
+    "environment": { "enum": ["chat", "work", "local-codex", "responses-api"] },
+    "implementation_id": { "type": "string", "minLength": 1 },
+    "route": { "enum": ["builtin-direct", "repository-skill-request-bound", "platform-tool-choice"] },
+    "capabilities": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "current_source_resolution",
+        "repository_script_execution",
+        "image_generation_tool",
+        "asset_inspection",
+        "client_visible_request_binding",
+        "platform_tool_choice_control"
+      ],
+      "properties": {
+        "current_source_resolution": { "$ref": "#/$defs/capability" },
+        "repository_script_execution": { "$ref": "#/$defs/capability" },
+        "image_generation_tool": { "$ref": "#/$defs/capability" },
+        "asset_inspection": { "$ref": "#/$defs/capability" },
+        "client_visible_request_binding": { "$ref": "#/$defs/capability" },
+        "platform_tool_choice_control": { "$ref": "#/$defs/capability" }
+      }
+    },
+    "request_binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["validated_request_sha256", "actual_request_sha256", "match"],
+      "properties": {
+        "validated_request_sha256": { "type": "string", "pattern": "^[0-9a-fA-F]{64}$" },
+        "actual_request_sha256": { "type": "string", "pattern": "^[0-9a-fA-F]{64}$" },
+        "match": { "type": "boolean" }
+      }
+    },
+    "boundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["repository_enforcement_scope", "platform_enforced", "acknowledged"],
+      "properties": {
+        "repository_enforcement_scope": { "enum": ["detect-only", "client-visible-request", "platform-tool-choice"] },
+        "platform_enforced": { "type": "boolean" },
+        "acknowledged": { "type": "boolean" }
+      }
+    },
+    "evidence": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "result": { "enum": ["REQUEST_BOUND", "BLOCKED_PLATFORM_BOUNDARY"] },
+    "checked_at": { "type": "string", "format": "date-time" }
+  },
+  "$defs": {
+    "capability": { "enum": ["VERIFIED", "UNVERIFIED", "UNAVAILABLE"] }
+  }
+}

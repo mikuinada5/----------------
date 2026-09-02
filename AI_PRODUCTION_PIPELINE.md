@@ -1,7 +1,7 @@
-# AI Production Pipeline v1.8
+# AI Production Pipeline v1.9
 
 **Document type:** Standard Operating Procedure（SOP）<br>
-**Status:** Current / Operational v1.8<br>
+**Status:** Current / Operational v1.9<br>
 **Owner:** 稲田美来<br>
 **Scope:** Story Candidate、教材、note、SNS、運営文書、Brand／Education／AI Organization関連Source、その他AI制作物<br>
 **Purpose:** 既存OS・Sourceを毎回確実に選択・実読・適用し、成果物と新知見を正しい責任単位へ戻すためのAI組織共通運用<br>
@@ -505,9 +505,36 @@ AIが生成物を検査できない場合は`QA_UNVERIFIED / HUMAN_ASSET_QA_REQU
 
 Schema、fail-closed validatorおよびnegative testsは`04_AI_Work_Environment/Visual_Production/`を使用する。Recordには必要最小限の要件ID、Source fingerprint、Tool Request、QAおよびAsset provenanceを残し、非公開本文、会話全文または画像binaryをPublic Repositoryへ自動保存しない。
 
+#### 7.6.5 Runtime BridgeとPlatform Boundary
+
+Repository Sourceを読めること、Generation Contractが存在すること、実際の画像生成Tool RequestをRepository Controlが拘束したことは別々に判定する。画像生成直前に、実行環境、利用可能Capability、Bridge implementation、制御範囲、validated request SHA-256、actual request SHA-256および両者の一致を`Visual Runtime Receipt`へ記録し、同Receiptを機械検証する。
+
+現行の検証済み経路は、Repository Skill `visual-production-bridge`を使用するLocal Codexの`repository-skill-request-bound`だけである。この経路はSource Manifest v2を検証し、canonical profileからGeneration ContractとTool Requestを機械生成し、actual requestとの完全一致をhashで固定してからToolを起動する。これは当該Taskの**client-visible request**を拘束するが、ChatGPT Platform全体のbuilt-in tool routingをinterceptまたは無効化するものではない。
+
+標準ChatまたはWorkからbuilt-in image generationを直接起動する経路は、Repository script実行とactual request bindingが実測・検証されない限り`BLOCKED_PLATFORM_BOUNDARY`とする。SourceをGitHubから実読したこと、AIが制約を復唱できたこと、事後QAを予定したことだけではPASSにしない。Workのworkspace Skill／Plugin経路も、対象workspaceへの配置、依存Tool、script実行、request bindingおよびAsset inspectionを当該実行環境で検証するまでは同じくBLOCKする。
+
+Responses API等でapplication ownerが利用Tool、tool choice、custom functionまたはMCPを制御する専用orchestratorは、将来のplatform-tool-choice経路になり得る。ただし、approved implementation ID、実Runtime、Tool choice evidenceおよびE2EがRepositoryへ登録されるまでは未実装とし、`platform_enforced: true`またはPASSを記録しない。
+
+```text
+Chat / Work Production Intent
+→ Runtime Capability判定
+→ direct built-in image generation: BLOCKED_PLATFORM_BOUNDARY
+→ Local Codex visual-production-bridge
+→ Current Source Resolution / G2
+→ canonical profileからContract・Request機械生成
+→ Prompt Assembly QA
+→ actual request hash binding
+→ image generation
+→ GENERATED_UNVERIFIED
+→ Asset QA
+→ PASS時のみHuman Review Candidate
+```
+
+Runtime Receipt Schema、builder、validatorおよび回帰テストは`04_AI_Work_Environment/Visual_Production/`を使用する。ReceiptまたはSkillを迂回して生成された画像は、見た目が適合していてもgoverned Assetではなく、正式Asset登録、G5または公開候補へ接続しない。
+
 ### 7.7 Gate
 
-**PASS:** 必要な成果物一式、Source Application Log、未解決事項一覧が揃い、勝手な上位判断がない。Visual制作ではPhase Tool Routing、Generation Contract、Prompt Assembly QAおよびAsset QAの必要状態遷移が成立している。<br>
+**PASS:** 必要な成果物一式、Source Application Log、未解決事項一覧が揃い、勝手な上位判断がない。Visual制作ではPhase Tool Routing、Generation Contract、Prompt Assembly QA、Runtime Request BindingおよびAsset QAの必要状態遷移が成立している。<br>
 **FAIL:** Productionへ戻る。Source欠落を発見した場合はSource QAへ戻る。
 
 ---

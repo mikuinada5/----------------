@@ -6,6 +6,28 @@
 
 ------------------------------------------------------------------------
 
+## 2026-09-03｜Visual Runtime Bridgeを実装
+
+### Incident / Root Cause
+
+Visual Production Record validatorはRepository内のContract、RequestおよびAsset状態を検証できたが、標準Chat／Workのbuilt-in image generation requestを直接interceptするruntime接続は存在しなかった。Source実読とTool Request拘束を分離しておらず、Repository Controlを迂回した生成を事前BLOCKまたは明示検出できなかった。
+
+### 変更内容
+
+- `Visual_Production/`をv1.1へ更新し、AIDAILY等のcanonical profileからGeneration Recordを機械生成するbuilderを追加した。
+- Runtime Capability／Request Binding ReceiptのSchema、builderおよびfail-closed validatorを追加した。
+- Local CodexではSource Resolution、script実行、image generation、asset inspectionおよびclient-visible request bindingの実測Evidenceを要求する。actual requestがvalidated requestと1 byte相当のcanonical JSON hashで一致しなければFAILする。
+- Chat／Work built-in direct routeと未実装Responses API orchestratorを明示BLOCKし、Repository境界を`platform_enforced`と偽装するReceiptをFAILにした。
+- Repository Skill `visual-production-bridge`で、生成前binding、`GENERATED_UNVERIFIED`、実物inspection、Asset QAおよびHuman Review Candidate遷移を一つのLocal Codex workflowへ接続した。
+
+### QA
+
+Visual Production 14件と新規Runtime Bridge 11件、合計25件の回帰テストを実行対象とした。既存Controlへ「要件IDだけ存在してprompt本文が欠落する」negative testを追加し、新規Bridge testはContractなし、Source未解決、Contract／Prompt QA未PASS、actual request不一致、QA前昇格、偽装Platform PASS、AIDAILY禁止事項、approved exact titleおよび環境Capability記録を含む。
+
+上記25件、Source Resolution 8件、Repository Source QA、Schema JSON parse、PowerShell syntax、Skill structureおよび`git diff --check`をPASSした。標準Chat built-in image generationのplatform interceptionは未実装として明示的に残し、PASSへ偽装していない。
+
+------------------------------------------------------------------------
+
 ## 2026-09-03｜Visual Production Controlを実装
 
 ### 概要
