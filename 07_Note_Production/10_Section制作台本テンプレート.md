@@ -1,6 +1,6 @@
 # Section制作台本テンプレート
 
-**Status:** Current / Operational v1.6 / Source Manifest v2 compatible
+**Status:** Current / Operational v1.7 / Visual Production Control compatible
 **使用先:** 実データ発生後、`01_Sections/<Section-ID>_<短い識別名>/00_Section制作台本.md` として複製して使用する。
 
 ## 0. 意味づけ・企画フェーズからの引き継ぎ
@@ -59,7 +59,7 @@ Section 1の全Sessionについて第2稿が揃った後、Marketingは各Sessio
 
 ## 6. Production / Content Review / QA / Approval
 
-| Session ID | G2 Source QA | 初稿 / G4 | Human Review・実機完遂 | 第2稿 | Marketing substatus | 第3稿 | Header Asset / QA | G5 Package | Publication Dry Run | Human Publication Approval | Transaction / G8 | Verification / G9 | 次アクション |
+| Session ID | G2 Source QA | 初稿 / G4 | Human Review・実機完遂 | 第2稿 | Marketing substatus | 第3稿 | Header Contract / Prompt QA / Asset QA | G5 Package | Publication Dry Run | Human Publication Approval | Transaction / G8 | Verification / G9 | 次アクション |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 |  |  |  |  | Not Ready / Ready | Input Pending / Review / Revision Required / Approved / Human Decision Required | Not Ready / Ready | Pending / PASS / Returned | Pending / Approved / Returned | Not Started / Prepared Not Published / Gap | Pending / Approved / Returned | Not Started / Published / Failed | Not Started / PASS / FAIL |  |
 
@@ -83,7 +83,7 @@ Marketingは第2稿から開始し、本文を直接書き換えず、Requiremen
 | Requirement locator / 件数 | Must Fix / Nice to Improve / Human Decision Required |
 | Marketing Gate | Marketing Input Pending / Marketing Revision Required / Marketing Approved / Human Decision Required |
 | 第3稿識別 / 差分範囲 |  |
-| Header Asset / Header QA | Asset ID、locator、SHA、寸法、QA結果、G5 Packageへの組込み |
+| Header Contract / Prompt Assembly QA / Asset QA | Contract ID、Production version、Source fingerprint、実Tool Request識別、Prompt QA、Asset provenance、Header QA結果、Human Review Candidate化。QA未確認／FAILはAsset ID・G5へ進めない |
 | G5 Human Final Approval Record | 本文、Header、境界、Publication Decision、自己開示の一括承認 / Override＋理由 / Returned |
 | Publication Dry Run | Not Started / Publication Prepared・Not Published / Gap |
 | Human Publication Approval | Pending / Approved / Returned。対象Draft、公開先、最終操作を記録 |

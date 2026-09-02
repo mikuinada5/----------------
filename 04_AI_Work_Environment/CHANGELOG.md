@@ -6,6 +6,25 @@
 
 ------------------------------------------------------------------------
 
+## 2026-09-03｜Visual Production Controlを実装
+
+### 概要
+
+画像生成Toolが不適切なPhaseで起動すること、正式Sourceの制約が実Tool Requestで欠落すること、およびQA未確認AssetがHumanへ承認候補として提示されることをfail-closedにする共通実装を追加した。
+
+### 変更内容
+
+- `Visual_Production/`へGeneration Record Schema、validatorおよび13件の回帰テストを追加した。
+- Phase Tool Routing、MUST／MUST NOT／MAY、approved exact text、Source fingerprint、Prompt Assembly QA、Asset QA、retry／STOPおよびHuman Asset QA専用状態を検証する。
+- note Header、SNS画像、教育Visual等の媒体固有要件は各専門Sourceへ残し、本実装は解決済み要件と実Tool Request／QA状態の一致だけを担う。
+- AIが画像を検査できない場合、`HUMAN_ASSET_QA`以外の通常Human Review／Asset Ready／G5遷移を許可しない。
+
+### QA
+
+必須10ケースを含むPester test 13件、Schema JSON parseおよびPowerShell syntax checkをPASSした。画像生成Toolそのものは本改修Taskで起動していない。
+
+------------------------------------------------------------------------
+
 ## 2026-09-02｜Source Resolution QAを実装
 
 ### 概要

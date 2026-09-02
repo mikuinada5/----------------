@@ -1,7 +1,7 @@
-# AI Production Pipeline v1.7
+# AI Production Pipeline v1.8
 
 **Document type:** Standard Operating Procedure（SOP）<br>
-**Status:** Current / Operational v1.7<br>
+**Status:** Current / Operational v1.8<br>
 **Owner:** 稲田美来<br>
 **Scope:** Story Candidate、教材、note、SNS、運営文書、Brand／Education／AI Organization関連Source、その他AI制作物<br>
 **Purpose:** 既存OS・Sourceを毎回確実に選択・実読・適用し、成果物と新知見を正しい責任単位へ戻すためのAI組織共通運用<br>
@@ -255,7 +255,7 @@ Source Planは固定pathの列挙から開始しない。責任本籍ごとに�
 | 壁打ち回答・会話文 | `05_Human_OS/HUMAN_OS.md`、`02_Voice_OS/VOICE_OS.md`。事業判断を含む場合はBrand OS／専門Sourceを追加 |
 | 教育設計 | Human OS、Brand OS、Education Core、該当Course OS、一次資料、教育設計基準 |
 | 教材制作 | Brand OS、Education Core、Course OS、承認済み教育設計、成果物別制作基準、成果物間整合基準。講師の語りを含む場合はVoice OSを追加 |
-| Visual制作 | Brand Core、世界観・美意識、Visual表現原則、対象成果物の内容Source、媒体仕様 |
+| Visual制作 | Brand Core、世界観・美意識、Visual表現原則、対象成果物の内容Source、媒体仕様。G2後に§7.6のGeneration Contractへ解決する |
 | 規約・医療・法律・金融等 | 責任Source、現行一次資料、専門監修条件。Voice／Writingより正確性と安全を優先 |
 | OS／SOP／AI組織変更 | Human OS、Brand OSのAI共創・ガバナンス、AI Organization、Repository Rules、変更対象Source、依存Source |
 | Repository反映のみ | 承認済み成果物、承認記録、Repository Rules、関連INDEX／CHANGELOG、Git対象ブランチ規則 |
@@ -411,6 +411,7 @@ Source QAを通過したInputを、指定された成果物へ忠実に変換す
 - Assumption／Decision Log
 - 必要に応じた成果物間対応表
 - 制作中に発見したFeedback Candidate
+- Visual制作ではGeneration Contract、実際のTool Request、Prompt Assembly QA Receipt、Asset QA Receipt
 
 ### 7.5 Production実行規則
 
@@ -423,9 +424,90 @@ Source QAを通過したInputを、指定された成果物へ忠実に変換す
 7. 既存内容を更新する場合は、関係のない既存内容を保持する。
 8. 次に生成・実行すべき成果物が明確で現在のAIに実行可能な場合は、実行予告だけで停止せず、同じ応答・工程内で生成または実行する。
 
-### 7.6 Gate
+### 7.6 Visual Production Control
 
-**PASS:** 必要な成果物一式、Source Application Log、未解決事項一覧が揃い、勝手な上位判断がない。<br>
+画像生成を含むVisual制作は、媒体・成果物固有のSourceを本SOPへ複製せず、次の共通Controlを必須とする。note Header、SNS画像、教育用Visualその他のVisual Productionへ横断適用し、個別の構図、寸法、色、禁止表現、教育内容および媒体仕様は各責任Sourceを正とする。
+
+```text
+Phase Tool Routing
+→ G2 PASS済みResolved Visual Sources
+→ Generation Contract
+→ Actual Tool Request
+→ Prompt Assembly QA
+→ Generated Asset / GENERATED_UNVERIFIED
+→ Asset QA
+→ Human Review Candidate
+```
+
+#### 7.6.1 Phase Tool Routing
+
+Toolは、使えることを理由に起動せず、Work Charterの成果物と現在Phaseに対して選ぶ。画像生成Toolの標準Routingは次のとおりとする。
+
+| Phase | 画像生成Tool | Control |
+|---|---|---|
+| Source Router／Source QA | 禁止 | Source解決と実読だけを行う |
+| Marketing Review | 禁止 | Review Record、Requirement、Publication Decision等のテキスト成果物だけを作る。「Marketing Reviewレポート画像」は正式Outputではない |
+| Header Production | 条件付き許可 | Marketing Approved、最終タイトル、G2、Generation Contract、Prompt Assembly QAがすべてPASSした場合だけ起動する |
+| SNS Visual Production | 条件付き許可 | SNS固有Sourceと対象投稿の承認済みInputからContractを解決した場合だけ起動する |
+| Educational Visual Production | 条件付き許可 | 承認済み教育設計、教材制作基準、Brand Visualおよび成果物仕様からContractを解決した場合だけ起動する |
+| Asset QA | 生成目的では禁止 | 読取・画像検査を行う。QA FAIL記録後の再生成だけをProductionへ戻す |
+| Human Review／G5／Publish | 禁止 | QA PASS済み候補の提示・承認・公開だけを扱う |
+
+一つの依頼にReviewとVisual制作が併記されていても、各Phaseを別Output・別状態として扱う。画像制作の開始条件が未成立なら、Review Phaseから画像生成へ暗黙遷移しない。
+
+#### 7.6.2 Generation Contract
+
+Production AIは、G2 PASS済みSource ManifestのVisual適用箇所から、少なくとも次を持つ案件・Production version単位のGeneration Contractを構築する。
+
+- Task ID、Artifact ID／type、Production version、媒体／成果物Profile
+- Source Manifest fingerprintと、要件を解決したcanonical Source path／file SHA-256
+- 承認済みタイトルその他のexact text
+- 寸法、比率、safe areaその他の形式要件
+- `MUST`：必ず満たす要件
+- `MUST_NOT`：必ず避ける禁止要件
+- `MAY`：許容される可変要素
+- Creative Directionと各要件との競合判定
+- 使用Tool／mode、生成物をAIが検査できるか、Asset provenanceの取得方法
+- 自動再試行上限。標準は初回生成後2回までとし、専門Sourceがより厳しく制限する場合はそちらを優先する
+
+優先順位は`MUST / MUST_NOT > MAY > Creative Direction`とする。Creative Directionはcanonical Template、承認済み文字列、禁止事項、教育内容または媒体仕様を上書きできない。競合するCreative DirectionはContractから削除し、削除できず新しい価値判断を要する場合は生成せずSTOPする。
+
+#### 7.6.3 Prompt Assembly QA
+
+画像生成Toolを呼び出す直前に、要約や内部メモではなく**実際にToolへ渡すRequest**を検査する。次のすべてがPASSしなければToolを起動しない。
+
+- Phaseに対して画像生成Toolが許可されている
+- Generation Contractが同じTask／Production version／Source fingerprintを参照している
+- 全`MUST`と全`MUST_NOT`がRequestへ欠落なく入っている
+- approved exact textが一字も変更されていない
+- 寸法、比率および禁止要素がRequestへ入っている
+- Creative Directionの競合が削除済みである
+- SourceがContract構築後に変更されていない
+
+Source、Production version、承認済みタイトルまたは媒体Profileが変わった場合、既存ContractとPrompt Assembly QAは失効する。前回Requestの再利用は禁止し、Source Router／Source QAから再解決する。
+
+#### 7.6.4 Generated AssetとAsset QA
+
+生成直後のAssetは`GENERATED_UNVERIFIED`であり、候補、承認済み、Asset ReadyまたはG5構成要素ではない。AIが画像を検査できる場合は、媒体固有QA、全`MUST`、全`MUST_NOT`、exact text、寸法、構図、可読性、本文／教育設計との整合およびprovenanceを実物で確認する。
+
+```text
+CONTRACT_READY
+→ PROMPT_QA_PASS
+→ GENERATED_UNVERIFIED
+→ ASSET_QA_PASS
+→ HUMAN_REVIEW_CANDIDATE
+→ ASSET_READY / G5
+```
+
+Asset QA FAILはHumanへ通常の承認候補として見せず、Asset IDの正式登録、`ASSET_READY`、G5 Packageおよび公開候補への遷移を禁止する。既存Contractから一意に修正でき、再試行上限内ならFAIL理由を次のRequestへ反映して再生成する。上限到達、Source矛盾、新しい価値判断、Tool不適合または検査不能を検出した場合だけSTOPする。
+
+AIが生成物を検査できない場合は`QA_UNVERIFIED / HUMAN_ASSET_QA_REQUIRED`として、通常のHuman Review Candidateと明確に分離した検査Gateへ渡す。これはAsset承認、G5または公開候補の提示ではない。Human Asset QAが媒体固有要件を確認しPASSを記録するまで後続状態へ進めない。
+
+Schema、fail-closed validatorおよびnegative testsは`04_AI_Work_Environment/Visual_Production/`を使用する。Recordには必要最小限の要件ID、Source fingerprint、Tool Request、QAおよびAsset provenanceを残し、非公開本文、会話全文または画像binaryをPublic Repositoryへ自動保存しない。
+
+### 7.7 Gate
+
+**PASS:** 必要な成果物一式、Source Application Log、未解決事項一覧が揃い、勝手な上位判断がない。Visual制作ではPhase Tool Routing、Generation Contract、Prompt Assembly QAおよびAsset QAの必要状態遷移が成立している。<br>
 **FAIL:** Productionへ戻る。Source欠落を発見した場合はSource QAへ戻る。
 
 ---
@@ -823,7 +905,7 @@ Humanが初稿の実内容を確認し、Practiceでは実機完遂、壁打ち�
 
 ### Header Production／Human Approval
 
-Marketing Approved後、第3稿と最終タイトルを確定し、`07_Note_Production/00_note制作・公開システム.md`に従ってHeader ProductionとHeader QAを行う。第3稿本文、承認済みHeader Asset、無料／有料またはMembership境界、Publication Decision Summaryおよび必要な自己開示を一つのG5 Approval PackageとしてみくがFinal Approvalする。Humanは一括承認または特定Decisionだけを理由付きでOverrideできる。Marketing評価へ影響する本文差分は影響範囲だけ再監査し、Header差替えはHeader QAとG5再承認へ戻す。内容確認のHuman Review、G5成果物承認、外部公開操作へのHuman Publication Approvalを同一視しない。
+Marketing Approved後、第3稿と最終タイトルを確定し、`07_Note_Production/00_note制作・公開システム.md`に従ってHeader Productionを開始する。媒体固有TemplateをMUST／MUST NOT／MAYへ解決したGeneration Contractと実Tool Requestを作り、Prompt Assembly QA後にだけ画像生成を起動する。生成物をHeader QAし、PASSしたAssetだけをHuman Review Candidateにする。第3稿本文、承認済みHeader Asset、無料／有料またはMembership境界、Publication Decision Summaryおよび必要な自己開示を一つのG5 Approval PackageとしてみくがFinal Approvalする。Humanは一括承認または特定Decisionだけを理由付きでOverrideできる。Marketing評価へ影響する本文差分は影響範囲だけ再監査し、Header差替えはHeader QAとG5再承認へ戻す。内容確認のHuman Review、G5成果物承認、外部公開操作へのHuman Publication Approvalを同一視しない。
 
 ### Integration／Git
 
@@ -851,7 +933,7 @@ AコースSessionの承認済み教育設計から、PPT、配布資料、ワー
 
 ### Production／QA
 
-教育内容を追加・削除・順序変更せず成果物へ変換する。個別QA後、成果物間整合を監査し、主任講師／内部監査／外部監査を通す。
+教育内容を追加・削除・順序変更せず成果物へ変換する。画像生成を使うVisual要素は、承認済み教育設計、教材制作基準およびBrand Visualから媒体固有要件を解決し、共通Generation Contract／Prompt Assembly QA／Asset QAを通す。個別QA後、成果物間整合を監査し、主任講師／内部監査／外部監査を通す。
 
 ### Approval／Integration
 
@@ -967,5 +1049,7 @@ AコースSessionの承認済み教育設計から、PPT、配布資料、ワー
 - [x] 公開後の知見をFeedback Candidateとして回収する
 - [x] OS更新候補を新規Taskとして同じPipelineへ戻す
 - [x] 実行予告だけで応答・工程を終了せず、Response／Phase Completion Checkで実施済みを確認する
+- [x] 非生成Phaseから画像生成Toolを起動せず、実Tool RequestをGeneration Contractと照合する
+- [x] QA未確認／FAILのVisual AssetをHuman Review Candidate、Asset ReadyまたはG5へ昇格させない
 
 > **「SOPを作った」で終わらず、「SOPを通らなければ制作が始まらない」状態になって初めて導入完了とする。**

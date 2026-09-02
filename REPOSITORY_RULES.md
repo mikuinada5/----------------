@@ -228,6 +228,11 @@ Human-in-the-loop領域に関する意味のある変更は `03_Human_in_the_Loo
 │   ├── schemas/
 │   ├── scripts/
 │   └── tests/
+├── Visual_Production/
+│   ├── README.md
+│   ├── schemas/
+│   ├── scripts/
+│   └── tests/
 ├── External_Audit_Pipeline/
 │   ├── README.md
 │   ├── prompts/
@@ -252,6 +257,8 @@ Human-in-the-loop領域に関する意味のある変更は `03_Human_in_the_Loo
 `External_Audit_Pipeline/` は、内部監査PASS後のFinal Candidateから必要最小限の監査Inputを構築し、助言的外部AIへAPI送信し、応答Schema検証とSeverity Routingを行う再利用可能な自動化実装である。外部AIへ制作、承認またはRepository WRITE責任を付与しない。
 
 `Source_Resolution/` は、`AI_PRODUCTION_PIPELINE.md`が定めるSource Router／Source QA／Source Manifestを機械検証する実装である。新しいSource責任または承認者を作らず、Current Canonical Delta、責任root内のCurrent候補未列挙、前Taskの読了証跡、依存漏れおよびSource fingerprint変更をG2またはPre-Human ReviewでFAILさせる。
+
+`Visual_Production/` は、同Pipelineが定めるPhase Tool Routing、Generation Contract、Prompt Assembly QA、生成後Asset QAおよび状態遷移を機械検証する実装である。媒体固有のVisual Template、禁止事項、教育内容または承認責任を保持せず、各責任Sourceから解決した要件と実際のTool Request／Asset QAの一致だけを検証する。
 
 OneDrive上の `AI/00_Inbox` および `AI/04_Personal_Archive` は、AI作業環境領域が管理するRepository外の運用対象であり、Repositoryまたは正式Source置場として扱わない。詳細は `INBOX_AND_PERSONAL_ARCHIVE.md` を正とする。
 

@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://repository.local/schemas/visual-generation-record-v1.json",
+  "title": "Visual Generation Record v1",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema_version",
+    "task_id",
+    "production_version",
+    "phase",
+    "artifact_type",
+    "source_manifest",
+    "resolved_requirements",
+    "generation_contract",
+    "tool_route",
+    "tool_request",
+    "preflight",
+    "asset",
+    "asset_qa",
+    "transition"
+  ],
+  "properties": {
+    "schema_version": { "const": "visual-production/v1" },
+    "task_id": { "type": "string", "minLength": 1 },
+    "production_version": { "type": "string", "minLength": 1 },
+    "phase": { "type": "string", "minLength": 1 },
+    "artifact_type": { "type": "string", "minLength": 1 },
+    "source_manifest": {
+      "type": "object",
+      "required": ["task_id", "production_version", "result", "fingerprint_sha256", "sources"],
+      "properties": {
+        "result": { "const": "PASS" },
+        "fingerprint_sha256": { "type": "string", "pattern": "^[0-9a-fA-F]{64}$" },
+        "sources": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["path", "file_sha256", "applied_to"],
+            "properties": {
+              "path": { "type": "string", "minLength": 1 },
+              "file_sha256": { "type": "string", "pattern": "^[0-9a-fA-F]{64}$" },
+              "applied_to": { "type": "array", "minItems": 1 }
+            }
+          }
+        }
+      }
+    },
+    "resolved_requirements": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "level", "text", "source_path"],
+        "properties": {
+          "level": { "enum": ["MUST", "MUST_NOT", "MAY"] }
+        }
+      }
+    },
+    "generation_contract": {
+      "type": "object",
+      "required": ["profile_id", "source_fingerprint_sha256", "approved_text", "dimensions", "requirement_ids", "creative_direction", "inspection_capability", "max_automatic_retries"],
+      "properties": {
+        "inspection_capability": { "enum": ["ai-visual-inspection", "human-required"] },
+        "max_automatic_retries": { "type": "integer", "minimum": 0, "maximum": 2 }
+      }
+    },
+    "tool_request": {
+      "type": "object",
+      "required": ["text_verbatim", "prompt", "dimensions", "included_requirement_ids", "negative_requirement_ids"]
+    },
+    "tool_route": {
+      "type": "object",
+      "required": ["tool", "capability", "allowed", "rationale"],
+      "properties": {
+        "capability": { "const": "image-generation" },
+        "allowed": { "type": "boolean" }
+      }
+    },
+    "asset_qa": {
+      "type": "object",
+      "required": ["performed", "result", "checks"],
+      "properties": {
+        "result": { "enum": ["NOT_RUN", "PASS", "FAIL", "HUMAN_REQUIRED"] }
+      }
+    }
+  }
+}

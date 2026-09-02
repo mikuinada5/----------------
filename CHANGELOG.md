@@ -8,6 +8,29 @@
 
 ------------------------------------------------------------------------
 
+## 2026-09-03｜AIDAILY Header Production Incidentの再発経路を閉鎖
+
+### Incident / Root Cause
+
+2026-09-02のAIDAILY-003で、Marketing Review中に画像生成が起動し、続くHeader ProductionではCurrent note SOPを実読済みでありながら、実際の画像生成Requestへ「AIとの日常を入れない」「吹き出しを使わない」「承認済みタイトルを中央の主役にする」等の制約が完全には渡らなかった。さらに生成後Header QAより先にHumanへ提示された。
+
+Root CauseはSource Resolution不足ではなく、共通PipelineにPhase別Tool許可、Sourceから固定したGeneration Contract、実Tool RequestのPrompt Assembly QAおよび生成後Asset QAからHuman提示までのblocking state transitionがなかったことである。必要最小限のHuman Evidenceとして、Humanが生成物を「意図していない制作物」「不承認」と判定し、Source既読でも出力が守られなかった点を構造改修対象とした。会話全文、生成画像binaryまたは無関係な私的情報はRepositoryへ複製していない。
+
+### 変更内容
+
+- AI Production Pipelineをv1.8へ更新し、Visual Production Controlを追加した。Marketing Review等の非生成Phaseでは画像生成Toolを禁止し、Header／SNS／教育Visualは責任SourceからGeneration Contractを解決してから実Tool Requestを検査する。
+- `04_AI_Work_Environment/Visual_Production/`へRecord Schema、fail-closed validatorおよび13件の回帰テストを追加した。MUST／MUST NOT欠落、approved title変更、Creative Directionの上書き、stale Source、QA前Human提示、QA FAIL昇格および再試行上限を停止する。
+- note制作・公開SOPをv2.3へ更新し、「AIとの日常」Header TemplateをGeneration Contractへ接続した。AIDAILY-003は本文、D3、Marketing ApprovedおよびPublication Decisionを変更せず、Headerだけを`Unapproved / ReProduction Required`とした。
+- Repository Rules、AI Work Environment、AI Organization、Repository横断監査、note READMEおよび記録テンプレートへ必要な導線・状態・責任境界を同期した。新しいVisual専門OS、部署または承認者は追加していない。
+
+### Repository横断監査
+
+共通のTool／Contract／状態遷移はAI Production Pipeline、実装はAI作業環境、媒体固有要件はnote／SNS／Brand／Educationの既存責任Sourceへ残した。note固有Templateを共通実装へ複製せず、非AIDAILY教育Visualも同じContract検証を使用できることを確認した。
+
+Visual Production Pester test 13件、既存Source Resolution test 8件、Repository Source構造監査、Schema JSON parse、PowerShell syntax checkおよび`git diff --check`をPASSした。AIDAILY-003 Header画像そのものは本Taskで再生成していない。
+
+------------------------------------------------------------------------
+
 ## 2026-09-02｜Source Resolution Incidentの再発経路を閉鎖
 
 ### Incident / Root Cause

@@ -107,6 +107,8 @@ Chat、Work、外部AIその他の環境に存在する文章は、それだけ�
 
 削減対象は、各工程を一つずつ起動・中継するためだけの不要な人間操作である。
 
+画像生成を伴うVisual Productionでは、Phase Tool Routing、G2 PASS済みSourceからのGeneration Contract、実際のTool Requestに対するPrompt Assembly QA、生成物のAsset QAを省略しない。Marketing Review、Source QA、Human Review、G5またはPublishのPhaseから画像生成Toolへ暗黙遷移せず、QA未確認Assetを通常のHuman Review Candidateとして表示しない。共通規範は`AI_PRODUCTION_PIPELINE.md` §7.6、機械検証は`04_AI_Work_Environment/Visual_Production/`を使用する。
+
 ### 4.4 人間判断のUIはChatへ集約する
 
 人間が理解、選択、承認、方針決定または新規判断を行う必要がある場合は、原則としてChatへ戻す。
@@ -268,6 +270,8 @@ Chatで判断確定後、Workが制作・監査を再開し、完成稿をCodex�
 noteの長文制作では、Workを制作・監査の司令塔として使用できる。Workは `07_Note_Production/00_note制作・公開システム.md` と既存Pipelineに従って、対象Section、稿、未解決Decision、Source QA／Output QAの状態をCodexへ渡す。CodexはRepository上の現行Source、canonical path、CHANGELOGおよび差分を確認し、承認候補を正しく配置する。
 
 本文、価格、自己開示、公開範囲、実投稿はHuman Approvalを経る。承認後のGit／Publishは、既存Pipelineと `REPOSITORY_RULES.md` の条件に従う。Work、Codex、本節のいずれも承認・Git・公開の責任を重複定義せず、認証・接続のない外部投稿を完了として扱わない。
+
+Marketing Reviewは画像生成を行わない。Header ProductionはMarketing Approvedと最終タイトル確定後の独立Phaseとして開始し、Visual Production ControlのGeneration ContractとPrompt Assembly QAを通したうえで生成する。生成画像はHeader QA PASSまでQA未確認であり、通常のHuman Review Candidate、Asset ReadyまたはG5へ渡さない。
 
 ### Codex → Chat → Codex
 
@@ -717,6 +721,7 @@ Work稿とRepository差分の採否、編集競合または現在の作業対象
   - `04_AI_Work_Environment/ARCHIVE_PROVENANCE_INDEX.md`
   - `04_AI_Work_Environment/EXTERNAL_REFERENCE_REGISTRY.md`
   - `04_AI_Work_Environment/Source_Resolution/README.md`
+  - `04_AI_Work_Environment/Visual_Production/README.md`
   - `00_Brand/00_ブランドOS概要・参照ガイド.md`
   - `00_Brand/09_AI共創原則.md`
   - `01_Education/` 配下の適用される正式Source

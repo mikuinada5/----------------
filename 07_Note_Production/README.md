@@ -1,6 +1,6 @@
 # 07_Note_Production
 
-**Status:** Current / Operational v1.13 / Source Resolution canonicalized
+**Status:** Current / Operational v1.14 / Visual Production Control compatible
 **責任:** noteの企画・制作・Marketing Review・Header Production・公開準備・Publication Transaction・公開後記録およびSession単位のSNS展開を、既存AI Production Pipelineへ接続する媒体別運用
 
 ## この領域の入口
@@ -40,7 +40,7 @@
 
 Statusは、Section制作台本と全体ロードマップで `Planning`／`Production`／`Review`／`Decision Pending`／`Redesign Required`／`Revision Required`／`Approved`／`Scheduled`／`Published/Complete`／`Update Candidate` を記録する。`Redesign Required`は現行baselineを保持して構成・完了条件から再設計する状態、`Revision Required`は現行baselineの限定修正が必要な状態であり、どちらもPublish前で外部公開を意味しない。完成判定は固定の3記事数ではなく、当該Sectionの承認済み公開構成Profileに基づく。公開済み最終稿では `Published`、公開停止または置換済みでは `Superseded` と記録する。`Published` は公開事実であり、上位Sourceの承認を代替しない。公開済み最終稿だけが将来の参照・SNS再展開・Repository還元に用いる記事本文の正本であり、Work稿や下書きを代替正本にしない。
 
-Marketing ReviewはSection Statusを増やさず、`Marketing Input Pending`／`Marketing Revision Required`／`Marketing Approved`／`Human Decision Required`のsubstatusとしてSection制作台本へ記録する。Marketingは内容完成稿である第2稿から開始し、本文を直接修正せずRequirementとPublication Decisionを返す。Marketing Approved後にHeader Production／QAを行い、本文、Header、境界、Publication Decisionおよび必要な自己開示をG5 Packageとする。G5後のPublication Dry Runは公開ボタン直前で停止し、`Publication Prepared / Not Published`としてHuman Publication Approvalを待つ。G5またはDry Runだけを`Published`／G8 PASSとしない。
+Marketing ReviewはSection Statusを増やさず、`Marketing Input Pending`／`Marketing Revision Required`／`Marketing Approved`／`Human Decision Required`のsubstatusとしてSection制作台本へ記録する。Marketingは内容完成稿である第2稿から開始し、本文を直接修正せずRequirementとPublication Decisionを返し、画像生成を行わない。Marketing Approved後にHeader Productionを別Phaseで開始し、共通Visual Production ControlのGeneration Contract、Prompt Assembly QA、生成後Header QAを通す。QA PASSしたHeaderだけをHuman Review CandidateおよびG5 Packageへ組み込む。G5後のPublication Dry Runは公開ボタン直前で停止し、`Publication Prepared / Not Published`としてHuman Publication Approvalを待つ。G5またはDry Runだけを`Published`／G8 PASSとしない。
 
 未公開本文を含む詳細Marketing Review、Requirementおよび第2稿・第3稿は、本文と同じ承認範囲のWork、Private Sourceまたは指定Archiveに保持する。Public側のSection制作台本には安全なRun ID、status、locator、Decision要約、Gateおよび再開条件だけを置き、公開済み最終稿領域へ先行配置しない。
 

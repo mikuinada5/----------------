@@ -4,6 +4,27 @@
 
 ---
 
+## 2026-09-03｜AIDAILY Header Productionを共通Visual Controlへ接続
+
+### Incident / Scope
+
+2026-09-02のAIDAILY-003で、Marketing Review中の不要な画像生成、Header Template制約が欠けた実Tool Request、Header QA前のHuman提示が連続した。Current note SOP未読ではなく、SOPから画像生成Requestと生成後状態へ制約を強制する接続が欠けていたIncidentとして扱う。
+
+AIDAILY-003本文、D3、Marketing ApprovedおよびPublication Decisionは変更していない。Human Reject済みHeaderだけを`Unapproved / ReProduction Required`とし、本Taskでは画像を再生成していない。
+
+### 変更内容
+
+- note制作・公開SOPをv2.3へ更新し、Marketing Reviewでの画像生成を禁止した。
+- 「AIとの日常」Headerの固定要素をMUST／MUST NOT、可変要素をMAYとして扱い、approved exact title、中央のタイトル、シリーズ名禁止、吹き出し禁止を実Tool Requestで検証する。
+- 生成直後を`GENERATED_UNVERIFIED`とし、Header QA PASS前のHuman Review Candidate化、Asset ID登録、Asset ReadyおよびG5を禁止した。
+- READMEをv1.14、Section制作台本テンプレートをv1.7、公開成果物記録テンプレートをv1.6へ更新し、Contract、Prompt QA、Asset provenanceおよびHuman提示状態を追跡可能にした。
+
+### 再Production条件
+
+AIDAILY-003 Headerは、Current Source再解決、同一Production versionのGeneration Contract、Prompt Assembly QA、生成物実査、Header QA PASS後にだけHumanへ通常候補として提示できる。既存の不承認画像を再利用しない。
+
+---
+
 ## 2026-09-02｜note v2.2 Deltaをcanonical SOPへ統合
 
 ### 概要

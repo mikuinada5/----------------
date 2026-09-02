@@ -91,6 +91,8 @@ AI作業環境Sourceは新しいAI組織上の役割・部署・権限を定義�
 
 Production AIは、既知の固定path、過去Taskの読了またはAI memoryからCurrent Sourceを自己認定しない。Source Auditorが責任root／正式entry sourceからCurrent canonical Source、依存Sourceおよび候補の選択・除外を解決し、同一Taskの実読とfingerprintを持つG2 PASS済みSource Manifestを引き渡した後にProductionを開始する。SourceまたはProduction versionが変わった場合、以前のG2 PASSは引き継がない。
 
+Visual制作でも同じ責任分離を維持する。Production AIは現在Phaseに許可されたToolだけを使用し、媒体・成果物固有SourceからGeneration Contractを組み立てる。Creative Directionは正式Templateを上書きせず、生成物はInternal QAが実物を確認してPASSするまでHuman Review Candidate、Asset ReadyまたはG5へ昇格しない。これらは工程上の機能であり、新しいVisual部署、恒久役職または承認者を作らない。
+
 Repository全体へ影響する正式Source変更では、`REPOSITORY_CROSS_AUDIT_STANDARD.md` を適用する。これは既存の教育品質監査、専門QAまたは人間承認を置き換えず、構造・責任・参照・運用接続・Git準備の不足だけを確認する。
 
 ---
