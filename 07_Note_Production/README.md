@@ -1,6 +1,6 @@
 # 07_Note_Production
 
-**Status:** Current / Operational v1.11 / Publication E2E verified
+**Status:** Current / Operational v1.12 / AIDAILY-002 Publication E2E verified
 **責任:** noteの企画・制作・Marketing Review・Header Production・公開準備・Publication Transaction・公開後記録およびSession単位のSNS展開を、既存AI Production Pipelineへ接続する媒体別運用
 
 ## この領域の入口

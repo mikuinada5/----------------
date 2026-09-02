@@ -4,6 +4,29 @@
 
 ---
 
+## 2026-09-02｜AIDAILY-002改修後Publication Pipeline正式E2E
+
+### 概要
+
+Human Review承認後からSourceだけで再現した`AIDAILY-002-D3`／`AIDAILY-002-H1`のG5 Packageを、Local PCの認証済みChromeからnote Draft `ndd8566d3d8c1`へ反映した。別のHuman Publication Approval後にTransactionを実行し、認証済みowner view、非ログインpublic viewおよび公開後settings viewでPost-Publication Verificationを完了した。
+
+### 実測結果
+
+- 公開URLは`https://note.com/miku_inada/n/ndd8566d3d8c1`、公開日時は2026-09-02 06:42 JST。
+- タイトル、Header、本文2,819文字／28段落、指定境界、非ログイン遮断、月額1,500円、加入導線および4 Tagsを確認した。
+- Membership Plan`AIとの日常`とMagazine`AIとの日常`を、公開前と公開後の双方で別々の`追加済`項目として確認した。
+- Dry Runの試し読み画面をキャンセルして再入場すると境界選択が未選択へ戻る挙動を検出した。TransactionでCanonical Publication Decision Summaryから再設定し、公開後Editorと非ログイン画面で正しい境界を確認した。
+- SNS共有は実行していない。
+
+### Source反映
+
+- note制作SOPをv2.2、READMEをv1.12、Timelineをv1.7へ更新した。
+- 境界も画面遷移後の保持を仮定せず、Publication Transactionの最終操作直前にCanonical Inputから再設定・再照合するControlを明文化した。
+- `02_Published/AIDAILY/AIDAILY-002/`に公開済み最終稿、Header Asset記録および公開成果物記録を追加した。
+- G5 Packageで報告した4件の非Blocking Gapは解消済みにせず、公開成果物記録の改善候補として保持した。
+
+---
+
 ## 2026-09-02｜AIDAILY-001追加Human QAとMagazine必須Profileを反映
 
 ### 概要

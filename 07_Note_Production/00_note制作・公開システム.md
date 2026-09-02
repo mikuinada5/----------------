@@ -1,6 +1,6 @@
-# note制作・公開システム v2.1
+# note制作・公開システム v2.2
 
-**Status:** Current / Operational v2.1 / Publication E2E verified with Human QA follow-up
+**Status:** Current / Operational v2.2 / AIDAILY-002 Publication E2E verified
 **Scope:** note制作、Marketing Review、Header Production、Publication Dry Run、Publication Transaction、公開後記録、Session単位のSNS展開、Repositoryへの知見還元
 
 ## 1. 責任と非責任
@@ -275,7 +275,7 @@ G5では、最終本文、Header Asset、無料／有料またはMembership境�
 
 #### 2.6.2 Publication Draft E2E
 
-G5後、承認済みタイトル、本文、Headerおよび境界をnote新規下書きへ反映し、下書き保存を確認する。Publication Settingsは下書きへ必ず永続化できるAssetと仮定しない。今回の実測では、記事タイプ、Magazine、Membership、対象プランおよびTagsは公開設定画面を離れると保持されず、本文、Headerおよび境界だけが下書き保存された。この挙動は現行note UIのExpected Behaviorとして扱い、保存不能を公開失敗または承認不足と誤認しない。
+G5後、承認済みタイトル、本文、Headerおよび境界をnote新規下書きへ反映し、下書き保存を確認する。Publication Settingsは下書きへ必ず永続化できるAssetと仮定しない。AIDAILY-001の実測では、記事タイプ、Magazine、Membership、対象プランおよびTagsは公開設定画面を離れると保持されず、本文、Headerおよび境界だけが下書き保存された。AIDAILY-002では、Dry Runの試し読み画面からキャンセルして設定画面へ戻り、再度試し読み画面へ入ると境界選択が未選択へ戻った一方、Transactionで再設定した境界は公開後Editorへ保存された。現行UIでは境界も画面遷移後の保持を仮定せず、Transaction時にCanonical Inputから最終再設定・再照合する。これらの挙動を公開失敗または承認不足と誤認しない。
 
 #### 2.6.3 Publication Dry Run
 
@@ -290,7 +290,7 @@ Dry Run結果として、対象Draft／Article ID、公開先、再構成したP
 1. 承認済み下書きを開き、Draft ID／対象記事を照合する。
 2. Publication Decision Summaryを読む。
 3. 下書きへ永続化されないPublication SettingsをSummaryから再構成し、対象Series Profileの必須MagazineとMembership Planを別々に設定する。
-4. タイトル、本文、Header、境界および全設定をG5 Package／Publication Decision／対象Series Publication Profileと照合する。
+4. タイトル、本文、Header、境界および全設定をG5 Package／Publication Decision／対象Series Publication Profileと照合する。Dry Run後の画面遷移で境界が保持されたと仮定せず、最終操作直前画面で選択ラインを再確認する。
 5. Human Publication Approvalの対象、公開先および最終操作を照合する。
 6. 公開を発生させる最終操作を一度だけ実行する。
 7. 公開成功表示を確認し、公開URLと公開日時を取得する。
