@@ -1,6 +1,6 @@
 # Repository外Archive provenance index
 
-**Status:** Current / Operational v1.3<br>
+**Status:** Current / Operational v1.4<br>
 **責任:** Repository外に保持する増分型一次資料について、原本識別子、Processed checkpoint、正式Sourceへの反映状態および再追跡経路をRepository側から確認できるようにする
 
 ## 1. 位置づけ
@@ -85,6 +85,19 @@ Final Candidate内のSession Archive 6件を現行のHuman-approved baseline、S
 - `Derived/note_source_idea_bank_*` は候補・分析であり、Timeline、Section制作台本または公開済み最終稿の代替正本にしない。
 - Claude監査原本とRouting結果は、監査provenanceとしてPersonal Archiveに保持する。正式Sourceまたは承認主体として扱わない。
 
+### 2.8 Local Personal Archive Reader
+
+| 項目 | 現在値 |
+|---|---|
+| Implementation | Private Repository `mikuinada5/feminine-wellness-private-sources` の `.github/workflows/local-personal-archive-reader-v1.yml`、`local-reader/local-personal-archive-reader-v1.ps1`、`local-reader/tests/Invoke-S1-2E2E.ps1` |
+| Source commit | `9fa254bf483a6294effe95b2dd325a2f829161b3` / `main` |
+| Route | Private Cloud Workflow → Windows self-hosted Runner → OneDrive `Processed/`優先検索 → 必要な対象messageだけ`Original/ChatGPT/`でSHA・原文provenance照合 → Private Workflow logのmarker間へ限定返却 |
+| Access | Workflow `contents: read`、checkout credential非保持、Runner専用Windows service SIDに対象ArchiveのREAD／executeだけを付与。Archive、Repository、Actions artifactへWRITEしない |
+| S1-2 E2E | Local test `PASS`。Cloud Workflow run `33619111677`、2026-09-02 JST、32秒、`PASS` |
+| Verified provenance | Processed `PA-PROCESSED-20260822` SHA-256 `9951087ba8519858bf32c7470b30fb2fea752b39d0562d6296db73c05ff6b56d`、Original `PA-CHATGPT-MAIN-20260820` SHA-256 `15b168941ce777fe9fbadc15ea719535e7101e149f4a10b46c7fec30956ba7e3` |
+| Privacy boundary | Public／Private Repositoryへ会話本文・会話全体・無関係な私的ログを保存しない。Cloud返却はexact conversation、期間、検索語、件数上限に一致したmessage Evidenceだけ |
+| Failure boundary | root、package、manifest、conversation、message、SHAまたは件数上限が曖昧・未取得・到達不能なら推測せずFAIL |
+
 ## 3. GPT Archiveの増分取得・差分反映経路
 
 次回以降のChatGPT Exportは、次の経路で処理する。
@@ -101,9 +114,9 @@ Final Candidate内のSession Archive 6件を現行のHuman-approved baseline、S
 
 現時点の最終取得地点は2026-08-20 Export、前回処理地点は `PA-PROCESSED-20260822`、Timeline反映地点は `PA-WORK-HISTORY-20260822` の `WH-023`、AIORG-S01選定一次資料のRepository反映地点は同Sectionの`01_Primary_Evidence/`、Human-approved本文メタデータの反映地点は同Sectionの`02_Human_Approved_Source_Inventory.md`までである。
 
-### 3.1 Archive Retrieval Connectorの次期タスク
+### 3.1 Archive Retrieval Connectorの現行状態
 
-GPT Archive Originalは本Private Source Repositoryへ移動・複製しない。別Local開発タスクで、OneDrive Original、自動Archive Index、Exact-message Store、read-only Archive Retrieval Connector、Work CloudおよびSource QAを接続する。Humanによる事前抽出なしでOriginal conversation / messageへ到達できることを最終E2E条件とし、現在のSection固有事前選定を最終解としない。進捗状態は`EXTERNAL_REFERENCE_REGISTRY.md`の`EXT-DEV-GPT-ARCHIVE-RETRIEVAL`を正とする。
+GPT Archive OriginalをPrivate Source Repositoryへ移動・複製せず、`Local Personal Archive Reader v1`により、CloudからHumanの事前抽出なしでProcessed検索とexact Original message照合へ到達する経路を実装済みである。S1-2を対象とするLocal testとself-hosted Runner E2Eは`PASS`。取得EvidenceのSource QA、正式Source反映、Human approvalおよびProduction Completionは別Gateであり、Reader成功だけでは完了しない。進捗状態は`EXTERNAL_REFERENCE_REGISTRY.md`の`EXT-DEV-GPT-ARCHIVE-RETRIEVAL`を正とする。
 
 ## 4. 更新規則
 

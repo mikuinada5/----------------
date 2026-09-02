@@ -8,6 +8,24 @@
 
 ------------------------------------------------------------------------
 
+## 2026-09-02｜Local Personal Archive Readerの正式運用接続
+
+### 概要
+
+Repository外のGPT Archiveを移動・複製せず、Private Cloud Workflow、既存Windows self-hosted RunnerおよびOneDrive Personal ArchiveをREAD-onlyで接続した。
+
+### 変更内容
+
+- Processed優先検索、exact conversation／期間／検索語による限定取得、必要時だけのOriginal SHA照合、message／Dataset provenance保持およびfail-closedを実装した。
+- Private implementation commit `9fa254bf483a6294effe95b2dd325a2f829161b3`、Workflow run `33619111677`でS1-2 Cloud-to-Local E2E `PASS`を確認した。
+- Public Repositoryへ実装locatorと非機密な運用メタデータだけを反映し、生ログ本文、会話全体、私的ログ、Windows絶対path、credentialおよびArchive binaryを追加していない。
+
+### Repository横断監査
+
+Original／Processedの責任、Public／Private Source分離、Repository Rules、Source QA、Education、Human approvalおよびProduction Completion Gateは変更していない。Readerの取得成功は正式採用または完成判定を代替しない。
+
+------------------------------------------------------------------------
+
 ## 2026-09-02｜AIDAILY-001 Human QA GapとSeries必須所属先を正式反映
 
 ### 概要

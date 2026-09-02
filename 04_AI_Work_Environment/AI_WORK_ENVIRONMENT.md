@@ -491,6 +491,18 @@ Chatの全履歴やWorkの全対話を、必要性を確認せず後工程へ渡
 
 この貼り付け・運搬操作自体も、目標状態では削減対象とする。
 
+### 13.1 Local Personal Archive Reader
+
+Cloud環境からRepository外のGPT Archive原本照合が必要な場合は、Private Repository `mikuinada5/feminine-wellness-private-sources` の `Local Personal Archive Reader v1`を、既存Windows self-hosted Runner経由で使用できる。
+
+Readerは、Windows設定から実在するOneDrive rootを発見し、`AI/04_Personal_Archive/Processed/`を先に検索する。Retrieveではexact conversation ID、JST期間、1〜12個の検索語および件数上限を必須とし、必要な候補messageだけをmanifestで結び付いた`Original/ChatGPT/`へ戻してSHAと原文・attachment provenanceを照合する。
+
+Cloudへ返せるのは、対象conversation ID、message ID、日時、該当するbounded excerpt、Dataset／Original provenanceおよび関連file metadataだけである。Discoverではmessage本文を返さず、Retrieveでも会話全体、別conversation、無関係な私的ログ、Windows絶対pathまたはcredentialを返さない。結果はPrivate Workflow log内の明示marker間だけに置き、Actions artifact、RepositoryまたはPersonal Archiveへ書き込まない。
+
+Reader、WorkflowおよびcheckoutはREAD-onlyとし、root、package、conversation、message、manifest、SHAまたは件数上限を一意に確認できない場合は推測せずFAILする。Runner専用Windows service SIDにはPersonal Archiveの対象領域だけをREAD可能とし、共有サービスアカウント全体へ権限を広げない。
+
+Readerの取得成功は、Sourceの正式採用、教育内容の妥当性、Human approvalまたはProduction Completionを意味しない。取得Evidenceを正式利用する場合は、適用されるSource QA、制作・監査・承認、CHANGELOGおよびGit工程を別途通す。
+
 ---
 
 ## 14. 人間判断とChatエスカレーション

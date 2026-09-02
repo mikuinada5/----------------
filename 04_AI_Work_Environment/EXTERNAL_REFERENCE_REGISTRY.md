@@ -1,6 +1,6 @@
 # Repository外参照資料レジストリ
 
-**Status:** Current / Operational v1.4<br>
+**Status:** Current / Operational v1.5<br>
 **責任:** Repository外に原本を保持する継続参照資料について、Repository正本から再追跡するための非機密メタデータと差分反映状態を管理する
 
 ## 1. 位置づけ
@@ -129,12 +129,14 @@ Personal Archive上の増分型一次資料について、Original snapshotのDa
 
 | 項目 | 現在値 |
 |---|---|
-| 資料種別 | Local開発Backlog／全社横断長期記憶検索Capability |
+| 資料種別 | Local実装済み／全社横断長期記憶検索Capability |
 | Original | OneDrive Personal ArchiveのGPT Archive Originalを維持。Private Source Repositoryへ格納しない |
-| Target route | OneDrive Original → 自動Archive Index → Exact-message Store → read-only Archive Retrieval Connector → Work Cloud → Source QA |
-| E2E要件 | Humanの事前抽出なしでCloud AIがArchive全体を検索し、Original conversation / messageを特定・限定取得し、provenance付きで使用できること |
-| 現在Capability | 未実装。現在はLocal限定READとSection固有の事前選定Evidenceだけであり、最終E2Eではない |
-| Status | `Backlog / Separate Local development task / Not started` |
+| Implemented route | Private Cloud Workflow → Windows self-hosted Runner → OneDrive Processed優先検索 → exact conversationの対象messageだけOriginalでSHA照合 → Private Workflow logへ限定返却 |
+| Implementation | Private Repository `.github/workflows/local-personal-archive-reader-v1.yml`、`local-reader/local-personal-archive-reader-v1.ps1`、`local-reader/tests/Invoke-S1-2E2E.ps1`。commit `9fa254bf483a6294effe95b2dd325a2f829161b3` |
+| E2E結果 | Local S1-2 test `PASS`。Cloud Workflow run `33619111677`、2026-09-02 JST、`PASS`。対象conversation `6a7a29e1-3968-83e8-9b76-6d8a62b5ddce`から指定3 messageをOriginal verifiedで限定取得 |
+| Provenance | Processed `PA-PROCESSED-20260822` SHA-256 `9951087ba8519858bf32c7470b30fb2fea752b39d0562d6296db73c05ff6b56d`、Original `PA-CHATGPT-MAIN-20260820` SHA-256 `15b168941ce777fe9fbadc15ea719535e7101e149f4a10b46c7fec30956ba7e3` |
+| 現在Capability | exact conversation ID、JST期間、検索語、件数上限によるREAD-only Retrieveと、本文を返さないscoped Discover。曖昧・未取得・到達不能・SHA不一致・上限超過はfail-closed |
+| Status | `Operational v1 / S1-2 Local and Cloud-to-Local E2E PASS` |
 | 取扱い | credential、生ログ本文、個人情報または大容量Archiveを本Public RegistryやPrivate Source Repositoryへ複製しない |
 
 ## 4. Repository内で継続参照する正本

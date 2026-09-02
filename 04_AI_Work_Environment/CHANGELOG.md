@@ -6,6 +6,22 @@
 
 ------------------------------------------------------------------------
 
+## 2026-09-02｜Local Personal Archive Reader v1をCloudへ接続
+
+### 概要
+
+GPT Archive原本をRepositoryへ複製せず、Private Cloud Workflowから既存Windows self-hosted Runnerを経由してOneDrive Personal Archiveを限定READする経路を実装し、S1-2 E2Eを完了した。
+
+### 変更内容
+
+- `EXTERNAL_REFERENCE_REGISTRY.md`をv1.5、`ARCHIVE_PROVENANCE_INDEX.md`をv1.4へ更新した。
+- Processed優先、exact conversation、JST期間、検索語、件数上限、必要時だけのOriginal SHA照合およびfail-closedを運用へ接続した。
+- Private implementation commit `9fa254bf483a6294effe95b2dd325a2f829161b3`、Workflow run `33619111677`でCloud→self-hosted Runner→OneDrive E2E `PASS`を確認した。
+- Runner専用Windows service SIDへ対象ArchiveのREAD／executeだけを付与し、`NETWORK SERVICE`全体、Repository WRITE、Actions artifact保存および会話全体返却を許可していない。
+- 取得成功をSource採用、Human approvalまたはProduction Completionへ読み替えない。
+
+------------------------------------------------------------------------
+
 ## 2026-08-29｜Source RetrievalとProduction Completionを分離
 
 ### 概要
