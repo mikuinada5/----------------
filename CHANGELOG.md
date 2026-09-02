@@ -8,6 +8,31 @@
 
 ------------------------------------------------------------------------
 
+## 2026-09-02｜Source Resolution Incidentの再発経路を閉鎖
+
+### Incident / Root Cause
+
+AIDAILY-003 ProductionでWriting Style OSを必読としながら、既知の固定path`06_Writing_Style_OS/WRITING_STYLE_OS.md` v1.0だけを実読し、同じ責任rootに並立していたCurrent Canonical Delta v1.1を発見・実読できなかった。G2が責任root探索、Current候補列挙、同一Taskの実読、依存閉包およびSource fingerprintを要求せず、固定pathの存在だけで事実上通過できたことがRoot Causeである。
+
+必要最小限のHuman Evidenceは`06_Writing_Style_OS/CHANGELOG.md`の同日Incident記録を正とする。会話全文、AIDAILY-003本文または無関係な私的ログはRepositoryへ複製していない。
+
+### 変更内容
+
+- Repository RulesでCurrent canonical Sourceのcanonical filename統合を原則化し、Current Canonical Delta、差分正本およびversion付き並列Currentの恒久運用を禁止した。複数Source構成は正式entry sourceによる全構成列挙を必須とした。
+- AI Production Pipelineをv1.7、Repository横断監査基準をv1.1へ更新した。Source Routerは責任root／entry sourceから候補を列挙し、Source Manifest v2はresolved canonical Source、Version／revision、Repository full commit SHA、file SHA-256、依存閉包、同一Taskの実読、適用範囲およびProduction versionを記録する。
+- `04_AI_Work_Environment/Source_Resolution/`へSchema、Repository／Manifest QAおよびnegative testsを追加した。固定path取りこぼし、Current Delta、前Taskの読了証跡、依存漏れ、G2後のSource変更およびHuman Review版不一致はFAILする。
+- Writing Style OS v1.1 Deltaを`WRITING_STYLE_OS.md`へ統合し、一文一段落の機械的改行禁止、同じ流れの長段落保持、口語接続による勢いおよびPre-Human Review Style QAを唯一のCurrent正本へ移した。
+- 同型の再発経路だったnote v2.2 Deltaも`00_note制作・公開システム.md`へ統合し、SOP、README、Repository RulesおよびSection制作台本テンプレートのS1-2以降Profileを同期した。
+- AIDAILY-003の再Production Guardをnote canonical SOPへ保持した。本改修Taskでは本文Productionを開始していない。
+
+### Repository横断監査
+
+Source責任は既存Pipeline、配置・履歴はRepository Rules、機械検証はAI作業環境へ配置し、新しい承認者または専門OSを追加していない。Human OS、Voice OS、Brand OS、Educationその他の責任Sourceにも同じ責任root探索・Manifest・fingerprint・negative QAを適用する。
+
+Repository構造QAはCurrent Source 17件を走査してPASSし、Current Canonical Delta／version付き並列Currentは0件。Pester test 8件はすべてPASSし、固定path取りこぼし、Current Delta、前Task読了、stale fingerprint、依存閉包漏れ、Production version不一致およびRepository外pathがFAILすることを確認した。Schema JSON parseと`git diff --check`もPASSした。
+
+------------------------------------------------------------------------
+
 ## 2026-09-02｜Local Personal Archive Readerの正式運用接続
 
 ### 概要

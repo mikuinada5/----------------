@@ -1,6 +1,6 @@
 # 07_Note_Production
 
-**Status:** Current / Operational v1.12 / AIDAILY-002 Publication E2E verified
+**Status:** Current / Operational v1.13 / Source Resolution canonicalized
 **責任:** noteの企画・制作・Marketing Review・Header Production・公開準備・Publication Transaction・公開後記録およびSession単位のSNS展開を、既存AI Production Pipelineへ接続する媒体別運用
 
 ## この領域の入口
@@ -34,7 +34,7 @@
 - 同Series articleのHeader Asset記録：`07_Note_Production/02_Published/<Series-ID>/<Article-ID>/02_Header Asset記録.md`
 - 同Series articleの公開成果物記録：`07_Note_Production/02_Published/<Series-ID>/<Article-ID>/03_公開成果物記録.md`
 
-上記3記事構成は既定Profileである。Section制作台本にHuman承認済みの公開構成Profileがある場合は、そのProfileを正とする。AI Organization Series Section 1では、S1-1〜S1-6それぞれについてStory＋Practiceを1本のnote本編 `01_note本編_最終稿.md` とし、Session Archiveはnote本編から分離する。Session Archiveは公開範囲とMembershipでの扱いがHuman承認された場合だけ `02_Session_Archive_最終稿.md` として配置する。
+上記3記事構成は既定Profileである。Section制作台本にHuman承認済みの公開構成Profileがある場合は、そのProfileを正とする。AI Organization Series Section 1では、S1-1だけStory＋Practiceを1本のnote本編`01_note本編_最終稿.md`として維持し、Session ArchiveはHuman承認時だけ`02_Session_Archive_最終稿.md`として分離する。S1-2以降はStory、Practice、Session Archiveを独立記事／成果物として扱い、既定3記事pathを使用するか、Section制作台本にHuman-approvedのcanonical path対応を明記する。公開範囲とMembershipでの扱いが未承認のSession Archiveは配置・公開しない。
 
 `<Section-ID>` は全体ロードマップで採番する `S01` 形式、`<Session-ID>` は同Section内の `S01-01` 形式とする。`<Series-ID>`と`<Article-ID>`はHuman-approvedの既存識別子を使用し、AIが新しいSeriesまたは採番規則を推測で作らない。日本語の識別名は内容が分かる短いcanonical nameとし、日付・`完成版`・`更新版`・連番をファイル名へ付けない。制作中の稿、未承認の公開情報、認証情報はこれらの正本領域へ保存しない。
 

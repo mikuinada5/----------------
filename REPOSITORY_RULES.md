@@ -88,6 +88,12 @@ CHANGELOGの書式は可能な限り共通化し、記録対象のみを各責�
 
 ファイル名だけを根拠として、最新版・承認済み・正式使用可能であると判断しない。
 
+責任単位ごとのCurrent canonical Sourceは、原則としてcanonical filenameへ統合する。承認済み変更を`Current / Canonical Delta`、`差分正本`、version付き別filenameその他の並列Currentとして恒久運用しない。差分受領物は統合前の作業Inputとして扱い、正式採用時にcanonical Sourceへ統合し、変更理由と旧状態はGitおよびCHANGELOGで追跡する。Gitだけでは保持要件を満たさない過去の実物がある場合に限りArchiveへ移す。
+
+Brand OSのように一つの責任単位を複数のCurrent canonical Sourceで構成する場合は、正式entry sourceがその構成ファイルを漏れなく列挙し、Source Routerがentry sourceから責任単位全体を解決できる状態を必須とする。固定pathを直接開いたことだけで責任単位のCurrent Sourceを解決済みと判定しない。
+
+Source更新を後続Productionへ反映する責任は、ファイル名の記憶や過去Taskの読了状態ではなく、`AI_PRODUCTION_PIPELINE.md`の案件単位Source ResolutionとSource Manifestで担う。責任root／entry sourceの探索、Current候補の選択・除外、依存閉包、同一Taskでの実読、Versionまたはrevision、Repository full commit SHA、file SHA-256および適用範囲が揃わない場合、G2はPASSしない。
+
 ------------------------------------------------------------------------
 
 ### 2.6 Repository共通の運用Source
@@ -217,6 +223,11 @@ Human-in-the-loop領域に関する意味のある変更は `03_Human_in_the_Loo
 ├── INBOX_AND_PERSONAL_ARCHIVE.md
 ├── ARCHIVE_PROVENANCE_INDEX.md
 ├── EXTERNAL_REFERENCE_REGISTRY.md
+├── Source_Resolution/
+│   ├── README.md
+│   ├── schemas/
+│   ├── scripts/
+│   └── tests/
 ├── External_Audit_Pipeline/
 │   ├── README.md
 │   ├── prompts/
@@ -239,6 +250,8 @@ Human-in-the-loop領域に関する意味のある変更は `03_Human_in_the_Loo
 両Sourceは競合する正本ではない。継続参照資料の横断的なRegistry IDと反映先は `EXTERNAL_REFERENCE_REGISTRY.md`、Personal Archive上の増分型一次資料に関するDataset ID、SHAおよびProcessed checkpointの詳細は `ARCHIVE_PROVENANCE_INDEX.md` を正とする。
 
 `External_Audit_Pipeline/` は、内部監査PASS後のFinal Candidateから必要最小限の監査Inputを構築し、助言的外部AIへAPI送信し、応答Schema検証とSeverity Routingを行う再利用可能な自動化実装である。外部AIへ制作、承認またはRepository WRITE責任を付与しない。
+
+`Source_Resolution/` は、`AI_PRODUCTION_PIPELINE.md`が定めるSource Router／Source QA／Source Manifestを機械検証する実装である。新しいSource責任または承認者を作らず、Current Canonical Delta、責任root内のCurrent候補未列挙、前Taskの読了証跡、依存漏れおよびSource fingerprint変更をG2またはPre-Human ReviewでFAILさせる。
 
 OneDrive上の `AI/00_Inbox` および `AI/04_Personal_Archive` は、AI作業環境領域が管理するRepository外の運用対象であり、Repositoryまたは正式Source置場として扱わない。詳細は `INBOX_AND_PERSONAL_ARCHIVE.md` を正とする。
 
@@ -307,7 +320,7 @@ Writing Style OSに関する意味のある変更は `06_Writing_Style_OS/CHANGE
 
 `01_Timeline.md` は、GPTログ、Codexログ、音声、壁打ち、Git履歴、CHANGELOGその他の一次資料から抽出した実際の出来事と参照情報を時系列で保持する、note制作における唯一の史実Sourceとする。一次資料の原本をTimelineへ全文複製せず、原本と該当箇所へ戻れる参照を保持する。Timelineの史実は、媒体別SOPで定める意味づけ・企画フェーズを経て、採用された企画だけをSection制作台本へ渡す。意味づけ候補・非採用候補はRepositoryの永続成果物とせず、必要時にTimelineから再生成する。`02_全体ロードマップ.md` は、採用済みSectionの優先順位・現在地を扱う全体ロードマップ正本とする。`00_note制作・公開システム.md` は媒体固有の制作・公開・再開・復旧を定め、Source Router／Source QA／Output QA、Human Approval、Repository横断監査、Gitを再定義せず、該当する既存正式Sourceを呼び出す。
 
-新規Sectionや公開記事の実データ用ディレクトリは、実データが生じるまで作らない。実データが生じた場合のcanonical path、命名、Status、現行／Archiveの扱いは `07_Note_Production/README.md` を正とする。既定の1 SessionはStory（無料Hub）・実践編（単品有料）・MS奮闘記（メンバーシップ限定）の3記事とするが、Section制作台本にHuman承認済み公開構成Profileがある場合はそのProfileを正とする。AI Organization Series Section 1では、S1-1〜S1-6それぞれのStory＋Practiceをnote本編1記事とし、Session Archiveは別コンテンツとして分離する。Session Archiveの公開範囲とMembershipでの扱いは別途Human Decisionとし、未決のまま本文へ混入・公開しない。将来参照する記事本文の正本は、当該Profileに従い公開版と照合された公開済み最終稿だけとし、Work稿、下書き、SNS短縮稿を代替正本にしない。
+新規Sectionや公開記事の実データ用ディレクトリは、実データが生じるまで作らない。実データが生じた場合のcanonical path、命名、Status、現行／Archiveの扱いは `07_Note_Production/README.md` を正とする。既定の1 SessionはStory（無料Hub）・実践編（単品有料）・MS奮闘記（メンバーシップ限定）の3記事とするが、Section制作台本にHuman承認済み公開構成Profileがある場合はそのProfileを正とする。AI Organization Series Section 1では、S1-1だけStory＋Practiceをnote本編1記事として維持し、S1-2以降はStory、Practice、Session Archiveを独立記事／成果物として扱う。Session Archiveの公開範囲とMembershipでの扱いは別途Human Decisionとし、未決のままStoryまたはPracticeへ混入・公開しない。将来参照する記事本文の正本は、当該Profileに従い公開版と照合された公開済み最終稿だけとし、Work稿、下書き、SNS短縮稿を代替正本にしない。
 
 Section固有の一次資料をCloud制作へ渡す必要があり、会話全体・個人Archive全体をRepositoryへ置かない場合は、当該Sectionの`01_Primary_Evidence/`をcanonical supporting pathとする。配置するのは制作・検証に必要な最小原文、永続ID、日時、Original / Processed / Derived区分、文脈、用途および未取得事項に限定する。同PackageはTimeline、Section制作台本、Human-approved成果物、Archive原本または原本checkpointを代替せず、Package readinessとCloudでの制作完了readinessを分けて記録する。
 

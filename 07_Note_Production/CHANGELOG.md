@@ -4,6 +4,27 @@
 
 ---
 
+## 2026-09-02｜note v2.2 Deltaをcanonical SOPへ統合
+
+### 概要
+
+`00_note制作・公開システム.md`をCurrent v2.2としながら、S1-2以降の公開構成、Publication Asset Gate、Header Visual FamilyおよびSmartphone／Chat起動規則を別のCurrent Canonical Deltaへ置いていた構造を解消した。
+
+### 変更内容
+
+- v2.2 Deltaの有効内容を`00_note制作・公開システム.md`へ統合し、差分fileを並列Currentとして残さず削除した。旧状態と統合差分はGitおよび本CHANGELOGで追跡し、Gitで十分なためArchiveコピーを新設していない。
+- S1-1はStory＋Practice結合を維持し、S1-2以降はStory、Practice、Session Archiveを独立記事／成果物とする現行Profileを、SOP、README、Repository RulesおよびSection制作台本テンプレートで同期した。
+- Section制作台本テンプレートをSource Manifest v2へ対応させ、責任root探索、Current候補、full commit／file SHA、同一Task実読、依存閉包、Production versionおよび再検証を要求した。
+- AIDAILY-003の再Production Guardとして、実名「ナミさん」を使わないこと、Current Writing Style OSの再解決・実読、旧稿の改行削除だけで完成扱いしないこと、同一Production versionの内部QA／Pre-Human Review Style QA PASSを現行SOPへ記録した。本改修TaskではAIDAILY-003本文Productionを実行していない。
+
+### Version
+
+- note制作・公開システム：v2.2（同VersionのBase＋Deltaを単一canonicalへ統合）
+- README：v1.13
+- Section制作台本テンプレート：v1.6
+
+---
+
 ## 2026-09-02｜AIDAILY-002改修後Publication Pipeline正式E2E
 
 ### 概要

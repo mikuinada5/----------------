@@ -6,6 +6,21 @@
 
 ------------------------------------------------------------------------
 
+## 2026-09-02｜Source Resolution QAを実装
+
+### 概要
+
+Production AIが既知の固定pathだけを読んでCurrent Source解決済みと誤認する経路を塞ぐため、既存Source Router／Source QAを機械検証する`Source_Resolution/`を追加した。
+
+### 変更内容
+
+- Source Manifest v2 Schemaへ、責任root探索、Current候補の選択・除外、canonical Source、Version／revision、Repository full commit SHA、file SHA-256、同一Task実読、依存閉包、適用範囲およびProduction versionを定義した。
+- Repository／Manifest QAで、Current Canonical Delta、version付き並列Current、候補未列挙、前Taskの読了証跡、依存漏れおよびstale fingerprintをFAILにした。
+- G2前とPre-Human Reviewで同じManifestを再検証し、Source変更時はG2を失効させる運用へ接続した。
+- 実装は既存Pipelineの検証手段であり、新しいAI組織上の役割、承認者または専門Source責任を追加していない。
+
+------------------------------------------------------------------------
+
 ## 2026-09-02｜Local Personal Archive Reader v1をCloudへ接続
 
 ### 概要

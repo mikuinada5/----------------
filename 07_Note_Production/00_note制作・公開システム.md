@@ -37,11 +37,12 @@ Marketing Reviewは、本Source内のnote固有専門監査Gateとして扱う�
 ### 2.1 AI Organization Series Section 1 公開構成Profile
 
 - Section 1はS1-1〜S1-6の全6 Sessionで構成する。
-- 各Sessionのnote本編は、同一SessionのStory＋Practiceをこの順序で結合した1記事とする。
-- Session Archiveはnote本編へ混ぜず、別コンテンツとして保持する。
+- S1-1は、Story＋Practiceをこの順序で結合したnote本編1記事とし、Session Archiveを別コンテンツとして保持する。
+- S1-2以降は、**Story、Practice、Session Archiveを独立した記事／成果物として扱う。** StoryとPracticeを自動的に再結合せず、Session Archiveをどちらにも混在させない。
+- S1-2以降の各記事は、それぞれ固有のタイトル、Header Asset、Publication Decisionおよび公開状態を持てる。
 - Session Archiveの具体的な公開範囲、Membershipでの扱い、自己開示範囲は別途Human Decisionとし、未決のまま自動公開しない。
 - Story本文と確定タイトルはHuman Final Check完了済みFinal Candidateを起点とし、S1-1 Practiceの既存Statusは継続する。S1-2〜S1-6 Practiceの現行本文は`Human Review Draft / 再設計baseline / Redesign Required / Final未確定`として保持し、作業マニュアルへ再設計する。Session Archiveは同Final CandidateをHuman-approved baselineとし、後発仕様との不一致箇所だけを`Revision Required`とする。対象外の本文・タイトル・Human Review結果を変更しない。
-- 価格、公開日時および外部公開は別Gateとし、下書き保存または公開準備だけでは決定・実行しない。
+- 価格、無料／有料境界、Membership範囲、公開日時、CTAおよび外部公開は別Gateとし、下書き保存または公開準備だけでは決定・実行しない。
 
 ### 2.2 「AIとの日常」Series Profile
 
@@ -61,6 +62,15 @@ Marketing Reviewは、本Source内のnote固有専門監査Gateとして扱う�
 - 無料AI組織Seriesへの関連リンクは、実在する公開URLを正式Sourceから確認できる場合だけ使用し、未公開URLを捏造しない。
 
 Target Reader、Series role、現行Membership plan、Header Templateおよびnote固有Publication Ruleのcanonical Sourceは本節とする。Human OS、Voice OS、Writing Style OS、Brand OSまたは一般Marketing Ruleへ同じ媒体固有仕様を重複配置しない。
+
+#### AIDAILY-003 再Production Guard
+
+AIDAILY-003は、2026-09-02のSource Resolution Incident後の再Production対象である。本文Productionは本Repository改修Taskでは実行せず、別のProduction開始時に次を必須Input／Gateとする。
+
+- 記事中で「ナミさん」という実名表記を使用せず、文脈上自然な「事業をしている友人」等の匿名表現にする。
+- Writing Style OSのCurrent canonical versionを責任rootから再解決し、同一Taskで実読する。
+- 旧稿から改行だけを削除して完成扱いにせず、新しいSource ResolutionとProductionを通す。
+- Human Reviewへ出す版は、その同一Production versionについて内部QAおよびPre-Human Review Style QAがPASS済みであること。
 
 ### 2.3 Section記事制作仕様
 
@@ -267,6 +277,24 @@ note公式の現行記事見出し画像推奨サイズは1280×670 pxである�
 - [ ] 記事内容以上の煽り、成功表現または誇張がない
 - [ ] note下書きへの設定、crop後表示および公開後表示を確認した、または後続Gateの確認項目として記録した
 
+#### 2.5.3 Section Header Visual Family
+
+- **Story:** 読む。紺系のStory Templateを基本とし、レイアウト、ラベル位置、文字階層、余白およびSeriesとしての見た目を原則固定する。
+- **Practice:** やる。緑系のPractice Templateを基本とし、同じくTemplate Familyを維持する。
+- Story／Practiceで記事ごとに変更できる主対象は、S番号、承認済みタイトル／サブタイトルおよび小さな記事固有モチーフとする。毎回独立した別デザインへ作り直さない。
+- **Session Archive:** 裏側を見る／生ログ。Story／Practiceへ視覚統一せず、手描き・生ログ・制作裏側の異物感を意図的に維持する第三のVisual Familyとする。
+- Story＝読む、Practice＝やる、Archive＝裏側を見る、の役割差を一覧表示でも識別できることを優先する。Story／PracticeのTemplate Familyを大きく変更する場合はHuman Reviewを要する。
+
+#### 2.5.4 Publication Asset Gate
+
+Human-approved本文だけでは`READY_FOR_PUBLISH`としない。公開単位に必要なPublication Assetが揃い、本文との対応関係が確認できて初めて公開待機状態へ進める。
+
+`HUMAN_APPROVED -> ASSET_READY -> READY_FOR_PUBLISH -> PUBLISHED`
+
+各公開単位でHuman-approved本文、記事種別、必須Header Asset、正しいSection／Session／記事／versionとの紐付け、Header上のS番号・タイトル・記事種別と承認済みPublication Metadataの一致、Asset locatorを確認する。必要Assetが欠落、不一致または未承認の場合は`CONTENT_APPROVED / ASSET_PENDING`でSTOPし、欠落Assetの推測生成、別画像での代用または無断再設計を行わない。Asset制作または正本化の過程でHuman未承認の価格、CTA、公開日時または公開範囲を確定しない。
+
+S1-2は本Profileの最初の適用対象とする。StoryはStory Template、PracticeはPractice Template、Session Archiveは既存の承認済みArchive imageを使用する。Story／PracticeのHeader Assetが未確定または未登録なら本文がHuman-approvedでも`ASSET_PENDING`でSTOPする。Story、Practice、Session ArchiveそれぞれのPublication Decisionが確定するまで、価格、公開範囲、公開日時その他を自動確定しない。
+
 ### 2.6 Publication Draft E2E／Dry Run／Transaction
 
 #### 2.6.1 G5 Approval Package
@@ -308,6 +336,12 @@ SNS Distributionは別成果物・別Gateであり、Publication E2Eへ自動包
 2026-09-01、`AIDAILY-001-D3`／`AIDAILY-001-H1`を対象に、Local PCの認証済みBrowser経路でDraft `n7cf6aee64f0d`を公開した。Automated／Post-Publication Verificationでは、公開URL、タイトル、Header、本文、無料範囲末尾、Membership境界、非ログイン環境での限定本文非表示、Membership Plan`AIとの日常`、月額1,500円、加入導線、4 Tagsおよび公開日時を照合し、当時のPublication Decisionとの一致によりPASSと判定した。
 
 2026-09-02の追加Human QAで、Magazine`AIとの日常`への登録が未実施だったことを検出した。当初DecisionではMagazineを必須条件としていなかったため、これは単純な操作ミスと断定せず、上流のPublication Profile／Decision設計不足を主要改善候補とする。当初PASSの履歴を保持したまま総合Verificationを`Human QA Gap Detected / Reopened`とする。Membership Plan、価格、境界、限定本文非表示、加入導線および4 TagsのPASSは維持する。Humanがnote上でMagazine登録を既に修正済みかは未確認であり、現行状態の確認をHuman Actionとして残す。SNS外部共有は実行していない。詳細は当該Published Artifact Recordを正とする。
+
+#### 2.6.8 Smartphone / Chat Publication Interface
+
+Human ApprovalおよびPublication Pipelineの起動権限は端末種別では決まらない。認証済みHumanとのChat上で、対象、意図および公開範囲が一意に判断できる明示指示は、スマートフォンからでも既存Human Decisionとして受理できる。必要なSource、本文、Asset、Publication Decisionおよび各Gateが満たされている場合、HumanはスマートフォンChatから公開準備または公開Pipelineを開始できる。
+
+ただし、スマートフォン経由を理由にHuman Approval Gateを省略しない。曖昧な「アップして」「出して」だけで対象記事、公開範囲、価格、Membershipまたは公開日時を推測せず、一意に解決できなければSTOPする。ChatはHuman InterfaceでありCanonical Repositoryの代替ではない。正式Source更新が必要なDecisionはRepository Integration後に後続工程が参照する。Repository Writer／Publisher／Browser Automationは既存の権限分離、QA、STOP条件、Publication TransactionおよびPost-Publication Verificationを維持する。正式SourceとGateが満たされる場合、HumanがGitHub UIやLocal file操作を手動で中継することを必須にしない。
 
 ## 3. 起動コマンドと現在地復元
 
@@ -357,7 +391,7 @@ AI Organization Seriesでは、Human指摘反映、内部監査、自動修正�
 
 外部監査のBLOCKERまたはHuman Decisionが必要なIssueは停止してChatへ戻す。MAJOR／MINORで既存Sourceから一意に修正できるIssueは内部制作側が採否を照合し、採用する場合だけ必要最小限に修正する。外部AIへ全文再設計、文体均質化、Historical Evidence補完または正式稿への直接WRITEをさせない。MAJOR修正後は原則としてExternal Re-Auditし、MINORだけなら内部再監査で完了できる。
 
-Section 1では、Storyと確定タイトル、S1-1 Practiceの既存Statusを保持する。S1-2〜S1-6 Practiceは再設計・Human完遂Review・Final化後の承認済み本文をStoryと結合してnote本編1記事とする。Session Archiveは別コンテンツとして分離し、必要な改訂・再Reviewと具体的な公開範囲／MembershipのHuman Decisionが完了するまで、note本編へ混入・公開しない。
+Section 1では、Storyと確定タイトル、S1-1 Practiceの既存Statusを保持する。S1-1はStory＋Practiceのnote本編1記事を維持する。S1-2〜S1-6は、Practiceの再設計・Human完遂Review・Final化後もStory、Practice、Session Archiveを独立成果物として扱い、自動結合しない。Session Archiveは必要な改訂・再Reviewと具体的な公開範囲／MembershipのHuman Decisionが完了するまで、StoryまたはPracticeへ混入・公開しない。
 
 ## 5. 再開状態とエラー復旧
 
@@ -412,4 +446,4 @@ Production → 初稿 → Human Review → 第2稿
 
 ## 6. 正本の扱い
 
-公開後に将来参照する記事本文の正本は、承認済み公開構成Profileに従い公開版と照合された公開済み最終稿だけである。既定Profileでは `01_Story無料Hub_最終稿.md`、`02_実践編単品有料_最終稿.md`、`03_MS奮闘記メンバーシップ限定_最終稿.md` を使用する。AI Organization Series Section 1では、note本編を `01_note本編_最終稿.md` とし、Session Archiveは公開がHuman承認された場合だけ `02_Session_Archive_最終稿.md` として配置する。「AIとの日常」等のSeries articleはREADMEのSeries／Article pathを使用する。note上の表示URLとHeader Asset記録・公開成果物記録を紐付け、Work稿、SNS用短縮稿、旧版、下書き、画面コピーを正本として参照しない。置換や非公開化が生じた場合、旧正本は実データがある場合に限りArchiveへ移し、現行性は公開成果物記録とロードマップで明示する。
+公開後に将来参照する記事本文の正本は、承認済み公開構成Profileに従い公開版と照合された公開済み最終稿だけである。既定Profileでは `01_Story無料Hub_最終稿.md`、`02_実践編単品有料_最終稿.md`、`03_MS奮闘記メンバーシップ限定_最終稿.md` を使用する。AI Organization Series Section 1のS1-1ではnote本編を`01_note本編_最終稿.md`、公開がHuman承認されたSession Archiveを`02_Session_Archive_最終稿.md`として配置する。S1-2以降はStory、Practice、Session Archiveそれぞれの独立記事pathを、Section制作台本とREADMEに記録したHuman-approved Profileから一意に決める。「AIとの日常」等のSeries articleはREADMEのSeries／Article pathを使用する。note上の表示URLとHeader Asset記録・公開成果物記録を紐付け、Work稿、SNS用短縮稿、旧版、下書き、画面コピーを正本として参照しない。置換や非公開化が生じた場合、旧正本は実データがある場合に限りArchiveへ移し、現行性は公開成果物記録とロードマップで明示する。

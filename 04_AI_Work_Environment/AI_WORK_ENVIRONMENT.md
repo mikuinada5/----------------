@@ -97,6 +97,8 @@ Chat、Work、外部AIその他の環境に存在する文章は、それだけ�
 
 現在有効な判断では、Repositoryに配置された現行正式Sourceを優先する。
 
+現行正式Sourceの判定は、既知の固定pathまたは過去Taskの読了ではなく、`AI_PRODUCTION_PIPELINE.md`の責任root／entry source探索と案件単位Source Manifestで行う。G2およびPre-Human Reviewの機械検証には`04_AI_Work_Environment/Source_Resolution/`を使用し、Current候補未列挙、Current Canonical Delta、前Taskの読了証跡、依存漏れまたはfile fingerprint変更をPASSさせない。
+
 ただし、正式Sourceを更新する作業中は、承認済みの変更内容とローカル作業ツリーの最新差分を無視して、古いcommitまたはremote状態へ戻らない。
 
 ### 4.3 品質保証工程を削らない
@@ -714,6 +716,7 @@ Work稿とRepository差分の採否、編集競合または現在の作業対象
   - `04_AI_Work_Environment/INBOX_AND_PERSONAL_ARCHIVE.md`
   - `04_AI_Work_Environment/ARCHIVE_PROVENANCE_INDEX.md`
   - `04_AI_Work_Environment/EXTERNAL_REFERENCE_REGISTRY.md`
+  - `04_AI_Work_Environment/Source_Resolution/README.md`
   - `00_Brand/00_ブランドOS概要・参照ガイド.md`
   - `00_Brand/09_AI共創原則.md`
   - `01_Education/` 配下の適用される正式Source

@@ -1,7 +1,7 @@
-# AI Production Pipeline v1.6
+# AI Production Pipeline v1.7
 
 **Document type:** Standard Operating Procedure（SOP）<br>
-**Status:** Current / Operational v1.6<br>
+**Status:** Current / Operational v1.7<br>
 **Owner:** 稲田美来<br>
 **Scope:** Story Candidate、教材、note、SNS、運営文書、Brand／Education／AI Organization関連Source、その他AI制作物<br>
 **Purpose:** 既存OS・Sourceを毎回確実に選択・実読・適用し、成果物と新知見を正しい責任単位へ戻すためのAI組織共通運用<br>
@@ -34,6 +34,8 @@ Voice OS未参照事件では、Voice OSが存在していたにもかかわら�
 「Repositoryにある」「AIが名前を知っている」「過去に読んだ」は参照証跡にならない。
 
 参照済みと認めるには、案件単位の `Source Manifest` に、現行正本、VersionまたはGit commit、読了、適用箇所が記録されていなければならない。
+
+Production AIは、既知のcanonical pathを直接開いたことだけでCurrent Sourceを解決済みと判定しない。Source Routerは責任root／正式entry sourceからCurrent候補、canonical指定、Canonical Delta、README／INDEX／参照ガイドおよび依存Sourceを探索し、選択と除外を記録する。過去Taskの読了、要約、memoryまたは既存Manifestを今回Taskの実読証跡として再利用しない。
 
 ### 1.2 必須参照を満たした後に最小化する
 
@@ -216,6 +218,7 @@ NOの場合、現在のAIに実行可能なら終了せず該当作業を実行�
 
 - G0通過済みWork Charter
 - Source Index／Repository Index
+- 責任root／正式entry sourceと、その配下のCurrent候補
 - `AI_ORGANIZATION.md`
 - Repository Rules
 - 既存の案件種別別Source Profile
@@ -233,6 +236,15 @@ NOの場合、現在のAIに実行可能なら終了せず該当作業を実行�
 | 依存先 | 先に読むSource、関連する下位Source |
 | 適用範囲 | 構成、言葉、教育内容、Visual、保存、公開等 |
 | 除外理由 | 関係しそうだが今回は読まないSourceの理由 |
+
+Source Planは固定pathの列挙から開始しない。責任本籍ごとに責任root／正式entry sourceを先に確定し、次を探索して`Resolved Source Set`を作る。
+
+1. Currentを名乗るSource候補とStatus／Version。
+2. canonical filenameまたは複数Source構成を指定するRepository Rules、README、INDEX、参照ガイド。
+3. Canonical Delta、差分正本、version付き並列Current、Draft、Deprecated、Archive。
+4. 選択したcanonical Sourceが明示する依存Sourceと、案件の適用範囲上必要な専門Source。
+
+候補は、選択したものだけでなく除外したものもpathと理由を記録する。責任root内に未列挙のCurrent候補が残る場合、またはCurrent Canonical Delta／差分正本がcanonical Sourceと並立する場合、G1はPASSしない。正式に採用された差分はRepository Integrationでcanonical filenameへ統合し、Git／CHANGELOGへ履歴を移してから再Routingする。
 
 ### 5.5 案件種別別Source Profile
 
@@ -267,7 +279,7 @@ Production開始前に、必要なInputが正しく揃い、実際に読まれ�
 
 ### 6.2 責任
 
-Source QAは、最低限次の6点を保証する。
+Source QAは、最低限次の9点を保証する。
 
 1. 必読Sourceの存在と到達可能性
 2. 現行正本とArchive／作業版の識別
@@ -275,6 +287,9 @@ Source QAは、最低限次の6点を保証する。
 4. Source漏れと依存関係の確認
 5. Source同士・依頼との矛盾検知
 6. 担当AIによる実読と適用箇所の証跡
+7. 責任root探索によるCurrent候補の列挙、選択・除外理由およびcanonical一意性
+8. 依存Sourceを含むResolved Source Setの閉包とfile fingerprint固定
+9. Production版とSource Manifestの同一性、およびG2後のSource変更による自動失効
 
 ### 6.3 Input
 
@@ -291,11 +306,16 @@ Source QAは、最低限次の6点を保証する。
 | Field | 内容 |
 |---|---|
 | Task ID | 案件識別子 |
+| Production version | このManifestを適用する成果物version。Human Reviewへ出す版と一致させる |
+| Resolution method | `responsibility-root-discovery` |
+| Responsibility roots / entry sources | 探索した責任root、README／INDEX／参照ガイド |
+| Discovered candidates | Current候補、Status／Version、選択・除外および理由 |
 | Source | canonical filename／path |
 | Repository location | 現行正本の配置 |
 | Status | Current／Draft／Deprecated／Archive等 |
-| Version evidence | 文書Version、Git commit、更新日。ファイル名だけに依存しない |
+| Version evidence | 文書Versionまたはrevision、Repository full commit SHA、file SHA-256、解決日時。ファイル名だけに依存しない |
 | Read by / Read at | 実読した担当と時刻 |
+| Read task / scope | 今回Task IDと全文／対象節等の実読範囲。過去Taskの読了を流用しない |
 | Applied to | 成果物のどの判断へ使うか |
 | Dependency check | 依存Sourceの有無と結果 |
 | Conflict check | 矛盾なし／未解決内容 |
@@ -303,19 +323,27 @@ Source QAは、最低限次の6点を保証する。
 | Production Completion Readiness | SourceのStatus、改訂要否、未解決Decisionから最終完成まで進められるか。artifact／Session単位で記録 |
 | Result | PASS／FAIL |
 
+Manifestは案件・Production versionごとのSource QA Receiptであり、Source本文や私的Evidenceの複製先ではない。非公開成果物のManifestは同じ公開範囲に保持し、Public Repositoryへ自動保存しない。機械検証Schemaは`04_AI_Work_Environment/Source_Resolution/schemas/source_manifest.schema.json`、Repository／Manifest QAは同ディレクトリの`Test-SourceResolution.ps1`を使用する。
+
 `Source Retrieval Readiness`はG2の到達性判定であり、`Production Completion Readiness`は取得したSourceの内容Statusと後続Gateを含む完成可能性の判定である。Source Retrieval `PASS`はHuman approval、Final化またはProduction Completion `READY`を意味しない。`Redesign Required`や`Revision Required`が存在しても、必要Sourceへ実際に到達できた場合のRetrieval結果は`PASS`として別に保持する。
 
 ### 6.5 Source QAチェックリスト
 
 - [ ] 必読Sourceがすべて一意に解決されている
+- [ ] 固定pathではなく責任root／正式entry sourceから探索し、Current候補を選択・除外理由付きで列挙した
+- [ ] Current Canonical Delta、差分正本またはversion付き並列Currentが残っていない
 - [ ] 対象実行環境からcanonical Sourceへ実際に到達でき、Source Retrieval結果を記録した
 - [ ] canonical filenameとRepository pathを確認した
 - [ ] 現行領域とArchiveを混同していない
 - [ ] Statusが制作利用可能である
-- [ ] VersionまたはGit commitを確認した
+- [ ] Versionまたはrevision、Repository full commit SHAおよびfile SHA-256を確認した
 - [ ] 必読Sourceを担当AIが今回のTaskで実読した
+- [ ] 過去Taskの読了、要約、memoryまたは旧Manifestを今回の実読証跡として流用していない
 - [ ] 適用箇所をSourceごとに記録した
 - [ ] 依存Sourceを確認した
+- [ ] 依存SourceがResolved Source Set内で閉じている
+- [ ] ManifestのProduction versionが制作・内部QA・Human Reviewへ渡す版と一致している
+- [ ] G2後、Production開始前およびPre-Human Reviewで同じfile SHAを再検証した
 - [ ] 指示との矛盾がない
 - [ ] Source間の矛盾がない
 - [ ] Source RetrievalとProduction Completionを混同せず、後者のBlockerをartifact／Session単位で記録した
@@ -329,10 +357,16 @@ Source QAは、最低限次の6点を保証する。
 - 必読Sourceが未解決、未読、到達不能、存在場所不明
 - 現行版とArchive版を識別できない
 - ファイル名だけで最新版・承認済みと推定している
+- 既知の固定pathだけを読み、責任root／entry sourceのCurrent候補を探索していない
+- 責任root内のCurrent候補がManifestへ未列挙、または除外理由がない
+- Current Canonical Delta、差分正本またはversion付き並列Currentが存在する
 - StatusがDraftなのに正式Sourceとして使用しようとしている
 - 必読Sourceが案件種別に対して未定義
 - 依頼とSource、またはSource同士が矛盾する
 - 依存Sourceが欠けている
+- Source Manifestのread taskが今回Taskと一致しない
+- Repository full commit SHA、file SHA-256、適用範囲またはProduction versionが欠けている
+- G2後にSource／依存Sourceのfile SHAが変わった、またはHuman Review版とManifestのProduction versionが一致しない
 - 欠落をAIが常識・記憶・類似資料で補完しようとしている
 - Voice OS等の人格Sourceを使用できる公開範囲が未決定
 
@@ -341,7 +375,7 @@ Source QAは、最低限次の6点を保証する。
 | FAIL原因 | 戻り先 |
 |---|---|
 | Source選択漏れ | Source Router |
-| Version／正本不明 | Repository管理責任者 |
+| Version／正本不明、Current Delta並立 | Repository管理責任者／Repository Integration |
 | Source矛盾 | Human Owner／当該Source責任者 |
 | 新規価値判断 | Human Owner |
 | 到達不能 | 接続・受け渡し復旧。復旧まで制作停止 |
@@ -380,7 +414,7 @@ Source QAを通過したInputを、指定された成果物へ忠実に変換す
 
 ### 7.5 Production実行規則
 
-1. Production開始時にSource ManifestのTask IDとPASSを確認する。
+1. Production開始時にSource ManifestのTask ID、Production version、PASSおよびfile fingerprintを再検証する。G2後にSourceが変わっていればSource Routerへ戻る。
 2. 構成、内容、Voice、文体、Brand、教育、Visual、Repositoryの各判断を、対応するSourceへ結びつける。
 3. Sourceにない新しい価値判断・教育判断・ブランド判断を追加しない。
 4. Source不足に気づいたら制作を止め、Source QAへ戻す。
@@ -434,6 +468,8 @@ Output QAは「良い成果物か」だけでなく、「Source QAで保証し�
 | Accuracy／Safety | 事実、出典、医療・法律・金融等の責任情報 |
 | Format | Markdown、PPT、PDF、note、SNS等の仕様 |
 | Traceability | Source、判断、変更、未解決事項を追跡できるか |
+
+Human Reviewへ渡す前に、同一Production versionについてSource Manifestのfile fingerprintを再検証し、Pre-Human Review QAを完了する。Source変更、Production version不一致または未適用Sourceを検出した場合はPASSにせず、Source Router／Productionへ戻す。
 
 ### 8.6 外部監査Trigger
 
@@ -867,7 +903,7 @@ AコースSessionの承認済み教育設計から、PPT、配布資料、ワー
 | Brand OS | `00_Brand/00_ブランドOS概要・参照ガイド.md` を入口とし、`00_Brand/01`〜`09` を責任別正本として確認 | Brandを万能Sourceにせず、入口から必要な責任ファイルへRoutingする |
 | Human OS | `05_Human_OS/HUMAN_OS.md`。Current / Operational v0.1。Supporting Evidenceは `05_Human_OS/HUMAN_OS_EVIDENCE_LOG.md` | 目的、影響範囲、可逆性、復旧、後工程、Human Confirmation、実行後回収をGate設計へ反映 |
 | Voice OS | `02_Voice_OS/VOICE_OS.md`。`Status: Validated Initial Release` を本文で確認 | 稲田みく本人のVoiceを担う箇所で、Brand・Educationとの責任境界を保って適用する |
-| Writing Style OS | `06_Writing_Style_OS/WRITING_STYLE_OS.md`。Current / Operational v1.0 | 会話文体と公開文体の区別、媒体別Formality、正確性優先、表面模倣禁止をProduction／Output QAへ反映 |
+| Writing Style OS | `06_Writing_Style_OS/WRITING_STYLE_OS.md`。Current / Operational v1.1 | 会話文体と公開文体の区別、長文段落・改行、Pre-Human Review Style QA、媒体別Formality、正確性優先、表面模倣禁止をProduction／Output QAへ反映 |
 | Education／教材制作 | `01_Education/00_Core/`、各CourseOS、`01_Education/02_Material_Production/` を現行責任領域として確認 | 教育設計、教材制作、成果物間整合および教育QAを各専門Sourceへ委譲する |
 
 ### 20.2 解消済みIssue
@@ -876,7 +912,7 @@ AコースSessionの承認済み教育設計から、PPT、配布資料、ワー
 2. **Brand OSのcanonical Source不明**は解消した。`00_Brand/00_ブランドOS概要・参照ガイド.md` が入口であり、責任内容は同ディレクトリの `01`〜`09` に分割された正本である。Archive内の旧 `ブランドOS.md` は現行判断Sourceではない。
 3. **Repository Rulesのcanonical Source不明**は解消した。現行正本はRepositoryルートの `REPOSITORY_RULES.md` である。
 4. **Human OSのcanonical Source不在**は解消した。現行正本は `05_Human_OS/HUMAN_OS.md` であり、Evidence Logは `05_Human_OS/HUMAN_OS_EVIDENCE_LOG.md` にSupporting Evidenceとして分離した。
-5. **Writing Style OSのDraftコピーだけが到達可能**というIssueは解消した。現行正本は `06_Writing_Style_OS/WRITING_STYLE_OS.md` であり、StatusはCurrent / Operational v1.0である。
+5. **Writing Style OSのDraftコピーだけが到達可能**というIssueは解消した。現行正本は `06_Writing_Style_OS/WRITING_STYLE_OS.md` であり、StatusはCurrent / Operational v1.1である。v1.1 Canonical Deltaは同canonical fileへ統合され、並列Currentとして使用しない。
 6. **Repository working tree未接続**は解消した。本書は現行working treeへ統合し、Repository横断監査、diff、commitおよびpushの対象とする。
 
 ### 20.3 残存する安全Control

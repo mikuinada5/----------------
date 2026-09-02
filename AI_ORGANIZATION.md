@@ -89,6 +89,8 @@ AI作業環境Sourceは新しいAI組織上の役割・部署・権限を定義�
 
 同SOPに記載するSource Router、Source Auditor、Repository Integrator、Git Operator等は、工程で必要になる**機能上の担当**であり、本ファイルに定義されていない恒久的なAI部署・人事上の役職・新しい承認者を自動的に創設しない。役割、権限、承認および専門判断は、引き続き本ファイル、`03_Human_in_the_Loop/HUMAN_IN_THE_LOOP.md` および各専門Sourceを正とする。
 
+Production AIは、既知の固定path、過去Taskの読了またはAI memoryからCurrent Sourceを自己認定しない。Source Auditorが責任root／正式entry sourceからCurrent canonical Source、依存Sourceおよび候補の選択・除外を解決し、同一Taskの実読とfingerprintを持つG2 PASS済みSource Manifestを引き渡した後にProductionを開始する。SourceまたはProduction versionが変わった場合、以前のG2 PASSは引き継がない。
+
 Repository全体へ影響する正式Source変更では、`REPOSITORY_CROSS_AUDIT_STANDARD.md` を適用する。これは既存の教育品質監査、専門QAまたは人間承認を置き換えず、構造・責任・参照・運用接続・Git準備の不足だけを確認する。
 
 ---

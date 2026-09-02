@@ -1,6 +1,6 @@
 # Section制作台本テンプレート
 
-**Status:** Current / Operational v1.5 / Header and Publication Transaction compatible
+**Status:** Current / Operational v1.6 / Source Manifest v2 compatible
 **使用先:** 実データ発生後、`01_Sections/<Section-ID>_<短い識別名>/00_Section制作台本.md` として複製して使用する。
 
 ## 0. 意味づけ・企画フェーズからの引き継ぎ
@@ -31,7 +31,7 @@
 
 ## 2. Source Plan / Source QA
 
-PipelineのSource PlanとSource Manifestを参照し、必読Source、現行性、実読、適用箇所、矛盾確認、G2結果を記録する。G0では、Draftを外部公開しない取扱範囲と最終承認者を記録する。未解決の必読SourceまたはG2 FAILはProductionへ持ち込まない。価格、自己開示範囲、最終的な公開範囲の未決はDraft Production、Human ReviewおよびMarketing Reviewを止めず、Publication DecisionとHuman Final Approvalへ記録する。
+PipelineのSource PlanとSource Manifestを参照し、責任root／entry source、列挙したCurrent候補と選択・除外理由、解決・実読したcanonical Source、Version／revision、Repository full commit SHA、file SHA-256、同一Taskの実読、依存閉包、適用箇所、Production version、矛盾確認およびG2結果を記録する。Production開始前とPre-Human Reviewで同じManifestを再検証し、Source fingerprintまたはProduction versionが変わった場合はG2から再実行する。G0では、Draftを外部公開しない取扱範囲と最終承認者を記録する。未解決の必読SourceまたはG2 FAILはProductionへ持ち込まない。価格、自己開示範囲、最終的な公開範囲の未決はDraft Production、Human ReviewおよびMarketing Reviewを止めず、Publication DecisionとHuman Final Approvalへ記録する。
 
 ## 3. Story Hub
 
@@ -47,7 +47,7 @@ Story Candidateは公開許可ではない。本人以外の個人情報、未�
 |---|---|---|---|---|---|---|
 |  |  |  |  |  |  |  |
 
-この表は既定3記事Profile用である。Section固有のHuman承認済み公開構成Profileがある場合は、列をそのProfileの本文・別コンテンツへ読み替え、結合順序と分離境界を明記する。AI Organization Series Section 1では、Story＋Practiceをnote本編1記事とし、Session Archiveを別コンテンツとして分離する。Session Archiveの公開範囲とMembershipでの扱いは別途Human Decisionとし、未決のまま本文へ混入・公開しない。SNS投稿案はSession全体を入口にした別成果物として制作し、実投稿は `03_SNS展開基準.md` の媒体別Gateに従う。
+この表は既定3記事Profile用である。Section固有のHuman承認済み公開構成Profileがある場合は、列をそのProfileの本文・別コンテンツへ読み替え、結合順序と分離境界を明記する。AI Organization Series Section 1では、S1-1だけStory＋Practiceをnote本編1記事とし、S1-2以降はStory、Practice、Session Archiveを独立成果物として扱う。Session Archiveの公開範囲とMembershipでの扱いは別途Human Decisionとし、未決のままStoryまたはPracticeへ混入・公開しない。SNS投稿案はSession全体を入口にした別成果物として制作し、実投稿は `03_SNS展開基準.md` の媒体別Gateに従う。
 
 ## 5. Section完成条件と価格キャリブレーション
 

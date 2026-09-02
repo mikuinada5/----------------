@@ -1,7 +1,7 @@
-# Repository横断監査基準 v1.0
+# Repository横断監査基準 v1.1
 
 **Document type:** Repository Governance Standard<br>
-**Status:** Current / Operational v1.0<br>
+**Status:** Current / Operational v1.1<br>
 **Scope:** Repository全体へ影響する正式Sourceの新規追加・更新・移動・廃止<br>
 **Purpose:** 正式Sourceを「置いただけ」にせず、既存責任・参照構造・運用・履歴へ一貫して接続する
 
@@ -60,8 +60,10 @@
 - [ ] 新しい恒久フォルダを、既存構造で解決できるのに追加していない
 - [ ] `REPOSITORY_RULES.md`、現行／Archive分離、CHANGELOG運用に適合する
 - [ ] 同じ責任を持つ現行正本が複数存在しない
+- [ ] Current Canonical Delta、差分正本またはversion付き並列Currentが現行領域に残っていない
 - [ ] Archive、旧版、作業コピーを通常参照対象としていない
 - [ ] INDEX、READMEまたは責任上の入口から現行正本へ到達できる
+- [ ] Productionが固定pathだけでCurrent解決済みと判定できず、責任root／entry sourceの候補探索を要求される
 
 ### 4.2 Responsibility Architecture
 
@@ -73,6 +75,8 @@
 ### 4.3 Source Architecture
 
 - [ ] Source階層、必読Source、Source Router、Source QAと整合する
+- [ ] 案件Manifestがresolved canonical Source、Version／revision、Repository full commit SHA、file SHA-256、依存閉包、同一Taskの実読および適用範囲を記録できる
+- [ ] G2後のSource変更、前Taskの読了証跡、未列挙Current候補およびProduction version不一致をFAILにできる
 - [ ] dependencyを確認し、必須Source漏れがない
 - [ ] obsolete、Draft、duplicate、Archive Sourceを現行正本として参照していない
 - [ ] canonical path、Status、VersionまたはGit evidenceにより現行性を説明できる
@@ -103,6 +107,7 @@
 - [ ] 意図しない変更・不要ファイルを含めない
 - [ ] `git diff --check` を通過し、対象diffを読んだ
 - [ ] Version／Status／CHANGELOG／INDEXの整合を確認した
+- [ ] Source Resolution変更では、Current Delta、固定path取りこぼし、前Task読了流用およびstale fingerprintのnegative testを実行した
 - [ ] commitが意味のある単位で、branch・remote・push対象が正しい
 - [ ] push後にlocal HEADとremoteの一致を確認する計画がある
 
