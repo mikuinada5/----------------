@@ -8,6 +8,27 @@
 
 ------------------------------------------------------------------------
 
+## 2026-09-03｜note循環導線を既存Publish／PPV Lifecycleへ接続
+
+### Gap / Scope
+
+note Productionは公開時点のURL・リンク検証を持っていたが、未公開Targetへのリンク予定、Target公開後の既存記事Backfill、再PPVおよびPending／Resolved状態のcanonical記録を持っていなかった。新しい大規模Pipeline、callback、dashboardまたはCloud Publisher能力を追加せず、既存note責任領域へ最小差分で接続した。
+
+### 変更内容
+
+- note制作・公開SOPをv2.5、公開成果物記録テンプレートをv1.7、Section制作台本テンプレートをv1.8、SNS展開基準をv1.2へ更新した。
+- `Pending Link → Target Published → Backfill Prepared → Backfill → Post-Publication Verification → Resolved`を定義し、未公開Target URLは空欄、再PPV PASS前は未解決とするfail-closed条件を追加した。
+- AI Production Pipelineをv1.10へ更新し、S1-1だけStory＋Practice結合、S1-2以降はStory／Practice／Session Archive独立というCurrent canonicalへnote運用例を同期した。
+- AIORG-S01制作台本へ、S1-2 StoryからS1-2 Practice、S1-2 PracticeからS1-3 Storyへの2件のPending Linkを登録した。旧結合Profile下のMarketing β履歴は保持し、独立Storyの公開を不必要にBLOCKしない再開条件へ整合した。
+
+### Repository横断監査
+
+現在リンク状態は公開成果物記録、公開前計画はSection制作台本、実際に発生した事実だけはTimelineという責任分離を維持した。Backfillは既存Human Approval原則に従う外部操作とし、特定のCloud能力を前提にせず、実行時に利用可能・認証済みのPublisher経路だけを使用する。`04_AI_Work_Environment/AI_WORK_ENVIRONMENT.md`、既存本文、Marketing判断およびPublication Decisionは変更していない。
+
+受入条件12項目、Repository Source QA（Current Source 18件）、Source Resolution回帰テスト8件、Markdown table構造および`git diff --check`をすべてPASSした。
+
+------------------------------------------------------------------------
+
 ## 2026-09-03｜Visual Production Runtime BridgeとPlatform Boundaryを正式化
 
 ### Incident / Root Cause

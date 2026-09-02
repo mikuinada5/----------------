@@ -1,6 +1,6 @@
 # Section制作台本テンプレート
 
-**Status:** Current / Operational v1.7 / Visual Production Control compatible
+**Status:** Current / Operational v1.8 / Visual Production Control compatible
 **使用先:** 実データ発生後、`01_Sections/<Section-ID>_<短い識別名>/00_Section制作台本.md` として複製して使用する。
 
 ## 0. 意味づけ・企画フェーズからの引き継ぎ
@@ -49,13 +49,21 @@ Story Candidateは公開許可ではない。本人以外の個人情報、未�
 
 この表は既定3記事Profile用である。Section固有のHuman承認済み公開構成Profileがある場合は、列をそのProfileの本文・別コンテンツへ読み替え、結合順序と分離境界を明記する。AI Organization Series Section 1では、S1-1だけStory＋Practiceをnote本編1記事とし、S1-2以降はStory、Practice、Session Archiveを独立成果物として扱う。Session Archiveの公開範囲とMembershipでの扱いは別途Human Decisionとし、未決のままStoryまたはPracticeへ混入・公開しない。SNS投稿案はSession全体を入口にした別成果物として制作し、実投稿は `03_SNS展開基準.md` の媒体別Gateに従う。
 
+### 4.1 記事間循環導線
+
+| Link Record ID | Source Article ID | Target Article ID | Placement | Link Type / Card Type | Status | Target URL | 注記 |
+|---|---|---|---|---|---|---|---|
+|  |  |  |  |  | Pending / Target Published / Backfill Prepared / Backfill Failed / Recovery Required / Resolved |  |  |
+
+未公開TargetへのHuman承認済み接続予定は`Pending`として記録し、Target URLは空欄にする。Pending LinkはHumanがSource Article公開時の必須条件にした場合だけ公開をBLOCKする。Target公開後のBackfill、Human Publication Approval、再PPVおよび`Resolved`への移行は`00_note制作・公開システム.md` §2.6.7に従い、公開後の現在状態は公開成果物記録へ引き継ぐ。未公開URL、仮URLまたは推測URLを置かない。
+
 ## 5. Section完成条件と価格キャリブレーション
 
 Sectionは、全Sessionについて承認済み公開構成Profileの成果物がProduction・Output QAを通過した時点で `Review` とする。Human Review、Practiceの実機完遂、壁打ちおよび実素材をnote制作部が反映した内容完成稿を第2稿とし、同稿だけをMarketing Reviewへ渡す。Marketing Requirementの必要な修正・再監査を通過し、`Marketing Approved`とPublication Decisionが揃った稿を第3稿とする。最終タイトル／第3稿確定後にHeader Production／QAを行い、本文、Header、境界、Publication Decisionおよび必要な自己開示をG5 PackageとしてHuman Final Approvalへ渡す。G5承認済みPackageを最終稿／`Approved`とする。Human Publication Approval後のTransactionとPost-Publication Verification、公開成果物記録の更新まで完了して `Published/Complete` とする。Dry Runの公開ボタン直前停止は`Publication Prepared / Not Published`であり、`Published/Complete`にしない。
 
 G5 Human Final Approvalで本文、HeaderまたはDecisionの一部が差し戻された場合は `Revision Required` とする。差し戻し理由、修正対象、所有者、再開条件を§6へ記録し、未変更の第3稿、Output QA、Human Review、Marketing Review結果およびHeader QAは有効なまま保持する。変更が必要な成果物と影響Decisionだけを修正・再監査して `Decision Pending` へ戻す。公開後の修正候補、反応、価格仮説の見直しは `Update Candidate` とし、既存正本を自動変更しない。
 
-Section 1の全Sessionについて第2稿が揃った後、Marketingは各Sessionの価格を単独で固定せず、Section 1内の全本文を横並びにして、読者価値、深度、重複、無料／有料範囲、既存商品の導線との整合をキャリブレーションする。AI Organization Series Section 1ではStory＋Practiceのnote本編を比較対象とする。Marketingは根拠とConfidenceを付けた推奨価格を作成するが、Human Final Approval前に最終価格として決定・設定しない。
+Section 1の全Sessionについて第2稿が揃った後、Marketingは各Sessionの価格を単独で固定せず、Section 1内の全本文を横並びにして、読者価値、深度、重複、無料／有料範囲、既存商品の導線との整合をキャリブレーションする。AI Organization Series Section 1では、S1-1のStory＋Practice結合本編と、S1-2以降の独立Story／Practice記事を比較対象とする。Marketingは根拠とConfidenceを付けた推奨価格を作成するが、Human Final Approval前に最終価格として決定・設定しない。
 
 ## 6. Production / Content Review / QA / Approval
 

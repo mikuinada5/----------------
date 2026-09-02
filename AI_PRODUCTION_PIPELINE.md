@@ -1,7 +1,7 @@
-# AI Production Pipeline v1.9
+# AI Production Pipeline v1.10
 
 **Document type:** Standard Operating Procedure（SOP）<br>
-**Status:** Current / Operational v1.9<br>
+**Status:** Current / Operational v1.10<br>
 **Owner:** 稲田美来<br>
 **Scope:** Story Candidate、教材、note、SNS、運営文書、Brand／Education／AI Organization関連Source、その他AI制作物<br>
 **Purpose:** 既存OS・Sourceを毎回確実に選択・実読・適用し、成果物と新知見を正しい責任単位へ戻すためのAI組織共通運用<br>
@@ -920,11 +920,11 @@ Story Candidate「Voice OSは存在したのに読まれなかった」を、AI�
 
 ### Production
 
-対象Sectionの制作台本に記録されたHuman承認済み公開構成Profileに従い、Sessionの本文と別コンテンツを制作する。既定ProfileはStory（無料Hub）・実践編（単品有料）・MS奮闘記（メンバーシップ限定）の3記事とする。AI Organization Series Section 1では、Story＋Practiceをnote本編1記事とし、Session Archiveは別コンテンツとして分離する。Session Archiveの公開範囲とMembershipでの扱いはHuman Decisionが完了するまで確定・公開しない。SNS投稿案はSession全体を入口にする別成果物として制作し、Voice OSとWriting Style OSを別の責任として適用する。
+対象Sectionの制作台本に記録されたHuman承認済み公開構成Profileに従い、Sessionの本文と別コンテンツを制作する。既定ProfileはStory（無料Hub）・実践編（単品有料）・MS奮闘記（メンバーシップ限定）の3記事とする。AI Organization Series Section 1では、S1-1だけStory＋Practiceをnote本編1記事とし、S1-2以降はStory、Practice、Session Archiveを独立記事／成果物として扱う。Session Archiveの公開範囲とMembershipでの扱いはHuman Decisionが完了するまで確定・公開しない。SNS投稿案はSession全体を入口にする別成果物として制作し、Voice OSとWriting Style OSを別の責任として適用する。
 
 ### Output QA
 
-公開構成Profileの全成果物について、史実、Source反映、みくらしさ、Brand整合、本文／別コンテンツの責任分離、読者理解、AI的な過剰整文を監査し、初稿を作る。AI Organization Series Section 1ではStory→Practiceの接続とSession Archive非混入を確認する。必要時Claude外部監査。
+公開構成Profileの全成果物について、史実、Source反映、みくらしさ、Brand整合、本文／別コンテンツの責任分離、読者理解、AI的な過剰整文を監査し、初稿を作る。AI Organization Series Section 1ではStory→Practiceの接続、S1-1の結合順序、S1-2以降の独立記事境界およびSession Archive非混入を確認する。必要時Claude外部監査。
 
 ### Human Content Review／Marketing Review
 

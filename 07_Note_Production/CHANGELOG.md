@@ -4,6 +4,29 @@
 
 ---
 
+## 2026-09-03｜note記事間循環導線のPending Link／Backfill Lifecycleを追加
+
+### Gap / Human Decision
+
+公開時点で存在するURLとリンクの確認は定義済みだったが、未公開Targetへのリンク予定、Target公開後の既存記事Backfill、Backfill後の再PPV、Pending／Resolved状態および記事間リンク関係のcanonical記録が未定義だった。Human Decisionにより、S1-2 StoryはPractice未公開でも公開可能とし、未公開URLを生成・仮置きせず、リンク予定を`Pending Link`として追跡する方針を採用した。
+
+### 変更内容
+
+- note制作・公開SOPをv2.5へ更新し、`Pending Link → Target Published → Backfill Prepared → Backfill → Post-Publication Verification → Resolved`を既存Publish／PPV Lifecycleへ接続した。Pending Linkは既定では公開をBLOCKせず、Humanが公開時必須条件にした場合だけG8を止める。
+- Backfillは既存公開記事への外部変更としてHuman Publication Approvalを要求する。元のG5で接続・文言・配置・カード種別が承認済みで実在URLだけを機械反映する場合は本文G5再承認を不要とし、承認対象が変わる場合だけ影響範囲を再Review／G5へ戻す。
+- 公開成果物記録テンプレートをv1.7へ更新し、Source／Target Article ID、Placement、Link／Card Type、Status、Target URL、Backfill承認・日時・実行経路、PPV、最終確認日時および再開条件を追加した。現在リンク状態をTimelineへ移していない。
+- Section制作台本テンプレートをv1.8へ更新し、公開前の循環導線計画をSection単位で記録できるようにした。SNS展開基準はv1.2へ更新し、S1-1結合／S1-2以降独立の現行Profileへ同期した。
+- AIORG-S01制作台本の旧結合規定を解消し、S1-1だけStory＋Practice結合、S1-2以降はStory／Practice／Session Archive独立へ統一した。`S01-02-STORY → S01-02-PRACTICE`と`S01-02-PRACTICE → S01-03-STORY`をTarget URL空欄のPending Linkとして登録した。
+- 旧結合Profile下のMarketing β Runは履歴として保持し、独立S1-2 Storyの公開BlockerまたはMarketing承認へ流用しないことを明記した。既存本文、Human Content Review、Marketing判断、Publication DecisionおよびPublish承認は変更していない。
+
+### 横断監査
+
+AI Production Pipelineのnote運用例に残っていた旧Section 1結合規定をv1.10で修正した。Repository Rules、note README、現行SOP、Sectionテンプレートおよび実台本でS1-1だけ結合／S1-2以降独立が一致し、未公開URLの推測、PPV前のResolved、Timelineへの状態責任移管または未実証Cloud Publisher capabilityを追加していない。
+
+受入条件12項目、Repository Source QA（Current Source 18件）、Source Resolution回帰テスト8件、Markdown table構造および`git diff --check`をすべてPASSした。
+
+---
+
 ## 2026-09-03｜AIDAILY HeaderをLocal Codex Runtime Bridgeへ接続
 
 ### Incident

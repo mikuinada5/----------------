@@ -1,13 +1,13 @@
-# SNS展開基準 v1.1
+# SNS展開基準 v1.2
 
-**Status:** Current / Operational v1.1
+**Status:** Current / Operational v1.2
 **Scope:** noteの承認済み記事を起点とするSession単位のSNS展開
 
 ## 1. 原則
 
 SNS展開はSession単位で行う。既定の同時配布単位はStory（無料Hub）・実践編（単品有料）・MS奮闘記（メンバーシップ限定）の3記事とするが、Section制作台本にHuman承認済み公開構成Profileがある場合は、そのProfileを正とする。SNS投稿案は承認済み公開構成ProfileのSession全体を入口にして制作する**別成果物**であり、本文・別コンテンツ・投稿案を相互に代替しない。SNS投稿案は実投稿を意味しない。
 
-AI Organization Series Section 1では、Story＋Practiceのnote本編1記事を現時点のSNS導線候補とする。Session Archiveは公開範囲とMembershipでの扱いが別途Human承認されるまで、SNSで公開済み・配布対象として扱わない。
+AI Organization Series Section 1では、S1-1はStory＋Practiceのnote本編1記事、S1-2以降は独立したStory／Practice記事のうち公開承認された記事をSNS導線候補とする。Session Archiveは公開範囲とMembershipでの扱いが別途Human承認されるまで、SNSで公開済み・配布対象として扱わない。
 
 本文・SNS案・公開範囲・自己開示・価格の承認は既存のHuman Approval Gateを正とする。SNSは既存のOutput QA、公開済み最終稿、媒体仕様に従う。公開済みでない本文をSNSの参照正本にしない。
 

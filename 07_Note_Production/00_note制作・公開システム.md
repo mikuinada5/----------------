@@ -1,6 +1,6 @@
-# note制作・公開システム v2.4
+# note制作・公開システム v2.5
 
-**Status:** Current / Operational v2.4 / Visual Runtime Bridge compatible
+**Status:** Current / Operational v2.5 / Visual Runtime Bridge compatible
 **Scope:** note制作、Marketing Review、Header Production、Publication Dry Run、Publication Transaction、公開後記録、Session単位のSNS展開、Repositoryへの知見還元
 
 ## 1. 責任と非責任
@@ -362,13 +362,29 @@ Publication Decisionとの差分、想定外UI、認証問題、対象Draft不�
 
 SNS Distributionは別成果物・別Gateであり、Publication E2Eへ自動包含しない。実行していないSNS共有を投稿済みと記録しない。
 
-#### 2.6.7 E2E Evidence／Human QA Addendum｜AIDAILY-001
+#### 2.6.7 Pending Link／Backfill Lifecycle
+
+`Pending Link`は、公開済みまたは公開予定のSource Articleから、まだ実在公開URLを持たないTarget Articleへ、Human承認済みの接続予定がある状態である。Source Article ID、Target Article ID、Placement、Link Type／Card Typeおよび状態を公開成果物記録または対象Section制作台本へ記録し、Target未公開中のTarget URLは空欄にする。URL空欄はリンク予定なしを意味せず、未公開URL、仮URL、推測URLまたは将来のslugを生成・仮置きしない。Source Article公開前はSection制作台本等の承認済み制作記録で計画を管理し、Source ArticleのRecord / Resume時に同じLink Record IDをSource Article側の公開成果物記録へ引き継ぐ。以後の現在状態は同公開成果物記録を正とし、制作台本には計画とlocatorを保持する。
+
+Pending Linkは、それ自体ではSource Articleの公開をBLOCKしない。ただしHuman DecisionまたはG5 Approval Packageが当該リンクをSource Article公開時の必須条件としている場合は、実在URLと挿入済みリンクを確認できるまでG8へ進めない。必須条件でないPending Linkは未完了タスクとして記録を維持し、Source Articleを公開できる。
+
+Target ArticleのPublication Transactionと初回Post-Publication VerificationがPASSし、Target Article IDに対応する実在URLが公開成果物記録で確認できた時点を`Target Published`とする。Repository Integration／PublisherはRecord / Resumeで同Target Article IDを持つ未解決Pending Linkを確認し、Source Article、PlacementおよびLink Type／Card Typeを一意に特定できるものだけをBackfill対象にする。ID、URLまたは配置が曖昧な場合は推測せず、PendingのままSTOPする。
+
+Backfill対象、実在URL、配置、カード種別、差分および実行経路を照合し、実行承認待ちになった状態を`Backfill Prepared`とする。これはBackfill実施済みまたは`Resolved`を意味しない。
+
+Backfillは既存公開記事を変更する外部操作であるため、対象Source Article、Target Article、実在URL、Placement、Link Type／Card Typeおよび最終操作を特定したHuman Publication Approvalを得て実行する。元のG5で同一の接続、文言、配置およびカード種別が承認済みで、確認済み実在URLを機械的に反映するだけなら本文G5の再承認は不要とする。承認済み本文、意味、文言、配置、公開範囲、価格、自己開示その他の承認対象を変更する場合は、影響範囲を再Reviewし、必要なG5再承認を得る。
+
+Backfillは、特定のCloud能力を前提にせず、その時点で正式に利用可能かつ認証済みのPublisher／Browser経路で実行する。接続・認証または再編集能力を実証できない経路を利用可能と推測せず、実行不能なら`Backfill Failed`または`Recovery Required`として未完了状態と再開条件を記録する。
+
+Backfill後は、実際の公開ページでSource Article ID、Target URL、Placement、表示されたLink／Card、遷移先のTarget Article IDおよびリンク周辺の承認済み本文に意図しない差分がないことをPost-Publication Verificationする。全項目PASS後だけ`Resolved`へ移行し、Backfill実施日時、PPV結果および最終確認日時を公開成果物記録へ残す。BackfillまたはPPVが失敗・未確認の場合は`Resolved`にせず、`Pending`、`Backfill Failed`または`Recovery Required`を維持する。現在のリンク状態の正本は公開成果物記録とし、Timelineは実際に発生した公開・Backfill事実の履歴だけを扱う。
+
+#### 2.6.8 E2E Evidence／Human QA Addendum｜AIDAILY-001
 
 2026-09-01、`AIDAILY-001-D3`／`AIDAILY-001-H1`を対象に、Local PCの認証済みBrowser経路でDraft `n7cf6aee64f0d`を公開した。Automated／Post-Publication Verificationでは、公開URL、タイトル、Header、本文、無料範囲末尾、Membership境界、非ログイン環境での限定本文非表示、Membership Plan`AIとの日常`、月額1,500円、加入導線、4 Tagsおよび公開日時を照合し、当時のPublication Decisionとの一致によりPASSと判定した。
 
 2026-09-02の追加Human QAで、Magazine`AIとの日常`への登録が未実施だったことを検出した。当初DecisionではMagazineを必須条件としていなかったため、これは単純な操作ミスと断定せず、上流のPublication Profile／Decision設計不足を主要改善候補とする。当初PASSの履歴を保持したまま総合Verificationを`Human QA Gap Detected / Reopened`とする。Membership Plan、価格、境界、限定本文非表示、加入導線および4 TagsのPASSは維持する。Humanがnote上でMagazine登録を既に修正済みかは未確認であり、現行状態の確認をHuman Actionとして残す。SNS外部共有は実行していない。詳細は当該Published Artifact Recordを正とする。
 
-#### 2.6.8 Smartphone / Chat Publication Interface
+#### 2.6.9 Smartphone / Chat Publication Interface
 
 Human ApprovalおよびPublication Pipelineの起動権限は端末種別では決まらない。認証済みHumanとのChat上で、対象、意図および公開範囲が一意に判断できる明示指示は、スマートフォンからでも既存Human Decisionとして受理できる。必要なSource、本文、Asset、Publication Decisionおよび各Gateが満たされている場合、HumanはスマートフォンChatから公開準備または公開Pipelineを開始できる。
 
@@ -413,7 +429,7 @@ G5明示承認後はPublication Draft E2EとDry Runまで進められるが、Hu
 8. **Publication Draft E2E / Dry Run**：G5 Packageをnote下書きへ反映して本文系Assetの保存を確認し、Publication SettingsをSummaryから構成する。Decisionと対象Series Profileに対してMembership、対象プラン、境界およびMagazineを別項目で照合し、公開最終操作の直前でSTOPして`Publication Prepared / Not Published`とGapを記録する。
 9. **Human Publication Approval / Publication Transaction**：対象Draft、公開先、設定および最終操作を明示して承認を得た後、Decisionと対象Series ProfileからSettingsを再構成・再照合して最終操作を実行する。
 10. **Post-Publication Verification**：公開URL、表示、Header、本文、境界、Membership、対象プラン、価格、加入導線、Magazine、Tags、日時をDecisionと対象Series Profileに対して照合し、全項目一致でG9／Publication E2EをPASSとする。後続Human QAでGapが判明した場合は初回判定を保持したまま再オープンする。
-11. **Record / Resume**：公開済み最終稿、Header Asset記録および公開成果物記録をcanonical pathへ配置する。未公開の第2稿・第3稿・最終稿候補や詳細Marketing EvidenceをPublic公開済み正本へ混入させず、制作台本には安全な状態・locator・再開条件だけを残す。
+11. **Record / Resume／Pending Link確認**：公開済み最終稿、Header Asset記録および公開成果物記録をcanonical pathへ配置する。公開されたArticle IDをTargetとする未解決Pending Linkを確認し、実在URL取得後は§2.6.7の`Target Published → Backfill → Post-Publication Verification → Resolved`へ進める。未公開の第2稿・第3稿・最終稿候補や詳細Marketing EvidenceをPublic公開済み正本へ混入させず、制作台本には安全な状態・locator・再開条件だけを残す。
 12. **Feedback / Repository還元**：反応、誤読、導線、制作上の発見をFeedback Candidateとして分類する。単発反応を自動でOSやSOPへ反映しない。SNS Distributionは別Gateで扱う。
 
 ### 4.1 AI Organization SeriesのExternal Audit
