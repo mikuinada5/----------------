@@ -1,6 +1,6 @@
-# note制作・公開システム v2.5
+# note制作・公開システム v2.6
 
-**Status:** Current / Operational v2.5 / Visual Runtime Bridge compatible
+**Status:** Current / Operational v2.6 / Visual Runtime Bridge compatible
 **Scope:** note制作、Marketing Review、Header Production、Publication Dry Run、Publication Transaction、公開後記録、Session単位のSNS展開、Repositoryへの知見還元
 
 ## 1. 責任と非責任
@@ -249,58 +249,83 @@ Header Asset本体は、公開画像の責任に従って承認済みOneDrive AI
 
 note公式の現行記事見出し画像推奨サイズは1280×670 pxである（[noteヘルプセンター「登録画像の推奨サイズ一覧」](https://www.help-note.com/hc/ja/articles/360000231642-%E7%99%BB%E9%8C%B2%E7%94%BB%E5%83%8F%E3%81%AE%E6%8E%A8%E5%A5%A8%E3%82%B5%E3%82%A4%E3%82%BA%E4%B8%80%E8%A6%A7)、2026-07-10更新）。仕様は変動し得るため、制作時にはnote公式Helpの現行値を確認する。推奨値と異なる場合はトリミング表示を前提にせず、表示結果と安全領域をQAする。
 
-#### 2.5.1 「AIとの日常」Header Template
+#### 2.5.1 NOTE HEADER MASTER TEMPLATE v1.0
+
+「AIとの日常」AIDAILY HeaderのHuman-approvedな完成見本は、`NOTE-HEADER-MASTER-v1.0`を唯一のCurrent Masterとする。画像binaryはRepositoryへ重複保存せず、OneDrive AI Archiveの論理path `AI/04_Personal_Archive/Original/ChatGPT/NOTE_HEADER_MASTER_TEMPLATE_v1.0.png`に保持する。実在rootは現在のOneDrive設定から発見し、Windowsユーザー名を含む絶対pathをSourceへ固定しない。
+
+| Field | Current value |
+|---|---|
+| Asset ID / Version | `NOTE-HEADER-MASTER-v1.0` / `v1.0` |
+| Human-approved origin | Published / Verified `AIDAILY-002-H1`をbyte-identical Masterとして採用 |
+| Original asset logical locator | `AI/04_Personal_Archive/Original/ChatGPT/NOTE_HEADER_MASTER_TEMPLATE_v1.0.png` |
+| Origin locator | `AI/04_Personal_Archive/Derived/AIDAILY-002-D3_Header_G5-Candidate_v1.png` |
+| SHA-256 | `579aecaeb724228b86088445ffd3dc9d424a43757169c85f2f6149944beafc13` |
+| Dimensions | 1280 × 670 px |
+| Role | 構図、左右配置、中央Title領域、白背景、黒＋ピンク、漫画調のVisual reference。Master内のAIDAILY-002固有titleは再利用しない |
+
+MasterはVisual Sourceの実物参照Assetであり、規範と固定／可変／禁止境界のcanonical本文は本節と次のmachine-readable profileを正とする。Generation ContractはAsset ID、Version、論理locatorおよびSHA-256を保持し、Local Runtimeで発見した実在fileのSHAを照合してから、実Tool Requestのreference imageへbindingする。未到達、複数候補、SHA不一致、Contractまたはactual requestへの参照欠落はFAILとし、文章だけのTemplateへfallbackしない。
+
+AIDAILYの公開記事titleが`AIとの日常｜<記事固有title>`である場合、Headerへrenderするapproved exact titleはHumanが承認した`<記事固有title>`部分であり、Series／Magazine識別子`AIとの日常｜`はHeaderへ入れない。これは公開記事titleの変更ではなく、記事titleとHeader render titleの責任を分ける既存Visual規則である。Generation ContractはHeaderへrenderする文字列を`approved_text.title`として完全一致で保持し、prefix除去以外の要約、言い換え、短縮または追加を行わない。
+
+#### 2.5.2 「AIとの日常」Header Template
 
 次のmarker内は本文であると同時に、Repository Runtime BridgeがGeneration Contractを機械生成するcanonical profileである。ID、LevelまたはRequirementを変更する場合は、本節の意味変更としてVersion、CHANGELOGおよびVisual回帰テストを同期する。
 
 <!-- VISUAL_PROFILE_BEGIN:aidaily-header-v1 -->
-<!-- VISUAL_PROFILE_META:{"width":1280,"height":670} -->
+<!-- VISUAL_PROFILE_META:{"width":1280,"height":670,"master_asset_id":"NOTE-HEADER-MASTER-v1.0","master_asset_version":"v1.0","master_asset_locator":"AI/04_Personal_Archive/Original/ChatGPT/NOTE_HEADER_MASTER_TEMPLATE_v1.0.png","master_asset_sha256":"579aecaeb724228b86088445ffd3dc9d424a43757169c85f2f6149944beafc13"} -->
 | ID | Level | Requirement |
 |---|---|---|
+| master-reference | MUST | NOTE HEADER MASTER TEMPLATE v1.0を実Tool Requestのreference imageとして使用し、Asset ID、Version、論理locatorおよびSHA-256を一致させる |
 | note-horizontal | MUST | note記事用の横長Headerにする |
 | current-dimensions | MUST | 制作時に確認したnote公式の現行推奨寸法／比率を使用する。現行確認値は1280×670 px |
 | human-left | MUST | 左側にHumanを置く |
 | kei-right | MUST | 右側にケイ／AIを置く |
 | comic-style | MUST | 漫画調にする |
-| off-white-base | MUST | 白〜生成りを基調にする |
+| white-background | MUST | 背景の基調色を白に固定し、記事固有演出を加えても画面全体の白ベースを維持する |
 | black-pink-palette | MUST | 黒を主要色、ピンクをアクセントにする |
-| title-exact | MUST | 承認済み記事タイトルを一字も変更せず使用する |
-| title-central | MUST | 承認済み記事タイトルを中央の最重要Visual Elementにする |
+| master-title-replace | MUST | Master内の既存titleを残さず、対象記事の承認済みHeader titleへ完全に置換する |
+| title-exact | MUST | 承認済みHeader titleを一字も変更せず使用する |
+| title-central | MUST | 承認済みHeader titleを中央の最重要Visual Elementにする |
 | no-series-label | MUST_NOT | マガジン名「AIとの日常」またはSeries／Magazine相当の表記をHeaderへ入れない |
 | no-speech-bubbles | MUST_NOT | キャラクターの吹き出し／セリフを使用しない |
+| no-explanation-copy | MUST_NOT | 説明コピー、補足説明、ラベルまたは記事要約を追加しない |
+| no-checklists | MUST_NOT | チェックリスト、工程表または箇条書き文字を追加しない |
+| no-additional-catch-copy | MUST_NOT | 承認済みtitle以外の追加キャッチコピーを入れない |
+| no-background-recolor | MUST_NOT | 夕景、夜景、色面、全面gradientその他により背景の基調色を白以外へ変更しない |
 | no-unverified-facts | MUST_NOT | Primary Evidenceまたは本文にない未確認事実を追加しない |
 | no-hype | MUST_NOT | 記事内容以上の成功、成果、煽りまたは断定を追加しない |
 | no-poster-layout | MUST_NOT | 説明ポスターまたはインフォグラフィックのような情報過多構成にしない |
-| no-title-change | MUST_NOT | 承認済み記事タイトルの意味または表記を変更しない |
+| no-title-change | MUST_NOT | 承認済みHeader titleの意味または表記を変更しない |
 | expressions | MAY | Human／ケイの表情を変えてよい |
 | poses | MAY | Human／ケイのポーズまたは動きを変えてよい |
-| small-props | MAY | PC、紙、マグ、付箋等の作業小物を使用してよい |
-| short-prop-text | MAY | Primary Evidenceおよび本文と矛盾しない小物内の短い文字を使用してよい |
-| minor-effects | MAY | 記事内容に応じた軽微な演出を使用してよい |
+| small-props | MAY | 文字を含まないPC、紙、マグ、付箋等の作業小物を使用してよい |
+| minor-effects | MAY | 白背景を維持した範囲で記事内容に応じた軽微な演出を使用してよい |
 <!-- VISUAL_PROFILE_END:aidaily-header-v1 -->
 
-上記MUST／MUST NOTはCreative Directionより優先する。とくに承認済み記事タイトルの完全一致、タイトルを中央の最重要Visual Elementにすること、マガジン名「AIとの日常」を入れないこと、複数を含むキャラクター吹き出し／セリフを入れないことは、実際の画像生成Tool Requestに明記する。単なる内部メモや事後QAへの記載だけではPrompt Assembly QAをPASSしない。
+上記MUST／MUST NOTはCreative Directionより優先する。とくにMaster referenceのidentity／SHA binding、承認済み記事タイトルへの完全置換と完全一致、タイトルを中央の最重要Visual Elementにすること、白背景固定、マガジン名「AIとの日常」を入れないこと、吹き出し／セリフ、説明コピー、チェックリストおよび追加キャッチコピーを入れないことは、実際の画像生成Tool Requestに明記する。単なる内部メモや事後QAへの記載だけではPrompt Assembly QAをPASSしない。
 
-MAYはMUST／MUST NOTと競合しない範囲だけで使用する。小物文字はPrimary Evidenceおよび本文と矛盾させない。記事説明を増やすCreative Directionによって、承認済みタイトルの中心性、余白またはTemplateの識別性を弱めない。
+記事ごとに変更できるのは、承認済みtitle本文、Human／ケイの表情・ポーズ、文字を含まない小物および白背景を維持した軽い記事固有演出だけである。MAYはMUST／MUST NOTと競合しない範囲だけで使用し、記事説明を増やすCreative Direction、Masterの左右配置／中央Title領域／Visual Identityの変更または白背景の再着色は行わない。
 
-#### 2.5.2 Header QA
+#### 2.5.3 Header QA
 
 - [ ] Generation Contractが対象記事・Header version・Current Source fingerprintと一致している
+- [ ] `NOTE-HEADER-MASTER-v1.0`の論理locatorとSHA-256がContract、実在fileおよびactual referenced imageで一致している
 - [ ] 実際のTool Requestに全MUST／MUST NOT、approved exact title、寸法および禁止要素が含まれ、Prompt Assembly QAがPASSしている
 - [ ] note公式の現行推奨サイズ／比率と容量要件を確認した
 - [ ] 最終タイトルに誤字・脱字・意味改変がない
 - [ ] タイトルが中央の主役として十分視認できる
 - [ ] マガジン名「AIとの日常」が混入していない
-- [ ] キャラクターの吹き出し／セリフが原則存在しない
-- [ ] Human左／ケイ右の基本配置とSeries Visual Identityを維持している
-- [ ] 小物文字がPrimary Evidence／本文と矛盾しない
+- [ ] キャラクターの吹き出し／セリフが存在しない
+- [ ] Human左／ケイ右、中央Title領域、白背景、黒＋ピンクおよび漫画調の固定要素を維持している
+- [ ] 夕景、夜景、色面その他へ背景を再着色していない
+- [ ] 承認済みtitle以外の説明コピー、チェックリスト、シリーズ名、追加キャッチコピーまたは小物文字が存在しない
 - [ ] 記事内容以上の煽り、成功表現または誇張がない
 - [ ] 説明ポスター／インフォグラフィックのような情報過多構成になっていない
 - [ ] note下書きへの設定、crop後表示および公開後表示を確認した、または後続Gateの確認項目として記録した
 
 Header QAは生成物の実物を確認して判定する。QA FAIL画像は正式Asset IDを付与せず、Header Asset記録、`ASSET_READY`、G5 Packageまたは通常のHuman Review Candidateへ接続しない。既存Contractから一意に修正可能で再試行上限内なら再生成し、上限到達、Source矛盾、新しいCreative Decisionまたは検査不能ではPipelineのSTOP条件へ戻す。AIが画像を検査できない場合のHuman提示は`HUMAN_ASSET_QA_REQUIRED`の検査依頼に限定し、承認候補の提示と混同しない。
 
-#### 2.5.3 Section Header Visual Family
+#### 2.5.4 Section Header Visual Family
 
 - **Story:** 読む。紺系のStory Templateを基本とし、レイアウト、ラベル位置、文字階層、余白およびSeriesとしての見た目を原則固定する。
 - **Practice:** やる。緑系のPractice Templateを基本とし、同じくTemplate Familyを維持する。

@@ -17,20 +17,31 @@ function New-VisualRecord {
     $sourcePath = if ($ArtifactType -eq 'education-visual') { '01_Education/02_Material_Production/10_PPT制作基準.md' } else { '07_Note_Production/00_note制作・公開システム.md' }
     New-TestSource -Path (Join-Path $RepositoryRoot $sourcePath)
     $sha = (Get-FileHash -LiteralPath (Join-Path $RepositoryRoot $sourcePath) -Algorithm SHA256).Hash.ToLowerInvariant()
+    $masterPath = Join-Path $RepositoryRoot 'runtime-assets/NOTE_HEADER_MASTER_TEMPLATE_v1.0.png'
+    if ($ArtifactType -eq 'note-header') {
+        New-Item -ItemType Directory -Path (Split-Path -Parent $masterPath) -Force | Out-Null
+        [IO.File]::WriteAllBytes($masterPath, [Text.Encoding]::UTF8.GetBytes('approved-master-image'))
+    }
+    $masterSha = if ($ArtifactType -eq 'note-header') { (Get-FileHash -LiteralPath $masterPath -Algorithm SHA256).Hash.ToLowerInvariant() } else { '' }
 
     $requirements = if ($ArtifactType -eq 'note-header') {
         @(
+            @{ id = 'master-reference'; level = 'MUST'; text = 'Use NOTE HEADER MASTER TEMPLATE v1.0 as the bound reference image'; source_path = $sourcePath },
             @{ id = 'note-horizontal'; level = 'MUST'; text = 'Use a horizontal note header'; source_path = $sourcePath },
             @{ id = 'current-dimensions'; level = 'MUST'; text = 'Use current recommended dimensions and aspect ratio'; source_path = $sourcePath },
             @{ id = 'human-left'; level = 'MUST'; text = 'Place Human on the left'; source_path = $sourcePath },
             @{ id = 'kei-right'; level = 'MUST'; text = 'Place Kei on the right'; source_path = $sourcePath },
             @{ id = 'comic-style'; level = 'MUST'; text = 'Use comic style'; source_path = $sourcePath },
-            @{ id = 'off-white-base'; level = 'MUST'; text = 'Use white to off-white base'; source_path = $sourcePath },
+            @{ id = 'white-background'; level = 'MUST'; text = 'Keep the background white'; source_path = $sourcePath },
             @{ id = 'black-pink-palette'; level = 'MUST'; text = 'Use black as main color and pink as accent'; source_path = $sourcePath },
             @{ id = 'title-exact'; level = 'MUST'; text = 'Use approved title verbatim'; source_path = $sourcePath },
             @{ id = 'title-central'; level = 'MUST'; text = 'Title is the central visual element'; source_path = $sourcePath },
             @{ id = 'no-series-label'; level = 'MUST_NOT'; text = 'Do not include AIとの日常'; source_path = $sourcePath },
             @{ id = 'no-speech-bubbles'; level = 'MUST_NOT'; text = 'Do not use speech bubbles'; source_path = $sourcePath },
+            @{ id = 'no-explanation-copy'; level = 'MUST_NOT'; text = 'Do not add explanation copy'; source_path = $sourcePath },
+            @{ id = 'no-checklists'; level = 'MUST_NOT'; text = 'Do not add checklists'; source_path = $sourcePath },
+            @{ id = 'no-additional-catch-copy'; level = 'MUST_NOT'; text = 'Do not add catch copy'; source_path = $sourcePath },
+            @{ id = 'no-background-recolor'; level = 'MUST_NOT'; text = 'Do not recolor the white background'; source_path = $sourcePath },
             @{ id = 'no-unverified-facts'; level = 'MUST_NOT'; text = 'Do not add unverified facts'; source_path = $sourcePath },
             @{ id = 'no-hype'; level = 'MUST_NOT'; text = 'Do not add success claims or hype beyond the article'; source_path = $sourcePath },
             @{ id = 'no-poster-layout'; level = 'MUST_NOT'; text = 'Do not turn the header into a poster or infographic'; source_path = $sourcePath },
@@ -38,7 +49,6 @@ function New-VisualRecord {
             @{ id = 'expressions'; level = 'MAY'; text = 'Expressions may vary'; source_path = $sourcePath },
             @{ id = 'poses'; level = 'MAY'; text = 'Poses may vary'; source_path = $sourcePath },
             @{ id = 'small-props'; level = 'MAY'; text = 'Small work props may be used'; source_path = $sourcePath },
-            @{ id = 'short-prop-text'; level = 'MAY'; text = 'Evidence-consistent short prop text may be used'; source_path = $sourcePath },
             @{ id = 'minor-effects'; level = 'MAY'; text = 'Minor article-specific effects may be used'; source_path = $sourcePath }
         )
     }
@@ -51,6 +61,7 @@ function New-VisualRecord {
 
     $mandatory = @($requirements | Where-Object { $_.level -in @('MUST', 'MUST_NOT') } | ForEach-Object { $_.id })
     $mandatoryText = @($requirements | Where-Object { $_.level -in @('MUST', 'MUST_NOT') } | ForEach-Object { $_.text }) -join "`n"
+    $masterPromptIdentity = if ($ArtifactType -eq 'note-header') { "`nNOTE-HEADER-MASTER-v1.0`nv1.0`nAI/04_Personal_Archive/Original/ChatGPT/NOTE_HEADER_MASTER_TEMPLATE_v1.0.png`n$masterSha" } else { '' }
     $qaChecks = @($mandatory | ForEach-Object { @{ requirement_id = $_; result = 'PASS' } }) + @(@{ requirement_id = 'dimensions'; result = 'PASS' })
     $title = 'AIに仕事を任せたら、私の仕事が増えた話'
 
@@ -73,6 +84,7 @@ function New-VisualRecord {
             source_fingerprint_sha256 = ('b' * 64)
             approved_text = @{ title = $title }
             dimensions = @{ width = 1280; height = 670 }
+            reference_assets = if ($ArtifactType -eq 'note-header') { @(@{ asset_id = 'NOTE-HEADER-MASTER-v1.0'; version = 'v1.0'; logical_locator = 'AI/04_Personal_Archive/Original/ChatGPT/NOTE_HEADER_MASTER_TEMPLATE_v1.0.png'; sha256 = $masterSha }) } else { @() }
             requirement_ids = $mandatory
             creative_direction = @(@{ id = 'warm-expression'; text = 'Warm expression'; conflicts_with = @(); resolution = 'kept' })
             inspection_capability = 'ai-visual-inspection'
@@ -81,8 +93,9 @@ function New-VisualRecord {
         tool_route = @{ tool = 'image_gen.imagegen'; capability = 'image-generation'; allowed = $true; rationale = 'approved visual production phase' }
         tool_request = @{
             text_verbatim = $title
-            prompt = "Create a header using the exact title: $title`n$mandatoryText"
+            prompt = "Create a header using the exact title: $title`n$mandatoryText$masterPromptIdentity"
             dimensions = @{ width = 1280; height = 670 }
+            referenced_image_paths = if ($ArtifactType -eq 'note-header') { @($masterPath) } else { @() }
             included_requirement_ids = $mandatory
             negative_requirement_ids = @($requirements | Where-Object { $_.level -eq 'MUST_NOT' } | ForEach-Object { $_.id })
         }
@@ -92,6 +105,7 @@ function New-VisualRecord {
             prompt_assembly_check = $true
             exact_text_check = $true
             negative_constraints_check = $true
+            reference_asset_check = $true
             source_fingerprint_check = $true
             result = 'PASS'
         }
@@ -144,6 +158,20 @@ Describe 'Visual Production Control' {
     It '3b. fails when a requirement ID is present but its text is absent from the prompt' {
         $record = New-VisualRecord -RepositoryRoot $repo
         $record.tool_request.prompt = $record.tool_request.prompt.Replace('Do not use speech bubbles', '')
+        (Test-RecordFails $record $repo $recordPath) | Should Be $true
+    }
+
+    It '3c. fails when a Master-bound contract omits the reference asset' {
+        $record = New-VisualRecord -RepositoryRoot $repo
+        $record.generation_contract.reference_assets = @()
+        (Test-RecordFails $record $repo $recordPath) | Should Be $true
+    }
+
+    It '3d. fails when the actual request substitutes a different Master file' {
+        $record = New-VisualRecord -RepositoryRoot $repo
+        $substitutePath = Join-Path $repo 'runtime-assets/substitute.png'
+        [IO.File]::WriteAllBytes($substitutePath, [Text.Encoding]::UTF8.GetBytes('different-image'))
+        $record.tool_request.referenced_image_paths = @($substitutePath)
         (Test-RecordFails $record $repo $recordPath) | Should Be $true
     }
 

@@ -8,6 +8,23 @@
 
 ------------------------------------------------------------------------
 
+## 2026-09-03｜AIDAILY HeaderをHuman-approved Master Assetへbinding
+
+### 変更内容
+
+- Published / Verified `AIDAILY-002-H1`を`NOTE-HEADER-MASTER-v1.0`として採用し、byte-identical binaryをOneDrive AI ArchiveのOriginalへ配置した。Public Repositoryはbinaryを保持せず、note SOP v2.6にAsset ID、Version、論理locator、origin、SHA-256、寸法および固定／可変／禁止境界を記録した。
+- AI Production Pipeline v1.11とVisual Production Control v1.2を、媒体Profileが必須Masterを指定する場合のContract／actual reference bindingへ拡張した。Local実在fileのSHA不一致またはactual requestの差替えを生成前FAILにする。
+- `aidaily-header-v1`は白背景固定、Human左、ケイ右、中央title、黒＋ピンク、漫画調を固定し、吹き出し、説明コピー、チェックリスト、シリーズ名、追加キャッチコピー、title改変および背景再着色を禁止した。既存Runtime Bridge、request hash、Platform BoundaryおよびAsset QA Gateは維持した。
+- AIDAILY-004は本文・D3・Marketing Approved・Publication Decisionを変更せず、Header Generation Contract H2だけをCurrent Source／Master参照で再構築した。
+
+### Repository横断監査
+
+Visual規範はnote SOP、共通Contract／GateはAI Production Pipeline、検証実装は`04_AI_Work_Environment/Visual_Production/`、実Tool接続はRepository Skill、binaryはOneDrive Archiveという既存責任分離を維持した。Master binaryをRepository Source化せず、論理locatorとSHAで再現可能にした。
+
+Visual Production／Runtime Bridge 30件、Source Resolution回帰8件、Repository Source QA、Schema JSON、PowerShell構文、Skill構造、Cross Auditおよび`git diff --check`をPASSした。
+
+------------------------------------------------------------------------
+
 ## 2026-09-03｜note循環導線を既存Publish／PPV Lifecycleへ接続
 
 ### Gap / Scope

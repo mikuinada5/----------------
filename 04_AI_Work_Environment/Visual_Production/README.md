@@ -1,6 +1,6 @@
 # Visual Production Control
 
-**Status:** Current / Operational v1.1 / Runtime Bridge<br>
+**Status:** Current / Operational v1.2 / Master-bound Runtime Bridge<br>
 **Owner:** Production / Internal QA<br>
 **Authority:** `AI_PRODUCTION_PIPELINE.md` Visual Production Control
 
@@ -26,14 +26,15 @@ Phase Tool Routing
 
 1. Work Charterの`phase`と`artifact_type`から、画像生成Toolを使用できるProductionか判定する。Marketing Review、Source QA、通常の文章QA、Human Review、G5およびPublishでは画像生成を起動しない。
 2. G2 PASS済みSource Manifestから、媒体・成果物固有のVisual要件を`MUST`、`MUST_NOT`、`MAY`へ分け、Generation Contractへ固定する。
-3. Creative Directionは`MAY`の範囲だけで使用する。`MUST`または`MUST_NOT`と競合する指示は削除し、競合を残したContractを生成へ渡さない。
-4. 実際に画像生成Toolへ渡すRequestに、承認済み文字列、全`MUST`、全`MUST_NOT`、寸法および禁止要素が含まれることをPrompt Assembly QAで確認する。
-5. Source file SHA-256、Production versionまたは承認済み文字列が変わったContractはstaleとして破棄し、Source Resolutionから再構築する。
-6. 生成物は`GENERATED_UNVERIFIED`で受け取り、Asset QAがPASSするまでHuman Review Candidate、Asset Ready、G5 Packageまたは公開候補へ昇格しない。
-7. AIが画像を検査できない場合は`HUMAN_ASSET_QA`へ限定して渡す。これは通常のHuman Review Candidateではなく、QA未確認Assetの検査依頼であり、承認・G5・Asset Readyを意味しない。
-8. QA FAILで既存Sourceから一意に修正でき、Contractの上限内なら再生成する。既定は初回後2回まで。上限到達、Source矛盾、新しい価値判断またはTool不適合ではSTOPする。
-9. 画像生成直前にRuntime Receiptを作り、環境Capability、Bridge implementationおよびvalidated request／actual request SHA-256完全一致を検証する。
-10. 現行で許可するRuntimeはLocal CodexのRepository Skill request-bound経路だけである。Chat／Work built-in directおよび未実装Responses API orchestratorは`BLOCKED_PLATFORM_BOUNDARY`とする。
+3. canonical profileがMaster／reference Assetを要求する場合、profile内のAsset ID、Version、論理locatorおよびSHA-256と、Runtimeで解決した実在fileを照合する。未到達、SHA不一致またはactual requestへのreference欠落はFAILとし、referenceなし生成へfallbackしない。
+4. Creative Directionは`MAY`の範囲だけで使用する。`MUST`または`MUST_NOT`と競合する指示は削除し、競合を残したContractを生成へ渡さない。
+5. 実際に画像生成Toolへ渡すRequestに、承認済み文字列、全`MUST`、全`MUST_NOT`、必須reference、寸法および禁止要素が含まれることをPrompt Assembly QAで確認する。
+6. Source file SHA-256、Production versionまたは承認済み文字列が変わったContractはstaleとして破棄し、Source Resolutionから再構築する。
+7. 生成物は`GENERATED_UNVERIFIED`で受け取り、Asset QAがPASSするまでHuman Review Candidate、Asset Ready、G5 Packageまたは公開候補へ昇格しない。
+8. AIが画像を検査できない場合は`HUMAN_ASSET_QA`へ限定して渡す。これは通常のHuman Review Candidateではなく、QA未確認Assetの検査依頼であり、承認・G5・Asset Readyを意味しない。
+9. QA FAILで既存Sourceから一意に修正でき、Contractの上限内なら再生成する。既定は初回後2回まで。上限到達、Source矛盾、新しい価値判断またはTool不適合ではSTOPする。
+10. 画像生成直前にRuntime Receiptを作り、環境Capability、Bridge implementationおよびvalidated request／actual request SHA-256完全一致を検証する。
+11. 現行で許可するRuntimeはLocal CodexのRepository Skill request-bound経路だけである。Chat／Work built-in directおよび未実装Responses API orchestratorは`BLOCKED_PLATFORM_BOUNDARY`とする。
 
 ## Runtime boundary
 
@@ -66,6 +67,7 @@ pwsh -File 04_AI_Work_Environment/Visual_Production/scripts/New-VisualGeneration
   -TaskId <task-id> -ProductionVersion <version> `
   -Phase 'Header Production' -ArtifactType <type> `
   -ApprovedTitle <exact-title> -Width 1280 -Height 670 `
+  -MasterAssetPath <runtime-resolved-master-image> `
   -OutputPath <visual-production-record.json>
 
 pwsh -File 04_AI_Work_Environment/Visual_Production/scripts/Test-VisualProduction.ps1 `

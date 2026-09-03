@@ -11,6 +11,7 @@ param(
     [Parameter(Mandatory = $true)] [string]$ApprovedTitle,
     [Parameter(Mandatory = $true)] [int]$Width,
     [Parameter(Mandatory = $true)] [int]$Height,
+    [string]$MasterAssetPath,
     [Parameter(Mandatory = $true)] [string]$OutputPath
 )
 
@@ -53,6 +54,40 @@ if ([int]$profileMetadata.width -ne $Width -or [int]$profileMetadata.height -ne 
     throw "VISUAL_CONTRACT_BUILD FAIL: requested dimensions do not match canonical profile metadata: $($profileMetadata.width)x$($profileMetadata.height)"
 }
 
+$referenceAssets = @()
+$referencedImagePaths = @()
+$masterMetadataFields = @('master_asset_id', 'master_asset_version', 'master_asset_locator', 'master_asset_sha256')
+$masterMetadataValues = @($masterMetadataFields | ForEach-Object { [string]$profileMetadata.PSObject.Properties[$_].Value })
+$hasAnyMasterMetadata = @($masterMetadataValues | Where-Object { -not [string]::IsNullOrWhiteSpace($_) }).Count -gt 0
+if ($hasAnyMasterMetadata) {
+    foreach ($field in $masterMetadataFields) {
+        if ([string]::IsNullOrWhiteSpace([string]$profileMetadata.$field)) {
+            throw "VISUAL_CONTRACT_BUILD FAIL: canonical profile master metadata is incomplete: $field"
+        }
+    }
+    if ([string]$profileMetadata.master_asset_sha256 -notmatch '^[0-9a-fA-F]{64}$') {
+        throw 'VISUAL_CONTRACT_BUILD FAIL: canonical profile master_asset_sha256 is invalid'
+    }
+    if ([string]::IsNullOrWhiteSpace($MasterAssetPath)) {
+        throw 'VISUAL_CONTRACT_BUILD FAIL: canonical profile requires -MasterAssetPath'
+    }
+    if (-not (Test-Path -LiteralPath $MasterAssetPath -PathType Leaf)) {
+        throw "VISUAL_CONTRACT_BUILD FAIL: Master Asset is not reachable: $MasterAssetPath"
+    }
+    $masterFullPath = (Resolve-Path -LiteralPath $MasterAssetPath).Path
+    $masterHash = (Get-FileHash -LiteralPath $masterFullPath -Algorithm SHA256).Hash.ToLowerInvariant()
+    if ($masterHash -ne ([string]$profileMetadata.master_asset_sha256).ToLowerInvariant()) {
+        throw "VISUAL_CONTRACT_BUILD FAIL: Master Asset SHA-256 does not match canonical profile: $masterHash"
+    }
+    $referenceAssets = @([ordered]@{
+        asset_id = [string]$profileMetadata.master_asset_id
+        version = [string]$profileMetadata.master_asset_version
+        logical_locator = [string]$profileMetadata.master_asset_locator
+        sha256 = $masterHash
+    })
+    $referencedImagePaths = @($masterFullPath)
+}
+
 $requirements = [System.Collections.Generic.List[object]]::new()
 foreach ($line in ($match.Groups[1].Value -split "`r?`n")) {
     if ($line -notmatch '^\|') { continue }
@@ -76,6 +111,7 @@ $prompt = @(
     'Create exactly one visual asset under the following validated contract.',
     "Render this approved title verbatim: $ApprovedTitle",
     "Canvas: ${Width}x${Height}px (canonical profile dimensions).",
+    $(if ($referenceAssets.Count -eq 1) { "Use the required Master reference image exactly as bound: $($referenceAssets[0].asset_id) $($referenceAssets[0].version), logical locator $($referenceAssets[0].logical_locator), SHA-256 $($referenceAssets[0].sha256)." }),
     'MUST:',
     ($mustLines -join "`n"),
     'MUST NOT:',
@@ -104,6 +140,7 @@ $record = [ordered]@{
         source_fingerprint_sha256 = $fingerprint
         approved_text = [ordered]@{ title = $ApprovedTitle }
         dimensions = [ordered]@{ width = $Width; height = $Height }
+        reference_assets = $referenceAssets
         requirement_ids = $mandatoryIds
         creative_direction = @()
         inspection_capability = 'ai-visual-inspection'
@@ -114,6 +151,7 @@ $record = [ordered]@{
         text_verbatim = $ApprovedTitle
         prompt = $prompt
         dimensions = [ordered]@{ width = $Width; height = $Height }
+        referenced_image_paths = $referencedImagePaths
         included_requirement_ids = $mandatoryIds
         negative_requirement_ids = $negativeIds
     }
@@ -123,6 +161,7 @@ $record = [ordered]@{
         prompt_assembly_check = $true
         exact_text_check = $true
         negative_constraints_check = $true
+        reference_asset_check = (-not $hasAnyMasterMetadata) -or ($referenceAssets.Count -eq 1)
         source_fingerprint_check = $true
         result = 'PASS'
     }

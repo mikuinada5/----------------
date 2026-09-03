@@ -4,6 +4,26 @@
 
 ---
 
+## 2026-09-03｜NOTE HEADER MASTER TEMPLATE v1.0をAIDAILY Headerへ接続
+
+### Human Decision / Provenance
+
+Published / Verified `AIDAILY-002-H1`をbyte-identicalな`NOTE-HEADER-MASTER-v1.0`として採用した。画像binaryはOneDrive AI Archiveの`AI/04_Personal_Archive/Original/ChatGPT/NOTE_HEADER_MASTER_TEMPLATE_v1.0.png`へcopy-onlyで保持し、SHA-256 `579aecaeb724228b86088445ffd3dc9d424a43757169c85f2f6149944beafc13`、1280×670 pxを確認した。Public Repositoryへbinaryを複製せず、note SOP v2.6をVisual規範とlocator／provenance metadataの正本にした。
+
+### 変更内容
+
+- `aidaily-header-v1`をMaster-bound profileへ更新し、Human左、ケイ右、中央title領域、白背景、黒＋ピンクおよび漫画調を固定した。記事ごとの可変範囲はapproved exact title、表情、ポーズ、文字を含まない小物および白背景を維持した軽微な演出だけとした。
+- 公開記事titleの`AIとの日常｜`はHeaderへ表示しないSeries識別子、後続のHuman-approved記事固有部分をHeaderのapproved exact titleとして区別し、要約・言い換え・短縮・追加を禁止した。公開記事title自体は変更していない。
+- 吹き出し／セリフ、説明コピー、チェックリスト、シリーズ名「AIとの日常」、追加キャッチコピー、title改変および夕景・夜景・色面等への背景再着色をMUST NOTへ追加した。従来の`白〜生成り`と小物文字許可はHuman Decisionと競合するため廃止した。
+- AIDAILY-004 Header Generation Contract H2は、Human-approved記事固有titleをHeader exact titleとして保持し、MasterのAsset ID／Version／論理locator／SHAおよび実在reference fileを参照する形で再構築した。本文、Human Review、Marketing Approved、D3およびPublication Decisionは変更していない。
+- 公開成果物記録テンプレートをv1.8、note READMEをv1.16へ更新し、Master bindingの記録・解決入口を追加した。
+
+### QA
+
+Visual Production／Runtime Bridge回帰テスト30件、Source Resolution回帰テスト8件、Repository Source QA、Schema JSON、PowerShell構文、Cross Auditおよび`git diff --check`をPASSした。Master未指定、SHA不一致、actual reference差替え、MUST NOT欠落および既存Runtime／Platform Boundaryのnegative testもPASSした。
+
+------------------------------------------------------------------------
+
 ## 2026-09-03｜note記事間循環導線のPending Link／Backfill Lifecycleを追加
 
 ### Gap / Human Decision

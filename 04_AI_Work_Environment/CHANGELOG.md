@@ -6,6 +6,20 @@
 
 ------------------------------------------------------------------------
 
+## 2026-09-03｜Visual Runtime BridgeをMaster reference bindingへ拡張
+
+### 変更内容
+
+- `Visual_Production/`をv1.2へ更新し、canonical profileが指定するMaster Asset ID、Version、論理locatorおよびSHA-256をGeneration Contractへ機械反映するようにした。
+- Runtimeで解決したMaster fileのSHAをbuilderが生成前に照合し、actual `referenced_image_paths`をvalidated Tool Requestへ含めた。未到達、profile metadata欠落、SHA不一致、Contract参照欠落または実Tool側のreference差替えはFAILし、referenceなし生成へfallbackしない。
+- `visual-production-bridge` Skillは、AIDAILYでOneDrive rootを動的発見し、validated promptと同じMaster referenceをimage generationへ渡す。既存のSource Manifest、Prompt Assembly QA、request hash binding、`GENERATED_UNVERIFIED`、Asset QAおよびPlatform Boundaryは削除・緩和していない。
+
+### QA
+
+既存negative testへMaster Contract欠落、Master path未指定、actual reference差替え、builderへの不一致Master指定およびbinding確認を追加した。Visual Production／Runtime Bridge 30件、Source Resolution 8件、Repository Source QA、Schema、PowerShell、Skill構造、Repository横断監査および`git diff --check`をPASSした。
+
+------------------------------------------------------------------------
+
 ## 2026-09-03｜Visual Runtime Bridgeを実装
 
 ### Incident / Root Cause

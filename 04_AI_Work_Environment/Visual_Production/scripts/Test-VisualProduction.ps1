@@ -138,6 +138,46 @@ foreach ($id in $contractIds) {
     if (-not $requirementById.ContainsKey($id)) { Stop-VisualProductionValidation "Generation Contract contains unresolved requirement: $id" }
 }
 
+$referenceAssets = @(Get-Values $record.generation_contract.reference_assets)
+$referencedImagePaths = @(Get-Values $record.tool_request.referenced_image_paths | ForEach-Object { [string]$_ })
+if ($mandatoryIds -contains 'master-reference') {
+    if ($referenceAssets.Count -ne 1) { Stop-VisualProductionValidation 'Master-bound profile requires exactly one contract reference asset' }
+    if ($referencedImagePaths.Count -ne 1) { Stop-VisualProductionValidation 'Master-bound profile requires exactly one actual referenced image path' }
+}
+if ($referenceAssets.Count -ne $referencedImagePaths.Count) {
+    Stop-VisualProductionValidation 'Contract reference assets and actual referenced image paths do not match'
+}
+for ($i = 0; $i -lt $referenceAssets.Count; $i++) {
+    $reference = $referenceAssets[$i]
+    foreach ($field in @('asset_id', 'version', 'logical_locator', 'sha256')) {
+        if ([string]::IsNullOrWhiteSpace([string]$reference.$field)) {
+            Stop-VisualProductionValidation "Reference asset field is missing: $field"
+        }
+    }
+    if ([string]$reference.logical_locator -notmatch '^AI/(?!.*(?:^|/)\.\.(?:/|$))[^\\]+$') {
+        Stop-VisualProductionValidation 'Reference asset logical locator must be AI-root-relative and must not contain a machine-specific path'
+    }
+    if ([string]$reference.sha256 -notmatch '^[0-9a-fA-F]{64}$') {
+        Stop-VisualProductionValidation 'Reference asset SHA-256 is invalid'
+    }
+    $actualReferencePath = $referencedImagePaths[$i]
+    if ([string]::IsNullOrWhiteSpace($actualReferencePath) -or -not [IO.Path]::IsPathRooted($actualReferencePath)) {
+        Stop-VisualProductionValidation 'Actual referenced image path must be an absolute runtime path'
+    }
+    if (-not (Test-Path -LiteralPath $actualReferencePath -PathType Leaf)) {
+        Stop-VisualProductionValidation "Actual referenced image is not reachable: $actualReferencePath"
+    }
+    $actualReferenceHash = (Get-FileHash -LiteralPath $actualReferencePath -Algorithm SHA256).Hash.ToLowerInvariant()
+    if ($actualReferenceHash -ne ([string]$reference.sha256).ToLowerInvariant()) {
+        Stop-VisualProductionValidation "Actual referenced image does not match the approved Master SHA-256: $($reference.asset_id)"
+    }
+    foreach ($value in @([string]$reference.asset_id, [string]$reference.version, [string]$reference.logical_locator, [string]$reference.sha256)) {
+        if (-not ([string]$record.tool_request.prompt).Contains($value)) {
+            Stop-VisualProductionValidation "Actual tool request prompt omitted Master reference identity: $value"
+        }
+    }
+}
+
 $approvedTitle = [string]$record.generation_contract.approved_text.title
 if ([string]::IsNullOrWhiteSpace($approvedTitle)) { Stop-VisualProductionValidation 'Approved title is missing from Generation Contract' }
 if ([string]$record.tool_request.text_verbatim -cne $approvedTitle) { Stop-VisualProductionValidation 'Approved title was modified in the actual tool request' }
@@ -160,7 +200,7 @@ foreach ($direction in Get-Values $record.generation_contract.creative_direction
     }
 }
 
-$preflightChecks = @('tool_route_check', 'contract_completeness_check', 'prompt_assembly_check', 'exact_text_check', 'negative_constraints_check', 'source_fingerprint_check')
+$preflightChecks = @('tool_route_check', 'contract_completeness_check', 'prompt_assembly_check', 'exact_text_check', 'negative_constraints_check', 'reference_asset_check', 'source_fingerprint_check')
 foreach ($check in $preflightChecks) {
     if ($record.preflight.$check -ne $true) { Stop-VisualProductionValidation "Prompt Assembly QA did not pass: $check" }
 }

@@ -1,6 +1,6 @@
 # 07_Note_Production
 
-**Status:** Current / Operational v1.15 / Visual Runtime Bridge compatible
+**Status:** Current / Operational v1.16 / Master-bound Visual Runtime Bridge compatible
 **責任:** noteの企画・制作・Marketing Review・Header Production・公開準備・Publication Transaction・公開後記録およびSession単位のSNS展開を、既存AI Production Pipelineへ接続する媒体別運用
 
 ## この領域の入口
@@ -16,6 +16,8 @@
 | `10_Section制作台本テンプレート.md` | 意味づけ・企画で採用されたSectionの制作台本、稿状態、Marketing Review／Header／Publication Decision記録テンプレート |
 | `11_公開成果物記録テンプレート.md` | G5 Package、Human Publication Approval、Transaction、公開済み最終稿・Header・公開事実の記録テンプレート |
 | `CHANGELOG.md` | 本領域の意味ある変更履歴 |
+
+AIDAILY HeaderのCurrent Visual Sourceは`00_note制作・公開システム.md`内の`NOTE HEADER MASTER TEMPLATE v1.0`とmachine-readable profile `aidaily-header-v1`である。Master画像binaryは同SOPに記録したOneDrive AI Archiveの論理locator／SHAから解決し、Public Repositoryへ複製しない。
 
 ## 現行・Archive・実データ
 

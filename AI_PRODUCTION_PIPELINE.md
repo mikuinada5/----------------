@@ -1,7 +1,7 @@
-# AI Production Pipeline v1.10
+# AI Production Pipeline v1.11
 
 **Document type:** Standard Operating Procedure（SOP）<br>
-**Status:** Current / Operational v1.10<br>
+**Status:** Current / Operational v1.11<br>
 **Owner:** 稲田美来<br>
 **Scope:** Story Candidate、教材、note、SNS、運営文書、Brand／Education／AI Organization関連Source、その他AI制作物<br>
 **Purpose:** 既存OS・Sourceを毎回確実に選択・実読・適用し、成果物と新知見を正しい責任単位へ戻すためのAI組織共通運用<br>
@@ -462,6 +462,7 @@ Production AIは、G2 PASS済みSource ManifestのVisual適用箇所から、少
 - Task ID、Artifact ID／type、Production version、媒体／成果物Profile
 - Source Manifest fingerprintと、要件を解決したcanonical Source path／file SHA-256
 - 承認済みタイトルその他のexact text
+- 媒体Profileが承認済みMaster／reference Assetを要求する場合、そのAsset ID、Version、機械非依存の論理locator、SHA-256およびRuntimeで解決した実在参照file
 - 寸法、比率、safe areaその他の形式要件
 - `MUST`：必ず満たす要件
 - `MUST_NOT`：必ず避ける禁止要件
@@ -480,6 +481,7 @@ Production AIは、G2 PASS済みSource ManifestのVisual適用箇所から、少
 - Generation Contractが同じTask／Production version／Source fingerprintを参照している
 - 全`MUST`と全`MUST_NOT`がRequestへ欠落なく入っている
 - approved exact textが一字も変更されていない
+- 必須Master／reference AssetのID、Version、論理locatorおよびSHA-256がContractと一致し、実際のTool Requestが同一fileをreference inputとして渡す
 - 寸法、比率および禁止要素がRequestへ入っている
 - Creative Directionの競合が削除済みである
 - SourceがContract構築後に変更されていない

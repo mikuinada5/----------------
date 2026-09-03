@@ -7,26 +7,36 @@ function New-RuntimeFixture {
     param([string]$Root)
     $noteRoot = Join-Path $Root '07_Note_Production'
     New-Item -ItemType Directory -Path $noteRoot -Force | Out-Null
+    $masterPath = Join-Path $Root 'runtime-assets/NOTE_HEADER_MASTER_TEMPLATE_v1.0.png'
+    New-Item -ItemType Directory -Path (Split-Path -Parent $masterPath) -Force | Out-Null
+    [IO.File]::WriteAllBytes($masterPath, [Text.Encoding]::UTF8.GetBytes('approved-master-image'))
+    $masterSha = (Get-FileHash -LiteralPath $masterPath -Algorithm SHA256).Hash.ToLowerInvariant()
     $profilePath = Join-Path $noteRoot '00_note制作・公開システム.md'
-    @'
+    $profileText = @'
 # note system
 **Status:** Current / Operational v2.4
 <!-- VISUAL_PROFILE_BEGIN:aidaily-header-v1 -->
-<!-- VISUAL_PROFILE_META:{"width":1280,"height":670} -->
+<!-- VISUAL_PROFILE_META:{"width":1280,"height":670,"master_asset_id":"NOTE-HEADER-MASTER-v1.0","master_asset_version":"v1.0","master_asset_locator":"AI/04_Personal_Archive/Original/ChatGPT/NOTE_HEADER_MASTER_TEMPLATE_v1.0.png","master_asset_sha256":"__MASTER_SHA__"} -->
 | ID | Level | Requirement |
 |---|---|---|
+| master-reference | MUST | use the approved Master image |
 | note-horizontal | MUST | horizontal note header |
 | title-exact | MUST | approved title verbatim |
 | title-central | MUST | approved title is central |
 | no-series-label | MUST_NOT | do not add series or magazine label |
 | no-speech-bubbles | MUST_NOT | do not add speech bubbles |
+| no-explanation-copy | MUST_NOT | do not add explanation copy |
+| no-checklists | MUST_NOT | do not add checklists |
+| no-additional-catch-copy | MUST_NOT | do not add catch copy |
+| no-background-recolor | MUST_NOT | keep the background white |
 | no-unverified-facts | MUST_NOT | do not add unverified facts |
 | no-hype | MUST_NOT | do not add hype |
 | no-poster-layout | MUST_NOT | do not create a poster or infographic |
 | no-title-change | MUST_NOT | do not change the approved title |
 | expressions | MAY | expressions may vary |
 <!-- VISUAL_PROFILE_END:aidaily-header-v1 -->
-'@ | Set-Content -LiteralPath $profilePath -Encoding UTF8
+'@
+    $profileText.Replace('__MASTER_SHA__', $masterSha) | Set-Content -LiteralPath $profilePath -Encoding UTF8
 
     $sha = (Get-FileHash -LiteralPath $profilePath -Algorithm SHA256).Hash.ToLowerInvariant()
     $now = [DateTimeOffset]::Now.ToString('o')
@@ -54,7 +64,7 @@ function New-RuntimeFixture {
     }
     $manifestPath = Join-Path $Root 'source-manifest.json'
     $manifest | ConvertTo-Json -Depth 20 | Set-Content -LiteralPath $manifestPath -Encoding UTF8
-    return @{ ProfilePath = $profilePath; ManifestPath = $manifestPath }
+    return @{ ProfilePath = $profilePath; ManifestPath = $manifestPath; MasterPath = $masterPath }
 }
 
 function New-ValidRecord {
@@ -63,7 +73,7 @@ function New-ValidRecord {
     & $builder -RepositoryRoot $Root -SourceManifestPath $fixture.ManifestPath -ProfileSourcePath $fixture.ProfilePath `
         -ProfileId 'aidaily-header-v1' -TaskId 'AIDAILY-003-HEADER' -ProductionVersion 'H2' `
         -Phase 'Header Production' -ArtifactType 'note-header' -ApprovedTitle 'AIに仕事を任せたら、私の仕事が増えた話' `
-        -Width 1280 -Height 670 -OutputPath $RecordPath | Out-Null
+        -Width 1280 -Height 670 -MasterAssetPath $fixture.MasterPath -OutputPath $RecordPath | Out-Null
     return Get-Content -Raw -LiteralPath $RecordPath -Encoding UTF8 | ConvertFrom-Json
 }
 
@@ -94,7 +104,7 @@ Describe 'Visual Runtime Bridge' {
         $manifest = Get-Content -Raw -LiteralPath $fixture.ManifestPath -Encoding UTF8 | ConvertFrom-Json
         $manifest.g2.resolution_complete = $false
         Save-Json $manifest $fixture.ManifestPath
-        (Test-Throws { & $builder -RepositoryRoot $repo -SourceManifestPath $fixture.ManifestPath -ProfileSourcePath $fixture.ProfilePath -ProfileId 'aidaily-header-v1' -TaskId 'AIDAILY-003-HEADER' -ProductionVersion 'H2' -Phase 'Header Production' -ArtifactType 'note-header' -ApprovedTitle 'approved title' -Width 1280 -Height 670 -OutputPath $recordPath }) | Should Be $true
+        (Test-Throws { & $builder -RepositoryRoot $repo -SourceManifestPath $fixture.ManifestPath -ProfileSourcePath $fixture.ProfilePath -ProfileId 'aidaily-header-v1' -TaskId 'AIDAILY-003-HEADER' -ProductionVersion 'H2' -Phase 'Header Production' -ArtifactType 'note-header' -ApprovedTitle 'approved title' -Width 1280 -Height 670 -MasterAssetPath $fixture.MasterPath -OutputPath $recordPath }) | Should Be $true
     }
 
     It '3. fails when the Generation Contract is not validated' {
@@ -146,7 +156,7 @@ Describe 'Visual Runtime Bridge' {
 
     It '8. places every AIDAILY MUST_NOT in the validated request' {
         $record = New-ValidRecord -Root $repo -RecordPath $recordPath
-        $expected = @('no-series-label','no-speech-bubbles','no-unverified-facts','no-hype','no-poster-layout','no-title-change')
+        $expected = @('no-series-label','no-speech-bubbles','no-explanation-copy','no-checklists','no-additional-catch-copy','no-background-recolor','no-unverified-facts','no-hype','no-poster-layout','no-title-change')
         foreach ($id in $expected) {
             ($record.tool_request.negative_requirement_ids -contains $id) | Should Be $true
             $record.tool_request.prompt | Should Match ([Regex]::Escape("[$id]"))
@@ -167,6 +177,26 @@ Describe 'Visual Runtime Bridge' {
         $receipt.result | Should Be 'REQUEST_BOUND'
         $receipt.boundary.platform_enforced | Should Be $false
         $receipt.capabilities.client_visible_request_binding | Should Be 'VERIFIED'
+    }
+
+    It '10b. binds the approved Master identity and runtime path into the actual request' {
+        $record = New-ValidRecord -Root $repo -RecordPath $recordPath
+        $record.generation_contract.reference_assets.Count | Should Be 1
+        $record.generation_contract.reference_assets[0].asset_id | Should Be 'NOTE-HEADER-MASTER-v1.0'
+        $record.tool_request.referenced_image_paths.Count | Should Be 1
+        (Test-Path -LiteralPath $record.tool_request.referenced_image_paths[0] -PathType Leaf) | Should Be $true
+    }
+
+    It '10c. fails before generation when the supplied Master SHA does not match the canonical profile' {
+        $fixture = New-RuntimeFixture -Root $repo
+        $wrongMaster = Join-Path $repo 'runtime-assets/wrong-master.png'
+        [IO.File]::WriteAllBytes($wrongMaster, [Text.Encoding]::UTF8.GetBytes('wrong-master-image'))
+        (Test-Throws { & $builder -RepositoryRoot $repo -SourceManifestPath $fixture.ManifestPath -ProfileSourcePath $fixture.ProfilePath -ProfileId 'aidaily-header-v1' -TaskId 'AIDAILY-003-HEADER' -ProductionVersion 'H2' -Phase 'Header Production' -ArtifactType 'note-header' -ApprovedTitle 'approved title' -Width 1280 -Height 670 -MasterAssetPath $wrongMaster -OutputPath $recordPath }) | Should Be $true
+    }
+
+    It '10d. fails before generation when a Master-bound profile has no runtime Master path' {
+        $fixture = New-RuntimeFixture -Root $repo
+        (Test-Throws { & $builder -RepositoryRoot $repo -SourceManifestPath $fixture.ManifestPath -ProfileSourcePath $fixture.ProfilePath -ProfileId 'aidaily-header-v1' -TaskId 'AIDAILY-003-HEADER' -ProductionVersion 'H2' -Phase 'Header Production' -ArtifactType 'note-header' -ApprovedTitle 'approved title' -Width 1280 -Height 670 -OutputPath $recordPath }) | Should Be $true
     }
 
     It '11. records Chat direct generation as a Platform-boundary block' {
