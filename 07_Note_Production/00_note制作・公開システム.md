@@ -1,6 +1,6 @@
-# note制作・公開システム v2.6
+# note制作・公開システム v2.7
 
-**Status:** Current / Operational v2.6 / Visual Runtime Bridge compatible
+**Status:** Current / Operational v2.7 / Visual Runtime Bridge compatible
 **Scope:** note制作、Marketing Review、Header Production、Publication Dry Run、Publication Transaction、公開後記録、Session単位のSNS展開、Repositoryへの知見還元
 
 ## 1. 責任と非責任
@@ -446,7 +446,7 @@ G5明示承認後はPublication Draft E2EとDry Runまで進められるが、Hu
 
 1. **Timeline生成・意味づけ・企画／Profile設計**：Timelineの確認済み史実から意味づけを開始し、採用するSection型企画は`10_Section制作台本テンプレート.md`へ記録する。Human-approved Series Article型企画は既存Series ID／Article IDとWork Charterへ記録し、Sectionを推測採番しない。Timelineには実際に起きた出来事だけを記録する。
 2. **Intake / Routing / Source QA**：採用済みSection制作台本またはSeries Article Work Charterを入力としてPipelineを実行し、note本文にはnote制作・公開SOP、SNS展開にはSNS展開基準を必読とする。G0ではDraftを外部公開しない取扱範囲と最終承認者を確定する。
-3. **Production / Output QA → 初稿**：Sessionごとに承認済み公開構成Profileの本文・別コンテンツと、Session全体を入口にしたSNS投稿案を制作し、既存G4を通過した稿を初稿としてHumanへ渡す。
+3. **Production / Output QA → 初稿**：Sessionごとに承認済み公開構成Profileの本文・別コンテンツと、Session全体を入口にしたSNS投稿案を制作する。本文は`PRODUCED_UNVERIFIED`として固定し、`AI_PRODUCTION_PIPELINE.md` §8.5.1の別工程Pre-Human Review QA／G4と提示file照合を通過した同一exact versionだけを初稿としてHumanへ渡す。
 4. **Human Review → 第2稿**：Humanが実内容を確認し、Practiceでは実際に手順を完遂し、壁打ち、実Screenshotその他の実素材を追加する。note制作部が反映し、内容完成稿である第2稿を作る。
 5. **Marketing Review → 第3稿**：第2稿だけを入力にMarketing Reviewを行う。Must FixはRequirementとしてnote制作部へ返し、必要な修正とMarketing再監査を経て`Marketing Approved`とPublication Decisionを確定し、第3稿を作る。Series Publication Profileに必須所属先がある場合はDecisionへ継承し、MembershipとMagazineを別項目として保持する。
 6. **Header Production / Header QA**：Marketing Approved後の最終タイトルと第3稿を入力にHeaderを制作し、Asset ID、QA、provenanceおよび表示要件を確定する。
@@ -474,7 +474,11 @@ Sectionの現在地は、全体ロードマップまたはSection制作台本で
 Section Statusとは別に、Marketing Reviewのsubstatusを持つ。状態遷移は次のとおりとする。
 
 ```text
-Production → 初稿 → Human Review → 第2稿
+Production / PRODUCED_UNVERIFIED
+   ↓ 完成全文を固定
+Pre-Human Review QA / G4（FAILなら修正→新exact versionを再QA）
+   ↓ PASS / 提示file一致
+初稿 / HUMAN_REVIEW_CANDIDATE → Human Review → 第2稿
                                    ↓
                          Marketing Input Pending
                                    ↓ Input充足
@@ -505,6 +509,7 @@ Production → 初稿 → Human Review → 第2稿
 ```
 
 - `Production`では、Section制作台本とG2 PASSを入力に、承認済み公開構成ProfileのDraftを作る。価格、自己開示範囲、公開範囲の未決はDraft内の未解決Decisionとして扱い、Productionを止めない。
+- 初稿に限らず、第2稿、第3稿、追記・再Production後の本文をHumanへ提示するたびに、Pipeline §8.5.1のexact-version Gateを実行する。制作記録からQA record／review／export receiptと本文SHAを参照できなければCandidateとして受領しない。Marketing ReviewおよびG5でも同じ本文とreceiptを再照合し、旧PASSの流用を拒否する。未公開本文とQA詳細はその公開範囲に合う既存保存先へ置き、Public Repositoryへ複製しない。この本文QAの失効は、別AssetであるHuman-approved Headerの自動失効、既存Marketing判断またはPublication Decisionの変更承認を意味しない。
 - `Review`では初稿の実内容、Practice完遂、実素材および修正範囲をHumanが確認する。note制作部の反映が完了した稿だけを第2稿とする。
 - Marketing Inputが不足する場合は`Marketing Input Pending`とし、Marketing担当が未完成稿を直接修正しない。Must Fixがある場合は`Marketing Revision Required`とし、Requirement、所有者および再開条件を記録する。
 - `Marketing Approved`後に第3稿とPublication Decision Summaryを作り、Header Production／QAを完了してG5を待つ状態をSection Statusの`Decision Pending`とする。

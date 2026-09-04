@@ -1,6 +1,6 @@
 # Section制作台本テンプレート
 
-**Status:** Current / Operational v1.8 / Visual Production Control compatible
+**Status:** Current / Operational v1.9 / Visual Production Control compatible
 **使用先:** 実データ発生後、`01_Sections/<Section-ID>_<短い識別名>/00_Section制作台本.md` として複製して使用する。
 
 ## 0. 意味づけ・企画フェーズからの引き継ぎ
@@ -32,6 +32,8 @@
 ## 2. Source Plan / Source QA
 
 PipelineのSource PlanとSource Manifestを参照し、責任root／entry source、列挙したCurrent候補と選択・除外理由、解決・実読したcanonical Source、Version／revision、Repository full commit SHA、file SHA-256、同一Taskの実読、依存閉包、適用箇所、Production version、矛盾確認およびG2結果を記録する。Production開始前とPre-Human Reviewで同じManifestを再検証し、Source fingerprintまたはProduction versionが変わった場合はG2から再実行する。G0では、Draftを外部公開しない取扱範囲と最終承認者を記録する。未解決の必読SourceまたはG2 FAILはProductionへ持ち込まない。価格、自己開示範囲、最終的な公開範囲の未決はDraft Production、Human ReviewおよびMarketing Reviewを止めず、Publication DecisionとHuman Final Approvalへ記録する。
+
+各本文の初稿／改訂稿をHumanへ提示する前に、Pipeline §8.5.1のPre-Human Review QA記録を参照する。Production ID／Draft ID、exact本文SHA、QA record／review／export receipt locator、検証日時と結果を制作記録へ保持し、G2の読了証跡やVersion名だけでG4 PASSにしない。未公開本文・QA詳細はPublic台本へ複製しない。
 
 ## 3. Story Hub
 

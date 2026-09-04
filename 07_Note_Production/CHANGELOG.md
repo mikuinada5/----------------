@@ -4,6 +4,24 @@
 
 ---
 
+## 2026-09-04｜本文QA恒久修正のHuman承認・正式反映
+
+Human Reviewにより、note SOP v2.7、Section制作台本／公開成果物記録テンプレート各v1.9とStyle QA v1.0の接続を正式反映する。note SOPのtitleとStatusをv2.7へ同期した。本文・H2・Marketing／Publication Decisionは変更しない。最終Local QAは本文回帰28件と実事故稿の期待FAILを含み、QA後改変・Production直結・提示版不一致を拒否する。
+
+以下の先行作業記録にあるGit保留は当時の状態で、今回の限定正式反映承認で解除された。Claude外部監査は`NOT OBTAINED`のまま、実送信はBLOCKED／disabled。Approval Gate恒久運用完成は承認されておらず、再開条件とIncidentはルートCHANGELOGおよびExternal Audit Pipelineの記録を参照する。
+
+---
+
+## 2026-09-04｜本文Human Reviewのexact-version QA Gateを接続
+
+AIDAILY-004再ProductionのPre-Human Review Style QA false PASSを受け、note SOP v2.7、Section制作台本テンプレートv1.9、公開成果物記録テンプレートv1.9へPipeline §8.5.1の別工程G4を接続した。初稿だけでなく改訂・第2稿・第3稿をHumanへ提示する前に、本文file・QA記録・提示fileを照合し、Marketing／G5受領でも再検証する。公開後の正規化本文SHAと、QAで固定したfile bytes SHAは別欄とした。
+
+Writing Style OSは既存v1.1のまま。AIDAILY-004事故稿について同一場面の分断で新GateがFAILすることを確認した。Humanの限定保存承認後、対象Evidence・QA記録等8ファイルを既存OneDrive Derivedへ保存し、全件SHA一致を確認した。クラウド同期は未確認、Localの未追跡領域は実行用コピーとして保持する。自然な長段落へ統合した同一内容の合成fixtureはPASS可能、旧QAの流用・未検査提示・本文SHA不一致はFAIL。H2正式Asset・本文・D3・Marketing判断・Publication Decision・G5 BLOCKED状態は変更していない。commit／push保留も継続する。
+
+内部QA・回帰・Source QA・Schema・Cross AuditをPASS。Claudeは2回実行したが出力上限により結果未取得で、PASS扱いせず未完了の監査を残す。当初の進行承認より後に届いたHuman回答で、外部監査復旧までcommit／pushを保留することになった。詳細provenance・監査範囲・再開条件はルートCHANGELOGの同日項を正とする。
+
+---
+
 ## 2026-09-03｜NOTE HEADER MASTER TEMPLATE v1.0をAIDAILY Headerへ接続
 
 ### Human Decision / Provenance

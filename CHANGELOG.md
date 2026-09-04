@@ -8,6 +8,47 @@
 
 ------------------------------------------------------------------------
 
+## 2026-09-04｜Human承認済みStyle QA修正・未承認外部送信Incident・送信停止措置の正式反映
+
+Task `01a06c9a-ddc4-7241-8542-61e74ed6a82b`の中間報告に対するHuman Reviewで、Style QA恒久修正、Incident記録、外部送信停止措置、Approval検証契約および関連Source接続のstage／commit／pushが明示承認された。外部監査Pipelineの恒久運用完成は承認対象外であり、trusted Human-event取得経路・実送信Gate・negative test・E2E完了までBLOCKED／disabledを維持する。外部監査は`NOT OBTAINED`、不明な時刻・historical payload bytes等はUNKNOWNのままとする。
+
+- Pipeline v1.13、Cross Audit基準v1.5、External Audit Pipeline v1.1（live send disabled）へ更新。Style QA v1.0、note SOP v2.7、制作／公開記録テンプレートv1.9を正式反映対象として確定した。Writing Style OSは既存v1.1を保持する。
+- 旧個人runnerにはHuman Evidence Gateがなく、Repository GateもAgent入力boolean／参照文字列だけで通過できた。実経路とRepository CLI／provider dispatch／両leafを実送信前に停止し、offline署名Evidence・順序・payload／destination／目的bindingの検証契約を追加した。offline PASSは送信権限ではない。
+- 未承認外部送信Incidentは、2件のHTTP 200／provider request ID、call生成metadataとHuman responseの約0.519秒の先後、payload scope、秘密値を含まないprovenanceを`04_AI_Work_Environment/External_Audit_Pipeline/INCIDENT_REVIEW.md`に記録した。後着承認は遡及適用しない。実HTTP開始時刻と完全なwire payloadはUNKNOWN。
+- 最終Local QAでPre-Human Review 28件、Source Resolution 8件、Approval Gate 13件、既存External Audit 7件、Visual 30件の計86件がPASS。実事故稿の期待FAIL、Schema／構文／Source QA／承認範囲のCross Audit／diff checkもPASSを確認した。Cross AuditのPASS対象は今回承認された修正・停止措置であり、live運用完成を意味しない。
+- H2正式Asset、記事本文、Marketing／Publication Decision、Writing Style OS、無関係なVisual Controlは変更しない。私的Evidenceと`.codex-runtime/`をGitへ含めない。承認後のGit実行結果はcommit履歴とTask完了報告で確認する。
+
+以下の先行作業記録にあるcommit／push保留は当時の状態であり、今回の限定正式反映承認によって解除された。Claude監査復旧をこのTaskで実行する意味ではない。
+
+------------------------------------------------------------------------
+
+## 2026-09-04｜Pre-Human Review Style QA false PASSのexact-version Gate修正
+
+### Incident / 確定Root Cause
+
+変更前commit `22bd4d73782903dc6859be288ad7dfaf85a0003c`のWriting Style OS v1.1 §2.4・§5には機械的一文一段落、同一話題の分断、短文カード積みの抑制と同一稿のPre-Human Review QAが既にあった。Pipeline v1.11 §7–8はProduction／Output QAを文書上分離し、§8.5で同一Production versionの再検証も要求していた。規則不足ではない。
+
+一方、Source Resolution実装はSource fingerprintとProduction version名を検証するだけで、完成本文のbytes、独立検査結果、実際のHuman提示本文をbindingするG4実装がなかった。note SOP §4・§5.1も「G4通過稿」を受け取る規約だけで、本文版の機械照合を要求していなかった。Chatの「QAする／QAした」という申告と完成本文の間に検証可能なreceiptがなく、ProductionとQAを混同した提示を拒否できないことが、Source・実装から確認した構造的原因である。AIの内部思考の詳細や、別の未取得QA記録の存在は推測しない。
+
+Primary Evidenceはconversation `6a9600b4-6c18-83ee-abee-ff416813c8e9`、提示message `2c185997-faf5-445f-a3f3-433e92c68d80`、Human指摘message `8f641503-54ee-4690-a0a9-591c2e97e14c`（「さいごのほうの改行がおおい。。。」）。実取得した提示message全文のUTF-8 bytes SHA-256は`d5a2a3d7a72d6a5dfbf48ff51dea8fb385a5fd86628c1cae4c9a589c9a5fe28b`。Humanの対象Evidence保存承認後、既存OneDrive `AI/04_Personal_Archive/Derived/`へ`AIDAILY-004_STYLE_QA_`接頭辞で8ファイル（対象Evidence、exact message、QA record／review、Source Manifest、incident結果、外部監査未取得記録2件）を上書きなしで保存し、全件SHA一致を確認した。同保存先を保持本籍とし、Localの未追跡`.codex-runtime/style-qa-incident/`は実行用コピーとする。OneDriveローカル配置・READ・同一性は確認済みだがクラウド同期は未確認であり、同期完了／Closedとは扱わない。対象messageとHuman指摘以外の会話本文を保存せず、私的本文・QA詳細をPublic Repositoryへcommitしない。保存承認はcommit／push保留の解除ではない。
+
+### 改修 / Cross Audit
+
+- Pipeline v1.12 §8.5.1へ`PRODUCED_UNVERIFIED → PRE_HUMAN_REVIEW_QA → 修正・新exact版再QA → PASS → HUMAN_REVIEW_CANDIDATE`を接続。実行実装は既存AI Work Environment責任内の`Pre_Human_Review_QA/` v1.0、導線はRepository Skill `pre-human-review-qa`。
+- 本文／Source／検査実装SHA、全段落・境界・機械検出、独立チェックリスト、検出理由、旧本文／旧QAへの修正provenanceを保持する。export後の同一fileだけを提示でき、受領側も再検証する。Source参照、検出ゼロ、総合PASS申告またはVersion名だけでは昇格できない。
+- note SOP v2.7、制作・公開記録テンプレート各v1.9へ受領・再QA・locatorを接続し、公開本文の正規化SHAとQA実物bytes SHAを区別。Repository Rulesの配置・導線、横断監査基準v1.4の運用／negative test項目を同期。
+- 内部自己監査で、単独の自然な一文段落を一律に例外扱いさせないよう修正し、再テストした。短段落の意味判断はWriting Style OSのまま、検出閾値はtriageであって新しい文体規範ではない。
+- Writing Style OS本文・CHANGELOG、AI Organization、AI Work Environment能力Source、既存Visual実装・Skill、AIDAILY-004-H2、本文・Marketing・Publication Decisionは更新不要と判定して保持。H2 binary SHA不変、G5は本文再Production待ちBLOCKEDのまま。
+- Cross Audit：責任本籍、Current正本一意性、G2/G4/G5導線、privacy、Version／履歴、許容短段落、変更後再QA、他領域非侵食、diff／Git対象を内部監査PASS。Chat自由文送信のplatform interceptionや意味判定の完全自動保証は未実装と明記し、file-bound範囲外をPASSにしない。
+
+### QA / 未完了の追補監査
+
+新規Pre-Human Review回帰28件、既存Source Resolution 8件、Visual Production／Runtime Bridge 30件、External Audit実装7件をPASS。実事故稿も再現テストPASS（稿のQA自体は`STYLE_QA_FAIL: B82-83`）。117ブロック、21件の機械検出（後半7件）は重複を含むtriageであり違反総数ではない。同一Human承認イベントの分断を実読で確認した。未公開本文の再Production／Human提示候補化は実行していない。Source Manifest付きG2、Repository Source QA、review Schema、PowerShell構文、Skill構造、内部Cross Audit、`git diff --check`もPASSを確認して反映する。
+
+Claude外部監査は**2回実行したが出力上限により結果未取得**。`missing_audit_output_max_tokens`、request IDs `req_011CeiQjkCShDhYGoeRfoT7N`／`req_011CeiQxwJJV4WeZ2A83xm8t`。PASSとも指摘なしとも扱わない。旧Taskでは当初の進行承認後、Human回答により外部監査復旧までcommit／pushを保留していた。その後、新Taskが未承認外部送信Incidentを調査し、外部送信を停止した。現在の正式反映承認と再開禁止条件は本日上記のHuman承認項を正とし、旧保留状態から外部監査を自動再開しない。
+
+------------------------------------------------------------------------
+
 ## 2026-09-03｜AIDAILY HeaderをHuman-approved Master Assetへbinding
 
 ### 変更内容

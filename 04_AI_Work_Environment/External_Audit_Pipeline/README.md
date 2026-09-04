@@ -1,6 +1,6 @@
-# External Audit Pipeline v1.0
+# External Audit Pipeline v1.1
 
-**Status:** Operational / Claude Live E2E PASS
+**Status:** Local preparation operational / live send BLOCKED_APPROVAL_RUNTIME
 **Runtime:** PowerShell 7.4以上
 **Scope:** AI Organization Series Section 1〜6、および同じ監査契約を使用できる将来の成果物
 
@@ -61,11 +61,15 @@ Source指定はRepository相対pathと、必要に応じて `start_marker` / `en
 
 ## 5. 外部送信Gate
 
-実API送信には、次の3条件をすべて必要とする。
+実API送信は停止中。既存の`external_sharing.approved`、`approval_ref`、CLIの`-ConfirmExternalSend`はHuman Approval Evidenceの真正性を証明しないため、指定しても送信できない。過去のClaude Live E2Eは接続の履歴であり、現行Approval GateのPASSではない。
 
-1. `internal_audit.status = PASS`
-2. `external_sharing.approved = true` と `approval_ref`
-3. CLIの `-ConfirmExternalSend`
+`APPROVAL_REQUIRED → APPROVAL_REQUESTED → WAITING_FOR_HUMAN → APPROVAL_GRANTED`の検証契約は`src/ExternalApproval.psm1`と`schemas/human_approval.schema.json`を参照する。対象は実provider request全体のbytes SHA、destination、目的、request ID、質問とHuman responseの時刻。system prompt・Source・設定変更も別payloadである。質問受付の`accepted`、Agentのapproved自己申告、後着承認では成立しない。
+
+offline verifierは署名されたHuman event statementを検証するが、callerが指定した公開鍵を本番の信頼根として採用しない。合成testsの署名鍵はメモリ内のみで破棄し、本番へ配置しない。offline PASSは`external_invocation_allowed: false`のまま。実送信はCLI、dispatch、Anthropic／Gemini leafすべてで無条件にfail-closedとする。
+
+再開には、Agentが生成・差替えできないHuman-event ingressと信頼根、取消・Incident・invocationを保持する保護された履歴、時刻の意味を区別した順序検証、各retry直前の再検証とpayload固定、negative testおよびruntime E2Eの完了が必要。それまで再有効化を禁止する。今回のHuman承認はStyle QA・Incident記録・送信停止措置・offline Approval検証契約・関連Source接続の正式反映に限り、外部監査Pipelineの恒久運用完成または実送信再開を承認していない。既存の承認権限を実装へ接続する要件であり、新しい承認者は作らない。任意Tool全体またはapproval reviewerそのものをRepositoryから修正済みとは主張しない。
+
+事故で使用された個人Claude runnerも、SHAを限定した`Block-LegacyClaudeRunner.ps1`で実送信を停止した。Repositoryに保存するのは適用手順・identityと安全なIncident記録だけで、credentialや端末設定は保持しない。詳細は`INCIDENT_REVIEW.md`。個人skillの再インストール／runner更新で停止guardが失われた場合も、実送信を再開せずidentityと停止を再検証する。
 
 `-PrepareOnly` はPackageを構築・検証するが送信しない。APIキー、認証情報、Repository全文、無関係なSource、個人情報または外部共有未承認資料をManifestへ含めない。
 
@@ -105,7 +109,7 @@ pwsh -NoProfile -File "04_AI_Work_Environment/External_Audit_Pipeline/scripts/In
   -PrepareOnly
 ```
 
-Claude API実行：
+旧CLI互換性の停止確認（現行では必ず送信前にFAIL）：
 
 ```powershell
 pwsh -NoProfile -File "04_AI_Work_Environment/External_Audit_Pipeline/scripts/Invoke-ExternalAudit.ps1" `
@@ -143,3 +147,5 @@ pwsh -NoProfile -File "04_AI_Work_Environment/External_Audit_Pipeline/tests/Exte
 ```
 
 テストはTemp fixtureだけを使用し、外部APIを呼ばない。
+
+Approval Gateの追加回帰は`Invoke-Pester ./04_AI_Work_Environment/External_Audit_Pipeline/tests/ExternalApproval.Tests.ps1`。A–Fはoffline契約の検証であり、FのPASSを本番Human-event ingress／外部送信の成功と扱わない。

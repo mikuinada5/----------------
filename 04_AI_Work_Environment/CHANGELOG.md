@@ -6,6 +6,24 @@
 
 ------------------------------------------------------------------------
 
+## 2026-09-04｜Approval Incident停止措置とoffline検証契約のHuman承認
+
+External Audit Pipeline v1.1として、実送信CLI／dispatch／Anthropic・Gemini leafをBLOCKEDにし、実際に使用された個人Claude runnerにもSHA限定の停止guardを適用した。署名Human Evidence、request／wait／response順序、payload／destination／目的binding、後着承認Incidentを検証するoffline契約と13件の回帰を追加した。信頼済みHuman-event ingressと実送信Gateは未実装であり、negative testとruntime E2E完了まで再有効化を禁止する。
+
+HumanはStyle QA v1.0、Incident記録、送信停止措置、Approval検証契約と関連Sourceの正式反映を承認した。外部監査の恒久運用完成は承認していない。External Auditは`NOT OBTAINED`を維持し、UNKNOWNを補完しない。以下の先行記録にあるGit保留は当時の状態で、今回の限定正式反映承認で解除された。詳細は`External_Audit_Pipeline/INCIDENT_REVIEW.md`とルートCHANGELOG。
+
+------------------------------------------------------------------------
+
+## 2026-09-04｜完成本文と別工程QAをbindingするG4実装
+
+`Pre_Human_Review_QA/` v1.0とRepository Skill `pre-human-review-qa`を追加。既存Pipeline §8.5.1を実装し、Source Manifest v2、Current Writing Style OS、本文bytes、独立した段落／境界／検出箇所レビュー、11項目チェックリスト、修正前の本文／QA SHA、exact提示fileを照合する。Prepareは未検証、Exportだけがcomputed PASS receiptを生成し、下流もVerifyを再実行する。Runtime未確認、自己申告PASS、本文改変、Source改変、提示不一致をFAILにする。
+
+Writing Style OSやVisual Controlを変更せず、検出はtriage、意味判断は別工程のInternal QA、承認はHumanという責任を維持した。一般Chatの送信をinterceptする能力は主張しない。機械検出ゼロも自動PASSではなく、許容短段落・手順構造も具体的根拠を付けて保持できる。
+
+新規28件、Source Resolution 8件、Visual 30件、External Audit実装7件と実事故稿FAIL再現、Schema／構文／Source QA／Cross Auditを確認。事故の最小provenance、Root Cause、内部監査、Human Decisionおよび外部監査の未完了状態はルートCHANGELOG 2026-09-04項を参照。Claudeは2回とも出力上限により結果未取得であり、PASSにはしていない。内部QAを根拠に進める当初指示の後、Humanが外部監査復旧までcommit／push保留を指定したため、未commitで保持する。
+
+------------------------------------------------------------------------
+
 ## 2026-09-03｜Visual Runtime BridgeをMaster reference bindingへ拡張
 
 ### 変更内容

@@ -233,6 +233,11 @@ Human-in-the-loop領域に関する意味のある変更は `03_Human_in_the_Loo
 │   ├── schemas/
 │   ├── scripts/
 │   └── tests/
+├── Pre_Human_Review_QA/
+│   ├── README.md
+│   ├── schemas/
+│   ├── scripts/
+│   └── tests/
 ├── External_Audit_Pipeline/
 │   ├── README.md
 │   ├── prompts/
@@ -257,6 +262,8 @@ Human-in-the-loop領域に関する意味のある変更は `03_Human_in_the_Loo
 `External_Audit_Pipeline/` は、内部監査PASS後のFinal Candidateから必要最小限の監査Inputを構築し、助言的外部AIへAPI送信し、応答Schema検証とSeverity Routingを行う再利用可能な自動化実装である。外部AIへ制作、承認またはRepository WRITE責任を付与しない。
 
 `Source_Resolution/` は、`AI_PRODUCTION_PIPELINE.md`が定めるSource Router／Source QA／Source Manifestを機械検証する実装である。新しいSource責任または承認者を作らず、Current Canonical Delta、責任root内のCurrent候補未列挙、前Taskの読了証跡、依存漏れおよびSource fingerprint変更をG2またはPre-Human ReviewでFAILさせる。
+
+`Pre_Human_Review_QA/`とRepository Skill `.agents/skills/pre-human-review-qa/`は、同Pipeline §8.5.1の長文本文QA／提示file bindingを実行する実装である。新しい文体Source・役職・承認者を作らず、Writing Style OS、Source Resolutionおよび既存G4へ接続する。Public Repositoryには実装・安全な合成tests・最小provenanceだけを置き、未公開事故稿・QA詳細・提示本文は当該成果物の公開範囲を維持する。
 
 `Visual_Production/` は、同Pipelineが定めるPhase Tool Routing、Generation Contract、Prompt Assembly QA、生成後Asset QAおよび状態遷移を機械検証する実装である。媒体固有のVisual Template、禁止事項、教育内容または承認責任を保持せず、各責任Sourceから解決した要件と実際のTool Request／Asset QAの一致だけを検証する。
 

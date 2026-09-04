@@ -1,7 +1,7 @@
-# AI Production Pipeline v1.11
+# AI Production Pipeline v1.13
 
 **Document type:** Standard Operating Procedure（SOP）<br>
-**Status:** Current / Operational v1.11<br>
+**Status:** Current / Operational v1.13<br>
 **Owner:** 稲田美来<br>
 **Scope:** Story Candidate、教材、note、SNS、運営文書、Brand／Education／AI Organization関連Source、その他AI制作物<br>
 **Purpose:** 既存OS・Sourceを毎回確実に選択・実読・適用し、成果物と新知見を正しい責任単位へ戻すためのAI組織共通運用<br>
@@ -407,6 +407,7 @@ Source QAを通過したInputを、指定された成果物へ忠実に変換す
 ### 7.4 Output
 
 - 成果物Draft
+- 長文本文は`PRODUCED_UNVERIFIED`のDraft。Production完了はQA完了でもHuman Review Candidateでもない
 - Source Application Log
 - Assumption／Decision Log
 - 必要に応じた成果物間対応表
@@ -582,6 +583,24 @@ Output QAは「良い成果物か」だけでなく、「Source QAで保証し�
 
 Human Reviewへ渡す前に、同一Production versionについてSource Manifestのfile fingerprintを再検証し、Pre-Human Review QAを完了する。Source変更、Production version不一致または未適用Sourceを検出した場合はPASSにせず、Source Router／Productionへ戻す。
 
+#### 8.5.1 長文本文のexact-version Pre-Human Review Gate
+
+Writing Style OSが適用される公開用長文本文（note、Story、Practice、Session Archive等）は、Productionとは別のInternal QA工程で、**完成した全文の実物**を検査する。Sourceを読んで制作したこと、Version名、実施予告、過去のQA、総合PASSの自己申告はOutput QA Evidenceではない。
+
+```text
+PRODUCED_UNVERIFIED → PRE_HUMAN_REVIEW_QA
+  → FAIL → 修正 → 新exact versionを固定 → 全文再QA
+  → QA PASS → exact提示物を照合 → HUMAN_REVIEW_CANDIDATE
+```
+
+- Production ID、Draft ID、Production version、本文bytesのSHA-256、同一TaskのSource Manifest／Current Writing Style OSのVersion・path・SHA、検査実装identity、固定日時を案件記録へ保持する。
+- QAは本文固定後に実行し、全段落と段落境界、機械検出箇所、チェックリスト、検出結果・判定理由、担当と日時をProduction記録とは別に保持する。修正では旧記録／旧本文SHAと修正理由を残し、新しい記録で再QAする。FAILをPASSへ書き換えて履歴を消さない。
+- 文体の規範はCurrent Writing Style OSを正とする。one-sentence paragraphの機械的連続、同一イベント／話題／感情／ツッコミ＋説明の分断、短文カード積み、スマホ可読性だけを理由にした改行、口語接続・思考の流れでつながる内容の分断、Chat統計の誤適用を、後半を含む全文で検査する。Purpose、Source、Voice／Brand、安全、形式等の既存G4監査も省略しない。
+- 機械検出は意味判断を代替しない。パンチライン、場面／理解の転換、余韻、強いツッコミ、意図的な間、手順・安全上必要な構造は、実際の該当箇所と理由を記録して保持できる。検出ゼロも自動PASSではなく、未確認・曖昧・要統合はFAILとする。
+- Human提示直前にSource Manifest、検査記録、検査対象本文、実際の提示用本文を再検証する。本文bytesが一つでも変われば、Version名が同じでもQAは失効する。Source変更時はG2へ戻る。本文をChatで書き直す、部分だけ貼る、提示時に追記／改行変更する場合も再QAする。
+- 実装は`04_AI_Work_Environment/Pre_Human_Review_QA/`、実行導線はRepository Skill `pre-human-review-qa`を使用する。唯一の昇格出力はvalidatorが検証してexportした本文fileとPASS receiptの組であり、QA担当が入力した総合PASSではない。Human Review／G5の受領側も同じ本文SHAとreceiptを照合する。
+- 制御範囲は検証済みfileのexport／受領である。通常Chatの自由文送信をRepositoryからinterceptできるとは主張しない。Chat／Workで実行・同一file受渡しを検証できない場合は`BLOCKED_RUNTIME_BOUNDARY`とし、Local CodexへQA対象全文を渡す。迂回して提示された本文はgoverned Candidateではなく、後続工程で受領を拒否する。意味判定の虚偽・誤りをhashで防げるとも主張しない。
+
 ### 8.6 外部監査Trigger
 
 以下では、内部QA後に外部監査を原則追加する。
@@ -597,7 +616,7 @@ Human Reviewへ渡す前に、同一Production versionについてSource Manifes
 
 ### 8.7 Gate
 
-**PASS:** Critical／Major指摘が解決し、必読Sourceの反映証跡があり、未解決リスクをHuman Ownerが認識している。<br>
+**PASS:** Critical／Major指摘が解決し、必読Sourceの反映証跡があり、未解決リスクをHuman Ownerが認識している。§8.5.1対象本文では、別工程QA Evidenceとbyte-identical提示物の検証済みPASS receiptがある。<br>
 **FAIL:** Productionへ戻す。Input起因ならSource QAへ戻す。
 
 ### 8.8 External Audit API接続
@@ -605,6 +624,12 @@ Human Reviewへ渡す前に、同一Production versionについてSource Manifes
 個別成果物の責任Sourceが外部監査を要求し、内部QAがPASSした場合は、`04_AI_Work_Environment/External_Audit_Pipeline/README.md` を実行契約として使用できる。
 
 PipelineはFinal Candidate、必要最小限の正式Source、Evidence Note、責任境界および変更禁止事項から監査Inputを構築する。Repository全文、無関係なSource、認証情報、個人情報または外部共有未承認資料を機械的に送信しない。
+
+外部送信でHuman Approvalが必要な場合、`APPROVAL_REQUIRED → APPROVAL_REQUESTED → WAITING_FOR_HUMAN → 明示Human Approval Evidenceの検証 → APPROVAL_GRANTED → external invocation`の順序を必須とする。質問Toolのaccepted／表示、Agentの承認済み申告、Manifestのboolean、escalationの許可はHuman Approval Evidenceではない。送信本文全体（system prompt・Source・設定を含む実request bytes）のSHA-256、destination、目的、request IDと、真正なHuman response eventをbindingする。認証credentialは監査本文・記録へ含めない。
+
+外部Tool起動直前と各retry前に、信頼できるHuman responseの取得元・actor・時刻・binding・取消／既存Incidentを再検証する。出力ログへの書込時刻をcall生成時刻と混同しない。回答待ちのretry、Agent自己申告、別payload／destination／目的、後着承認は送信を許可しない。承認前に開始したinvocationはIncidentとして保持し、後着承認で遡及PASSにしない。時刻・真正性・履歴が確認不能ならUNKNOWNとして停止する。
+
+現行のRepository／個人Claude runnerには信頼済みHuman-event ingressがないため、実送信は`BLOCKED_APPROVAL_RUNTIME`で停止する。`External_Audit_Pipeline/src/ExternalApproval.psm1`のoffline検証PASSは送信権限ではない。Repository外の任意Toolやapproval reviewer全体をこの修正で強制制御できるとは主張しない。独立した信頼境界、保護された承認／取消／invocation履歴、各retry直前照合およびruntime E2Eを実装・検証してから実送信を再開する。外部監査未取得は`NOT OBTAINED`であり、内部QAと区別する。
 
 外部AI応答はSchemaとSeverity整合を検証する。BLOCKERまたは `human_decision_required = true` はHuman Decisionへ停止し、MAJOR／MINORで既存Sourceから一意に修正できるものは内部制作側へ戻す。外部AIの提案自体を採用済み修正、承認または正式Sourceとして扱わない。再監査要否は対象PipelineのPolicyを正とする。
 
@@ -629,6 +654,7 @@ AIが代行できない価値判断、公開判断、正式採用判断を人間
 ### 9.3 Input
 
 - 最終Draft
+- §8.5.1対象本文では、受領時に再検証したexact本文fileとPre-Human Review PASS receipt（不一致・欠落ならG4へ戻す）
 - Source QA Receipt
 - Output QA Report
 - 差分要約

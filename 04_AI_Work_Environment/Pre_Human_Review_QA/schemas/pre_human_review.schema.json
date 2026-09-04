@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Separate exact-version Pre-Human Review Evidence",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema_version", "record_sha256", "draft_sha256", "reviewer", "reviewed_at", "phase", "items", "checklist"],
+  "properties": {
+    "schema_version": {"const": "pre-human-review/v1"},
+    "record_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "draft_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "reviewer": {"type": "string", "minLength": 1},
+    "reviewed_at": {"type": "string", "format": "date-time"},
+    "phase": {"const": "PRE_HUMAN_REVIEW_QA"},
+    "items": {"type": "array", "minItems": 1, "items": {
+      "type": "object", "additionalProperties": false, "required": ["id", "decision", "reason"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^(P[0-9]+|B[0-9]+-[0-9]+|F[0-9]+)$"},
+        "decision": {"enum": ["UNREVIEWED", "FAIL", "MERGE_REQUIRED", "NATURAL_PARAGRAPH", "NATURAL_BREAK", "PUNCHLINE", "SCENE_SHIFT", "UNDERSTANDING_SHIFT", "AFTERTASTE", "STRONG_RETORT", "INTENTIONAL_PAUSE", "REQUIRED_STRUCTURE", "JUSTIFIED_EXCEPTION"]},
+        "reason": {"type": "string", "minLength": 1}
+      }
+    }},
+    "checklist": {"type": "array", "minItems": 11, "maxItems": 11, "items": {
+      "type": "object", "additionalProperties": false, "required": ["id", "result", "evidence_ids", "finding"],
+      "properties": {
+        "id": {"enum": ["one_sentence_runs", "same_event_topic_emotion", "stacked_short_cards", "smartphone_breaks", "connectors_thought_flow", "chat_statistics_not_layout", "tail_and_whole_text", "purpose_source_fidelity", "voice_brand", "accuracy_safety", "format_traceability"]},
+        "result": {"enum": ["UNREVIEWED", "FAIL", "PASS"]},
+        "evidence_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}},
+        "finding": {"type": "string", "minLength": 1}
+      }
+    }}
+  }
+}

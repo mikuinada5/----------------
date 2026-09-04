@@ -1,7 +1,7 @@
-# Repository横断監査基準 v1.3
+# Repository横断監査基準 v1.5
 
 **Document type:** Repository Governance Standard<br>
-**Status:** Current / Operational v1.3<br>
+**Status:** Current / Operational v1.5<br>
 **Scope:** Repository全体へ影響する正式Sourceの新規追加・更新・移動・廃止<br>
 **Purpose:** 正式Sourceを「置いただけ」にせず、既存責任・参照構造・運用・履歴へ一貫して接続する
 
@@ -101,6 +101,10 @@
 - [ ] `platform_enforced`を主張する場合、Repository文書ではなく実際のorchestrator、tool-choice controlおよびE2E evidenceが存在する。未実装境界をPASSにしていない
 - [ ] Review／Source QA／Human Approval／Publish等の非生成Phaseから、画像生成Toolを暗黙起動できない
 - [ ] QA未確認またはQA FAILのAssetをAsset Ready、G5、公開候補または通常のHuman Review Candidateへ昇格できない
+- [ ] Writing Style OS適用長文のProductionとPre-Human Review QAが別工程であり、本文SHA・Source identity・全文段落／境界／検出結果・チェックリスト・修正／再QA・提示fileの一致を検証してからCandidateを受領する
+- [ ] 本文変更後の旧QA、Source参照だけの自己申告PASS、検出ゼロの自動PASSおよびChat送信interceptの未実証主張を受領しない。許容される短段落を根拠なく禁止していない
+- [ ] 外部送信は質問表示とHuman承認を分離し、実payload bytes／destination／目的と真正なHuman response eventをbindingする。Agentのapproved申告、boolean、escalation許可を承認Evidenceとして受領しない
+- [ ] call生成／実行開始／ログ書込／Human response時刻を区別し、後着承認は遡及PASSにしない。真正なingress・取消／Incident履歴・retry直前検証が未実装なら実送信を停止し、offline testsをlive runtime PASSに読み替えない
 
 ### 4.6 Change Propagation
 
@@ -117,6 +121,8 @@
 - [ ] Visual Production変更では、誤Phase起動、必須／禁止要件欠落、approved text変更、stale Contract、QA未実施、QA FAIL昇格および専門Source横断解決のnegative／positive testを実行した
 - [ ] Visual Runtime変更では、Contract未生成、Current Source未解決、Contract／Prompt QA未PASS、actual request不一致、QA前昇格、偽装Platform PASSおよび環境Capability記録のnegative／positive testを実行した
 - [ ] commitが意味のある単位で、branch・remote・push対象が正しい
+- [ ] 本文QA制御変更では、改行過多FAIL、同一内容の自然段落PASS可能、QA後改変、Production直結、提示版不一致、Source変更、未確認Runtimeおよび許容短段落の回帰テストを実行した
+- [ ] Approval Gate変更では、質問のみ、回答前retry、Agent自己申告、後着承認、payload／destination／目的不一致をFAILとし、正しいHuman Evidenceのpositive testと実送信停止を別々に検証した
 - [ ] push後にlocal HEADとremoteの一致を確認する計画がある
 
 ---

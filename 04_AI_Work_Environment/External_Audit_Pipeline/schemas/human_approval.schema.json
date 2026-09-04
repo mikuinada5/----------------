@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Authenticated Human approval statement (offline verifier contract)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "request_id", "event_id", "actor", "decision", "payload_sha256", "destination", "purpose", "requested_at", "received_at"],
+  "properties": {
+    "schema_version": {"const": "human-approval/v1"},
+    "request_id": {"type": "string", "minLength": 1},
+    "event_id": {"type": "string", "minLength": 1},
+    "actor": {"enum": ["human", "agent"]},
+    "decision": {"enum": ["APPROVE", "REJECT"]},
+    "payload_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "destination": {"type": "string", "pattern": "^https://[^\\s]+$"},
+    "purpose": {"type": "string", "minLength": 1},
+    "requested_at": {"type": "string", "format": "date-time"},
+    "received_at": {"type": "string", "format": "date-time"}
+  }
+}

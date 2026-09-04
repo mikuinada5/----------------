@@ -215,12 +215,8 @@ function Assert-ExternalAuditSharingApproval {
     [CmdletBinding()]
     param([Parameter(Mandatory)]$Manifest)
 
-    $sharing = Get-ExternalAuditProperty -Object $Manifest -Name 'external_sharing'
-    $approved = Get-ExternalAuditProperty -Object $sharing -Name 'approved' -AllowEmpty
-    if ($approved -isnot [bool] -or -not $approved) {
-        throw 'External send is blocked: external_sharing.approved must be true.'
-    }
-    [void](Get-ExternalAuditProperty -Object $sharing -Name 'approval_ref')
+    # Legacy Manifest assertions are not authenticated Human approval evidence.
+    throw 'BLOCKED_APPROVAL_RUNTIME: manifest approved/approval_ref cannot authorize external invocation.'
 }
 
 function Get-ExpectedExternalAuditStatus {
@@ -409,6 +405,7 @@ function Invoke-AnthropicExternalAudit {
         [ValidateSet('default','disabled')][string]$ThinkingMode = 'disabled'
     )
 
+    throw 'BLOCKED_APPROVAL_RUNTIME: Anthropic transport disabled pending trusted Human evidence ingress.'
     $bodyObject = [ordered]@{
         model       = $Model
         max_tokens  = $MaxOutputTokens
@@ -492,6 +489,7 @@ function Invoke-GeminiExternalAudit {
         [ValidateRange(512, 32000)][int]$MaxOutputTokens = 12000
     )
 
+    throw 'BLOCKED_APPROVAL_RUNTIME: Gemini transport disabled pending trusted Human evidence ingress.'
     $escapedModel = [Uri]::EscapeDataString($Model)
     $uri = "https://generativelanguage.googleapis.com/v1beta/models/${escapedModel}:generateContent"
     $body = [ordered]@{
@@ -564,6 +562,7 @@ function Invoke-ExternalAuditProvider {
         [ValidateSet('default','disabled')][string]$AnthropicThinkingMode = 'disabled'
     )
 
+    throw 'BLOCKED_APPROVAL_RUNTIME: provider dispatch disabled pending trusted Human evidence ingress.'
     if ([string]::IsNullOrWhiteSpace($ApiKey)) { throw 'Provider API key is empty.' }
     if ([string]::IsNullOrWhiteSpace($Model)) { throw 'Provider model must be specified explicitly.' }
 

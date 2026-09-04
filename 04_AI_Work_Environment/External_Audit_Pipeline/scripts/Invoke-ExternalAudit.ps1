@@ -42,6 +42,8 @@ if ([string]::IsNullOrWhiteSpace($ResponseSchemaPath)) {
 Import-Module (Join-Path $pipelineRoot 'src\ExternalAudit.psm1') -Force
 
 try {
+    # Stop before manifest processing or credential access. PrepareOnly stays local.
+    if (-not $PrepareOnly) { throw 'BLOCKED_APPROVAL_RUNTIME: live external audits are disabled pending trusted Human evidence ingress.' }
     $manifest = Read-ExternalAuditJsonFile -Path $ManifestPath
     $auditInput = New-ExternalAuditInput `
         -ManifestPath $ManifestPath `
