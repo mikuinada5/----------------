@@ -1,6 +1,6 @@
 # note Production Timeline
 
-**Status:** Current / Operational v1.7
+**Status:** Current / Operational v1.8
 **Role:** 一次資料から抽出した実際の出来事を時系列で保持する、note制作における唯一の史実Source
 
 ## 運用規則
@@ -42,6 +42,7 @@ Repository外に原本を保持する継続参照資料のRegistry ID、取得�
 | 2026-09-01 | 「AIとの日常」記事AIDAILY-001は、承認済み第3稿、Header Asset、Membership境界およびPublication DecisionをLocal PCからnoteへ反映し、別のHuman Publication Approval後に公開された。公開成功表示、公開URL、非ログイン環境のMembership遮断、月額1,500円プラン、加入導線、Tagsおよび公開日時の照合までPASSし、SNS共有は実行しなかった。 | Published Artifact Record `07_Note_Production/02_Published/AIDAILY/AIDAILY-001/03_公開成果物記録.md` | note Article ID `n7cf6aee64f0d`; 公開URL `https://note.com/miku_inada/n/n7cf6aee64f0d`; G5 Package `G5-AIDAILY-001-D3-H1` | 2026-09-01 | 確認済み | 公開済み | AIとの日常 / AIDAILY-001 / Publication E2E β | 2026-09-01 |
 | 2026-09-02 | AIDAILY-001の追加Human QAで、Membership Plan、月額1,500円、無料／Membership境界、非ログイン遮断、加入導線および4 Tagsは正常だった一方、Magazine「AIとの日常」への登録が未実施だったことを検出した。当初Verificationは当時のPublication Decision対象項目との一致でPASSとしていたため、履歴を保持したままVerificationを再オープンした。HumanによるMagazine修正済みかは未確認である。 | Human Decision / Published Artifact Record `07_Note_Production/02_Published/AIDAILY/AIDAILY-001/03_公開成果物記録.md` | 本Codex Taskの追加Human QA指示 | 2026-09-02 | 確認済み | Gap検出・再監査済み | AIとの日常 / AIDAILY-001 / Follow-up Human QA | 2026-09-02 |
 | 2026-09-02 | 「AIとの日常」AIDAILY-002は、承認済みG5 PackageをLocal PCからnote Draftへ反映し、Dry Run後の別Human Publication Approvalに基づいて公開された。Transaction時に試し読み境界をCanonical Summaryから再設定し、公開後はタイトル、Header、本文、無料／Membership境界、非ログイン遮断、Membership Plan「AIとの日常」、月額1,500円、Magazine「AIとの日常」、加入導線、4 Tagsおよび公開日時を別項目で照合してPASSした。SNS共有は実行していない。 | Published Artifact Record `07_Note_Production/02_Published/AIDAILY/AIDAILY-002/03_公開成果物記録.md` | note Article ID `ndd8566d3d8c1`; 公開URL `https://note.com/miku_inada/n/ndd8566d3d8c1`; G5 Package `G5-AIDAILY-002-D3-H1` | 2026-09-02 | 確認済み | 公開済み | AIとの日常 / AIDAILY-002 / Publication E2E | 2026-09-02 |
+| 2026-09-05 | 「AIとの日常」AIDAILY-004は、Human承認済みG5 Packageをnote Draftへ反映し、Dry Run後の別Human Publication Approvalに基づいて公開された。公開後にタイトル、Header、本文14段落、承認済み無料／Membership境界、対象プラン「AIとの日常」、月額1,500円、Magazine「AIとの日常」、加入導線、4 Tagsおよび公開日時を照合してPASSした。SNS共有とClaude外部監査送信は実行していない。 | Published Artifact Record `07_Note_Production/02_Published/AIDAILY/AIDAILY-004/03_公開成果物記録.md` | note Article ID `ndec41cf16a5c`; 公開URL `https://note.com/miku_inada/n/ndec41cf16a5c`; G5 Package `G5-AIDAILY-004-D3-20260905-H2` | 2026-09-05 | 確認済み | 公開済み | AIとの日常 / AIDAILY-004 / Publication E2E | 2026-09-05 |
 
 ### 記録規則
 

@@ -18,6 +18,14 @@ note責任内の`Publication_Approval/` v1.0へFinal Review Package、Human even
 
 ------------------------------------------------------------------------
 
+## 2026-09-05｜AIDAILY-004公開成果物をcanonical pathへ記録
+
+Human Final Approved Package `G5-AIDAILY-004-D3-20260905-H2`を、別途取得したHuman Publication Approvalに基づいてnoteへ公開した。公開URLは`https://note.com/miku_inada/n/ndec41cf16a5c`。Publication Decisionのタイトル、Header、本文、無料／Membership境界、対象プラン、月額1,500円、Magazine、加入導線、4 Tagsおよび公開日時を照合し、Post-Publication Verification PASSとした。SNS共有は未実行、Claude外部監査はdisabled／`NOT OBTAINED`のまま追加送信なし。
+
+公開済み最終稿、Header Asset記録、公開成果物記録を`07_Note_Production/02_Published/AIDAILY/AIDAILY-004/`へ配置し、note Timeline／CHANGELOGを同期した。画像binaryはOneDrive AI Archiveを正としてPublic Repositoryへ複製しない。commit／pushは別のGit Transactionとして保留する。
+
+------------------------------------------------------------------------
+
 ## 2026-09-04｜Human承認済みStyle QA修正・未承認外部送信Incident・送信停止措置の正式反映
 
 Task `01a06c9a-ddc4-7241-8542-61e74ed6a82b`の中間報告に対するHuman Reviewで、Style QA恒久修正、Incident記録、外部送信停止措置、Approval検証契約および関連Source接続のstage／commit／pushが明示承認された。外部監査Pipelineの恒久運用完成は承認対象外であり、trusted Human-event取得経路・実送信Gate・negative test・E2E完了までBLOCKED／disabledを維持する。外部監査は`NOT OBTAINED`、不明な時刻・historical payload bytes等はUNKNOWNのままとする。
