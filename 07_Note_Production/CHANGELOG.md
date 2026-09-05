@@ -4,6 +4,18 @@
 
 ---
 
+## 2026-09-05｜note E2E Approval Semantics／G5 Orchestration恒久修正
+
+AIDAILY-004実運用で、Production後Human Review、Header確認、G5、Dry Run後Publication Approvalが個別承認として増殖した。Current SourceがG5と公開実行承認を明示的に分離し、Package同一性を機械検証する契約を持たなかったことをRoot Causeとして確定した。
+
+note SOPをv2.8、READMEをv1.17、Section制作台本／公開成果物記録テンプレートを各v2.0へ更新した。標準Human interactionはProduction＋内部QA後のHuman Reviewと、Marketing後のFinal Reviewの2回とする。MarketingはD3に加え、無料／Membership境界、Membership、Magazine、price、tagsその他のPublication Conditionsを確定する。Final Review Package提示後の明示的進行意思をHuman Final Approval / Publication ApprovalとしてPackage identity、destination、purposeへbindingする。
+
+`Publication_Approval/` v1.0へ3 Schema、G5 validator、Publication E2E step validatorおよび17件のnegative／regression testを追加した。G5は新しい承認を要求せず、Approval Evidence、実Package、必要Sourceの一致を検証する。同一ならnote下書き、本文、Header、公開条件、設定検証、publish、PPVまで再承認なしで継続する。本文、Header、無料境界その他の承認条件、新規Human DecisionまたはSource identityが変われば失効する。Publication ApprovalのExternal Audit／OneDrive／Git／credential用途への流用は拒否する。
+
+Visual Production、Writing Style QA、External Audit Pipeline、AIDAILY-004 Published Asset／本文は変更していない。External Auditはdisabled／`NOT OBTAINED`を維持し、外部監査通信は行っていない。
+
+---
+
 ## 2026-09-04｜本文QA恒久修正のHuman承認・正式反映
 
 Human Reviewにより、note SOP v2.7、Section制作台本／公開成果物記録テンプレート各v1.9とStyle QA v1.0の接続を正式反映する。note SOPのtitleとStatusをv2.7へ同期した。本文・H2・Marketing／Publication Decisionは変更しない。最終Local QAは本文回帰28件と実事故稿の期待FAILを含み、QA後改変・Production直結・提示版不一致を拒否する。

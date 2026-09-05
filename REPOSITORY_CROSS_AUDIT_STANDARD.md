@@ -1,7 +1,7 @@
-# Repository横断監査基準 v1.5
+# Repository横断監査基準 v1.6
 
 **Document type:** Repository Governance Standard<br>
-**Status:** Current / Operational v1.5<br>
+**Status:** Current / Operational v1.6<br>
 **Scope:** Repository全体へ影響する正式Sourceの新規追加・更新・移動・廃止<br>
 **Purpose:** 正式Sourceを「置いただけ」にせず、既存責任・参照構造・運用・履歴へ一貫して接続する
 
@@ -105,6 +105,10 @@
 - [ ] 本文変更後の旧QA、Source参照だけの自己申告PASS、検出ゼロの自動PASSおよびChat送信interceptの未実証主張を受領しない。許容される短段落を根拠なく禁止していない
 - [ ] 外部送信は質問表示とHuman承認を分離し、実payload bytes／destination／目的と真正なHuman response eventをbindingする。Agentのapproved申告、boolean、escalation許可を承認Evidenceとして受領しない
 - [ ] call生成／実行開始／ログ書込／Human response時刻を区別し、後着承認は遡及PASSにしない。真正なingress・取消／Incident履歴・retry直前検証が未実装なら実送信を停止し、offline testsをlive runtime PASSに読み替えない
+- [ ] noteの制作途中Human ReviewをHuman Final ApprovalまたはPublication Approvalへ流用せず、Marketing後のD3、Header、Publication Conditions、公開先、目的および必要Sourceを一つのFinal Review Packageへbindingする
+- [ ] noteのG5は新しい承認を要求せず、Human event／Approval Evidenceと実際の公開Packageが同一なら、下書き、設定、publish、PPVの工程移行だけを理由に再承認を求めない
+- [ ] noteのFinal Approval後にD3、Header、無料／Membership境界、price、Membership、Magazine、tags、その他の承認条件または新規Human Decisionが変われば失効し、同一Packageの内部処理だけでは失効しない
+- [ ] Publication ApprovalをExternal Audit、Archive保存、Git通信、credentialまたは他サービス送信へ流用できない
 
 ### 4.6 Change Propagation
 
@@ -123,6 +127,7 @@
 - [ ] commitが意味のある単位で、branch・remote・push対象が正しい
 - [ ] 本文QA制御変更では、改行過多FAIL、同一内容の自然段落PASS可能、QA後改変、Production直結、提示版不一致、Source変更、未確認Runtimeおよび許容短段落の回帰テストを実行した
 - [ ] Approval Gate変更では、質問のみ、回答前retry、Agent自己申告、後着承認、payload／destination／目的不一致をFAILとし、正しいHuman Evidenceのpositive testと実送信停止を別々に検証した
+- [ ] note Approval semantics変更では、Human Reviewのみ、Marketing変更前Review、同一Packageへの再承認要求、本文／境界／Header変更および別目的Approval流用をFAILとし、Final Packageへの明示的進行意思、G5自動PASS、publish／PPVまでの無停止継続をpositive testした
 - [ ] push後にlocal HEADとremoteの一致を確認する計画がある
 
 ---

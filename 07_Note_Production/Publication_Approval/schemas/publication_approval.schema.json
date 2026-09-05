@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://repository.local/schemas/note-publication-approval.schema.json",
+  "title": "note Final and Publication Approval v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "approval_id",
+    "approval_scope",
+    "approval_type",
+    "decision",
+    "package_id",
+    "package_sha256",
+    "human_event_id",
+    "human_event_sha256",
+    "destination",
+    "purpose",
+    "approved_at"
+  ],
+  "properties": {
+    "schema_version": { "const": "note-publication-approval/v1" },
+    "approval_id": { "type": "string", "minLength": 1 },
+    "approval_scope": { "const": "NOTE_PUBLICATION" },
+    "approval_type": { "const": "FINAL_AND_PUBLICATION" },
+    "decision": { "const": "APPROVED" },
+    "package_id": { "type": "string", "minLength": 1 },
+    "package_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "human_event_id": { "type": "string", "minLength": 1 },
+    "human_event_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "destination": { "$ref": "#/$defs/destination" },
+    "purpose": { "const": "NOTE_PUBLICATION" },
+    "approved_at": { "type": "string", "format": "date-time" }
+  },
+  "$defs": {
+    "destination": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["service", "account_id", "publication_target"],
+      "properties": {
+        "service": { "const": "note" },
+        "account_id": { "type": "string", "minLength": 1 },
+        "publication_target": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}

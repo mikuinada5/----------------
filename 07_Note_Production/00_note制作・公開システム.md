@@ -1,7 +1,7 @@
-# note制作・公開システム v2.7
+# note制作・公開システム v2.8
 
-**Status:** Current / Operational v2.7 / Visual Runtime Bridge compatible
-**Scope:** note制作、Marketing Review、Header Production、Publication Dry Run、Publication Transaction、公開後記録、Session単位のSNS展開、Repositoryへの知見還元
+**Status:** Current / Operational v2.8 / Visual Runtime Bridge compatible
+**Scope:** note制作、Marketing Review、Header Production、Final Review、G5自動検証、Publication Transaction、公開後記録、Session単位のSNS展開、Repositoryへの知見還元
 
 ## 1. 責任と非責任
 
@@ -12,7 +12,7 @@
 - 役割・権限・受け渡し：`AI_ORGANIZATION.md`
 - 配置、Archive、CHANGELOG、Git：`REPOSITORY_RULES.md`
 
-Marketing Reviewは、本Source内のnote固有専門監査Gateとして扱う。新しいAI組織上の部署・役職・承認者は作らず、既存PipelineのQA、Production、PublisherおよびHuman Approvalを責任に応じて接続する。Marketing担当は、Human途中確認なしでPublication Decisionの推奨案を作成できるが、Human Final Approval、外部公開、価格・自己開示・公開範囲の最終採否を代行しない。認証・接続または正式投稿手段がないSNS投稿を、実施済みと表現してはならない。接続不能時は未実装／未投稿として公開成果物記録へ残す。
+Marketing Reviewは、本Source内のnote固有専門監査Gateとして扱う。新しいAI組織上の部署・役職・承認者は作らず、既存PipelineのQA、Production、PublisherおよびHuman Approvalを責任に応じて接続する。通常のnote制作E2EでHumanを呼ぶ標準地点は、Production＋内部QA後のHuman Reviewと、Marketing後のFinal Reviewの2回とする。Marketing担当は、Human途中確認なしでPublication Decisionの推奨案を作成できるが、Human Final Approval、外部公開、価格・自己開示・公開範囲の最終採否を代行しない。認証・接続または正式投稿手段がないSNS投稿を、実施済みと表現してはならない。接続不能時は未実装／未投稿として公開成果物記録へ残す。
 
 ## 2. 制作モデル
 
@@ -183,19 +183,20 @@ Marketingは台本・初稿制作を主導せず、次の工程を通過した**
 → 第3稿
 → Header Production
 → Header QA
-→ G5 Human Final Approval Package
+→ Final Review Package提示
+→ Human Final Approval / Publication Approval
+→ G5自動同一性検証
 → 最終稿
 → Publication Draft E2E
-→ Publication Dry Run（公開直前STOP）
-→ Human Publication Approval
+→ Publication Settings検証
 → Publication Transaction
 → Post-Publication Verification
 ```
 
 - **初稿**：note制作部がProductionと内部品質工程を通してHumanへ提出した最初の稿。
-- **第2稿**：Human Review、Practice実機完遂、壁打ち、Screenshot等の実素材を反映し、内容として完成した稿。
+- **第2稿**：Human Review、Practice実機完遂、壁打ち、Screenshot等の実素材を反映し、内容として完成した稿。Human Reviewは制作途中のReviewであり、Final Approvalではない。
 - **第3稿**：Marketing Requirementの必要な修正とMarketing再監査を通過し、Publication Decisionまで確定した稿。
-- **最終稿**：Humanが第3稿、Header Asset、境界、Publication Decisionおよび必要な自己開示をG5 Final Approvalした正式Publication Package。
+- **最終稿**：Humanが第3稿、Header Asset、Publication Conditionsおよび必要な自己開示を一つのFinal Review PackageとしてFinal Approvalし、G5の自動同一性検証をPASSした正式Publication Package。
 
 第2稿、Human完遂Reviewまたは必要な実素材が不足している場合、Marketing本文監査を開始しない。`Marketing Input Pending`として不足Input、所有者および再開条件を記録し、既存の未完成稿を第2稿と読み替えない。
 
@@ -211,7 +212,7 @@ Marketing Inputは次の3段階で扱う。
 
 #### 2.4.3 監査責任と差し戻し
 
-Marketingは、Target Reader、Purchase Promise、商品価値、Story→Practice→次Session等のReader Journey、タイトル、導入、目次・構成、無料／有料境界、価格、CTA、Campaign／Discount、公開日時、SNS Distribution、Magazine／Membership等の既存Publication Rule、市場・競合、Success Metrics／Evaluation PlanおよびPublication Readyを監査・判断する。
+Marketingは、Target Reader、Purchase Promise、商品価値、Story→Practice→次Session等のReader Journey、タイトル、導入、目次・構成、無料／Membership境界、price、CTA、Campaign／Discount、公開日時、SNS Distribution、Magazine、Membership、tagsその他の必要なPublication Conditions、既存Publication Rule、市場・競合、Success Metrics／Evaluation PlanおよびPublication Readyを監査・判断する。Marketing Approvedは、これらのPublication Conditionsに空欄または未解決Decisionがなく、Final Review Packageへ入れられる状態を含む。
 
 Marketing担当は記事本文を直接書き換えない。問題がある場合はnote制作部へ、少なくとも`Requirement ID`、`Must Fix / Nice to Improve`、`問題とEvidence`、`達成すべき状態`、`影響するDecision`、`適用Source`、`再監査範囲`を含むRequirementとして返す。note制作部はVoice、内容、Storyその他の制作責任を守りながら実装し、別の実装方法で同じRequirementを満たせる場合はその根拠を返す。
 
@@ -219,7 +220,7 @@ Marketing担当は記事本文を直接書き換えない。問題がある場�
 
 #### 2.4.4 Publication DecisionとConfidence
 
-Marketing担当はHuman途中確認なしで、推奨価格、無料／有料境界、CTAと優先順位、Campaign実施／非実施、公開日時、SNS Distribution、Success Metricsその他の既存Rule内のPublication Decisionを作成できる。各Decisionには根拠、参照Sourceおよび`High / Medium / Low`のConfidenceを付ける。不明は`Unknown`とし、公開に仮決定が必要なら`検証用仮説 / Confidence Low`として明示する。
+Marketing担当はHuman途中確認なしで、推奨価格、無料／Membership境界、Membership、Magazine、tags、CTAと優先順位、Campaign実施／非実施、公開日時、SNS Distribution、Success Metricsその他の既存Rule内のPublication Decisionを作成できる。各Decisionには根拠、参照Sourceおよび`High / Medium / Low`のConfidenceを付ける。不明は`Unknown`とし、公開にHuman判断が必要ならFinal Review Package提示前に`Human Decision Required`として解決する。未解決のままMarketing ApprovedまたはG5へ送らない。
 
 Marketing担当は、Target Reader、商品目的、商品の実際の内容・価値、事業上位原則、既存商品設計または既存Publication Ruleを変更しない。既存Ruleがある事項は再判断せず適用し、Ruleがない事項は根拠付き推奨案を作り、Rule変更が必要なら`Human Decision Required`とする。
 
@@ -229,19 +230,19 @@ Review Recordには、少なくとも`Hypothesis`、`Decision`、`Decision Reaso
 
 Marketing Gateは、`Marketing Input Pending`、`Marketing Revision Required`、`Marketing Approved`または`Human Decision Required`のいずれかを記録する。`Marketing Approved`の条件は「最大限売れそう」ではなく、Must Fixが解決し、Guardrailsに適合し、Publication Decisionと検証計画が揃い、**市場に出して検証できる品質**に達していることである。Nice to ImproveだけではPublicationを止めない。
 
-第3稿完成後、Header Production／Header QAを行い、Humanには第3稿本文、Header Asset、無料／有料またはMembership境界、一画面の`Publication Decision Summary`および必要な自己開示を一つのG5 Approval Packageとして提示する。Summaryには、Price＋Confidence、Free/Paid Boundary＋Confidence、Campaign、Publication Date/Time、CTA、Magazine、Membership、Tags、SNS Distribution、Marketing Gate、unresolved issues、Low Confidence Decisionsおよび今回検証するHypothesisを含める。Humanは一括承認または特定DecisionだけをOverrideでき、Overrideは理由とともに記録する。
+第3稿完成後、Header Production／Header QAを行い、Humanには第3稿本文、Header Asset、一画面の`Publication Decision Summary`および必要な自己開示を一つのFinal Review Packageとして提示する。Summaryには、Price＋Confidence、Free/Membership Boundary＋Confidence、Campaign、Publication Date/Time、CTA、Magazine、Membership、Tags、SNS Distribution、Marketing Gate、unresolved issues、Low Confidence Decisionsおよび今回検証するHypothesisを含める。Humanは一括承認または特定DecisionだけをOverrideでき、Overrideは理由とともに記録する。Package提示後に文脈上当該Packageを指す「OK」「これでいい」「投稿して」「公開して」「いけー」等の明示的進行意思があれば、Human Final ApprovalとPublication Approvalが同時に成立する。
 
-Humanが本文、タイトル、導入、無料ライン周辺その他のMarketing評価へ影響する変更を行った場合は、差分と影響範囲だけをMarketing再監査する。G5後のHeader差替えまたは意味が変わる修正は、Header QAまたは該当Reviewへ戻し、変更版をG5再承認する。
+Humanが本文、タイトル、導入、無料ライン周辺その他のMarketing評価へ影響する変更を行った場合は、差分と影響範囲だけをMarketing再監査する。Final Approval後のD3、Header、無料／Membership境界、price、Membership、Magazine、tags、その他の承認対象Publication ConditionsまたはHuman判断が必要な新規条件の変更はApprovalを失効させ、該当QA／Review後の変更PackageをFinal Reviewへ戻す。
 
 #### 2.4.6 Publication Decision Summaryの責任
 
-Publication Decision Summaryは、Publication Transaction時にnote上のPublication Settingsを再構成するCanonical Inputである。本文、Header、境界そのものの正本を代替しない。Series Publication Profileに必須所属先がある場合、Decision生成時にそのProfileからMembershipとMagazineを別項目として継承する。必須項目の欠落またはProfileとの不一致は、Decisionとの機械的一致だけで許容せず、Human Decisionまたは`Pipeline Gap`として停止する。Summaryにない設定をUI上で発見した場合も、既存Ruleから一意に決められなければ停止する。
+Publication Decision Summaryは、Publication Transaction時にnote上のPublication Settingsを再構成するCanonical Inputである。本文、Header、境界そのものの正本を代替しない。Series Publication Profileに必須所属先がある場合、Decision生成時にそのProfileからMembershipとMagazineを別項目として継承する。必須項目の欠落またはProfileとの不一致はMarketing Approvedにせず、Human Decisionまたは`Pipeline Gap`としてFinal Review前に停止する。Summaryにない設定をUI上で発見した場合も、既存Ruleから一意に決められなければ停止する。
 
 ### 2.5 Header Production
 
-note記事ではHeader Assetを本文と同じPublication Packageの構成要素として扱う。標準位置は、`Marketing Approved → 最終タイトル／第3稿確定 → Header Production → Header QA → G5 Human Final Approval`とする。
+note記事ではHeader Assetを本文と同じPublication Packageの構成要素として扱う。標準位置は、`Marketing Approved → 最終タイトル／第3稿確定 → Header Production → Header QA → Final Review Package → Human Final Approval / Publication Approval → G5自動検証`とする。Headerだけの別Human Approvalを標準工程へ追加しない。
 
-Header Productionは`AI_PRODUCTION_PIPELINE.md` §7.6のVisual Production Controlを必須とする。画像生成前に、本節の媒体固有Templateを`MUST`、`MUST_NOT`、`MAY`へ解決したGeneration Contractと実際のTool Requestを作り、Prompt Assembly QAをPASSさせる。生成直後の画像は`GENERATED_UNVERIFIED`であり、本節のHeader QAがPASSするまでHuman Review Candidate、Header Asset登録、`ASSET_READY`またはG5 Packageへ進めない。
+Header Productionは`AI_PRODUCTION_PIPELINE.md` §7.6のVisual Production Controlを必須とする。画像生成前に、本節の媒体固有Templateを`MUST`、`MUST_NOT`、`MAY`へ解決したGeneration Contractと実際のTool Requestを作り、Prompt Assembly QAをPASSさせる。生成直後の画像は`GENERATED_UNVERIFIED`であり、本節のHeader QAがPASSするまでFinal Review Package候補、Header Asset登録または`ASSET_READY`へ進めない。
 
 Chat／WorkでCurrent Sourceを実読できても、built-in image generationへ直接進まない。現行のgoverned Header生成は、Production IntentをLocal CodexのRepository Skill `visual-production-bridge`へ接続し、本節のmachine-readable profileからContract／Requestを生成、Runtime Request BindingをPASSさせた経路に限定する。Runtime Receiptがない、actual request hashが一致しない、またはPlatform BoundaryをPASSと偽装した生成物はRejected / non-assetとして扱う。
 
@@ -323,7 +324,7 @@ AIDAILYの公開記事titleが`AIとの日常｜<記事固有title>`である場
 - [ ] 説明ポスター／インフォグラフィックのような情報過多構成になっていない
 - [ ] note下書きへの設定、crop後表示および公開後表示を確認した、または後続Gateの確認項目として記録した
 
-Header QAは生成物の実物を確認して判定する。QA FAIL画像は正式Asset IDを付与せず、Header Asset記録、`ASSET_READY`、G5 Packageまたは通常のHuman Review Candidateへ接続しない。既存Contractから一意に修正可能で再試行上限内なら再生成し、上限到達、Source矛盾、新しいCreative Decisionまたは検査不能ではPipelineのSTOP条件へ戻す。AIが画像を検査できない場合のHuman提示は`HUMAN_ASSET_QA_REQUIRED`の検査依頼に限定し、承認候補の提示と混同しない。
+Header QAは生成物の実物を確認して判定する。QA FAIL画像は正式Asset IDを付与せず、Header Asset記録、`ASSET_READY`またはFinal Review Packageへ接続しない。既存Contractから一意に修正可能で再試行上限内なら再生成し、上限到達、Source矛盾、新しいCreative Decisionまたは検査不能ではPipelineのSTOP条件へ戻す。AIが画像を検査できない場合のHuman提示は`HUMAN_ASSET_QA_REQUIRED`の検査依頼に限定し、承認候補の提示と混同しない。
 
 #### 2.5.4 Section Header Visual Family
 
@@ -351,65 +352,71 @@ S1-2は本Profileの最初の適用対象とする。StoryはStory Template、Pr
 
 AIDAILY-003の本文、第3稿識別、Marketing Approved、Publication Decisionおよび既存D3は本Incidentの変更対象外であり、その状態を維持する。再Production時はCurrent Sourceを再解決し、同じHeader Production versionについてGeneration Contract、Prompt Assembly QA、生成物実査、Header QA PASSの順に進める。Humanへ通常のHeader候補として提示できるのは、そのQA PASS済みAssetだけである。
 
-### 2.6 Publication Draft E2E／Dry Run／Transaction
+### 2.6 Final Approval／G5／Publication E2E
 
-#### 2.6.1 G5 Approval Package
+#### 2.6.1 Final Review Package／Approval Evidence
 
-G5では、最終本文、Header Asset、無料／有料またはMembership境界、Publication Decision Summaryおよび必要な自己開示を一括してHumanへ提示する。G5はPublication Packageの採用承認であり、note上で外部公開を発生させる操作への承認ではない。
+Marketing Approvedの第3稿本文、Header Asset、無料／Membership境界、Membership、Magazine、price、tags、その他のPublication Conditions、必要な自己開示、公開先および必要Sourceを一つのFinal Review PackageとしてHumanへ提示する。Package提示後の明示的進行意思を、同PackageへのHuman Final ApprovalとPublication Approvalとして記録する。Production後のHuman Review、Marketing前の発言、Headerだけへの確認または別目的のApprovalを流用しない。
 
-#### 2.6.2 Publication Draft E2E
+Final Review Package、Human response eventおよびApproval Recordは`Publication_Approval/`のSchemaに従い、Package ID／SHA、destination、purpose、event ID／時刻およびSource Manifest SHAをbindingする。
 
-G5後、承認済みタイトル、本文、Headerおよび境界をnote新規下書きへ反映し、下書き保存を確認する。Publication Settingsは下書きへ必ず永続化できるAssetと仮定しない。AIDAILY-001の実測では、記事タイプ、Magazine、Membership、対象プランおよびTagsは公開設定画面を離れると保持されず、本文、Headerおよび境界だけが下書き保存された。AIDAILY-002では、Dry Runの試し読み画面からキャンセルして設定画面へ戻り、再度試し読み画面へ入ると境界選択が未選択へ戻った一方、Transactionで再設定した境界は公開後Editorへ保存された。現行UIでは境界も画面遷移後の保持を仮定せず、Transaction時にCanonical Inputから最終再設定・再照合する。これらの挙動を公開失敗または承認不足と誤認しない。
+#### 2.6.2 G5 Automated Package Verification
 
-#### 2.6.3 Publication Dry Run
+G5はHumanへ新しい承認を求めない。`Publication_Approval/scripts/Test-PublicationApproval.ps1`で、Human Final Approval Evidence、Final Review Package、実際に公開しようとしているPackage、D3、Header、Publication Conditions、destination、purposeおよび必要Sourceの一致を検証する。一致すればPASSし、追加Human ApprovalなしでPublication E2Eへ進む。差分、Evidence欠落、Human Reviewの流用、Source不一致またはHuman判断が必要な新規条件があればFAILしてFinal Reviewへ戻す。
 
-Publication Decision Summaryから実際のnote公開設定画面へ、記事タイプ、無料／Membership境界、Magazine、Membership ON／OFF、対象プラン、価格、CTA、Tagsその他の必要設定を構成する。Publication Decisionだけでなく対象Series Publication Profileの必須所属先とも照合し、Magazine登録、Membership登録、対象プランおよび境界を別項目として確認する。設定可能性と承認内容との一致を確認し、**「投稿する」等の外部公開を発生させる最終操作の直前でSTOP**する。Dry Run完了は`Publication Prepared / Not Published`であり、G8 PASS、公開済みまたは公開承認とみなさない。
+#### 2.6.3 Publication Draft E2E
 
-#### 2.6.4 Human Publication Approval
+G5 PASS後、承認済みタイトル、本文、Headerおよび境界をnote新規下書きへ反映し、下書き保存を確認する。Publication Settingsは下書きへ必ず永続化できるAssetと仮定しない。AIDAILY-001の実測では、記事タイプ、Magazine、Membership、対象プランおよびTagsは公開設定画面を離れると保持されず、本文、Headerおよび境界だけが下書き保存された。AIDAILY-002では、Dry Runの試し読み画面からキャンセルして設定画面へ戻り、再度試し読み画面へ入ると境界選択が未選択へ戻った一方、Transactionで再設定した境界は公開後Editorへ保存された。現行UIでは境界も画面遷移後の保持を仮定せず、Transaction時にCanonical Inputから最終再設定・再照合する。これらの挙動を公開失敗、承認不足または再承認理由と誤認しない。
 
-Dry Run結果として、対象Draft／Article ID、公開先、再構成したPublication Settings、差分、未解決Gapおよび最終操作をHumanへ提示する。対象下書きと外部公開操作を明示したHuman Publication Approval取得後のみPublication Transactionへ進む。G5だけを根拠に「投稿する」を実行しない。
+#### 2.6.4 Publication Settings Verification
 
-#### 2.6.5 Publication Transaction
+Publication Decision Summaryから実際のnote公開設定画面へ、記事タイプ、無料／Membership境界、Magazine、Membership ON／OFF、対象プラン、価格、CTA、Tagsその他の必要設定を構成する。Publication Decisionだけでなく対象Series Publication Profileの必須所属先とも照合し、Magazine登録、Membership登録、対象プランおよび境界を別項目として確認する。設定可能性と承認Packageとの一致を検証し、一致していればそのままTransactionへ進む。同一Packageの下書き作成後、設定画面遷移後またはpublish直前に再承認を要求しない。
+
+#### 2.6.5 Approval Invalidation／STOP
+
+D3本文、Header、無料／Membership境界、price、Membership、Magazine、tags、その他の承認対象Publication Conditions、destinationまたはHuman判断が必要な新規条件が変わった場合だけApprovalを失効させ、Human Final Reviewへ戻す。Source Manifestが承認Packageと一致しない場合もG5 FAILとする。Sourceの再読、同一bytesの再取得、下書き反映、設定の再構成、認証済み画面への移動その他、Package内容を変えない内部処理ではApprovalを失効させない。
+
+#### 2.6.6 Publication Transaction
 
 1. 承認済み下書きを開き、Draft ID／対象記事を照合する。
 2. Publication Decision Summaryを読む。
 3. 下書きへ永続化されないPublication SettingsをSummaryから再構成し、対象Series Profileの必須MagazineとMembership Planを別々に設定する。
-4. タイトル、本文、Header、境界および全設定をG5 Package／Publication Decision／対象Series Publication Profileと照合する。Dry Run後の画面遷移で境界が保持されたと仮定せず、最終操作直前画面で選択ラインを再確認する。
-5. Human Publication Approvalの対象、公開先および最終操作を照合する。
+4. タイトル、本文、Header、境界および全設定をG5検証済みFinal Review Package／Publication Decision／対象Series Publication Profileと照合する。画面遷移で境界が保持されたと仮定せず、最終操作直前画面で選択ラインを再確認する。
+5. Package-bound Human Final Approval / Publication Approval Evidenceの対象、公開先、目的および実対象の同一性を再検証する。新しい承認は要求しない。
 6. 公開を発生させる最終操作を一度だけ実行する。
 7. 公開成功表示を確認し、公開URLと公開日時を取得する。
 
 Publication Decisionとの差分、想定外UI、認証問題、対象Draft不一致その他の異常を検出した場合は、推測で回避、別方式へ変更または無承認修正せずSTOPする。
 
-#### 2.6.6 Post-Publication Verification
+#### 2.6.7 Post-Publication Verification
 
 公開成功表示だけをE2E成功条件にしない。実際の公開ページまたは管理画面で、最低限、公開URL、タイトル、Header、本文、無料／有料またはMembership境界、Membership特典記事状態、対象プラン、表示価格、加入導線、Magazine所属、Tagsおよび公開日時を確認する。Publication Decisionとの一致に加え、対象Series Publication Profileに定義された必須所属先との一致を照合する。Membership境界、Membership Plan登録およびMagazine所属は別項目として確認し、Decisionが必須Profileを欠落していた場合は機械的一致だけでPASSにしない。必要に応じて非ログイン／非対象ユーザー環境を使用し、限定範囲が実際に非表示であることを確認する。全項目一致で初めてPublication E2EをPASSとする。後続Human QAで必須所属先の漏れが判明した場合は、当初PASSの履歴を保持したままVerificationを再オープンし、Gapと現在の修正確認状態を記録する。
 
 SNS Distributionは別成果物・別Gateであり、Publication E2Eへ自動包含しない。実行していないSNS共有を投稿済みと記録しない。
 
-#### 2.6.7 Pending Link／Backfill Lifecycle
+#### 2.6.8 Pending Link／Backfill Lifecycle
 
 `Pending Link`は、公開済みまたは公開予定のSource Articleから、まだ実在公開URLを持たないTarget Articleへ、Human承認済みの接続予定がある状態である。Source Article ID、Target Article ID、Placement、Link Type／Card Typeおよび状態を公開成果物記録または対象Section制作台本へ記録し、Target未公開中のTarget URLは空欄にする。URL空欄はリンク予定なしを意味せず、未公開URL、仮URL、推測URLまたは将来のslugを生成・仮置きしない。Source Article公開前はSection制作台本等の承認済み制作記録で計画を管理し、Source ArticleのRecord / Resume時に同じLink Record IDをSource Article側の公開成果物記録へ引き継ぐ。以後の現在状態は同公開成果物記録を正とし、制作台本には計画とlocatorを保持する。
 
-Pending Linkは、それ自体ではSource Articleの公開をBLOCKしない。ただしHuman DecisionまたはG5 Approval Packageが当該リンクをSource Article公開時の必須条件としている場合は、実在URLと挿入済みリンクを確認できるまでG8へ進めない。必須条件でないPending Linkは未完了タスクとして記録を維持し、Source Articleを公開できる。
+Pending Linkは、それ自体ではSource Articleの公開をBLOCKしない。ただしHuman DecisionまたはFinal Review Packageが当該リンクをSource Article公開時の必須条件としている場合は、実在URLと挿入済みリンクを確認できるまでG8へ進めない。必須条件でないPending Linkは未完了タスクとして記録を維持し、Source Articleを公開できる。
 
 Target ArticleのPublication Transactionと初回Post-Publication VerificationがPASSし、Target Article IDに対応する実在URLが公開成果物記録で確認できた時点を`Target Published`とする。Repository Integration／PublisherはRecord / Resumeで同Target Article IDを持つ未解決Pending Linkを確認し、Source Article、PlacementおよびLink Type／Card Typeを一意に特定できるものだけをBackfill対象にする。ID、URLまたは配置が曖昧な場合は推測せず、PendingのままSTOPする。
 
 Backfill対象、実在URL、配置、カード種別、差分および実行経路を照合し、実行承認待ちになった状態を`Backfill Prepared`とする。これはBackfill実施済みまたは`Resolved`を意味しない。
 
-Backfillは既存公開記事を変更する外部操作であるため、対象Source Article、Target Article、実在URL、Placement、Link Type／Card Typeおよび最終操作を特定したHuman Publication Approvalを得て実行する。元のG5で同一の接続、文言、配置およびカード種別が承認済みで、確認済み実在URLを機械的に反映するだけなら本文G5の再承認は不要とする。承認済み本文、意味、文言、配置、公開範囲、価格、自己開示その他の承認対象を変更する場合は、影響範囲を再Reviewし、必要なG5再承認を得る。
+Backfillは既存公開記事を変更する外部操作であるため、対象Source Article、Target Article、実在URL、Placement、Link Type／Card Typeおよび最終操作を特定したHuman Publication Approvalを得て実行する。元のFinal Review Packageで同一の接続、文言、配置およびカード種別が承認済みで、確認済み実在URLを機械的に反映するだけなら本文のFinal Reviewは不要とする。承認済み本文、意味、文言、配置、公開範囲、価格、自己開示その他の承認対象を変更する場合は、影響範囲を再Reviewし、変更PackageをFinal Reviewへ戻す。
 
 Backfillは、特定のCloud能力を前提にせず、その時点で正式に利用可能かつ認証済みのPublisher／Browser経路で実行する。接続・認証または再編集能力を実証できない経路を利用可能と推測せず、実行不能なら`Backfill Failed`または`Recovery Required`として未完了状態と再開条件を記録する。
 
 Backfill後は、実際の公開ページでSource Article ID、Target URL、Placement、表示されたLink／Card、遷移先のTarget Article IDおよびリンク周辺の承認済み本文に意図しない差分がないことをPost-Publication Verificationする。全項目PASS後だけ`Resolved`へ移行し、Backfill実施日時、PPV結果および最終確認日時を公開成果物記録へ残す。BackfillまたはPPVが失敗・未確認の場合は`Resolved`にせず、`Pending`、`Backfill Failed`または`Recovery Required`を維持する。現在のリンク状態の正本は公開成果物記録とし、Timelineは実際に発生した公開・Backfill事実の履歴だけを扱う。
 
-#### 2.6.8 E2E Evidence／Human QA Addendum｜AIDAILY-001
+#### 2.6.9 E2E Evidence／Human QA Addendum｜AIDAILY-001
 
 2026-09-01、`AIDAILY-001-D3`／`AIDAILY-001-H1`を対象に、Local PCの認証済みBrowser経路でDraft `n7cf6aee64f0d`を公開した。Automated／Post-Publication Verificationでは、公開URL、タイトル、Header、本文、無料範囲末尾、Membership境界、非ログイン環境での限定本文非表示、Membership Plan`AIとの日常`、月額1,500円、加入導線、4 Tagsおよび公開日時を照合し、当時のPublication Decisionとの一致によりPASSと判定した。
 
 2026-09-02の追加Human QAで、Magazine`AIとの日常`への登録が未実施だったことを検出した。当初DecisionではMagazineを必須条件としていなかったため、これは単純な操作ミスと断定せず、上流のPublication Profile／Decision設計不足を主要改善候補とする。当初PASSの履歴を保持したまま総合Verificationを`Human QA Gap Detected / Reopened`とする。Membership Plan、価格、境界、限定本文非表示、加入導線および4 TagsのPASSは維持する。Humanがnote上でMagazine登録を既に修正済みかは未確認であり、現行状態の確認をHuman Actionとして残す。SNS外部共有は実行していない。詳細は当該Published Artifact Recordを正とする。
 
-#### 2.6.9 Smartphone / Chat Publication Interface
+#### 2.6.10 Smartphone / Chat Publication Interface
 
 Human ApprovalおよびPublication Pipelineの起動権限は端末種別では決まらない。認証済みHumanとのChat上で、対象、意図および公開範囲が一意に判断できる明示指示は、スマートフォンからでも既存Human Decisionとして受理できる。必要なSource、本文、Asset、Publication Decisionおよび各Gateが満たされている場合、HumanはスマートフォンChatから公開準備または公開Pipelineを開始できる。
 
@@ -436,25 +443,25 @@ Timelineが未生成または未更新であることは、史実が存在しな
 
 Human-approved Series Articleを対象とする場合は、承認済みSeries ID／Article ID、Target Reader、Series role、公開構成ProfileおよびWork Charterを入力に同じGateを実行する。Section／Sessionへ属さないことを理由にSource QA、Marketing Review、Header QA、G5またはPublication Gateを省略しない。
 
-### `noteに反映して`
+### Final Review Packageへの進行意思
 
-これは**G5 Human Final Approval Gate**を起動する表現であり、AIによる公開実行指示ではない。AIは、第3稿、Header Asset、境界、Publication Decision Summary、必要な自己開示、Marketing Gate、未解決事項、低Confidence Decision、公開先の認証・接続状態を一つのApproval Packageとして提示し、明示承認を確認する。
+AIは、第3稿、Header Asset、境界、Publication Decision Summary、必要な自己開示、Marketing Gate、未解決事項、Low Confidence Decisionおよび公開先を一つのFinal Review Packageとして提示する。この提示より前の「noteに反映して」「これでいい」等はHuman Reviewまたは制作指示であり、Final Approvalとして扱わない。
 
-G5明示承認後はPublication Draft E2EとDry Runまで進められるが、Human Publication Approvalなしに外部公開を発生させる最終操作を実行しない。手段または接続がなければ、AIは公開完了と偽らず、未実施状態と最小の再開条件を記録する。
+Final Review Package提示後、文脈上そのPackageを指す「OK」「これでいい」「投稿して」「公開して」「いけー」等の明示的進行意思はHuman Final ApprovalとPublication Approvalを同時に成立させる。G5自動検証がPASSしたら、Package差分、新規Human Decision、Source不一致または実行異常がない限り、note反映、公開設定反映、publish、PPVまで再承認なしで継続する。手段または接続がなければ、AIは公開完了と偽らず、未実施状態と最小の再開条件を記録する。
 
 ## 4. 企画から公開後まで
 
 1. **Timeline生成・意味づけ・企画／Profile設計**：Timelineの確認済み史実から意味づけを開始し、採用するSection型企画は`10_Section制作台本テンプレート.md`へ記録する。Human-approved Series Article型企画は既存Series ID／Article IDとWork Charterへ記録し、Sectionを推測採番しない。Timelineには実際に起きた出来事だけを記録する。
 2. **Intake / Routing / Source QA**：採用済みSection制作台本またはSeries Article Work Charterを入力としてPipelineを実行し、note本文にはnote制作・公開SOP、SNS展開にはSNS展開基準を必読とする。G0ではDraftを外部公開しない取扱範囲と最終承認者を確定する。
 3. **Production / Output QA → 初稿**：Sessionごとに承認済み公開構成Profileの本文・別コンテンツと、Session全体を入口にしたSNS投稿案を制作する。本文は`PRODUCED_UNVERIFIED`として固定し、`AI_PRODUCTION_PIPELINE.md` §8.5.1の別工程Pre-Human Review QA／G4と提示file照合を通過した同一exact versionだけを初稿としてHumanへ渡す。
-4. **Human Review → 第2稿**：Humanが実内容を確認し、Practiceでは実際に手順を完遂し、壁打ち、実Screenshotその他の実素材を追加する。note制作部が反映し、内容完成稿である第2稿を作る。
-5. **Marketing Review → 第3稿**：第2稿だけを入力にMarketing Reviewを行う。Must FixはRequirementとしてnote制作部へ返し、必要な修正とMarketing再監査を経て`Marketing Approved`とPublication Decisionを確定し、第3稿を作る。Series Publication Profileに必須所属先がある場合はDecisionへ継承し、MembershipとMagazineを別項目として保持する。
+4. **Human Review → 第2稿**：Humanが実内容を確認し、Practiceでは実際に手順を完遂し、壁打ち、実Screenshotその他の実素材を追加する。note制作部が反映し、内容完成稿である第2稿を作る。このReviewはFinal Approvalではない。
+5. **Marketing Review → 第3稿**：第2稿だけを入力にMarketing Reviewを行う。Must FixはRequirementとしてnote制作部へ返し、必要な修正とMarketing再監査を経て、無料／Membership境界、Membership、Magazine、price、tagsその他の必要条件を含むPublication Decisionを確定し、第3稿を作る。必須条件に未解決DecisionがあればMarketing Approvedにしない。
 6. **Header Production / Header QA**：Marketing Approved後の最終タイトルと第3稿を入力にHeaderを制作し、Asset ID、QA、provenanceおよび表示要件を確定する。
-7. **G5 Human Final Approval → 最終Publication Package**：第3稿本文、Header Asset、境界、Publication Decision Summaryおよび必要な自己開示をHumanが一括承認またはDecision単位でOverrideする。影響差分があれば必要範囲だけ再監査し、G5 Approval Recordを確定する。
-8. **Publication Draft E2E / Dry Run**：G5 Packageをnote下書きへ反映して本文系Assetの保存を確認し、Publication SettingsをSummaryから構成する。Decisionと対象Series Profileに対してMembership、対象プラン、境界およびMagazineを別項目で照合し、公開最終操作の直前でSTOPして`Publication Prepared / Not Published`とGapを記録する。
-9. **Human Publication Approval / Publication Transaction**：対象Draft、公開先、設定および最終操作を明示して承認を得た後、Decisionと対象Series ProfileからSettingsを再構成・再照合して最終操作を実行する。
+7. **Human Final Review / Final Approval**：第3稿本文、Header Asset、Publication Conditionsおよび必要な自己開示を一つのFinal Review Packageとして提示する。提示後の明示的進行意思をPackage-bound Human Final Approval / Publication Approvalとして記録する。
+8. **G5 Automated Package Verification**：Approval Evidence、Final Review Package、実際の公開対象、destination、purposeおよび必要Sourceを自動照合する。同一ならPASSし、新しい承認を求めない。
+9. **Publication E2E / Transaction**：G5検証済みPackageをnote下書きへ反映し、Decisionと対象Series ProfileからSettingsを構成・再照合して最終操作を実行する。下書き前、設定画面またはpublish直前に再承認を求めない。
 10. **Post-Publication Verification**：公開URL、表示、Header、本文、境界、Membership、対象プラン、価格、加入導線、Magazine、Tags、日時をDecisionと対象Series Profileに対して照合し、全項目一致でG9／Publication E2EをPASSとする。後続Human QAでGapが判明した場合は初回判定を保持したまま再オープンする。
-11. **Record / Resume／Pending Link確認**：公開済み最終稿、Header Asset記録および公開成果物記録をcanonical pathへ配置する。公開されたArticle IDをTargetとする未解決Pending Linkを確認し、実在URL取得後は§2.6.7の`Target Published → Backfill → Post-Publication Verification → Resolved`へ進める。未公開の第2稿・第3稿・最終稿候補や詳細Marketing EvidenceをPublic公開済み正本へ混入させず、制作台本には安全な状態・locator・再開条件だけを残す。
+11. **Record / Resume／Pending Link確認**：公開済み最終稿、Header Asset記録および公開成果物記録をcanonical pathへ配置する。公開されたArticle IDをTargetとする未解決Pending Linkを確認し、実在URL取得後は§2.6.8の`Target Published → Backfill → Post-Publication Verification → Resolved`へ進める。未公開の第2稿・第3稿・最終稿候補や詳細Marketing EvidenceをPublic公開済み正本へ混入させず、制作台本には安全な状態・locator・再開条件だけを残す。
 12. **Feedback / Repository還元**：反応、誤読、導線、制作上の発見をFeedback Candidateとして分類する。単発反応を自動でOSやSOPへ反映しない。SNS Distributionは別Gateで扱う。
 
 ### 4.1 AI Organization SeriesのExternal Audit
@@ -469,7 +476,7 @@ Section 1では、Storyと確定タイトル、S1-1 Practiceの既存Statusを�
 
 Sectionの現在地は、全体ロードマップまたはSection制作台本で `Planning`、`Production`、`Review`、`Decision Pending`、`Revision Required`、`Approved`、`Scheduled`、`Published/Complete`、`Update Candidate` のいずれかを記録する。Timelineは史実だけを扱い、状態を記録しない。
 
-### 5.1 G5／Publicationの差し戻しと再開
+### 5.1 Final Approval／G5／Publicationの差し戻しと再開
 
 Section Statusとは別に、Marketing Reviewのsubstatusを持つ。状態遷移は次のとおりとする。
 
@@ -491,15 +498,15 @@ Pre-Human Review QA / G4（FAILなら修正→新exact versionを再QA）
                                          ↓
                              Header Production / QA
                                          ↓
-                          Human Final Approval / G5 Package
+                           Final Review Package提示
+                                         ↓
+                   Human Final Approval / Publication Approval
+                                         ↓
+                         G5自動同一性検証 / PASS
                                          ↓
                                   最終稿 / Approved
                                          ↓
                            Publication Draft E2E
-                                         ↓
-                  Publication Prepared / Not Published（Dry Run STOP）
-                                         ↓
-                          Human Publication Approval
                                          ↓
                         Publication Transaction / G8
                                          ↓
@@ -510,12 +517,12 @@ Pre-Human Review QA / G4（FAILなら修正→新exact versionを再QA）
 
 - `Production`では、Section制作台本とG2 PASSを入力に、承認済み公開構成ProfileのDraftを作る。価格、自己開示範囲、公開範囲の未決はDraft内の未解決Decisionとして扱い、Productionを止めない。
 - 初稿に限らず、第2稿、第3稿、追記・再Production後の本文をHumanへ提示するたびに、Pipeline §8.5.1のexact-version Gateを実行する。制作記録からQA record／review／export receiptと本文SHAを参照できなければCandidateとして受領しない。Marketing ReviewおよびG5でも同じ本文とreceiptを再照合し、旧PASSの流用を拒否する。未公開本文とQA詳細はその公開範囲に合う既存保存先へ置き、Public Repositoryへ複製しない。この本文QAの失効は、別AssetであるHuman-approved Headerの自動失効、既存Marketing判断またはPublication Decisionの変更承認を意味しない。
-- `Review`では初稿の実内容、Practice完遂、実素材および修正範囲をHumanが確認する。note制作部の反映が完了した稿だけを第2稿とする。
+- `Review`では初稿の実内容、Practice完遂、実素材および修正範囲をHumanが確認する。これはFinal Approvalではない。note制作部の反映が完了した稿だけを第2稿とする。
 - Marketing Inputが不足する場合は`Marketing Input Pending`とし、Marketing担当が未完成稿を直接修正しない。Must Fixがある場合は`Marketing Revision Required`とし、Requirement、所有者および再開条件を記録する。
-- `Marketing Approved`後に第3稿とPublication Decision Summaryを作り、Header Production／QAを完了してG5を待つ状態をSection Statusの`Decision Pending`とする。
-- G5で本文、HeaderまたはDecisionが差し戻された場合は、未変更の第3稿、Marketing Review結果およびDecisionを有効なまま保持する。影響範囲だけを修正・再監査して`Decision Pending`へ戻す。
-- G5がPASSした場合だけ最終Publication Packageを`Approved`とする。`Publication Prepared / Not Published`はDry Runの停止状態であり、`Published`、予約済み、Human Publication Approval済みまたはG8 PASSとして扱わない。
-- Human Publication Approval後に差分または異常を検出した場合、Approvalを利用して設定を推測変更せずSTOPし、必要なReview／Approvalへ戻す。
+- `Marketing Approved`後に第3稿とPublication Decision Summaryを作り、Header Production／QAを完了してFinal Review Packageを提示する状態をSection Statusの`Decision Pending`とする。
+- Final Reviewで本文、HeaderまたはDecisionが差し戻された場合は、未変更の第3稿、Marketing Review結果およびDecisionを有効なまま保持する。影響範囲だけを修正・再監査して`Decision Pending`へ戻す。
+- Package-bound Human Final Approval / Publication Approval後、G5がApproval Evidence、実Packageおよび必要Sourceの一致を自動検証する。G5がPASSした場合だけ最終Publication Packageを`Approved`とし、そのままG8／G9まで継続する。
+- Final Approval後にD3、Header、無料／Membership境界、price、Membership、Magazine、tags、その他の承認条件またはHuman判断が必要な新規条件を変更した場合はApprovalを失効させる。Package不変の内部処理では再承認しない。差分、Source不一致または異常を検出した場合、Approvalを利用して設定を推測変更せずSTOPし、必要なReview／Approvalへ戻す。
 
 次のいずれかでは、制作台本または公開成果物記録を `Recovery Required` として扱う：公開URLと記録の不一致、承認版と公開候補の不一致、接続／認証失敗、公開直後の表示・リンク・価格異常、Work稿とRepository正本の競合、公開停止を要する安全上の懸念。
 

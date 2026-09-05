@@ -1,6 +1,6 @@
 # Section制作台本テンプレート
 
-**Status:** Current / Operational v1.9 / Visual Production Control compatible
+**Status:** Current / Operational v2.0 / Visual Production Control compatible
 **使用先:** 実データ発生後、`01_Sections/<Section-ID>_<短い識別名>/00_Section制作台本.md` として複製して使用する。
 
 ## 0. 意味づけ・企画フェーズからの引き継ぎ
@@ -57,21 +57,21 @@ Story Candidateは公開許可ではない。本人以外の個人情報、未�
 |---|---|---|---|---|---|---|---|
 |  |  |  |  |  | Pending / Target Published / Backfill Prepared / Backfill Failed / Recovery Required / Resolved |  |  |
 
-未公開TargetへのHuman承認済み接続予定は`Pending`として記録し、Target URLは空欄にする。Pending LinkはHumanがSource Article公開時の必須条件にした場合だけ公開をBLOCKする。Target公開後のBackfill、Human Publication Approval、再PPVおよび`Resolved`への移行は`00_note制作・公開システム.md` §2.6.7に従い、公開後の現在状態は公開成果物記録へ引き継ぐ。未公開URL、仮URLまたは推測URLを置かない。
+未公開TargetへのHuman承認済み接続予定は`Pending`として記録し、Target URLは空欄にする。Pending LinkはHumanがSource Article公開時の必須条件にした場合だけ公開をBLOCKする。Target公開後のBackfill、Human Publication Approval、再PPVおよび`Resolved`への移行は`00_note制作・公開システム.md` §2.6.8に従い、公開後の現在状態は公開成果物記録へ引き継ぐ。未公開URL、仮URLまたは推測URLを置かない。
 
 ## 5. Section完成条件と価格キャリブレーション
 
-Sectionは、全Sessionについて承認済み公開構成Profileの成果物がProduction・Output QAを通過した時点で `Review` とする。Human Review、Practiceの実機完遂、壁打ちおよび実素材をnote制作部が反映した内容完成稿を第2稿とし、同稿だけをMarketing Reviewへ渡す。Marketing Requirementの必要な修正・再監査を通過し、`Marketing Approved`とPublication Decisionが揃った稿を第3稿とする。最終タイトル／第3稿確定後にHeader Production／QAを行い、本文、Header、境界、Publication Decisionおよび必要な自己開示をG5 PackageとしてHuman Final Approvalへ渡す。G5承認済みPackageを最終稿／`Approved`とする。Human Publication Approval後のTransactionとPost-Publication Verification、公開成果物記録の更新まで完了して `Published/Complete` とする。Dry Runの公開ボタン直前停止は`Publication Prepared / Not Published`であり、`Published/Complete`にしない。
+Sectionは、全Sessionについて承認済み公開構成Profileの成果物がProduction・Output QAを通過した時点で `Review` とする。Human Review、Practiceの実機完遂、壁打ちおよび実素材をnote制作部が反映した内容完成稿を第2稿とし、同稿だけをMarketing Reviewへ渡す。このHuman ReviewはFinal Approvalではない。Marketing Requirementの必要な修正・再監査を通過し、無料／Membership境界、Membership、Magazine、price、tagsその他のPublication Conditionsが揃った`Marketing Approved`稿を第3稿とする。最終タイトル／第3稿確定後にHeader Production／QAを行い、本文、Header、Publication Conditionsおよび必要な自己開示をFinal Review PackageとしてHumanへ渡す。Package-bound Human Final Approval / Publication ApprovalとG5自動検証PASS後のPackageを最終稿／`Approved`とし、再承認なしのTransactionとPost-Publication Verification、公開成果物記録の更新まで完了して `Published/Complete` とする。
 
-G5 Human Final Approvalで本文、HeaderまたはDecisionの一部が差し戻された場合は `Revision Required` とする。差し戻し理由、修正対象、所有者、再開条件を§6へ記録し、未変更の第3稿、Output QA、Human Review、Marketing Review結果およびHeader QAは有効なまま保持する。変更が必要な成果物と影響Decisionだけを修正・再監査して `Decision Pending` へ戻す。公開後の修正候補、反応、価格仮説の見直しは `Update Candidate` とし、既存正本を自動変更しない。
+Human Final Reviewで本文、HeaderまたはDecisionの一部が差し戻された場合は `Revision Required` とする。差し戻し理由、修正対象、所有者、再開条件を§6へ記録し、未変更の第3稿、Output QA、Human Review、Marketing Review結果およびHeader QAは有効なまま保持する。変更が必要な成果物と影響Decisionだけを修正・再監査して `Decision Pending` へ戻す。Final Approval後の承認Package変更はApprovalを失効させる。公開後の修正候補、反応、価格仮説の見直しは `Update Candidate` とし、既存正本を自動変更しない。
 
 Section 1の全Sessionについて第2稿が揃った後、Marketingは各Sessionの価格を単独で固定せず、Section 1内の全本文を横並びにして、読者価値、深度、重複、無料／有料範囲、既存商品の導線との整合をキャリブレーションする。AI Organization Series Section 1では、S1-1のStory＋Practice結合本編と、S1-2以降の独立Story／Practice記事を比較対象とする。Marketingは根拠とConfidenceを付けた推奨価格を作成するが、Human Final Approval前に最終価格として決定・設定しない。
 
 ## 6. Production / Content Review / QA / Approval
 
-| Session ID | G2 Source QA | 初稿 / G4 | Human Review・実機完遂 | 第2稿 | Marketing substatus | 第3稿 | Header Contract / Prompt QA / Asset QA | G5 Package | Publication Dry Run | Human Publication Approval | Transaction / G8 | Verification / G9 | 次アクション |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-|  |  |  |  | Not Ready / Ready | Input Pending / Review / Revision Required / Approved / Human Decision Required | Not Ready / Ready | Pending / PASS / Returned | Pending / Approved / Returned | Not Started / Prepared Not Published / Gap | Pending / Approved / Returned | Not Started / Published / Failed | Not Started / PASS / FAIL |  |
+| Session ID | G2 Source QA | 初稿 / G4 | Human Review・実機完遂 | 第2稿 | Marketing substatus / Conditions | 第3稿 | Header Contract / Prompt QA / Asset QA | Final Review Package / Human Event | G5 Automated Verification | Transaction / G8 | Verification / G9 | 次アクション |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+|  |  |  |  | Not Ready / Ready | Input Pending / Review / Revision Required / Approved / Human Decision Required | Not Ready / Ready | Pending / PASS / Returned | Pending / Approved / Returned | Not Started / PASS / FAIL | Not Started / Published / Failed | Not Started / PASS / FAIL |  |
 
 ## 7. Marketing Review / Header / Publication Decision
 
@@ -94,9 +94,8 @@ Marketingは第2稿から開始し、本文を直接書き換えず、Requiremen
 | Marketing Gate | Marketing Input Pending / Marketing Revision Required / Marketing Approved / Human Decision Required |
 | 第3稿識別 / 差分範囲 |  |
 | Header Contract / Prompt Assembly QA / Asset QA | Contract ID、Production version、Source fingerprint、実Tool Request識別、Prompt QA、Asset provenance、Header QA結果、Human Review Candidate化。QA未確認／FAILはAsset ID・G5へ進めない |
-| G5 Human Final Approval Record | 本文、Header、境界、Publication Decision、自己開示の一括承認 / Override＋理由 / Returned |
-| Publication Dry Run | Not Started / Publication Prepared・Not Published / Gap |
-| Human Publication Approval | Pending / Approved / Returned。対象Draft、公開先、最終操作を記録 |
+| Final Review Package / Human Event | 本文、Header、Publication Conditions、自己開示、公開先、目的、Package ID／SHA、Human event ID／時刻、statement |
+| G5 Automated Verification | Approval Evidence、実Package、destination、purpose、Source Manifestの照合結果。G5で新しい承認を求めない |
 | Publication Transaction / Verification | Not Started / Published / PASS / FAIL |
 | Pipeline Gap / 再開条件 |  |
 
@@ -127,7 +126,7 @@ Marketingは第2稿から開始し、本文を直接書き換えず、Requiremen
 |---|---|---|---|---|---|---|---|---|
 |  |  |  |  |  |  | Human提供後に記録 | Factと分離 | 一度の結果で一般則化しない |
 
-G5 Human Final Approval時は、第3稿本文、Header Asset、境界、必要な自己開示と一画面のPublication Decision Summaryを一つのPackageとして提示する。SummaryにはPrice＋Confidence、Free/Paid Boundary＋Confidence、Campaign、Publication Date/Time、CTA、Magazine、Membership、Tags、SNS Distribution、Marketing Gate、unresolved issues、Low Confidence Decisionsおよび今回検証するHypothesisを含める。G5は外部公開操作を承認しない。Dry Run後、対象Draftと最終操作を特定したHuman Publication Approvalを別に記録する。
+Human Final Review時は、第3稿本文、Header Asset、必要な自己開示と一画面のPublication Decision Summaryを一つのFinal Review Packageとして提示する。SummaryにはPrice＋Confidence、Free/Membership Boundary＋Confidence、Campaign、Publication Date/Time、CTA、Magazine、Membership、Tags、SNS Distribution、Marketing Gate、unresolved issues、Low Confidence Decisionsおよび今回検証するHypothesisを含める。提示後の明示的進行意思をHuman Final Approval / Publication ApprovalとしてPackage identityへbindingする。G5はApproval Evidenceと実Packageの一致を自動検証し、同一ならTransaction／PPVへ継続する。
 
 ## 8. 公開後・Feedback
 

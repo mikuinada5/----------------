@@ -131,7 +131,7 @@ S1-1だけStory＋Practiceをこの順序でnote本編1記事にする。S1-2以
 | `AIORG-S01-LINK-001` | `S01-02-STORY` | `S01-02-PRACTICE` | Story末尾（既存Human-approved配置を維持） | noteリンクカード | Pending |  | S1-2 StoryはTarget未公開でも公開可能。Practiceの実在URL取得後にBackfill、再PPV PASS後だけResolved。 |
 | `AIORG-S01-LINK-002` | `S01-02-PRACTICE` | `S01-03-STORY` | Practice末尾 | noteリンクカード | Pending |  | S1-3 Storyの実在URL取得後にBackfill、再PPV PASS後だけResolved。 |
 
-Target未公開中はTarget URLを空欄とし、未公開URL、仮URLまたは推測URLを置かない。状態遷移、BackfillのHuman Publication Approval、利用可能なPublisher経路および再PPVは`00_note制作・公開システム.md` §2.6.7、公開後の現在状態は`11_公開成果物記録テンプレート.md`の記事間リンク記録に従う。Timelineは実際に発生した公開・Backfill事実だけを扱い、現在のリンク状態を管理しない。
+Target未公開中はTarget URLを空欄とし、未公開URL、仮URLまたは推測URLを置かない。状態遷移、BackfillのHuman Publication Approval、利用可能なPublisher経路および再PPVは`00_note制作・公開システム.md` §2.6.8、公開後の現在状態は`11_公開成果物記録テンプレート.md`の記事間リンク記録に従う。Timelineは実際に発生した公開・Backfill事実だけを扱い、現在のリンク状態を管理しない。
 
 ### S01-01 制作台本詳細
 

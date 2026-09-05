@@ -481,14 +481,18 @@ AIは次を整理して提案する。
 
 その個別設計が正式化されるまでは、新しい対外的結果が発生する直前で確認する。
 
-### 19.1 成果物承認と対外実行承認の分離
+### 19.1 成果物承認と対外実行承認のbinding
 
-外部公開を伴うWorkflowでは、成果物またはPublication Packageそのものの最終承認と、実際に外部公開を発生させる操作への承認を分けてよい。媒体別Sourceがこの二段階を要求する場合、前者だけを根拠に後者を実行しない。
+外部公開を伴うWorkflowでは、対象Package、公開先、目的および公開意思をHuman Approval Evidenceへbindingする。媒体別Sourceが、Final Review Packageへの明示的な進行意思をHuman Final ApprovalとPublication Approvalの双方として成立させる設計を持つ場合、その一つのApproval Evidenceで承認済み範囲の公開工程を継続できる。工程名が変わったことだけを理由に同じ判断を取り直さない。
 
-- G5 Human Final Approvalは、承認記録に含まれる本文、画像、公開範囲、価格、自己開示その他の成果物内容を確定する。
-- Publication Dry Runその他の非公開確認工程は、設定可能性と承認版との一致を検証するが、公開権限を発生させない。
-- 外部公開を発生させる最終操作には、対象、公開先、操作および影響範囲を特定した明示的Human Publication Approvalを必要とする。
-- G5後に本文、画像、公開境界、価格、自己開示その他の承認対象を変更した場合、変更対象と影響範囲を再Reviewし、必要なG5再承認を得る。承認済み画像を無承認で差し替えない。
-- Human Publication Approval後であっても、承認版との差分、想定外UI、認証問題または公開先の異常を検出した場合は、推測で回避せず停止する。
+- 制作途中のHuman Reviewは、Marketing、最終画像、公開条件または最終Packageより前に行われるため、Human Final ApprovalまたはPublication Approvalではない。
+- Final Approvalは、本文、画像、公開範囲、価格、所属先、tags、自己開示その他の承認対象と、公開先・目的を含む一つのPackage identityへbindingする。
+- Final Review Package提示後、文脈上そのPackageを指すことが明確なHumanの「OK」「これでいい」「投稿して」「公開して」「いけー」等の明示的進行意思は、媒体別Sourceが定める範囲でHuman Final ApprovalとPublication Approvalを同時に成立させられる。
+- G5は、媒体別Sourceが同時承認を採る場合、新しい承認を求めるGateではなく、Human Evidenceと実際の公開Packageの同一性を自動検証するGateとする。
+- Final Approval後に本文、画像、公開境界、価格、所属先、tags、自己開示その他の承認対象またはHuman判断が必要な新規条件を変更した場合、Approvalを失効させ、変更対象と影響範囲を再Reviewする。
+- 同一PackageのSource再読、下書き反映、設定再構成、Dry Runその他の内部処理だけではApprovalを失効させない。
+- Approval後であっても、承認Packageとの差分、Source不一致、想定外UI、認証問題または公開先の異常を検出した場合は、推測で回避せず停止する。
 
-note固有のG5 Approval Package、Publication Dry Run、Publication TransactionおよびPost-Publication Verificationの具体手順は、`07_Note_Production/00_note制作・公開システム.md`を正とする。
+Publication Approvalは、External Audit、Archive保存、Git通信、credentialまたは他サービス送信の承認として流用しない。それぞれ対象、目的、destinationが異なる別Approvalとして扱う。
+
+note固有のFinal Review Package、G5自動検証、Publication TransactionおよびPost-Publication Verificationの具体手順は、`07_Note_Production/00_note制作・公開システム.md`を正とする。

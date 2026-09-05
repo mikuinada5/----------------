@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://repository.local/schemas/note-final-review-package.schema.json",
+  "title": "note Final Review Package v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "package_id",
+    "article_id",
+    "d3_body",
+    "header",
+    "publication_conditions",
+    "destination",
+    "purpose",
+    "source_manifest",
+    "presented_at"
+  ],
+  "properties": {
+    "schema_version": { "const": "note-final-review-package/v1" },
+    "package_id": { "type": "string", "minLength": 1 },
+    "article_id": { "type": "string", "minLength": 1 },
+    "d3_body": { "$ref": "#/$defs/artifact" },
+    "header": { "$ref": "#/$defs/artifact" },
+    "publication_conditions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["access_boundary", "membership", "magazine", "price", "tags", "other_conditions"],
+      "properties": {
+        "access_boundary": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["mode", "locator"],
+          "properties": {
+            "mode": { "enum": ["FREE", "PAID", "MEMBERSHIP"] },
+            "locator": { "type": "string", "minLength": 1 }
+          }
+        },
+        "membership": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["enabled", "name", "plan"],
+          "properties": {
+            "enabled": { "type": "boolean" },
+            "name": { "type": "string" },
+            "plan": { "type": "string" }
+          }
+        },
+        "magazine": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["enabled", "name"],
+          "properties": {
+            "enabled": { "type": "boolean" },
+            "name": { "type": "string" }
+          }
+        },
+        "price": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["currency", "amount"],
+          "properties": {
+            "currency": { "const": "JPY" },
+            "amount": { "type": "integer", "minimum": 0 }
+          }
+        },
+        "tags": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "other_conditions": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "destination": { "$ref": "#/$defs/destination" },
+    "purpose": { "const": "NOTE_PUBLICATION" },
+    "source_manifest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["manifest_id", "sha256"],
+      "properties": {
+        "manifest_id": { "type": "string", "minLength": 1 },
+        "sha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "presented_at": { "type": "string", "format": "date-time" }
+  },
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["artifact_id", "sha256"],
+      "properties": {
+        "artifact_id": { "type": "string", "minLength": 1 },
+        "sha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "destination": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["service", "account_id", "publication_target"],
+      "properties": {
+        "service": { "const": "note" },
+        "account_id": { "type": "string", "minLength": 1 },
+        "publication_target": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}

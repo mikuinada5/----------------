@@ -6,6 +6,24 @@
 
 ------------------------------------------------------------------------
 
+## 2026-09-05｜note Final ApprovalとPublication Approvalを一つのPackage-bound Human eventへ統合
+
+### Root Cause
+
+2026-09-01のnote Publication E2E βで、G5成果物承認とPublication Transaction承認を意図的に分離した。その後のAIDAILY-004実運用では、Production後のHuman Review、Header確認、G5、Dry Run後のPublication Approvalが別々のHuman確認として増殖し、Marketing後の最終Packageを一度承認すれば足りる通常運用と一致しなかった。Final Packageのidentityを実対象へ機械照合する契約もなく、工程ごとの再確認で代替していた。
+
+### 変更内容
+
+- 制作途中のHuman ReviewをFinal ApprovalまたはPublication Approvalとして扱わない。
+- 媒体別Sourceが一体型承認を定める場合、Final Review Package提示後の明示的進行意思をHuman Final Approval / Publication Approvalとして一つのPackage identity、destination、purposeへbindingできる。
+- noteのG5を新しい承認の取得地点から、Approval Evidenceと実際の公開Packageの自動同一性検証へ変更した。
+- 承認Package不変の下書き、設定、publish、PPVでは再承認せず、承認対象変更、新規Human Decision、Source不一致または実行異常でだけ停止する。
+- Publication ApprovalをExternal Audit、Archive保存、Git通信、credentialまたは他サービス送信へ流用しない。
+
+本変更は同日以前のAIDAILY公開履歴を書き換えない。2026-09-01の二段階承認記録は当時の履歴として保持し、Current note運用は本項を正とする。
+
+------------------------------------------------------------------------
+
 ## 2026-09-01｜成果物承認とPublication Transaction承認を分離
 
 ### 概要

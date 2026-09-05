@@ -8,6 +8,16 @@
 
 ------------------------------------------------------------------------
 
+## 2026-09-05｜note E2EのPackage-bound Final / Publication Approvalへ統合
+
+AIDAILY-004実運用で確認されたApproval増殖を、既存E2Eの意味と配置の不整合として修正した。Root Causeは、Current SourceがG5成果物承認と公開実行承認を明示的に分離する一方、Marketing後の最終Package identityとHumanの公開意思を実対象へ機械bindingする契約を持たず、工程ごとのHuman再確認で補っていたことである。
+
+Pipeline v1.14、Human-in-the-loop、note SOP v2.8、note README v1.17、Section制作台本／公開成果物記録テンプレート各v2.0、Repository横断監査基準v1.6およびRepository Rulesの導線を同期した。通常のnote Human interactionは、制作途中のHuman Reviewと、D3＋Header＋Publication ConditionsのFinal Reviewの2回とする。Final Review後の明示的進行意思をHuman Final Approval / Publication ApprovalとしてPackage identity、destination、purposeへbindingし、G5は新しい承認を要求せず同一性を自動検証する。
+
+note責任内の`Publication_Approval/` v1.0へFinal Review Package、Human event、Approval recordのSchemaとvalidatorを追加した。Human Reviewの流用、Marketing前Review、同一Packageへの再承認要求、本文／Header／無料境界変更、別目的Approval流用を拒否し、同一PackageはG5からpublish、PPVまで無停止で進める17件のtestsを実装した。Visual Production、Writing Style QA、External Audit Pipeline、AIDAILY-004 Published Asset／本文は変更していない。External Auditはdisabled／`NOT OBTAINED`、外部監査通信は0件のまま維持する。
+
+------------------------------------------------------------------------
+
 ## 2026-09-04｜Human承認済みStyle QA修正・未承認外部送信Incident・送信停止措置の正式反映
 
 Task `01a06c9a-ddc4-7241-8542-61e74ed6a82b`の中間報告に対するHuman Reviewで、Style QA恒久修正、Incident記録、外部送信停止措置、Approval検証契約および関連Source接続のstage／commit／pushが明示承認された。外部監査Pipelineの恒久運用完成は承認対象外であり、trusted Human-event取得経路・実送信Gate・negative test・E2E完了までBLOCKED／disabledを維持する。外部監査は`NOT OBTAINED`、不明な時刻・historical payload bytes等はUNKNOWNのままとする。
