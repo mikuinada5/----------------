@@ -8,6 +8,16 @@
 
 ------------------------------------------------------------------------
 
+## 2026-09-05｜`.codex-runtime/`をRepository-local一時実行領域として整理
+
+未追跡だった`.codex-runtime/`の47ファイルを、正式成果物のruntime重複1件、OneDriveへ保存済みのEvidence重複16件、再生成可能な一時ファイル30件に分類した。AIDAILY-004 H2とStyle QA Incidentの保存必須14組は、OneDrive Personal Archive `Derived`の正式保存コピーとSHA-256一致を確認した。OneDriveクラウド同期状態は未確認のため推測せず、Local保存確認として扱う。
+
+AIDAILY-004公開成果物、Header記録、Style QA／Approval Gate恒久修正、note Approval SemanticsおよびAIDAILY-003 Incident GuardがRepositoryの所定位置に存在し、Git追跡済みであることを確認したうえで、保存済み重複と再生成可能な47ファイルを削除した。
+
+Repository Rulesへ`.codex-runtime/`をmachine-localな一時実行領域として追加し、正式Source、正式成果物または保存必須Evidenceの本籍にしないこと、正式保存先と必要な同一性を確認してから清掃することを定めた。`.gitignore`へ同領域を追加し、VS Code Source Controlの正式変更候補から除外する。
+
+------------------------------------------------------------------------
+
 ## 2026-09-05｜note E2EのPackage-bound Final / Publication Approvalへ統合
 
 AIDAILY-004実運用で確認されたApproval増殖を、既存E2Eの意味と配置の不整合として修正した。Root Causeは、Current SourceがG5成果物承認と公開実行承認を明示的に分離する一方、Marketing後の最終Package identityとHumanの公開意思を実対象へ機械bindingする契約を持たず、工程ごとのHuman再確認で補っていたことである。

@@ -124,6 +124,16 @@ Repository全体へ影響する正式Sourceを新規追加・更新・移動・�
 
 ------------------------------------------------------------------------
 
+### 2.8 Repository-local一時実行領域
+
+Repositoryルートの`.codex-runtime/`は、Task実行中に再生成可能な中間出力、検証記録、Source Manifest、receiptおよび一時Assetを置くmachine-localな一時実行領域とする。正式Source、正式成果物、保存必須Evidenceの本籍または第二Repositoryとして使用しない。
+
+正式Sourceおよび正式成果物は、責任を持つRepository canonical pathへ配置する。保持が必要なEvidenceは、承認されたOneDrive Personal Archiveその他の正式保存先へ配置し、必要な場合はSHA等で同一性を確認してから`.codex-runtime/`側の重複を削除する。Task完了時は保存先を確認し、再生成可能な一時ファイルを清掃する。
+
+`.codex-runtime/`はGit管理対象外とし、同領域にあることだけを正式採用、Human Approval、QA PASSまたはEvidence保存完了の根拠にしない。
+
+------------------------------------------------------------------------
+
 ## 3. Brand領域の基本構造
 
 Brand領域は、単一の巨大な仕様書ではなく、責任本籍ごとに分割したBrand OSとして管理する。
