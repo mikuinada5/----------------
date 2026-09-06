@@ -1,6 +1,6 @@
 # Visual Production Control
 
-**Status:** Current / Operational v1.2 / Master-bound Runtime Bridge<br>
+**Status:** Current / Operational v1.3 / Formal Header Asset Promotion<br>
 **Owner:** Production / Internal QA<br>
 **Authority:** `AI_PRODUCTION_PIPELINE.md` Visual Production Control
 
@@ -18,6 +18,8 @@ Phase Tool Routing
 → Generated Asset（QA未確認）
 → Asset QA
 → Human Review Candidate
+→ Human Approval
+→ Formal Asset Promotion
 ```
 
 本ディレクトリは、新しいVisual専門Source、媒体Template、AI組織上の役割または承認者を作らない。共通Gateの規範は`AI_PRODUCTION_PIPELINE.md`、媒体・成果物固有の要件はnote、SNS、Brand、Education／Material Productionその他の責任Sourceを正とする。ここにはSchema、contract／request builder、fail-closed validatorおよび回帰テストだけを置く。
@@ -35,6 +37,7 @@ Phase Tool Routing
 9. QA FAILで既存Sourceから一意に修正でき、Contractの上限内なら再生成する。既定は初回後2回まで。上限到達、Source矛盾、新しい価値判断またはTool不適合ではSTOPする。
 10. 画像生成直前にRuntime Receiptを作り、環境Capability、Bridge implementationおよびvalidated request／actual request SHA-256完全一致を検証する。
 11. 現行で許可するRuntimeはLocal CodexのRepository Skill request-bound経路だけである。Chat／Work built-in directおよび未実装Responses API orchestratorは`BLOCKED_PLATFORM_BOUNDARY`とする。
+12. note HeaderはHuman Review Candidateへの明示的Human Approval後、`New-FormalHeaderAsset.ps1`でMaster、Contract、request、Bridge receipt、生成Asset、QA、Human event、Article IDおよびexact display titleを再検証する。全一致時だけ`FORMAL_HEADER_ASSET`とし、Final Review Packageへ渡せる。
 
 ## Runtime boundary
 
@@ -54,6 +57,8 @@ Chat / Work Production Intent
 → visual inspection / Asset QA
 → Visual Production validator PASS
 → Human Review Candidate
+→ Human Approval Evidence
+→ Formal Header Asset Promotion PASS
 ```
 
 ## Command
@@ -64,7 +69,7 @@ pwsh -File 04_AI_Work_Environment/Visual_Production/scripts/New-VisualGeneration
   -SourceManifestPath <source-manifest.json> `
   -ProfileSourcePath <canonical-profile-source.md> `
   -ProfileId <profile-id> `
-  -TaskId <task-id> -ProductionVersion <version> `
+  -TaskId <task-id> -ArticleId <article-id> -ProductionVersion <version> `
   -Phase 'Header Production' -ArtifactType <type> `
   -ApprovedTitle <exact-title> -Width 1280 -Height 670 `
   -MasterAssetPath <runtime-resolved-master-image> `
@@ -82,9 +87,21 @@ pwsh -File 04_AI_Work_Environment/Visual_Production/scripts/New-VisualRuntimeRec
   -ImageGenerationToolEvidence <current-session-evidence> `
   -AssetInspectionEvidence <current-session-evidence> `
   -OutputPath <visual-runtime-receipt.json>
+
+pwsh -File 04_AI_Work_Environment/Visual_Production/scripts/New-FormalHeaderAsset.ps1 `
+  -RepositoryRoot . `
+  -VisualRecordPath <visual-production-record.json> `
+  -RuntimeReceiptPath <visual-runtime-receipt.json> `
+  -ActualToolRequestPath <actual-tool-request.json> `
+  -GeneratedAssetPath <header.png> `
+  -AssetCanonicalPointer <archive-or-private-pointer> `
+  -HumanApprovalPath <header-human-approval.json> `
+  -ProfileSourcePath <canonical-profile-source.md> `
+  -MasterAssetPath <runtime-resolved-master-image> `
+  -OutputPath <formal-header-asset.json>
 ```
 
-PASSしたRecordだけをHuman Review Candidate、Asset ReadyまたはG5へ接続できる。
+PASSしたGeneration RecordだけをHuman Review Candidateへ提示できる。note Final Review Packageへ接続できるのは、さらにHuman ApprovalとFormal PromotionをPASSした`FORMAL_HEADER_ASSET`だけである。direct built-in生成は`UNVERIFIED_NON_ASSET`であり、Human OKでも遡及昇格しない。
 
 ## Privacy and storage
 

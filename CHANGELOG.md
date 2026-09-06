@@ -8,6 +8,16 @@
 
 ------------------------------------------------------------------------
 
+## 2026-09-06｜note Header Routing / Formal Asset Promotion Gateを正式接続
+
+Pipeline v1.17、Visual Production v1.3、note SOP v2.11、note README v1.20、templates各v2.3、Publication Approval v1.3、Repository横断監査基準v1.9へ更新した。Root Causeは、Master-bound Generation Contract、Request Binding、Asset QAが存在しても、Human Review Candidateから正式Headerへ昇格する独立Gateがなく、Final Review Package CompilerもFormal routeのprovenanceを必須にしていなかったことである。
+
+`NOTE_HEADER_REQUIRED`をLocal Codex Visual Production Bridgeへrouteし、Master identity／expected・actual SHA／寸法／provenance、Article ID、exact display title、全canonical requirements、actual request identity、Bridge receipt、生成Asset SHA／寸法、Asset QAおよび候補提示後のHuman Approvalをbindingする`FORMAL_HEADER_ASSET`を追加した。Compiler v2／Final Review Package v3はこのsealed record、Header実体、Master、route、QA、Human eventを再照合し、非Formal PNGを`BLOCKED_FINAL_PACKAGE_INCOMPLETE`で拒否する。
+
+Standard Chat／Work built-in direct画像は`UNVERIFIED_NON_ASSET`として隔離し、Human OKによる遡及昇格を禁止する。RepositoryはPlatform上のdirect generation自体を物理無効化しないが、正式Asset／Final Review Packageへの混入を機械拒否する。Bridge不能時は`BLOCKED_PLATFORM_BOUNDARY`で停止する。Source Resolution 8件、Visual／Header Promotion 42件、Final Review Package／Approval／Publication Bundle 53件の計103件をPASSした。Step①／②、Approval semantics回帰を保持し、External Audit Pipelineはdisabled／`NOT OBTAINED`、外部監査通信0件を維持した。
+
+------------------------------------------------------------------------
+
 ## 2026-09-06｜note Publication Bundle Phase 1を正式接続
 
 Human Final Approval後のFinal Review Package、本文、Header、Publication Conditions、Approval EvidenceおよびSource Manifestを、公開Workへ機械検証可能な一つのArtifactとして渡す契約がなかった。Pipeline v1.16、note SOP v2.10、note README v1.19、templates各v2.2、Publication Approval v1.2、Repository横断監査基準v1.8へ更新し、Publication Bundle Builder／SealerとWork受取Gateを追加した。

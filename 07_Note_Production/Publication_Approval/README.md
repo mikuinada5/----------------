@@ -1,6 +1,6 @@
 # note Publication Approval Gate
 
-**Status:** Current / Operational v1.2
+**Status:** Current / Operational v1.3
 **Responsibility:** note Final Review PackageへのHuman Final Approval / Publication Approvalを実際の公開対象へbindingし、承認後のsealed Publication Bundle、Phase 1 Work handoff、G5からPPVまでの継続可否を機械検証する。
 
 ## Contract
@@ -14,7 +14,7 @@ Final Review Packageは、D3本文、Header、無料／Membership境界、Member
 
 ## Deterministic Compiler
 
-`MARKETING_APPROVED`からHuman Final Reviewへ進む前に、`New-FinalReviewPackage.ps1`を必ず実行する。CompilerはLLMによる自由生成ではなく、D3本文file、Marketing Review PASS evidence、QA PASS済みHeader Asset、Publication Conditions、Source Manifest、destinationおよびpurposeをSchemaと実file SHAで検証し、一つのimmutable Package JSONとHuman提示用Markdownを決定論的に生成する。
+`MARKETING_APPROVED`からHuman Final Reviewへ進む前に、`New-FinalReviewPackage.ps1`を必ず実行する。CompilerはLLMによる自由生成ではなく、D3本文file、Marketing Review PASS evidence、`FORMAL_HEADER_ASSET` record、Header実体、Publication Conditions、Source Manifest、destinationおよびpurposeをSchemaと実file SHAで検証し、一つのimmutable Package JSONとHuman提示用Markdownを決定論的に生成する。 Formal Header recordのID／identity、Article ID、approved display title、Header SHA／canonical pointer、Master identity／SHA、Asset QA、Bridge route receiptおよびHeader Human Approvalを再照合し、単なるPNGまたはHuman OKだけを拒否する。
 
 ```text
 MARKETING_APPROVED
@@ -27,7 +27,7 @@ required input missing or mismatch
   → BLOCKED_FINAL_PACKAGE_INCOMPLETE
 ```
 
-Package identityは、Article ID、title、D3 artifact ID／canonical pointer／file SHA、Marketing Review status／identity／version／Evidence SHA、Header Asset ID／canonical pointer／file SHA／Asset QA Evidence SHA、正規化したPublication Conditions、destination、purposeおよびSource Manifest identity／pointer／SHAのcanonical JSONをUTF-8でSHA-256化する。`package_id`は`FRP-<safe article id>-<identity SHA-256>`とする。local path、生成時刻、Human eventまたはApproval Evidenceはidentityへ混入しない。
+Package identityは、Article ID、title、D3 artifact ID／canonical pointer／file SHA、Marketing Review status／identity／version／Evidence SHA、Formal Header Asset ID／identity／display title／canonical pointer／file SHA、Master identity／SHA、Bridge route Evidence、Asset QA Evidence／Header Human Approval Evidence、正規化したPublication Conditions、destination、purposeおよびSource Manifest identity／pointer／SHAのcanonical JSONをUTF-8でSHA-256化する。`package_id`は`FRP-<safe article id>-<identity SHA-256>`とする。local path、生成時刻、Human eventまたはApproval Evidenceはidentityへ混入しない。
 
 同一入力は同一Package identityと同一bytesを生成する。D3、title、Header、境界、Membership、Magazine、price、tags、その他条件、Marketing Evidence、destinationまたはSource Manifestが変われば新しいidentityと別filenameを生成する。既存Package fileを上書きせず、同じpathに異なるbytesがある場合は`IMMUTABLE_PACKAGE_CONFLICT`で停止する。旧PackageのApprovalは新PackageのID／identity／file SHAと一致しないためG5で拒否される。
 
@@ -74,6 +74,7 @@ Publication ApprovalはExternal Audit、OneDrive保存、Git通信、credential�
 
 - `schemas/final_review_package_input.schema.json`: Compiler必須Inputとlocal read path
 - `schemas/final_review_package.schema.json`: `READY_FOR_FINAL_REVIEW`のimmutable承認対象Package
+- `../../04_AI_Work_Environment/Visual_Production/schemas/formal_header_asset.schema.json`: Compilerが受け取るFormal Header Asset record
 - `schemas/human_event.schema.json`: Package提示時刻とPackage identityへbindingするHuman response event
 - `schemas/publication_approval.schema.json`: Package identityへbindingするFinal / Publication Approval record
 - `schemas/publication_bundle_manifest.schema.json`: sealed Bundle identity、構成file、Package／Approval／destination binding

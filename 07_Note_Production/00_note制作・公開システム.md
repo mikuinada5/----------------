@@ -1,6 +1,6 @@
-# note制作・公開システム v2.10
+# note制作・公開システム v2.11
 
-**Status:** Current / Operational v2.10 / Publication Bundle Phase 1 compatible
+**Status:** Current / Operational v2.11 / Formal Header Asset Promotion compatible
 **Scope:** note制作、Marketing Review、Header Production、Final Review、G5自動検証、Publication Transaction、公開後記録、Session単位のSNS展開、Repositoryへの知見還元
 
 ## 1. 責任と非責任
@@ -311,6 +311,26 @@ AIDAILYの公開記事titleが`AIとの日常｜<記事固有title>`である場
 
 記事ごとに変更できるのは、承認済みtitle本文、Human／ケイの表情・ポーズ、文字を含まない小物および白背景を維持した軽い記事固有演出だけである。MAYはMUST／MUST NOTと競合しない範囲だけで使用し、記事説明を増やすCreative Direction、Masterの左右配置／中央Title領域／Visual Identityの変更または白背景の再着色は行わない。
 
+#### 2.5.2.2 Canonical Header Route
+
+`NOTE_HEADER_REQUIRED`ではStandard Chat／Workのbuilt-in image generationへ直接進まない。Current Visual Sourceと`NOTE-HEADER-MASTER-v1.0`のID、canonical locator、expected／actual SHA-256、1280×670 pxおよびprovenanceを解決し、Article ID、approved Header display title、Master、全MUST／MUST NOT／MAY、Creative Direction、Source Manifest identity、Production version、actual request identityをGeneration Contractへ固定する。Prompt Assembly QA後、Local Codexの`visual-production-bridge`でrequestをbindingして生成する。
+
+```text
+NOTE_HEADER_REQUIRED
+→ Current Visual Source Resolution
+→ NOTE-HEADER-MASTER-v1.0 resolution / SHA PASS
+→ Header Generation Contract / Prompt Assembly QA
+→ Visual Production Bridge / request binding
+→ GENERATED_UNVERIFIED
+→ Asset QA
+→ HUMAN_REVIEW_CANDIDATE
+→ Human Approval
+→ FORMAL_HEADER_ASSET
+→ Final Review Package Compiler
+```
+
+Chat／Work built-in direct出力は`UNVERIFIED_NON_ASSET`であり、Formal Asset ID、Asset QA PASS、正式provenanceまたはFinal Review Package eligibilityを付与しない。Humanがその画像へOKを示しても遡及昇格せず、Formal routeで再Productionする。Bridgeが利用不能ならdirect生成で代替せず`BLOCKED_PLATFORM_BOUNDARY`で停止する。RepositoryはPlatform上のdirect生成自体を物理的には無効化できないが、その出力が正式Pipelineへ入ることをPromotion GateとCompilerで拒否する。
+
 #### 2.5.3 Header QA
 
 - [ ] Generation Contractが対象記事・Header version・Current Source fingerprintと一致している
@@ -328,7 +348,7 @@ AIDAILYの公開記事titleが`AIとの日常｜<記事固有title>`である場
 - [ ] 説明ポスター／インフォグラフィックのような情報過多構成になっていない
 - [ ] note下書きへの設定、crop後表示および公開後表示を確認した、または後続Gateの確認項目として記録した
 
-Header QAは生成物の実物を確認して判定する。QA FAIL画像は正式Asset IDを付与せず、Header Asset記録、`ASSET_READY`またはFinal Review Packageへ接続しない。既存Contractから一意に修正可能で再試行上限内なら再生成し、上限到達、Source矛盾、新しいCreative Decisionまたは検査不能ではPipelineのSTOP条件へ戻す。AIが画像を検査できない場合のHuman提示は`HUMAN_ASSET_QA_REQUIRED`の検査依頼に限定し、承認候補の提示と混同しない。
+Header QAは生成物の実物を確認して判定する。QA FAIL画像は正式Asset IDを付与せず、Header Asset記録、`ASSET_READY`またはFinal Review Packageへ接続しない。Asset QA PASS後の`HUMAN_REVIEW_CANDIDATE`もまだ正式Assetではない。Human approval eventを候補提示時刻、Article ID、approved display title、生成Asset SHA、Visual Record SHA、Runtime Receipt SHA、actual request SHA、destination／purposeへbindingし、`New-FormalHeaderAsset.ps1`が全Evidenceを再検証して初めて`FORMAL_HEADER_ASSET`へ昇格する。既存Contractから一意に修正可能で再試行上限内なら再生成し、上限到達、Source矛盾、新しいCreative Decisionまたは検査不能ではPipelineのSTOP条件へ戻す。AIが画像を検査できない場合のHuman提示は`HUMAN_ASSET_QA_REQUIRED`の検査依頼に限定し、承認候補の提示と混同しない。
 
 #### 2.5.4 Section Header Visual Family
 
@@ -360,7 +380,7 @@ AIDAILY-003の本文、第3稿識別、Marketing Approved、Publication Decision
 
 #### 2.6.1 Final Review Package／Approval Evidence
 
-Marketing Approvedの第3稿本文、Header Asset、無料／Membership境界、Membership、Magazine、price、tags、その他のPublication Conditions、必要な自己開示、公開先および必要Sourceを一つのFinal Review PackageとしてHumanへ提示する。Package提示後の明示的進行意思を、同PackageへのHuman Final ApprovalとPublication Approvalとして記録する。Production後のHuman Review、Marketing前の発言、Headerだけへの確認または別目的のApprovalを流用しない。
+Marketing Approvedの第3稿本文、`FORMAL_HEADER_ASSET`、無料／Membership境界、Membership、Magazine、price、tags、その他のPublication Conditions、必要な自己開示、公開先および必要Sourceを一つのFinal Review PackageとしてHumanへ提示する。CompilerはFormal Header Asset ID／identity、Header実体／SHA／canonical pointer、Master identity／SHA、Asset QA、Bridge provenanceおよびHeader Human Approval Evidenceを再検証する。単なるPNG、QA自己申告または画像へのHuman OKだけでは`BLOCKED_FINAL_PACKAGE_INCOMPLETE`として停止する。Package提示後の明示的進行意思を、同PackageへのHuman Final ApprovalとPublication Approvalとして記録する。Production後のHuman Review、Marketing前の発言、Headerだけへの確認または別目的のApprovalを流用しない。
 
 Final Review Package、Human response eventおよびApproval Recordは`Publication_Approval/`のSchemaに従い、Package ID／SHA、destination、purpose、event ID／時刻およびSource Manifest SHAをbindingする。
 
@@ -466,8 +486,8 @@ Final Review Package提示後、文脈上そのPackageを指す「OK」「これ
 3. **Production / Output QA → 初稿**：Sessionごとに承認済み公開構成Profileの本文・別コンテンツと、Session全体を入口にしたSNS投稿案を制作する。本文は`PRODUCED_UNVERIFIED`として固定し、`AI_PRODUCTION_PIPELINE.md` §8.5.1の別工程Pre-Human Review QA／G4と提示file照合を通過した同一exact versionだけを初稿としてHumanへ渡す。
 4. **Human Review → 第2稿**：Humanが実内容を確認し、Practiceでは実際に手順を完遂し、壁打ち、実Screenshotその他の実素材を追加する。note制作部が反映し、内容完成稿である第2稿を作る。このReviewはFinal Approvalではない。
 5. **Marketing Review → 第3稿**：第2稿だけを入力にMarketing Reviewを行う。Must FixはRequirementとしてnote制作部へ返し、必要な修正とMarketing再監査を経て、無料／Membership境界、Membership、Magazine、price、tagsその他の必要条件を含むPublication Decisionを確定し、第3稿を作る。必須条件に未解決DecisionがあればMarketing Approvedにしない。
-6. **Header Production / Header QA**：Marketing Approved後の最終タイトルと第3稿を入力にHeaderを制作し、Asset ID、QA、provenanceおよび表示要件を確定する。
-7. **Final Review Package Compiler / Human Final Review**：Marketing Approvedの第3稿本文、Marketing Review Evidence、QA済みHeader Asset、Publication Conditions、必要な自己開示、公開先およびSource Manifestを決定論的Compilerで一つのimmutable Package Artifactへ変換する。Schema、各file SHA、Package identityおよび8区分のHuman提示内容がPASSした`READY_FOR_FINAL_REVIEW / PENDING`だけを一括提示し、提示後の明示的進行意思を別ArtifactのPackage-bound Human Final Approval / Publication Approvalとして記録する。
+6. **Header Production / Header QA / Formal Promotion**：Marketing Approved後の最終タイトルと第3稿を入力にVisual Production BridgeでHeaderを制作し、QA PASS候補へのHuman Approval後にMaster／Contract／request／Bridge／Asset／QA／Article ID／title bindingを検証して`FORMAL_HEADER_ASSET`を確定する。
+7. **Final Review Package Compiler / Human Final Review**：Marketing Approvedの第3稿本文、Marketing Review Evidence、`FORMAL_HEADER_ASSET`、Publication Conditions、必要な自己開示、公開先およびSource Manifestを決定論的Compilerで一つのimmutable Package Artifactへ変換する。Schema、各file SHA、Formal Header provenance、Package identityおよび8区分のHuman提示内容がPASSした`READY_FOR_FINAL_REVIEW / PENDING`だけを一括提示し、提示後の明示的進行意思を別ArtifactのPackage-bound Human Final Approval / Publication Approvalとして記録する。
 8. **Publication Bundle / Work Handoff Phase 1**：承認済みPackageからsealed Bundleと単一ZIPを生成する。HumanがZIPを公開Workへ一度渡し、WorkはBundleとExpected Package IDを機械検証して`HANDOFF_VERIFIED`へ進める。Chat履歴を正本にしない。
 9. **G5 Automated Package Verification**：検証済みBundle内のApproval Evidence、Final Review Package、実際の公開対象、destination、purposeおよび必要Sourceを自動照合する。同一ならPASSし、新しい承認を求めない。
 10. **Publication E2E / Transaction**：G5検証済みBundleをnote下書きへ反映し、Publication Conditionsと対象Series ProfileからSettingsを構成・再照合して最終操作を実行する。下書き前、設定画面またはpublish直前に再承認を求めない。
@@ -541,7 +561,7 @@ Pre-Human Review QA / G4（FAILなら修正→新exact versionを再QA）
 - 初稿に限らず、第2稿、第3稿、追記・再Production後の本文をHumanへ提示するたびに、Pipeline §8.5.1のexact-version Gateを実行する。制作記録からQA record／review／export receiptと本文SHAを参照できなければCandidateとして受領しない。Marketing ReviewおよびG5でも同じ本文とreceiptを再照合し、旧PASSの流用を拒否する。未公開本文とQA詳細はその公開範囲に合う既存保存先へ置き、Public Repositoryへ複製しない。この本文QAの失効は、別AssetであるHuman-approved Headerの自動失効、既存Marketing判断またはPublication Decisionの変更承認を意味しない。
 - `Review`では初稿の実内容、Practice完遂、実素材および修正範囲をHumanが確認する。これはFinal Approvalではない。note制作部の反映が完了した稿だけを第2稿とする。
 - Marketing Inputが不足する場合は`Marketing Input Pending`とし、Marketing担当が未完成稿を直接修正しない。Must Fixがある場合は`Marketing Revision Required`とし、Requirement、所有者および再開条件を記録する。
-- `Marketing Approved`後に第3稿とPublication Decision Summaryを作り、Header Production／QAを完了したら、`Publication_Approval/`のCompilerへ必須Inputを渡す。Compilerは本文、Marketing Evidence、Header／Header QA Evidence、無料／Membership境界、Membership、Magazine、price、tags、その他条件、Source Manifest、destinationおよびpurposeの存在と実file SHAを検証する。
+- `Marketing Approved`後に第3稿とPublication Decision Summaryを作り、Header Production／QA／Human Approval／Formal Promotionを完了したら、`Publication_Approval/`のCompilerへ必須Inputを渡す。Compilerは本文、Marketing Evidence、Formal Header Asset record、Header／Header QA Evidence、Master identity、Bridge provenance、無料／Membership境界、Membership、Magazine、price、tags、その他条件、Source Manifest、destinationおよびpurposeの存在と実file SHAを検証する。
 - Compilerの検証／生成中を`FINAL_REVIEW_PACKAGE_BUILDING`とし、Package JSONとHuman提示用ArtifactのSchema／identity／一括提示検証がPASSした場合だけ`READY_FOR_FINAL_REVIEW / PENDING`へ進める。Input不足、MarketingまたはHeader QA未PASS、SHA不一致、本文だけの提示は`BLOCKED_FINAL_PACKAGE_INCOMPLETE`としてSTOPし、Section Statusは`Decision Pending`のまま不足Inputの責任元へ戻す。
 - Package生成後にD3、title、Header、境界、Membership、Magazine、price、tags、その他条件、Marketing Evidence、destinationまたはSource Manifestが変わった場合は既存Packageを上書きせず、新identityのPackageを生成する。Human eventとApproval EvidenceはPackage本体から分離し、提示前Packageは`approval=PENDING`を保持する。
 - Final Reviewで本文、HeaderまたはDecisionが差し戻された場合は、未変更の第3稿、Marketing Review結果およびDecisionを有効なまま保持する。影響範囲だけを修正・再監査して`Decision Pending`へ戻す。

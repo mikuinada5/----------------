@@ -3,13 +3,20 @@ $newReceipt = Join-Path $PSScriptRoot '../scripts/New-VisualRuntimeReceipt.ps1'
 $testReceipt = Join-Path $PSScriptRoot '../scripts/Test-VisualRuntimeReceipt.ps1'
 $testVisual = Join-Path $PSScriptRoot '../scripts/Test-VisualProduction.ps1'
 
+function Write-TestPngHeader([string]$Path, [int]$Width = 1280, [int]$Height = 670) {
+    $bytes = [byte[]](137,80,78,71,13,10,26,10,0,0,0,13,73,72,68,82,
+        (($Width -shr 24) -band 255),(($Width -shr 16) -band 255),(($Width -shr 8) -band 255),($Width -band 255),
+        (($Height -shr 24) -band 255),(($Height -shr 16) -band 255),(($Height -shr 8) -band 255),($Height -band 255))
+    [IO.File]::WriteAllBytes($Path, $bytes)
+}
+
 function New-RuntimeFixture {
     param([string]$Root)
     $noteRoot = Join-Path $Root '07_Note_Production'
     New-Item -ItemType Directory -Path $noteRoot -Force | Out-Null
     $masterPath = Join-Path $Root 'runtime-assets/NOTE_HEADER_MASTER_TEMPLATE_v1.0.png'
     New-Item -ItemType Directory -Path (Split-Path -Parent $masterPath) -Force | Out-Null
-    [IO.File]::WriteAllBytes($masterPath, [Text.Encoding]::UTF8.GetBytes('approved-master-image'))
+    Write-TestPngHeader $masterPath
     $masterSha = (Get-FileHash -LiteralPath $masterPath -Algorithm SHA256).Hash.ToLowerInvariant()
     $profilePath = Join-Path $noteRoot '00_note制作・公開システム.md'
     $profileText = @'
@@ -21,6 +28,13 @@ function New-RuntimeFixture {
 |---|---|---|
 | master-reference | MUST | use the approved Master image |
 | note-horizontal | MUST | horizontal note header |
+| current-dimensions | MUST | use current dimensions |
+| human-left | MUST | place Human on the left |
+| kei-right | MUST | place Kei on the right |
+| comic-style | MUST | use manga style |
+| white-background | MUST | keep a white background |
+| black-pink-palette | MUST | use black and pink |
+| master-title-replace | MUST | replace the Master title |
 | title-exact | MUST | approved title verbatim |
 | title-central | MUST | approved title is central |
 | no-series-label | MUST_NOT | do not add series or magazine label |

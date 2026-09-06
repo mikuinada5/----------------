@@ -5,6 +5,7 @@ param(
     [Parameter(Mandatory = $true)] [string]$ProfileSourcePath,
     [Parameter(Mandatory = $true)] [string]$ProfileId,
     [Parameter(Mandatory = $true)] [string]$TaskId,
+    [string]$ArticleId,
     [Parameter(Mandatory = $true)] [string]$ProductionVersion,
     [Parameter(Mandatory = $true)] [string]$Phase,
     [Parameter(Mandatory = $true)] [string]$ArtifactType,
@@ -16,6 +17,7 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
+Import-Module (Join-Path $PSScriptRoot 'NoteHeaderRouting.psm1') -Force
 
 function Get-RelativeRepositoryPath {
     param([string]$Root, [string]$Path)
@@ -65,25 +67,22 @@ if ($hasAnyMasterMetadata) {
             throw "VISUAL_CONTRACT_BUILD FAIL: canonical profile master metadata is incomplete: $field"
         }
     }
-    if ([string]$profileMetadata.master_asset_sha256 -notmatch '^[0-9a-fA-F]{64}$') {
-        throw 'VISUAL_CONTRACT_BUILD FAIL: canonical profile master_asset_sha256 is invalid'
-    }
     if ([string]::IsNullOrWhiteSpace($MasterAssetPath)) {
         throw 'VISUAL_CONTRACT_BUILD FAIL: canonical profile requires -MasterAssetPath'
     }
-    if (-not (Test-Path -LiteralPath $MasterAssetPath -PathType Leaf)) {
-        throw "VISUAL_CONTRACT_BUILD FAIL: Master Asset is not reachable: $MasterAssetPath"
-    }
-    $masterFullPath = (Resolve-Path -LiteralPath $MasterAssetPath).Path
-    $masterHash = (Get-FileHash -LiteralPath $masterFullPath -Algorithm SHA256).Hash.ToLowerInvariant()
-    if ($masterHash -ne ([string]$profileMetadata.master_asset_sha256).ToLowerInvariant()) {
-        throw "VISUAL_CONTRACT_BUILD FAIL: Master Asset SHA-256 does not match canonical profile: $masterHash"
-    }
+    try { $resolvedMaster = Resolve-NoteHeaderMaster -ProfileSourcePath $profileFullPath -ProfileId $ProfileId -MasterAssetPath $MasterAssetPath }
+    catch { throw "VISUAL_CONTRACT_BUILD FAIL: $($_.Exception.Message)" }
+    $masterFullPath = $resolvedMaster.actual_path
+    $masterHash = $resolvedMaster.actual_sha256
     $referenceAssets = @([ordered]@{
-        asset_id = [string]$profileMetadata.master_asset_id
-        version = [string]$profileMetadata.master_asset_version
-        logical_locator = [string]$profileMetadata.master_asset_locator
+        asset_id = $resolvedMaster.asset_id
+        version = $resolvedMaster.version
+        logical_locator = $resolvedMaster.canonical_locator
         sha256 = $masterHash
+        expected_sha256 = $resolvedMaster.expected_sha256
+        actual_sha256 = $resolvedMaster.actual_sha256
+        dimensions = [ordered]@{ width = $resolvedMaster.width; height = $resolvedMaster.height }
+        provenance = $resolvedMaster.provenance
     })
     $referencedImagePaths = @($masterFullPath)
 }
@@ -121,6 +120,17 @@ $prompt = @(
     'Do not add any text other than the approved title unless a canonical MUST explicitly requires it.'
 ) -join "`n"
 
+if ([string]::IsNullOrWhiteSpace($ArticleId)) { $ArticleId = $TaskId }
+$toolRequest = [ordered]@{
+    text_verbatim = $ApprovedTitle
+    prompt = $prompt
+    dimensions = [ordered]@{ width = $Width; height = $Height }
+    referenced_image_paths = $referencedImagePaths
+    included_requirement_ids = $mandatoryIds
+    negative_requirement_ids = $negativeIds
+}
+$requestIdentitySha256 = Get-NoteHeaderCanonicalJsonSha256 $toolRequest
+
 $record = [ordered]@{
     schema_version = 'visual-production/v1'
     task_id = $TaskId
@@ -136,25 +146,20 @@ $record = [ordered]@{
     }
     resolved_requirements = @($requirements)
     generation_contract = [ordered]@{
+        article_id = $ArticleId
         profile_id = $ProfileId
         source_fingerprint_sha256 = $fingerprint
         approved_text = [ordered]@{ title = $ApprovedTitle }
         dimensions = [ordered]@{ width = $Width; height = $Height }
         reference_assets = $referenceAssets
+        request_identity_sha256 = $requestIdentitySha256
         requirement_ids = $mandatoryIds
         creative_direction = @()
         inspection_capability = 'ai-visual-inspection'
         max_automatic_retries = 2
     }
     tool_route = [ordered]@{ tool = 'image_gen.imagegen'; capability = 'image-generation'; allowed = $true; rationale = 'validated visual production phase' }
-    tool_request = [ordered]@{
-        text_verbatim = $ApprovedTitle
-        prompt = $prompt
-        dimensions = [ordered]@{ width = $Width; height = $Height }
-        referenced_image_paths = $referencedImagePaths
-        included_requirement_ids = $mandatoryIds
-        negative_requirement_ids = $negativeIds
-    }
+    tool_request = $toolRequest
     preflight = [ordered]@{
         tool_route_check = $true
         contract_completeness_check = $true

@@ -15,6 +15,8 @@ Use this Skill only in Local Codex with Repository filesystem access, PowerShell
 6. Record the returned locator/provenance and set the asset state to `GENERATED_UNVERIFIED`. Inspect the actual generated image with the available image inspection tool.
 7. Complete every mandatory requirement check and dimensions check in the Visual Production Record. On QA FAIL, keep the output Rejected / non-asset and follow the bounded retry rule. Never present it as a normal Human Review Candidate.
 8. Run `Test-VisualProduction.ps1` again. Only an Asset QA PASS record may transition to `HUMAN_REVIEW_CANDIDATE`.
+9. For a note Header, record the Human response only after the exact candidate was presented. Bind its event ID/time, Article ID, approved display title, generated Asset SHA, Visual Record SHA, Runtime Receipt SHA, actual request SHA, destination `NOTE_FINAL_REVIEW_PACKAGE`, and purpose `NOTE_HEADER_ASSET_PROMOTION`.
+10. Run `New-FormalHeaderAsset.ps1`. Only its verified `FORMAL_HEADER_ASSET` output may enter the Final Review Package Compiler. A direct built-in output or Human approval without the Repository Bridge evidence remains `UNVERIFIED_NON_ASSET` and must be reproduced through this Skill.
 
 If the current environment is Chat or Work using built-in image generation, or if Repository scripts/request binding/inspection are unavailable, run or report the `BLOCKED_PLATFORM_BOUNDARY` capability result. Do not claim the Repository directly intercepted the platform tool. Hand the Production Intent to Local Codex instead.
 

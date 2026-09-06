@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://repository.local/schemas/note-formal-header-asset-v1.json",
+  "title": "Formal note Header Asset v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "promotion_version", "state", "formal_asset_id", "identity_sha256", "article_id", "approved_header_title", "asset", "master_template", "generation_contract", "route_evidence", "asset_qa", "human_approval", "eligibility"],
+  "properties": {
+    "schema_version": { "const": "note-formal-header-asset/v1" },
+    "promotion_version": { "const": "note-header-promotion/v1" },
+    "state": { "const": "FORMAL_HEADER_ASSET" },
+    "formal_asset_id": { "type": "string", "pattern": "^FHA-.+-[0-9a-f]{64}$" },
+    "identity_sha256": { "$ref": "#/$defs/sha256" },
+    "article_id": { "type": "string", "minLength": 1 },
+    "approved_header_title": { "type": "string", "minLength": 1 },
+    "asset": {
+      "type": "object", "additionalProperties": false,
+      "required": ["file", "local_path", "sha256", "width", "height", "provenance"],
+      "properties": {
+        "file": { "type": "string", "minLength": 1 }, "local_path": { "type": "string", "minLength": 1 },
+        "sha256": { "$ref": "#/$defs/sha256" }, "width": { "const": 1280 }, "height": { "const": 670 }, "provenance": { "type": "string", "minLength": 1 }
+      }
+    },
+    "master_template": {
+      "type": "object", "additionalProperties": false,
+      "required": ["asset_id", "version", "canonical_locator", "expected_sha256", "actual_sha256", "width", "height", "provenance"],
+      "properties": {
+        "asset_id": { "const": "NOTE-HEADER-MASTER-v1.0" }, "version": { "const": "v1.0" },
+        "canonical_locator": { "type": "string", "pattern": "^AI/" }, "expected_sha256": { "$ref": "#/$defs/sha256" }, "actual_sha256": { "$ref": "#/$defs/sha256" },
+        "width": { "const": 1280 }, "height": { "const": 670 }, "provenance": { "type": "string", "minLength": 1 }
+      }
+    },
+    "generation_contract": {
+      "type": "object", "additionalProperties": false,
+      "required": ["profile_id", "production_version", "source_manifest_identity", "visual_record_sha256", "visual_record_local_path", "actual_tool_request_sha256", "actual_tool_request_local_path", "request_identity_sha256", "profile_source_local_path", "master_asset_local_path"],
+      "properties": {
+        "profile_id": { "const": "aidaily-header-v1" }, "production_version": { "type": "string", "minLength": 1 },
+        "source_manifest_identity": { "$ref": "#/$defs/sha256" }, "visual_record_sha256": { "$ref": "#/$defs/sha256" }, "visual_record_local_path": { "type": "string", "minLength": 1 },
+        "actual_tool_request_sha256": { "$ref": "#/$defs/sha256" }, "actual_tool_request_local_path": { "type": "string", "minLength": 1 }, "request_identity_sha256": { "$ref": "#/$defs/sha256" },
+        "profile_source_local_path": { "type": "string", "minLength": 1 }, "master_asset_local_path": { "type": "string", "minLength": 1 }
+      }
+    },
+    "route_evidence": {
+      "type": "object", "additionalProperties": false,
+      "required": ["implementation_id", "route", "runtime_receipt_sha256", "runtime_receipt_local_path", "result"],
+      "properties": {
+        "implementation_id": { "const": "repo-skill:visual-production-bridge/v1" }, "route": { "const": "repository-skill-request-bound" },
+        "runtime_receipt_sha256": { "$ref": "#/$defs/sha256" }, "runtime_receipt_local_path": { "type": "string", "minLength": 1 }, "result": { "const": "REQUEST_BOUND" }
+      }
+    },
+    "asset_qa": {
+      "type": "object", "additionalProperties": false,
+      "required": ["status", "visual_record_sha256"],
+      "properties": { "status": { "const": "PASS" }, "visual_record_sha256": { "$ref": "#/$defs/sha256" } }
+    },
+    "human_approval": {
+      "type": "object", "additionalProperties": false,
+      "required": ["event_id", "evidence_sha256", "evidence_local_path"],
+      "properties": { "event_id": { "type": "string", "minLength": 1 }, "evidence_sha256": { "$ref": "#/$defs/sha256" }, "evidence_local_path": { "type": "string", "minLength": 1 } }
+    },
+    "eligibility": {
+      "type": "object", "additionalProperties": false,
+      "required": ["final_review_package", "direct_generation_retroactive_promotion"],
+      "properties": { "final_review_package": { "const": true }, "direct_generation_retroactive_promotion": { "const": false } }
+    }
+  },
+  "$defs": { "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" } }
+}

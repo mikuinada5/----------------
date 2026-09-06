@@ -4,6 +4,14 @@
 
 ---
 
+## 2026-09-06｜Header Routing / Formal Asset Promotion Gateを実装
+
+note SOP v2.11、README v1.20、templates各v2.3、Publication Approval v1.3へ更新した。従来はMaster-bound RequestとAsset QAまで実装済みだったが、Human Review Candidateから正式Assetへの独立昇格Gateがなく、Final Review Package CompilerもPNGとQA自己申告だけを受け取り得た。Master／Contract／actual request／Bridge／生成Asset／QA／Header Human Approval／Article ID／exact display titleを一つのdeterministic Formal Header Asset identityへbindingし、Compiler v2／Package v3がsealed recordと実Headerを再照合するよう修正した。
+
+Standard Chat／Work direct画像は`UNVERIFIED_NON_ASSET`、Bridge不能は`BLOCKED_PLATFORM_BOUNDARY`とし、Human OKでも遡及Formal Asset化しない。Formal Header Asset以外は`BLOCKED_FINAL_PACKAGE_INCOMPLETE`で停止する。Visual routing／promotion 11件、Visual既存31件、Final Review Package 20件、Approval semantics 17件、Publication Bundle 16件の計95件をPASSした。Step①の基本責任、Step② transport、Writing Style、Marketing、Work／Browser、External Audit PipelineおよびPublished Assetは変更していない。
+
+---
+
 ## 2026-09-06｜Publication Bundle / Work Handoff Phase 1を実装
 
 Human Final Approval成立後の承認済みFinal Review Packageを常設note公開Workへ安全に渡す正式Artifactがなく、本文、Header、設定またはChat参照を個別handoffする必要があった。note SOP v2.10、README v1.19、Section制作台本／公開成果物記録テンプレート各v2.2、Publication Approval v1.2へ更新し、Platform Boundary内の単一ZIP handoff契約を接続した。

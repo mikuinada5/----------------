@@ -277,7 +277,7 @@ Human-in-the-loop領域に関する意味のある変更は `03_Human_in_the_Loo
 
 `Visual_Production/` は、同Pipelineが定めるPhase Tool Routing、Generation Contract、Prompt Assembly QA、生成後Asset QAおよび状態遷移を機械検証する実装である。媒体固有のVisual Template、禁止事項、教育内容または承認責任を保持せず、各責任Sourceから解決した要件と実際のTool Request／Asset QAの一致だけを検証する。
 
-Repository rootの`.agents/skills/visual-production-bridge/`は、`Visual_Production/`の既存ControlをLocal Codexの実Tool起動へ接続するRepository Skillである。新しいVisual専門Source、Template正本、AI部署または承認者ではなく、規範は`AI_PRODUCTION_PIPELINE.md`、媒体要件は各専門Source、実装は`04_AI_Work_Environment/Visual_Production/`を参照する。Skill内へ媒体要件本文を複製せず、canonical profileから機械生成する。Chat／Workへ同Skillを配布・配置したと推測せず、環境ごとのRuntime Capability Receiptを必須とする。
+Repository rootの`.agents/skills/visual-production-bridge/`は、`Visual_Production/`の既存ControlをLocal Codexの実Tool起動へ接続するRepository Skillである。新しいVisual専門Source、Template正本、AI部署または承認者ではなく、規範は`AI_PRODUCTION_PIPELINE.md`、媒体要件は各専門Source、実装は`04_AI_Work_Environment/Visual_Production/`を参照する。Skill内へ媒体要件本文を複製せず、canonical profileから機械生成する。Chat／Workへ同Skillを配布・配置したと推測せず、環境ごとのRuntime Capability Receiptを必須とする。note Headerは同Skillのrequest-bound経路とFormal Asset Promotionを通ったrecordだけをFinal Review Packageへ接続し、built-in direct画像の遡及昇格を認めない。
 
 OneDrive上の `AI/00_Inbox` および `AI/04_Personal_Archive` は、AI作業環境領域が管理するRepository外の運用対象であり、Repositoryまたは正式Source置場として扱わない。詳細は `INBOX_AND_PERSONAL_ARCHIVE.md` を正とする。
 

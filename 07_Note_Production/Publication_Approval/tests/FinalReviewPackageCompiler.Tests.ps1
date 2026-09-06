@@ -2,6 +2,7 @@ $compilerModule = Join-Path $PSScriptRoot '../scripts/FinalReviewPackageCompiler
 $approvalModule = Join-Path $PSScriptRoot '../scripts/PublicationApproval.psm1'
 Import-Module $compilerModule -Force
 Import-Module $approvalModule -Force
+Import-Module (Join-Path $PSScriptRoot 'FormalHeaderFixture.psm1') -Force
 
 function Save-CompilerJson([string]$Path, $Value) {
     $Value | ConvertTo-Json -Depth 40 | Set-Content -LiteralPath $Path -Encoding utf8 -NoNewline
@@ -24,12 +25,13 @@ function New-CompilerFixture([string]$Root) {
     $headerQaPath = Join-Path $Root 'header-qa.json'
     $sourcePath = Join-Path $Root 'source-manifest.json'
     'Final D3 body full text.' | Set-Content -LiteralPath $bodyPath -Encoding utf8 -NoNewline
-    [IO.File]::WriteAllBytes($headerPath, [byte[]](1, 2, 3, 4))
+    Write-TestHeaderPng $headerPath
     '{"status":"PASS","identity":"MR-TEST-v3"}' | Set-Content -LiteralPath $marketingPath -Encoding utf8 -NoNewline
     '{"status":"PASS","asset_id":"AIDAILY-TEST-H1"}' | Set-Content -LiteralPath $headerQaPath -Encoding utf8 -NoNewline
     '{"schema_version":"source-manifest/v2","result":"PASS"}' | Set-Content -LiteralPath $sourcePath -Encoding utf8 -NoNewline
+    $formalHeader = New-TestFormalHeaderRecord -Root $Root -HeaderPath $headerPath -HeaderQaPath $headerQaPath -ArticleId 'AIDAILY-TEST' -DisplayTitle 'Final title' -CanonicalPointer 'archive://AIDAILY-TEST/header.png'
     $input = [ordered]@{
-        schema_version = 'note-final-review-package-input/v1'
+        schema_version = 'note-final-review-package-input/v2'
         workflow_state = 'MARKETING_APPROVED'
         article_id = 'AIDAILY-TEST'
         title = 'Final title'
@@ -51,10 +53,12 @@ function New-CompilerFixture([string]$Root) {
             }
         }
         header = [ordered]@{
-            asset_id = 'AIDAILY-TEST-H1'
+            asset_id = $formalHeader.record.formal_asset_id
+            display_title = 'Final title'
             file = 'archive://AIDAILY-TEST/header.png'
             local_path = 'header.png'
             sha256 = FinalReviewPackageCompiler\Get-NoteCompilerFileSha256 $headerPath
+            formal_asset = [ordered]@{ artifact_id = $formalHeader.record.formal_asset_id; file = 'private://AIDAILY-TEST/formal-header-asset.json'; local_path = 'formal-header-asset.json'; sha256 = $formalHeader.sha256 }
             asset_qa = [ordered]@{
                 status = 'PASS'
                 evidence = [ordered]@{
@@ -135,6 +139,12 @@ Describe 'note Final Review Package Compiler' {
         (Test-CompilerThrows { Invoke-CompilerFixture $fixture $input } 'BLOCKED_FINAL_PACKAGE_INCOMPLETE') | Should Be $true
     }
 
+    It 'M0: rejects a PNG that has no Formal Header Asset record' {
+        $input = Copy-CompilerValue $fixture.input
+        [void]$input.header.Remove('formal_asset')
+        (Test-CompilerThrows { Invoke-CompilerFixture $fixture $input } 'BLOCKED_FINAL_PACKAGE_INCOMPLETE') | Should Be $true
+    }
+
     It 'E: fails when either free or Membership boundary marker is missing' {
         foreach ($field in @('free_end_marker', 'membership_start_marker')) {
             $input = Copy-CompilerValue $fixture.input
@@ -208,9 +218,14 @@ Describe 'note Final Review Package Compiler' {
 
     It 'M: gives changed Header bytes a new Package identity' {
         $first = Invoke-CompilerFixture $fixture $fixture.input (Join-Path $fixture.root 'one')
-        [IO.File]::WriteAllBytes($fixture.header_path, [byte[]](5, 6, 7, 8))
+        $bytes = @([IO.File]::ReadAllBytes($fixture.header_path)) + [byte]1
+        [IO.File]::WriteAllBytes($fixture.header_path, [byte[]]$bytes)
+        $formalHeader = New-TestFormalHeaderRecord -Root $fixture.root -HeaderPath $fixture.header_path -HeaderQaPath $fixture.header_qa_path -ArticleId 'AIDAILY-TEST' -DisplayTitle 'Final title' -CanonicalPointer 'archive://AIDAILY-TEST/header.png'
         $input = Copy-CompilerValue $fixture.input
         $input.header.sha256 = FinalReviewPackageCompiler\Get-NoteCompilerFileSha256 $fixture.header_path
+        $input.header.asset_id = $formalHeader.record.formal_asset_id
+        $input.header.formal_asset.artifact_id = $formalHeader.record.formal_asset_id
+        $input.header.formal_asset.sha256 = $formalHeader.sha256
         $second = Invoke-CompilerFixture $fixture $input (Join-Path $fixture.root 'two')
         $first.package_id -eq $second.package_id | Should Be $false
     }

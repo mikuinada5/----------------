@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://repository.local/schemas/note-header-human-approval-v1.json",
+  "title": "note Header Human Approval Evidence v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "event_id", "actor_type", "evidence_origin", "occurred_at", "statement", "context"],
+  "properties": {
+    "schema_version": { "const": "note-header-human-approval/v1" },
+    "event_id": { "type": "string", "minLength": 1 },
+    "actor_type": { "const": "human" },
+    "evidence_origin": { "const": "human-response-event" },
+    "occurred_at": { "type": "string", "format": "date-time" },
+    "statement": { "type": "string", "minLength": 1 },
+    "context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["stage", "presented_at", "article_id", "approved_header_title", "generated_asset_sha256", "visual_record_sha256", "runtime_receipt_sha256", "actual_tool_request_sha256", "destination", "purpose"],
+      "properties": {
+        "stage": { "const": "HEADER_ASSET_CANDIDATE_PRESENTED" },
+        "presented_at": { "type": "string", "format": "date-time" },
+        "article_id": { "type": "string", "minLength": 1 },
+        "approved_header_title": { "type": "string", "minLength": 1 },
+        "generated_asset_sha256": { "$ref": "#/$defs/sha256" },
+        "visual_record_sha256": { "$ref": "#/$defs/sha256" },
+        "runtime_receipt_sha256": { "$ref": "#/$defs/sha256" },
+        "actual_tool_request_sha256": { "$ref": "#/$defs/sha256" },
+        "destination": { "const": "NOTE_FINAL_REVIEW_PACKAGE" },
+        "purpose": { "const": "NOTE_HEADER_ASSET_PROMOTION" }
+      }
+    }
+  },
+  "$defs": { "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" } }
+}

@@ -107,7 +107,7 @@ Chat、Work、外部AIその他の環境に存在する文章は、それだけ�
 
 削減対象は、各工程を一つずつ起動・中継するためだけの不要な人間操作である。
 
-画像生成を伴うVisual Productionでは、Phase Tool Routing、G2 PASS済みSourceからのGeneration Contract、実際のTool Requestに対するPrompt Assembly QA、生成物のAsset QAを省略しない。Marketing Review、Source QA、Human Review、G5またはPublishのPhaseから画像生成Toolへ暗黙遷移せず、QA未確認Assetを通常のHuman Review Candidateとして表示しない。共通規範は`AI_PRODUCTION_PIPELINE.md` §7.6、機械検証は`04_AI_Work_Environment/Visual_Production/`を使用する。
+画像生成を伴うVisual Productionでは、Phase Tool Routing、G2 PASS済みSourceからのGeneration Contract、実際のTool Requestに対するPrompt Assembly QA、生成物のAsset QAを省略しない。Marketing Review、Source QA、Human Review、G5またはPublishのPhaseから画像生成Toolへ暗黙遷移せず、QA未確認Assetを通常のHuman Review Candidateとして表示しない。note HeaderはLocal Codex Visual Production Bridgeを標準routeとし、Human Review CandidateへのHuman Approval後にFormal Asset Promotion Gateを通ったものだけをFinal Review Packageへ接続する。Chat／Work built-in direct画像は`UNVERIFIED_NON_ASSET`であり、Human OKでも遡及昇格しない。共通規範は`AI_PRODUCTION_PIPELINE.md` §7.6、機械検証は`04_AI_Work_Environment/Visual_Production/`を使用する。
 
 ### 4.4 人間判断のUIはChatへ集約する
 

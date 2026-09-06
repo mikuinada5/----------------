@@ -6,6 +6,14 @@
 
 ------------------------------------------------------------------------
 
+## 2026-09-06｜note Header Formal Asset Promotion Gateを実装
+
+Visual Production v1.3として、AIDAILY HeaderのMaster Resolver、Article ID／actual request identityを含むGeneration Contract、Canonical Route判定、Header Human Approval SchemaおよびFormal Asset Promotion Gateを追加した。`NOTE_HEADER_REQUIRED`はLocal Codex `visual-production-bridge`へrouteし、Master expected／actual SHAと1280×670、Contract、Prompt QA、actual request、Bridge receipt、生成Asset SHA／寸法、全Asset QA、Human event、Article ID／display titleが一致した場合だけ`FORMAL_HEADER_ASSET`を生成する。
+
+Chat／Work built-in direct出力は`UNVERIFIED_NON_ASSET`であり、Human OKによる遡及昇格を拒否する。Platform上のdirect生成自体はRepositoryから物理無効化できないが、正式Asset IDとFinal Review Package eligibilityを付与できない。Bridge不能時は`BLOCKED_PLATFORM_BOUNDARY`で停止する。Visual既存31件とHeader routing／promotion 11件をPASSした。External Audit Pipelineはdisabled／`NOT OBTAINED`を維持し、外部監査通信は行っていない。
+
+------------------------------------------------------------------------
+
 ## 2026-09-04｜Approval Incident停止措置とoffline検証契約のHuman承認
 
 External Audit Pipeline v1.1として、実送信CLI／dispatch／Anthropic・Gemini leafをBLOCKEDにし、実際に使用された個人Claude runnerにもSHA限定の停止guardを適用した。署名Human Evidence、request／wait／response順序、payload／destination／目的binding、後着承認Incidentを検証するoffline契約と13件の回帰を追加した。信頼済みHuman-event ingressと実送信Gateは未実装であり、negative testとruntime E2E完了まで再有効化を禁止する。

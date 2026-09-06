@@ -1,6 +1,6 @@
 # Section制作台本テンプレート
 
-**Status:** Current / Operational v2.2 / Publication Bundle Phase 1 compatible
+**Status:** Current / Operational v2.3 / Formal Header Asset Promotion compatible
 **使用先:** 実データ発生後、`01_Sections/<Section-ID>_<短い識別名>/00_Section制作台本.md` として複製して使用する。
 
 ## 0. 意味づけ・企画フェーズからの引き継ぎ
@@ -94,6 +94,7 @@ Marketingは第2稿から開始し、本文を直接書き換えず、Requiremen
 | Marketing Gate | Marketing Input Pending / Marketing Revision Required / Marketing Approved / Human Decision Required |
 | 第3稿識別 / 差分範囲 |  |
 | Header Contract / Prompt Assembly QA / Asset QA | Contract ID、Production version、Source fingerprint、実Tool Request識別、Prompt QA、Asset provenance、Header QA結果、Human Review Candidate化。QA未確認／FAILはAsset ID・G5へ進めない |
+| Formal Header Asset Promotion | Formal Asset ID／identity、Article ID、approved display title、Master expected／actual SHA、Bridge receipt、generated Asset SHA／寸法、Asset QA、Header Human Approval Evidence。direct built-in画像やEvidence欠落は`UNVERIFIED_NON_ASSET`／`BLOCKED_FINAL_PACKAGE_INCOMPLETE` |
 | Final Review Package Compiler | Input locator、D3／Header／Marketing／Source Manifest SHA検証、Compiler version、Package ID／identity SHA／file SHA、`READY_FOR_FINAL_REVIEW`、8区分提示Artifact locator。不足時は`BLOCKED_FINAL_PACKAGE_INCOMPLETE` |
 | Human Event / Approval Evidence | 提示済みPackage ID／identity SHA／file SHA、提示時刻、Human event ID／時刻／statement、公開先、目的。Package本体とは別Artifact |
 | Publication Bundle / Work Handoff | Bundle ID／identity SHA、Builder version、sealed directory／ZIP locator、Package ID、`BUNDLE_SEALED / HANDOFF_PENDING`、Humanによる単一ZIP受け渡し、Work側`HANDOFF_VERIFIED`。ZIP SHAをBundle identityにしない |

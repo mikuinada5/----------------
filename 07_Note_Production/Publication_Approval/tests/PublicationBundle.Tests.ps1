@@ -4,6 +4,7 @@ $bundleModule = Join-Path $PSScriptRoot '../scripts/PublicationBundle.psm1'
 Import-Module $bundleModule -Force
 Import-Module $compilerModule -Force
 Import-Module $approvalModule -Force
+Import-Module (Join-Path $PSScriptRoot 'FormalHeaderFixture.psm1') -Force
 
 function Save-BundleTestJson([string]$Path, $Value) {
     $Value | ConvertTo-Json -Depth 50 | Set-Content -LiteralPath $Path -Encoding utf8 -NoNewline
@@ -22,12 +23,13 @@ function New-BundleFixture([string]$Root) {
     $headerQaPath = Join-Path $Root 'header-qa.json'
     $sourcePath = Join-Path $Root 'source-manifest.json'
     'Final D3 body full text.' | Set-Content -LiteralPath $bodyPath -Encoding utf8 -NoNewline
-    [IO.File]::WriteAllBytes($headerPath, [byte[]](1, 2, 3, 4))
+    Write-TestHeaderPng $headerPath
     '{"status":"PASS","identity":"MR-TEST-v3"}' | Set-Content -LiteralPath $marketingPath -Encoding utf8 -NoNewline
     '{"status":"PASS","asset_id":"AIDAILY-TEST-H1"}' | Set-Content -LiteralPath $headerQaPath -Encoding utf8 -NoNewline
     '{"schema_version":"source-manifest/v2","result":"PASS"}' | Set-Content -LiteralPath $sourcePath -Encoding utf8 -NoNewline
+    $formalHeader = New-TestFormalHeaderRecord -Root $Root -HeaderPath $headerPath -HeaderQaPath $headerQaPath -ArticleId 'AIDAILY-TEST' -DisplayTitle 'Final title' -CanonicalPointer 'archive://AIDAILY-TEST/header.png'
     $input = [ordered]@{
-        schema_version = 'note-final-review-package-input/v1'
+        schema_version = 'note-final-review-package-input/v2'
         workflow_state = 'MARKETING_APPROVED'
         article_id = 'AIDAILY-TEST'
         title = 'Final title'
@@ -37,7 +39,8 @@ function New-BundleFixture([string]$Root) {
             evidence = [ordered]@{ artifact_id = 'MR-AIDAILY-TEST-v3-EVIDENCE'; file = 'private://AIDAILY-TEST/marketing-review.json'; local_path = 'marketing-review.json'; sha256 = Get-NoteCompilerFileSha256 $marketingPath }
         }
         header = [ordered]@{
-            asset_id = 'AIDAILY-TEST-H1'; file = 'archive://AIDAILY-TEST/header.png'; local_path = 'header.png'; sha256 = Get-NoteCompilerFileSha256 $headerPath
+            asset_id = $formalHeader.record.formal_asset_id; display_title = 'Final title'; file = 'archive://AIDAILY-TEST/header.png'; local_path = 'header.png'; sha256 = Get-NoteCompilerFileSha256 $headerPath
+            formal_asset = [ordered]@{ artifact_id = $formalHeader.record.formal_asset_id; file = 'private://AIDAILY-TEST/formal-header-asset.json'; local_path = 'formal-header-asset.json'; sha256 = $formalHeader.sha256 }
             asset_qa = [ordered]@{ status = 'PASS'; evidence = [ordered]@{ artifact_id = 'AIDAILY-TEST-H1-QA'; file = 'archive://AIDAILY-TEST/header-qa.json'; local_path = 'header-qa.json'; sha256 = Get-NoteCompilerFileSha256 $headerQaPath } }
         }
         publication_conditions = [ordered]@{

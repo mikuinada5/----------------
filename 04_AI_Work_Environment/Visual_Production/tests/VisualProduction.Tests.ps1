@@ -1,4 +1,5 @@
 $scriptUnderTest = Join-Path $PSScriptRoot '../scripts/Test-VisualProduction.ps1'
+Import-Module (Join-Path $PSScriptRoot '../scripts/NoteHeaderRouting.psm1') -Force
 
 function New-TestSource {
     param([string]$Path)
@@ -23,6 +24,11 @@ function New-VisualRecord {
         [IO.File]::WriteAllBytes($masterPath, [Text.Encoding]::UTF8.GetBytes('approved-master-image'))
     }
     $masterSha = if ($ArtifactType -eq 'note-header') { (Get-FileHash -LiteralPath $masterPath -Algorithm SHA256).Hash.ToLowerInvariant() } else { '' }
+    $generatedPath = Join-Path $RepositoryRoot 'runtime-assets/generated.png'
+    if ($ArtifactType -eq 'note-header') {
+        [IO.File]::WriteAllBytes($generatedPath, [byte[]](137,80,78,71,13,10,26,10,0,0,0,13,73,72,68,82,0,0,5,0,0,0,2,158))
+    }
+    $generatedSha = if ($ArtifactType -eq 'note-header') { (Get-FileHash -LiteralPath $generatedPath -Algorithm SHA256).Hash.ToLowerInvariant() } else { ('c' * 64) }
 
     $requirements = if ($ArtifactType -eq 'note-header') {
         @(
@@ -65,7 +71,7 @@ function New-VisualRecord {
     $qaChecks = @($mandatory | ForEach-Object { @{ requirement_id = $_; result = 'PASS' } }) + @(@{ requirement_id = 'dimensions'; result = 'PASS' })
     $title = 'AIに仕事を任せたら、私の仕事が増えた話'
 
-    return @{
+    $record = @{
         schema_version = 'visual-production/v1'
         task_id = 'VISUAL-TEST-001'
         production_version = 'H1'
@@ -80,11 +86,13 @@ function New-VisualRecord {
         }
         resolved_requirements = $requirements
         generation_contract = @{
+            article_id = 'AIDAILY-TEST'
             profile_id = $ProfileId
             source_fingerprint_sha256 = ('b' * 64)
             approved_text = @{ title = $title }
             dimensions = @{ width = 1280; height = 670 }
-            reference_assets = if ($ArtifactType -eq 'note-header') { @(@{ asset_id = 'NOTE-HEADER-MASTER-v1.0'; version = 'v1.0'; logical_locator = 'AI/04_Personal_Archive/Original/ChatGPT/NOTE_HEADER_MASTER_TEMPLATE_v1.0.png'; sha256 = $masterSha }) } else { @() }
+            reference_assets = if ($ArtifactType -eq 'note-header') { @(@{ asset_id = 'NOTE-HEADER-MASTER-v1.0'; version = 'v1.0'; logical_locator = 'AI/04_Personal_Archive/Original/ChatGPT/NOTE_HEADER_MASTER_TEMPLATE_v1.0.png'; sha256 = $masterSha; expected_sha256 = $masterSha; actual_sha256 = $masterSha; dimensions = @{ width = 1280; height = 670 }; provenance = 'canonical-profile:test' }) } else { @() }
+            request_identity_sha256 = ''
             requirement_ids = $mandatory
             creative_direction = @(@{ id = 'warm-expression'; text = 'Warm expression'; conflicts_with = @(); resolution = 'kept' })
             inspection_capability = 'ai-visual-inspection'
@@ -109,10 +117,12 @@ function New-VisualRecord {
             source_fingerprint_check = $true
             result = 'PASS'
         }
-        asset = @{ status = 'QA_PASS'; retry_count = 0; provenance = 'test://asset/1' }
+        asset = @{ status = 'QA_PASS'; retry_count = 0; provenance = 'test://asset/1'; file = 'archive://AIDAILY-TEST/header.png'; local_path = $generatedPath; sha256 = $generatedSha; width = 1280; height = 670 }
         asset_qa = @{ performed = $true; result = 'PASS'; checks = $qaChecks }
         transition = @{ requested_target = 'HUMAN_REVIEW_CANDIDATE'; stop_reason = '' }
     }
+    $record.generation_contract.request_identity_sha256 = Get-NoteHeaderCanonicalJsonSha256 $record.tool_request
+    return $record
 }
 
 function Invoke-Record {
@@ -201,6 +211,12 @@ Describe 'Visual Production Control' {
     It '7. passes when only a QA-passed asset is shown as Human Review Candidate' {
         $record = New-VisualRecord -RepositoryRoot $repo
         { Invoke-Record $record $repo $recordPath } | Should Not Throw
+    }
+
+    It '7b. requires note Header to use Formal Promotion instead of direct Asset Ready' {
+        $record = New-VisualRecord -RepositoryRoot $repo
+        $record.transition.requested_target = 'ASSET_READY'
+        (Test-RecordFails $record $repo $recordPath) | Should Be $true
     }
 
     It '8. passes only after conflicting Creative Direction is dropped' {

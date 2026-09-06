@@ -8,6 +8,7 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
+Import-Module (Join-Path $PSScriptRoot 'NoteHeaderRouting.psm1') -Force
 function Stop-VisualProductionValidation {
     param([string]$Message)
     throw "VISUAL_PRODUCTION_QA FAIL`n- $Message"
@@ -83,6 +84,13 @@ if ($fingerprint -notmatch '^[0-9a-fA-F]{64}$') { Stop-VisualProductionValidatio
 if ([string]$record.generation_contract.source_fingerprint_sha256 -ne $fingerprint) {
     Stop-VisualProductionValidation 'Generation Contract uses a stale or different Source fingerprint'
 }
+if ([string]::IsNullOrWhiteSpace([string]$record.generation_contract.article_id)) {
+    Stop-VisualProductionValidation 'Generation Contract Article ID is missing'
+}
+$actualRequestIdentity = Get-NoteHeaderCanonicalJsonSha256 $record.tool_request
+if ([string]$record.generation_contract.request_identity_sha256 -ne $actualRequestIdentity) {
+    Stop-VisualProductionValidation 'Generation Contract request identity does not match the actual Tool Request'
+}
 
 $sourcePaths = @{}
 foreach ($source in Get-Values $record.source_manifest.sources) {
@@ -138,6 +146,20 @@ foreach ($id in $contractIds) {
     if (-not $requirementById.ContainsKey($id)) { Stop-VisualProductionValidation "Generation Contract contains unresolved requirement: $id" }
 }
 
+if ([string]$record.artifact_type -eq 'note-header') {
+    $canonicalIds = @(
+        'master-reference','note-horizontal','current-dimensions','human-left','kei-right','comic-style','white-background','black-pink-palette',
+        'master-title-replace','title-exact','title-central','no-series-label','no-speech-bubbles','no-explanation-copy','no-checklists',
+        'no-additional-catch-copy','no-background-recolor','no-unverified-facts','no-hype','no-poster-layout','no-title-change'
+    )
+    foreach ($id in $canonicalIds) {
+        if (-not $requirementById.ContainsKey($id)) { Stop-VisualProductionValidation "Canonical note Header requirement is missing: $id" }
+    }
+    if ([int]$record.generation_contract.dimensions.width -ne 1280 -or [int]$record.generation_contract.dimensions.height -ne 670) {
+        Stop-VisualProductionValidation 'Canonical note Header dimensions must be 1280x670'
+    }
+}
+
 $referenceAssets = @(Get-Values $record.generation_contract.reference_assets)
 $referencedImagePaths = @(Get-Values $record.tool_request.referenced_image_paths | ForEach-Object { [string]$_ })
 if ($mandatoryIds -contains 'master-reference') {
@@ -153,6 +175,18 @@ for ($i = 0; $i -lt $referenceAssets.Count; $i++) {
         if ([string]::IsNullOrWhiteSpace([string]$reference.$field)) {
             Stop-VisualProductionValidation "Reference asset field is missing: $field"
         }
+    }
+    if ([string]$record.artifact_type -eq 'note-header') {
+        foreach ($field in @('expected_sha256','actual_sha256','dimensions','provenance')) {
+            if ($null -eq $reference.PSObject.Properties[$field]) { Stop-VisualProductionValidation "Master resolution field is missing: $field" }
+        }
+        if ([string]$reference.expected_sha256 -ne [string]$reference.sha256 -or [string]$reference.actual_sha256 -ne [string]$reference.sha256) {
+            Stop-VisualProductionValidation 'Master expected, actual and contract SHA-256 values do not match'
+        }
+        if ([int]$reference.dimensions.width -ne 1280 -or [int]$reference.dimensions.height -ne 670) {
+            Stop-VisualProductionValidation 'Master dimensions must be 1280x670'
+        }
+        if ([string]::IsNullOrWhiteSpace([string]$reference.provenance)) { Stop-VisualProductionValidation 'Master provenance is missing' }
     }
     if ([string]$reference.logical_locator -notmatch '^AI/(?!.*(?:^|/)\.\.(?:/|$))[^\\]+$') {
         Stop-VisualProductionValidation 'Reference asset logical locator must be AI-root-relative and must not contain a machine-specific path'
@@ -208,6 +242,10 @@ if ($record.preflight.result -ne 'PASS') { Stop-VisualProductionValidation 'Prom
 
 $target = [string]$record.transition.requested_target
 $protectedTargets = @('HUMAN_REVIEW_CANDIDATE', 'ASSET_READY', 'G5_PACKAGE', 'READY_FOR_PUBLISH')
+$formalHeaderTargets = @('ASSET_READY', 'G5_PACKAGE', 'READY_FOR_PUBLISH')
+if ([string]$record.artifact_type -eq 'note-header' -and $formalHeaderTargets -contains $target) {
+    Stop-VisualProductionValidation 'note Header must stop at HUMAN_REVIEW_CANDIDATE and use the Formal Header Asset Promotion Gate'
+}
 $qaResult = [string]$record.asset_qa.result
 $qaChecks = @{}
 foreach ($check in Get-Values $record.asset_qa.checks) {
@@ -226,6 +264,19 @@ if ($protectedTargets -contains $target) {
     }
     if (-not $qaChecks.ContainsKey('dimensions') -or $qaChecks['dimensions'] -ne 'PASS') {
         Stop-VisualProductionValidation 'Asset QA did not verify dimensions'
+    }
+    if ([string]$record.artifact_type -eq 'note-header') {
+        foreach ($field in @('file','local_path','sha256','width','height','provenance')) {
+            if ($null -eq $record.asset.PSObject.Properties[$field] -or [string]::IsNullOrWhiteSpace([string]$record.asset.$field)) {
+                Stop-VisualProductionValidation "Header asset evidence is missing: $field"
+            }
+        }
+        if ([string]$record.asset.sha256 -notmatch '^[0-9a-fA-F]{64}$') { Stop-VisualProductionValidation 'Header asset SHA-256 is invalid' }
+        if ([int]$record.asset.width -ne 1280 -or [int]$record.asset.height -ne 670) { Stop-VisualProductionValidation 'Header asset dimensions must be 1280x670' }
+        if (-not [IO.Path]::IsPathRooted([string]$record.asset.local_path) -or -not (Test-Path -LiteralPath $record.asset.local_path -PathType Leaf)) { Stop-VisualProductionValidation 'Header asset local file is not reachable' }
+        if ((Get-NoteHeaderFileSha256 $record.asset.local_path) -ne ([string]$record.asset.sha256).ToLowerInvariant()) { Stop-VisualProductionValidation 'Header asset bytes do not match the recorded SHA-256' }
+        try { $assetDimensions = Get-NoteHeaderPngDimensions $record.asset.local_path } catch { Stop-VisualProductionValidation $_.Exception.Message }
+        if ($assetDimensions.width -ne 1280 -or $assetDimensions.height -ne 670) { Stop-VisualProductionValidation 'Header asset actual dimensions must be 1280x670' }
     }
 }
 

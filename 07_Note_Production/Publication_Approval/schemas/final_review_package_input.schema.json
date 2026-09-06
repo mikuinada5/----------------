@@ -1,12 +1,12 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://repository.local/schemas/note-final-review-package-input.schema.json",
-  "title": "note Final Review Package Compiler Input v1",
+  "title": "note Final Review Package Compiler Input v2",
   "type": "object",
   "additionalProperties": false,
   "required": ["schema_version", "workflow_state", "article_id", "title", "d3_body", "marketing_review", "header", "publication_conditions", "destination", "purpose", "source_manifest"],
   "properties": {
-    "schema_version": { "const": "note-final-review-package-input/v1" },
+    "schema_version": { "const": "note-final-review-package-input/v2" },
     "workflow_state": { "const": "MARKETING_APPROVED" },
     "article_id": { "type": "string", "minLength": 1 },
     "title": { "type": "string", "minLength": 1 },
@@ -25,12 +25,14 @@
     "header": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["asset_id", "file", "local_path", "sha256", "asset_qa"],
+      "required": ["asset_id", "display_title", "file", "local_path", "sha256", "formal_asset", "asset_qa"],
       "properties": {
         "asset_id": { "type": "string", "minLength": 1 },
+        "display_title": { "type": "string", "minLength": 1 },
         "file": { "type": "string", "minLength": 1 },
         "local_path": { "type": "string", "minLength": 1 },
         "sha256": { "$ref": "#/$defs/input_sha256" },
+        "formal_asset": { "$ref": "#/$defs/local_artifact" },
         "asset_qa": {
           "type": "object",
           "additionalProperties": false,

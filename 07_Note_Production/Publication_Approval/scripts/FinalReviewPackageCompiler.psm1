@@ -1,4 +1,5 @@
 Set-StrictMode -Version Latest
+Import-Module (Join-Path $PSScriptRoot '../../../04_AI_Work_Environment/Visual_Production/scripts/HeaderAssetPromotion.psm1') -Force
 
 function Get-NoteCompilerFileSha256 {
     param([Parameter(Mandatory)][string]$LiteralPath)
@@ -97,8 +98,22 @@ function Get-NoteFinalReviewIdentityPayload {
         }
         header = [ordered]@{
             asset_id = [string]$Package.header.asset_id
+            display_title = [string]$Package.header.display_title
+            formal_asset_state = [string]$Package.header.formal_asset_state
+            formal_asset_identity_sha256 = ([string]$Package.header.formal_asset_identity_sha256).ToLowerInvariant()
             file = [string]$Package.header.file
             sha256 = ([string]$Package.header.sha256).ToLowerInvariant()
+            master_template = [ordered]@{
+                asset_id = [string]$Package.header.master_template.asset_id
+                version = [string]$Package.header.master_template.version
+                canonical_locator = [string]$Package.header.master_template.canonical_locator
+                sha256 = ([string]$Package.header.master_template.sha256).ToLowerInvariant()
+            }
+            route_evidence = [ordered]@{
+                implementation_id = [string]$Package.header.route_evidence.implementation_id
+                route = [string]$Package.header.route_evidence.route
+                runtime_receipt_sha256 = ([string]$Package.header.route_evidence.runtime_receipt_sha256).ToLowerInvariant()
+            }
             asset_qa = [ordered]@{
                 status = [string]$Package.header.asset_qa.status
                 evidence = [ordered]@{
@@ -106,6 +121,10 @@ function Get-NoteFinalReviewIdentityPayload {
                     file = [string]$Package.header.asset_qa.evidence.file
                     sha256 = ([string]$Package.header.asset_qa.evidence.sha256).ToLowerInvariant()
                 }
+            }
+            human_approval = [ordered]@{
+                event_id = [string]$Package.header.human_approval.event_id
+                evidence_sha256 = ([string]$Package.header.human_approval.evidence_sha256).ToLowerInvariant()
             }
         }
         publication_conditions = ConvertTo-NotePublicationConditions $Package.publication_conditions
@@ -175,6 +194,7 @@ $($Package.d3_body.content)
 ## 2. Header
 
 - Asset ID: $($Package.header.asset_id)
+- Approved Header display title: $($Package.header.display_title)
 - Canonical pointer: $($Package.header.file)
 - SHA-256: $($Package.header.sha256)
 - Asset QA: PASS
@@ -288,16 +308,23 @@ function New-NoteFinalReviewPackage {
         $bodyCheck = Assert-NoteCompilerArtifact $inputDirectory $input.d3_body 'D3_BODY'
         $marketingCheck = Assert-NoteCompilerArtifact $inputDirectory $input.marketing_review.evidence 'MARKETING_REVIEW_EVIDENCE'
         $headerCheck = Assert-NoteCompilerArtifact $inputDirectory $input.header 'HEADER'
+        $formalAssetCheck = Assert-NoteCompilerArtifact $inputDirectory $input.header.formal_asset 'FORMAL_HEADER_ASSET'
         $headerQaCheck = Assert-NoteCompilerArtifact $inputDirectory $input.header.asset_qa.evidence 'HEADER_QA_EVIDENCE'
         $sourceCheck = Assert-NoteCompilerArtifact $inputDirectory $input.source_manifest 'SOURCE_MANIFEST'
         $bodyContent = Get-Content -LiteralPath $bodyCheck.path -Raw -Encoding UTF8
         if (-not $bodyContent) { throw 'D3_BODY_EMPTY' }
         if ($input.publication_conditions.membership.enabled -and (-not $input.publication_conditions.membership.name -or -not $input.publication_conditions.membership.plan)) { throw 'MEMBERSHIP_INCOMPLETE' }
         if ($input.publication_conditions.magazine.enabled -and -not $input.publication_conditions.magazine.name) { throw 'MAGAZINE_INCOMPLETE' }
+        $repositoryRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../../..'))
+        Test-NoteFormalHeaderAsset -RepositoryRoot $repositoryRoot -FormalAssetPath $formalAssetCheck.path -ExpectedArticleId ([string]$input.article_id) -ExpectedHeaderTitle ([string]$input.header.display_title) -ExpectedHeaderPath $headerCheck.path -RecordOnly | Out-Null
+        $formalAsset = Get-Content -LiteralPath $formalAssetCheck.path -Raw -Encoding UTF8 | ConvertFrom-Json -Depth 50
+        if ([string]$input.header.asset_id -cne [string]$formalAsset.formal_asset_id) { throw 'FORMAL_HEADER_ASSET_ID_MISMATCH' }
+        if ([string]$input.header.file -cne [string]$formalAsset.asset.file -or $headerCheck.sha256 -cne [string]$formalAsset.asset.sha256) { throw 'FORMAL_HEADER_ASSET_POINTER_MISMATCH' }
+        if ($headerQaCheck.sha256 -cne [string]$formalAsset.asset_qa.visual_record_sha256) { throw 'FORMAL_HEADER_QA_EVIDENCE_MISMATCH' }
 
         $package = [ordered]@{
-            schema_version = 'note-final-review-package/v2'
-            compiler_version = 'note-final-review-package-compiler/v1'
+            schema_version = 'note-final-review-package/v3'
+            compiler_version = 'note-final-review-package-compiler/v2'
             package_id = ''
             identity_sha256 = ''
             state = 'READY_FOR_FINAL_REVIEW'
@@ -320,9 +347,23 @@ function New-NoteFinalReviewPackage {
                 }
             }
             header = [ordered]@{
-                asset_id = [string]$input.header.asset_id
+                asset_id = [string]$formalAsset.formal_asset_id
+                display_title = [string]$formalAsset.approved_header_title
+                formal_asset_state = 'FORMAL_HEADER_ASSET'
+                formal_asset_identity_sha256 = [string]$formalAsset.identity_sha256
                 file = [string]$input.header.file
                 sha256 = $headerCheck.sha256
+                master_template = [ordered]@{
+                    asset_id = [string]$formalAsset.master_template.asset_id
+                    version = [string]$formalAsset.master_template.version
+                    canonical_locator = [string]$formalAsset.master_template.canonical_locator
+                    sha256 = [string]$formalAsset.master_template.actual_sha256
+                }
+                route_evidence = [ordered]@{
+                    implementation_id = [string]$formalAsset.route_evidence.implementation_id
+                    route = [string]$formalAsset.route_evidence.route
+                    runtime_receipt_sha256 = [string]$formalAsset.route_evidence.runtime_receipt_sha256
+                }
                 asset_qa = [ordered]@{
                     status = 'PASS'
                     evidence = [ordered]@{
@@ -330,6 +371,10 @@ function New-NoteFinalReviewPackage {
                         file = [string]$input.header.asset_qa.evidence.file
                         sha256 = $headerQaCheck.sha256
                     }
+                }
+                human_approval = [ordered]@{
+                    event_id = [string]$formalAsset.human_approval.event_id
+                    evidence_sha256 = [string]$formalAsset.human_approval.evidence_sha256
                 }
             }
             publication_conditions = ConvertTo-NotePublicationConditions $input.publication_conditions

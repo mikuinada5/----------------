@@ -1,7 +1,7 @@
-# AI Production Pipeline v1.16
+# AI Production Pipeline v1.17
 
 **Document type:** Standard Operating Procedure（SOP）<br>
-**Status:** Current / Operational v1.16<br>
+**Status:** Current / Operational v1.17<br>
 **Owner:** 稲田美来<br>
 **Scope:** Story Candidate、教材、note、SNS、運営文書、Brand／Education／AI Organization関連Source、その他AI制作物<br>
 **Purpose:** 既存OS・Sourceを毎回確実に選択・実読・適用し、成果物と新知見を正しい責任単位へ戻すためのAI組織共通運用<br>
@@ -435,9 +435,12 @@ Phase Tool Routing
 → Generation Contract
 → Actual Tool Request
 → Prompt Assembly QA
+→ Runtime Request Binding / Visual Production Bridge
 → Generated Asset / GENERATED_UNVERIFIED
 → Asset QA
 → Human Review Candidate
+→ Human Approval
+→ Formal Asset Promotion
 ```
 
 #### 7.6.1 Phase Tool Routing
@@ -460,7 +463,7 @@ Toolは、使えることを理由に起動せず、Work Charterの成果物と�
 
 Production AIは、G2 PASS済みSource ManifestのVisual適用箇所から、少なくとも次を持つ案件・Production version単位のGeneration Contractを構築する。
 
-- Task ID、Artifact ID／type、Production version、媒体／成果物Profile
+- Task ID、Article ID、Artifact ID／type、Production version、媒体／成果物Profile
 - Source Manifest fingerprintと、要件を解決したcanonical Source path／file SHA-256
 - 承認済みタイトルその他のexact text
 - 媒体Profileが承認済みMaster／reference Assetを要求する場合、そのAsset ID、Version、機械非依存の論理locator、SHA-256およびRuntimeで解決した実在参照file
@@ -470,6 +473,7 @@ Production AIは、G2 PASS済みSource ManifestのVisual適用箇所から、少
 - `MAY`：許容される可変要素
 - Creative Directionと各要件との競合判定
 - 使用Tool／mode、生成物をAIが検査できるか、Asset provenanceの取得方法
+- actual Tool Requestの決定論的identity／SHA-256
 - 自動再試行上限。標準は初回生成後2回までとし、専門Sourceがより厳しく制限する場合はそちらを優先する
 
 優先順位は`MUST / MUST_NOT > MAY > Creative Direction`とする。Creative Directionはcanonical Template、承認済み文字列、禁止事項、教育内容または媒体仕様を上書きできない。競合するCreative DirectionはContractから削除し、削除できず新しい価値判断を要する場合は生成せずSTOPする。
@@ -535,9 +539,15 @@ Chat / Work Production Intent
 
 Runtime Receipt Schema、builder、validatorおよび回帰テストは`04_AI_Work_Environment/Visual_Production/`を使用する。ReceiptまたはSkillを迂回して生成された画像は、見た目が適合していてもgoverned Assetではなく、正式Asset登録、G5または公開候補へ接続しない。
 
+#### 7.6.6 Formal Asset Promotion
+
+媒体SourceがFormal Assetを要求する場合、Asset QA PASSとHuman Review Candidateは正式登録の前提であり、Formal Assetそのものではない。note Headerは、Master identity／expected・actual SHA／寸法／provenance、Generation Contract、Prompt Assembly QA、actual request identity、Local Codex Visual Production Bridge receipt、生成Asset SHA／寸法、全必須Asset QA、Human Approval Evidence、Article IDおよびapproved Header display titleを一つのPromotion Recordへbindingする。全一致時だけ`FORMAL_HEADER_ASSET`を生成する。
+
+Standard Chat／Workのbuilt-in direct生成は`UNVERIFIED_NON_ASSET`とし、Humanが後から画像へOKを示しても遡及昇格しない。Bridgeが利用不能ならdirect生成へfallbackせず`BLOCKED_PLATFORM_BOUNDARY`で停止する。Platform上のdirect生成自体をRepositoryから物理無効化する保証は持たないが、その出力にはFormal Asset ID、正式provenance、Final Review Package eligibilityを付与できない。
+
 ### 7.7 Gate
 
-**PASS:** 必要な成果物一式、Source Application Log、未解決事項一覧が揃い、勝手な上位判断がない。Visual制作ではPhase Tool Routing、Generation Contract、Prompt Assembly QA、Runtime Request BindingおよびAsset QAの必要状態遷移が成立している。<br>
+**PASS:** 必要な成果物一式、Source Application Log、未解決事項一覧が揃い、勝手な上位判断がない。Visual制作ではPhase Tool Routing、Generation Contract、Prompt Assembly QA、Runtime Request BindingおよびAsset QAの必要状態遷移が成立し、媒体がFormal Assetを要求する場合はHuman Approval後のPromotion GateもPASSしている。<br>
 **FAIL:** Productionへ戻る。Source欠落を発見した場合はSource QAへ戻る。
 
 ---
