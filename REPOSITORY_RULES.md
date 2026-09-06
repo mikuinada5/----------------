@@ -140,7 +140,7 @@ GitHubをCanonical Source／Version管理、常設Cloud Workを日常のnote制�
 
 Cloud Workは原則として`07_Note_Production/02_Published/AIDAILY/<Article-ID>/`配下の**新規Article ID領域**だけをappend-onlyで作成できる。公開済み最終本文、Formal Header Asset／record、Publication Conditions、Final Review Package、Approval／Publication Evidence、Publication Bundle manifest、公開URL／日時、PPV resultおよびarticle-local provenanceをArticle単位で保持する。既存Article IDの上書き、同一pathへの更新、共通System SourceへのWRITEは行わない。
 
-Cloud WorkはSystem SourceをREADしてportable validatorを実行できる。AIDAILY Headerでは`cloud-work`環境を明示し、Repository Master、exact native Tool request、current-task Tool event、生成Asset、Asset QAおよびHuman ApprovalをCloud Work Bridgeでbindingする。これはCloudへのSystem Source WRITE権を与えない。Bridge、Schema、SOPまたは共通Sourceの改修は引き続きLocal Codex専有である。
+Cloud WorkはSystem SourceをREADしてportable validatorを実行できる。AIDAILY Headerでは`cloud-work`環境を明示し、Repository Master、exact native Tool request、current-task Tool event、改変しないRaw Asset、決定論的Normalization Evidence、1280×670のNormalized Asset、Asset QAおよびHuman ApprovalをCloud Work Bridgeでbindingする。RawとNormalizedを別ArtifactとしてArticle-local Evidenceへ保持し、Rawを直接生成済みFormal Asset、Normalizedをnative生成物と記録しない。これはCloudへのSystem Source WRITE権を与えない。Bridge、Schema、SOPまたは共通Sourceの改修は引き続きLocal Codex専有である。
 
 `REPOSITORY_RULES.md`、`AI_PRODUCTION_PIPELINE.md`、note SOP／README、schema、validator、script／module、Visual Production Control、Publication Approval実装、Repository横断監査基準、Repository-level configuration、`.gitignore`、Repository-wide CHANGELOGおよびSystem-level Timeline／governanceはLocal Codex専有とする。Cloud Workが変更必要性を検出した場合は`LOCAL_MAINTENANCE_REQUIRED`として分離し、Cloud側のArticle commitへ混ぜない。Cloudの公開履歴はArticle-local recordへ書き、Repository-wide CHANGELOGへの集約はLocal maintenanceで行う。
 

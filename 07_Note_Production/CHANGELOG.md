@@ -4,6 +4,14 @@
 
 ---
 
+## 2026-09-07｜Header Post-generation Normalizationをnote E2Eへ接続
+
+note SOP v2.14、README v1.23、Publication Approval v1.6へ更新した。Cloud Workはnative Raw Headerを`RAW_GENERATED_UNVERIFIED`として保持し、決定論的Normalizationで生成した1280×670の別Assetだけを`NORMALIZED_UNVERIFIED`からAsset QA／Human Review Candidateへ進める。Header ApprovalとFormal identityはRaw SHA、Normalization identity／Evidence、Normalized SHAをbindingする。
+
+Final Review CompilerはCloud Bridge v2のsealed Formal Headerを再検証し、Normalized Header実体をPackageへ渡す。Human Final Approval、G5、Publication Bundle、publish、PPVのidentity contract、System Source WRITE ownerおよびArticle-local範囲は変更していない。
+
+---
+
 ## 2026-09-07｜Cloud Work Formal Header Production Bridgeをnote E2Eへ接続
 
 note SOP v2.13、README v1.22、Publication Approval v1.5へ更新した。AIDAILY HeaderはLocal Codexだけでなく、Repository checkout、Node.js、組み込み画像生成と画像検査Toolを持つ`cloud-work`で、Source ResolutionからMaster検証、Article／title-bound Contract、exact Tool request、current-task Tool event、`GENERATED_UNVERIFIED`、Asset QA、`HUMAN_REVIEW_CANDIDATE`、Human Approval、`FORMAL_HEADER_ASSET`、Final Review Package Compilerまで実行できる。

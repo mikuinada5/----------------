@@ -1,12 +1,12 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://repository.local/schemas/cloud-work-image-generation-event-v1.json",
-  "title": "Cloud Work native image generation event v1",
+  "$id": "https://repository.local/schemas/cloud-work-image-generation-event-v2.json",
+  "title": "Cloud Work native image generation raw Asset event v2",
   "type": "object",
   "additionalProperties": false,
   "required": ["schema_version", "evidence_origin", "environment", "event_id", "task_id", "production_version", "contract_identity_sha256", "tool", "invoked_at", "completed_at", "arguments", "arguments_sha256", "generated_asset"],
   "properties": {
-    "schema_version": { "const": "cloud-work-image-generation-event/v1" },
+    "schema_version": { "const": "cloud-work-image-generation-event/v2" },
     "evidence_origin": { "const": "current-task-cloud-work-tool-event" },
     "environment": { "const": "cloud-work" },
     "event_id": { "type": "string", "minLength": 1 },
@@ -29,11 +29,15 @@
     "generated_asset": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["local_path", "sha256"],
+      "required": ["local_path", "sha256", "tool_output_locator", "dimensions"],
       "properties": {
         "local_path": { "type": "string", "minLength": 1 },
         "sha256": { "$ref": "#/$defs/sha256" },
-        "tool_output_locator": { "type": "string" }
+        "tool_output_locator": { "type": "string", "minLength": 1 },
+        "dimensions": {
+          "type": "object", "additionalProperties": false, "required": ["width", "height"],
+          "properties": { "width": { "type": "integer", "minimum": 1 }, "height": { "type": "integer", "minimum": 1 } }
+        }
       }
     }
   },

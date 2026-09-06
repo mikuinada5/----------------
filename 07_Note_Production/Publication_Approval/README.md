@@ -1,6 +1,6 @@
 # note Publication Approval Gate
 
-**Status:** Current / Operational v1.5 / Cloud Work Header Bridge compatible
+**Status:** Current / Operational v1.6 / Header Normalization compatible
 **Responsibility:** note Final Review PackageへのHuman Final Approval / Publication Approvalを実際の公開対象へbindingし、承認後のsealed Publication Bundle、Phase 1 Work handoff、G5からPPVまでの継続可否を機械検証する。
 
 ## Contract
@@ -16,7 +16,7 @@ Final Review Packageは、D3本文、Header、無料／Membership境界、Member
 
 `MARKETING_APPROVED`からHuman Final Reviewへ進む前に、Local Codexでは`New-FinalReviewPackage.ps1`、Cloud Workでは`final-review-package-compiler.mjs`を必ず実行する。CompilerはLLMによる自由生成ではなく、D3本文file、Marketing Review PASS evidence、`FORMAL_HEADER_ASSET` record、Header実体、Publication Conditions、Source Manifest、destinationおよびpurposeをSchemaと実file SHAで検証し、一つのimmutable Package JSONとHuman提示用Markdownを決定論的に生成する。 Formal Header recordのID／identity、Article ID、approved display title、Header SHA／canonical pointer、Master identity／SHA、Asset QA、Bridge route receiptおよびHeader Human Approvalを再照合し、単なるPNGまたはHuman OKだけを拒否する。
 
-Cloud Workでは同じCompiler identity contractを`final-review-package-compiler.mjs`で実行する。PowerShell版とcross-platform版は同じInput／Package Schema、Formal Header再検証、identity payload、immutable出力および8区分提示を使用する。Cloud Bridge経路の`implementation_id`と`route`をそのままPackageへ保持し、Local経路へ偽装しない。
+Cloud Workでは同じCompiler identity contractを`final-review-package-compiler.mjs`で実行する。PowerShell版とcross-platform版は同じInput／Package Schema、Formal Header再検証、identity payload、immutable出力および8区分提示を使用する。Cloud Bridge v2のFormal HeaderはRaw Asset SHA／寸法、Normalization Evidence／identity、Normalized Header SHAおよびHuman Approval bindingをsealed Formal identityとして再検証する。PackageはそのFormal identityとNormalized Header実体を受け取り、Rawを公開Headerまたは直接生成済みFormal Assetとして扱わない。
 
 ```text
 MARKETING_APPROVED

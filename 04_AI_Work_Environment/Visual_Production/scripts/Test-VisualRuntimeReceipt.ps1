@@ -88,13 +88,13 @@ elseif ($environment -eq 'local-codex') {
     }
 }
 elseif ($environment -eq 'cloud-work') {
-    if ($route -ne 'repository-cloud-work-request-bound' -or $receipt.implementation_id -ne 'repo-skill:visual-production-bridge/cloud-work-v1') { Stop-RuntimeValidation 'Cloud Work must use the cross-platform Repository request-bound bridge' }
+    if ($route -ne 'repository-cloud-work-request-bound' -or $receipt.implementation_id -ne 'repo-skill:visual-production-bridge/cloud-work-v2') { Stop-RuntimeValidation 'Cloud Work must use the cross-platform Repository request-bound bridge with Post-generation Normalization' }
     foreach ($capability in @('current_source_resolution','repository_script_execution','image_generation_tool','asset_inspection','client_visible_request_binding')) {
         if ([string]$receipt.capabilities.$capability -ne 'VERIFIED') { Stop-RuntimeValidation "Cloud Work capability is not VERIFIED: $capability" }
     }
     if ($receipt.capabilities.platform_tool_choice_control -eq 'VERIFIED' -or $receipt.boundary.platform_enforced -ne $false) { Stop-RuntimeValidation 'Cloud Work bridge must not claim platform-wide tool-choice enforcement' }
     if ($receipt.boundary.repository_enforcement_scope -ne 'client-visible-request' -or $receipt.result -ne 'REQUEST_BOUND' -or $receipt.request_binding.match -ne $true) { Stop-RuntimeValidation 'Cloud Work request binding is incomplete' }
-    foreach ($field in @('event_id','event_sha256','evidence_origin','tool','contract_identity_sha256','invocation_arguments_sha256','generated_asset_sha256')) {
+    foreach ($field in @('event_id','event_sha256','evidence_origin','tool','contract_identity_sha256','invocation_arguments_sha256','generated_asset_sha256','raw_asset_locator','raw_asset_width','raw_asset_height')) {
         if ([string]::IsNullOrWhiteSpace([string]$receipt.tool_event_binding.$field)) { Stop-RuntimeValidation "Cloud Work Tool event binding is missing: $field" }
     }
     if ($receipt.tool_event_binding.evidence_origin -ne 'current-task-cloud-work-tool-event' -or $receipt.tool_event_binding.tool -ne 'image_gen.imagegen') { Stop-RuntimeValidation 'Cloud Work Tool event origin or tool is invalid' }

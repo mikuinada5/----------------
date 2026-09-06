@@ -6,6 +6,14 @@
 
 ------------------------------------------------------------------------
 
+## 2026-09-07｜Post-generation Header Normalizationを実装
+
+Visual Production v1.6としてCloud Bridgeをv2へ更新した。native imagegenのRaw PNGは要求寸法と異なっても改変せずTool eventへbindingし、Repository内のcross-platform Node normalizerが別の1280×670 Candidateを決定論的に生成する。Normalization Evidenceはinput／output SHA・寸法、crop、tool／version／method、upstream receipt／Tool eventおよび実行event／timestampを保持する。
+
+1734×907から1280×670へのpositive、Raw寸法虚偽、Evidence／Normalized bytes tamper、Normalization欠落、QA欠落およびHuman Approval identity流用をnegative testした。Rawをnative出力、Normalizedを変換出力として区別し、Raw上書きや直接Formal昇格を拒否する。
+
+------------------------------------------------------------------------
+
 ## 2026-09-07｜Cloud Work Formal Header Production Bridgeを実装
 
 Visual Production v1.5、Source Resolution v1.1として、Local Codex／PowerShellだけに固定されていたAIDAILY Header経路を、Repository checkoutとNode.js標準libraryで動く`cloud-work` Runtimeへ接続した。GitHub Current SourceのMaster binary／manifestを解決してSHA-256と1280×670を実測し、Article ID、approved exact title、Source fingerprint、Master identity、canonical requirementsおよびexact native imagegen argumentsをGeneration Contractへbindingする。

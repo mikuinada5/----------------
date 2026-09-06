@@ -27,6 +27,11 @@ function Get-HeaderFormalIdentity {
         asset_qa = [ordered]@{ status = [string]$FormalAsset.asset_qa.status; visual_record_sha256 = ([string]$FormalAsset.asset_qa.visual_record_sha256).ToLowerInvariant() }
         human_approval = [ordered]@{ event_id = [string]$FormalAsset.human_approval.event_id; evidence_sha256 = ([string]$FormalAsset.human_approval.evidence_sha256).ToLowerInvariant() }
     }
+    if ($null -ne $FormalAsset.PSObject.Properties['raw_asset'] -or $null -ne $FormalAsset.PSObject.Properties['normalization']) {
+        if ($null -eq $FormalAsset.PSObject.Properties['raw_asset'] -or $null -eq $FormalAsset.PSObject.Properties['normalization']) { throw 'FORMAL_HEADER_NORMALIZATION_BINDING_MISSING' }
+        $payload.raw_asset = [ordered]@{ locator = [string]$FormalAsset.raw_asset.locator; sha256 = ([string]$FormalAsset.raw_asset.sha256).ToLowerInvariant(); width = [int]$FormalAsset.raw_asset.width; height = [int]$FormalAsset.raw_asset.height; provenance = [string]$FormalAsset.raw_asset.provenance }
+        $payload.normalization = [ordered]@{ identity_sha256 = ([string]$FormalAsset.normalization.identity_sha256).ToLowerInvariant(); evidence_sha256 = ([string]$FormalAsset.normalization.evidence_sha256).ToLowerInvariant(); tool = [string]$FormalAsset.normalization.tool; version = [string]$FormalAsset.normalization.version; method = [string]$FormalAsset.normalization.method; input_sha256 = ([string]$FormalAsset.normalization.input_sha256).ToLowerInvariant(); output_sha256 = ([string]$FormalAsset.normalization.output_sha256).ToLowerInvariant() }
+    }
     $sha = Get-NoteHeaderCanonicalJsonSha256 $payload
     $safe = ([string]$FormalAsset.article_id -replace '[^A-Za-z0-9._-]', '-').Trim('-')
     if (-not $safe) { throw 'HEADER_ARTICLE_ID_NOT_SAFE' }
@@ -65,8 +70,11 @@ function Test-NoteFormalHeaderAsset {
     $masterPath = Resolve-HeaderEvidencePath $recordDirectory ([string]$formal.generation_contract.master_asset_local_path)
     $receiptPath = Resolve-HeaderEvidencePath $recordDirectory ([string]$formal.route_evidence.runtime_receipt_local_path)
     $approvalPath = Resolve-HeaderEvidencePath $recordDirectory ([string]$formal.human_approval.evidence_local_path)
+    $isNormalizedCloud = $formal.route_evidence.implementation_id -eq 'repo-skill:visual-production-bridge/cloud-work-v2' -and $formal.route_evidence.route -eq 'repository-cloud-work-request-bound'
+    $rawPath = if ($isNormalizedCloud) { Resolve-HeaderEvidencePath $recordDirectory ([string]$formal.raw_asset.local_path) } else { $null }
+    $normalizationPath = if ($isNormalizedCloud) { Resolve-HeaderEvidencePath $recordDirectory ([string]$formal.normalization.evidence_local_path) } else { $null }
 
-    foreach ($item in @($headerPath,$visualPath,$requestPath,$profilePath,$masterPath,$receiptPath,$approvalPath)) {
+    foreach ($item in @($headerPath,$visualPath,$requestPath,$profilePath,$masterPath,$receiptPath,$approvalPath,$rawPath,$normalizationPath) | Where-Object { $_ }) {
         if (-not (Test-Path -LiteralPath $item -PathType Leaf)) { throw "FORMAL_HEADER_EVIDENCE_NOT_FOUND: $item" }
     }
     if ((Get-NoteHeaderFileSha256 $headerPath) -ne [string]$formal.asset.sha256) { throw 'FORMAL_HEADER_BYTES_MISMATCH' }
@@ -75,6 +83,28 @@ function Test-NoteFormalHeaderAsset {
     if ((Get-NoteHeaderFileSha256 $approvalPath) -ne [string]$formal.human_approval.evidence_sha256) { throw 'FORMAL_HEADER_HUMAN_APPROVAL_SHA_MISMATCH' }
     $dimensions = Get-NoteHeaderPngDimensions $headerPath
     if ($dimensions.width -ne 1280 -or $dimensions.height -ne 670) { throw 'FORMAL_HEADER_DIMENSIONS_MISMATCH' }
+    if ($isNormalizedCloud) {
+        if ($formal.promotion_version -ne 'note-header-promotion/v2') { throw 'FORMAL_HEADER_NORMALIZATION_PROMOTION_VERSION_MISMATCH' }
+        if ((Get-NoteHeaderFileSha256 $rawPath) -ne [string]$formal.raw_asset.sha256) { throw 'FORMAL_HEADER_RAW_ASSET_BYTES_MISMATCH' }
+        $rawDimensions = Get-NoteHeaderPngDimensions $rawPath
+        if ($rawDimensions.width -ne [int]$formal.raw_asset.width -or $rawDimensions.height -ne [int]$formal.raw_asset.height) { throw 'FORMAL_HEADER_RAW_ASSET_DIMENSIONS_MISMATCH' }
+        if ((Get-NoteHeaderFileSha256 $normalizationPath) -ne [string]$formal.normalization.evidence_sha256) { throw 'FORMAL_HEADER_NORMALIZATION_EVIDENCE_SHA_MISMATCH' }
+        $normalization = Get-Content -LiteralPath $normalizationPath -Raw -Encoding UTF8 | ConvertFrom-Json -Depth 30
+        $normalizationPayload = [ordered]@{
+            task_id = [string]$normalization.task_id; production_version = [string]$normalization.production_version; contract_identity_sha256 = [string]$normalization.contract_identity_sha256
+            runtime_receipt_sha256 = [string]$normalization.runtime_receipt_sha256; tool_event_sha256 = [string]$normalization.input.tool_event_sha256
+            raw_asset = [ordered]@{ locator = [string]$normalization.input.locator; sha256 = [string]$normalization.input.sha256; width = [int]$normalization.input.dimensions.width; height = [int]$normalization.input.dimensions.height }
+            transform = $normalization.transform
+            normalized_asset = [ordered]@{ sha256 = [string]$normalization.output.sha256; width = [int]$normalization.output.dimensions.width; height = [int]$normalization.output.dimensions.height }
+            execution_event_id = [string]$normalization.execution.event_id
+        }
+        if ((Get-NoteHeaderCanonicalJsonSha256 $normalizationPayload) -ne [string]$formal.normalization.identity_sha256 -or [string]$normalization.normalization_identity_sha256 -ne [string]$formal.normalization.identity_sha256) { throw 'FORMAL_HEADER_NORMALIZATION_IDENTITY_MISMATCH' }
+        if ([string]$normalization.input.sha256 -ne [string]$formal.raw_asset.sha256 -or [string]$normalization.output.sha256 -ne [string]$formal.asset.sha256 -or [string]$formal.normalization.input_sha256 -ne [string]$formal.raw_asset.sha256 -or [string]$formal.normalization.output_sha256 -ne [string]$formal.asset.sha256) { throw 'FORMAL_HEADER_NORMALIZATION_CHAIN_MISMATCH' }
+        $node = Get-Command node -ErrorAction Stop
+        $normalizerScript = Join-Path $PSScriptRoot 'deterministic-png-normalizer.mjs'
+        & $node.Source $normalizerScript verify --input $rawPath --output $headerPath --crop-x ([string]$normalization.transform.crop.x) --crop-y ([string]$normalization.transform.crop.y) --crop-width ([string]$normalization.transform.crop.width) --crop-height ([string]$normalization.transform.crop.height) | Out-Null
+        if ($LASTEXITCODE -ne 0) { throw 'FORMAL_HEADER_NORMALIZATION_DETERMINISTIC_OUTPUT_MISMATCH' }
+    }
     if ($RecordOnly) {
         return [pscustomobject]@{ result = 'PASS'; state = 'FORMAL_HEADER_ASSET'; formal_asset_id = $formal.formal_asset_id; identity_sha256 = $formal.identity_sha256; header_sha256 = $formal.asset.sha256; evidence_revalidation = 'SEALED_RECORD' }
     }
@@ -98,7 +128,7 @@ function Test-NoteFormalHeaderAsset {
         if ($requestIdentity -ne $formal.generation_contract.actual_tool_request_sha256 -or [string]$record.generation_contract.request_identity_sha256 -ne [string]$formal.generation_contract.request_identity_sha256 -or [string]$receipt.tool_event_binding.invocation_arguments_sha256 -ne $requestIdentity) { throw 'FORMAL_HEADER_REQUEST_BINDING_MISMATCH' }
     } elseif ($requestIdentity -ne $formal.generation_contract.actual_tool_request_sha256 -or $requestIdentity -ne $formal.generation_contract.request_identity_sha256) { throw 'FORMAL_HEADER_REQUEST_BINDING_MISMATCH' }
     $validLocalRoute = $receipt.environment -eq 'local-codex' -and $receipt.route -eq 'repository-skill-request-bound' -and $receipt.implementation_id -eq 'repo-skill:visual-production-bridge/v1'
-    $validCloudRoute = $receipt.environment -eq 'cloud-work' -and $receipt.route -eq 'repository-cloud-work-request-bound' -and $receipt.implementation_id -eq 'repo-skill:visual-production-bridge/cloud-work-v1'
+    $validCloudRoute = $receipt.environment -eq 'cloud-work' -and $receipt.route -eq 'repository-cloud-work-request-bound' -and $receipt.implementation_id -eq 'repo-skill:visual-production-bridge/cloud-work-v2'
     if ((-not $validLocalRoute -and -not $validCloudRoute) -or $receipt.result -ne 'REQUEST_BOUND') { throw 'FORMAL_HEADER_BRIDGE_ROUTE_MISSING' }
     if ($master.asset_id -ne $formal.master_template.asset_id -or $master.actual_sha256 -ne $formal.master_template.actual_sha256 -or $master.canonical_locator -ne $formal.master_template.canonical_locator) { throw 'FORMAL_HEADER_MASTER_BINDING_MISMATCH' }
     if ([DateTimeOffset]$approval.occurred_at -lt [DateTimeOffset]$approval.context.presented_at) { throw 'HEADER_HUMAN_APPROVAL_BEFORE_PRESENTATION' }
@@ -110,6 +140,7 @@ function Test-NoteFormalHeaderAsset {
         @([string]$approval.context.runtime_receipt_sha256,[string]$formal.route_evidence.runtime_receipt_sha256,'RUNTIME_RECEIPT_SHA'),
         @([string]$approval.context.actual_tool_request_sha256,[string]$formal.generation_contract.actual_tool_request_sha256,'REQUEST_SHA')
     )) { if ($binding[0] -cne $binding[1]) { throw "HEADER_HUMAN_APPROVAL_$($binding[2])_MISMATCH" } }
+    if ($isNormalizedCloud -and ([string]$approval.context.raw_asset_sha256 -cne [string]$formal.raw_asset.sha256 -or [string]$approval.context.normalization_identity_sha256 -cne [string]$formal.normalization.identity_sha256)) { throw 'HEADER_HUMAN_APPROVAL_NORMALIZATION_MISMATCH' }
     [pscustomobject]@{ result = 'PASS'; state = 'FORMAL_HEADER_ASSET'; formal_asset_id = $formal.formal_asset_id; identity_sha256 = $formal.identity_sha256; header_sha256 = $formal.asset.sha256 }
 }
 
@@ -137,7 +168,8 @@ function New-NoteFormalHeaderAsset {
     if ($record.artifact_type -ne 'note-header' -or $record.generation_contract.profile_id -ne 'aidaily-header-v1') { throw 'FORMAL_HEADER_WRONG_PROFILE' }
     if ($record.transition.requested_target -ne 'HUMAN_REVIEW_CANDIDATE' -or $record.asset_qa.result -ne 'PASS' -or $record.asset.status -ne 'QA_PASS') { throw 'FORMAL_HEADER_ASSET_QA_NOT_PASS' }
     $validLocalRoute = $receipt.environment -eq 'local-codex' -and $receipt.route -eq 'repository-skill-request-bound' -and $receipt.implementation_id -eq 'repo-skill:visual-production-bridge/v1'
-    $validCloudRoute = $receipt.environment -eq 'cloud-work' -and $receipt.route -eq 'repository-cloud-work-request-bound' -and $receipt.implementation_id -eq 'repo-skill:visual-production-bridge/cloud-work-v1'
+    $validCloudRoute = $false
+    if ($receipt.environment -eq 'cloud-work') { throw 'FORMAL_HEADER_CLOUD_PROMOTION_REQUIRES_NORMALIZATION_BRIDGE_MJS' }
     if ((-not $validLocalRoute -and -not $validCloudRoute) -or $receipt.result -ne 'REQUEST_BOUND') { throw 'FORMAL_HEADER_BRIDGE_ROUTE_MISSING' }
     $resolveMasterArgs = @{ ProfileSourcePath = $ProfileSourcePath; ProfileId = 'aidaily-header-v1' }
     if (-not [string]::IsNullOrWhiteSpace($MasterAssetPath)) { $resolveMasterArgs.MasterAssetPath = $MasterAssetPath }

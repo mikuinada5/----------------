@@ -3,11 +3,12 @@ import { promises as fs } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { canonicalSha256, fileSha256, sha256Bytes, validateSourceManifest } from '../../Source_Resolution/scripts/source-resolution.mjs';
+import { decodePng, encodeRgbaPng, normalizePng, resizeCoverFixedPoint, NORMALIZER_METHOD, NORMALIZER_TOOL, NORMALIZER_VERSION, PNG_ENCODING } from './deterministic-png-normalizer.mjs';
 
 const MASTER_ID = 'NOTE-HEADER-MASTER-v1.0';
 const MASTER_VERSION = 'v1.0';
 const PROFILE_ID = 'aidaily-header-v1';
-const CLOUD_IMPLEMENTATION = 'repo-skill:visual-production-bridge/cloud-work-v1';
+const CLOUD_IMPLEMENTATION = 'repo-skill:visual-production-bridge/cloud-work-v2';
 const CLOUD_ROUTE = 'repository-cloud-work-request-bound';
 const CANONICAL_HEADER_IDS = [
   'master-reference','note-horizontal','current-dimensions','human-left','kei-right','comic-style','white-background','black-pink-palette',
@@ -160,6 +161,12 @@ export async function validateVisualRecord({ repositoryRoot, record, requireCand
     const checks = new Map((record.asset_qa.checks || []).map((item) => [item.requirement_id, item.result]));
     for (const item of mandatory) requireValue(checks.get(item.id) === 'PASS', 'VISUAL_PRODUCTION_QA_FAIL', `Asset QA did not pass: ${item.id}`);
     requireValue(checks.get('dimensions') === 'PASS', 'VISUAL_PRODUCTION_QA_FAIL', 'Asset QA dimensions missing');
+    requireValue(record.raw_asset?.status === 'RAW_GENERATED_UNVERIFIED' && record.normalization?.status === 'PASS', 'VISUAL_PRODUCTION_QA_FAIL', 'Raw Asset or Normalization evidence missing');
+    requireValue(await fileSha256(record.raw_asset.local_path) === record.raw_asset.sha256, 'VISUAL_PRODUCTION_QA_FAIL', 'Raw Asset bytes mismatch');
+    const rawDims = await pngDimensions(record.raw_asset.local_path);
+    requireValue(rawDims.width === record.raw_asset.width && rawDims.height === record.raw_asset.height, 'VISUAL_PRODUCTION_QA_FAIL', 'Raw Asset dimensions mismatch');
+    requireValue(record.normalization.input_sha256 === record.raw_asset.sha256 && record.normalization.output_sha256 === record.asset.sha256, 'VISUAL_PRODUCTION_QA_FAIL', 'Normalization chain mismatch');
+    requireValue(await fileSha256(record.normalization.evidence_path) === record.normalization.evidence_sha256, 'VISUAL_PRODUCTION_QA_FAIL', 'Normalization Evidence bytes mismatch');
   }
   return { result: 'PASS', state: requireCandidate ? 'HUMAN_REVIEW_CANDIDATE' : 'TOOL_INVOCATION_PENDING' };
 }
@@ -230,8 +237,9 @@ export async function bindRuntime({ repositoryRoot, recordPath, argumentsPath, t
   const event = await readJson(toolEventPath, 'CLOUD_WORK_TOOL_EVENT_INVALID');
   exactKeys(event, ['schema_version','evidence_origin','environment','event_id','task_id','production_version','contract_identity_sha256','tool','invoked_at','completed_at','arguments','arguments_sha256','generated_asset'], ['schema_version','evidence_origin','environment','event_id','task_id','production_version','contract_identity_sha256','tool','invoked_at','completed_at','arguments','arguments_sha256','generated_asset'], 'CLOUD_WORK_TOOL_EVENT_SCHEMA_FAIL');
   exactKeys(event.arguments, ['prompt','referenced_image_paths'], ['prompt','referenced_image_paths'], 'CLOUD_WORK_TOOL_EVENT_SCHEMA_FAIL');
-  exactKeys(event.generated_asset, ['local_path','sha256'], ['local_path','sha256','tool_output_locator'], 'CLOUD_WORK_TOOL_EVENT_SCHEMA_FAIL');
-  requireValue(event.schema_version === 'cloud-work-image-generation-event/v1' && event.evidence_origin === 'current-task-cloud-work-tool-event' && event.environment === 'cloud-work', 'CLOUD_WORK_TOOL_EVENT_ORIGIN_INVALID');
+  exactKeys(event.generated_asset, ['local_path','sha256','tool_output_locator','dimensions'], ['local_path','sha256','tool_output_locator','dimensions'], 'CLOUD_WORK_TOOL_EVENT_SCHEMA_FAIL');
+  exactKeys(event.generated_asset.dimensions, ['width','height'], ['width','height'], 'CLOUD_WORK_TOOL_EVENT_SCHEMA_FAIL');
+  requireValue(event.schema_version === 'cloud-work-image-generation-event/v2' && event.evidence_origin === 'current-task-cloud-work-tool-event' && event.environment === 'cloud-work', 'CLOUD_WORK_TOOL_EVENT_ORIGIN_INVALID');
   requireValue(event.task_id === record.task_id && event.production_version === record.production_version && event.contract_identity_sha256 === record.generation_contract.contract_identity_sha256, 'CLOUD_WORK_TOOL_EVENT_CONTRACT_MISMATCH');
   requireValue(event.tool === 'image_gen.imagegen' && event.event_id, 'CLOUD_WORK_TOOL_EVENT_TOOL_MISMATCH');
   requireValue(iso(event.invoked_at, 'CLOUD_WORK_TOOL_EVENT_TIME_INVALID') <= iso(event.completed_at, 'CLOUD_WORK_TOOL_EVENT_TIME_INVALID'), 'CLOUD_WORK_TOOL_EVENT_TIME_INVALID');
@@ -240,19 +248,19 @@ export async function bindRuntime({ repositoryRoot, recordPath, argumentsPath, t
   const assetPath = path.resolve(event.generated_asset?.local_path || '');
   requireValue(await fileSha256(assetPath) === event.generated_asset?.sha256, 'CLOUD_WORK_GENERATED_ASSET_SHA_MISMATCH');
   const dims = await pngDimensions(assetPath);
-  requireValue(dims.width === 1280 && dims.height === 670, 'CLOUD_WORK_GENERATED_ASSET_DIMENSIONS_MISMATCH');
+  requireValue(event.generated_asset.tool_output_locator && dims.width === event.generated_asset.dimensions.width && dims.height === event.generated_asset.dimensions.height, 'CLOUD_WORK_GENERATED_ASSET_DIMENSIONS_MISMATCH');
   const receipt = {
     schema_version: 'visual-runtime-receipt/v1', task_id: record.task_id, production_version: record.production_version,
     environment: 'cloud-work', implementation_id: CLOUD_IMPLEMENTATION, route: CLOUD_ROUTE,
     capabilities: { current_source_resolution: 'VERIFIED', repository_script_execution: 'VERIFIED', image_generation_tool: 'VERIFIED', asset_inspection: 'VERIFIED', client_visible_request_binding: 'VERIFIED', platform_tool_choice_control: 'UNAVAILABLE' },
     request_binding: { validated_request_sha256: record.generation_contract.request_identity_sha256, actual_request_sha256: argsHash, match: true },
-    tool_event_binding: { event_id: event.event_id, event_sha256: await fileSha256(toolEventPath), evidence_origin: event.evidence_origin, tool: event.tool, contract_identity_sha256: event.contract_identity_sha256, invocation_arguments_sha256: argsHash, generated_asset_sha256: event.generated_asset.sha256 },
+    tool_event_binding: { event_id: event.event_id, event_sha256: await fileSha256(toolEventPath), evidence_origin: event.evidence_origin, tool: event.tool, contract_identity_sha256: event.contract_identity_sha256, invocation_arguments_sha256: argsHash, generated_asset_sha256: event.generated_asset.sha256, raw_asset_locator: event.generated_asset.tool_output_locator, raw_asset_width: dims.width, raw_asset_height: dims.height },
     boundary: { repository_enforcement_scope: 'client-visible-request', platform_enforced: false, acknowledged: true },
     evidence: ['Current-task Cloud Work tool event bound to exact invocation arguments', 'Repository Master bytes and generated output bytes rehashed by cross-platform validator'],
     result: 'REQUEST_BOUND', checked_at: new Date().toISOString()
   };
   await writeImmutableJson(path.resolve(outputPath), receipt, 'RUNTIME_RECEIPT_IMMUTABLE_CONFLICT');
-  return { result: 'PASS', state: 'GENERATED_UNVERIFIED', receipt_path: path.resolve(outputPath), receipt_sha256: await fileSha256(outputPath), generated_asset_path: assetPath, generated_asset_sha256: event.generated_asset.sha256 };
+  return { result: 'PASS', state: 'RAW_GENERATED_UNVERIFIED', receipt_path: path.resolve(outputPath), receipt_sha256: await fileSha256(outputPath), raw_asset_path: assetPath, raw_asset_sha256: event.generated_asset.sha256, raw_dimensions: dims };
 }
 
 async function validateCloudReceipt({ record, receipt, argumentsValue, toolEvent, receiptPath, toolEventPath }) {
@@ -260,31 +268,117 @@ async function validateCloudReceipt({ record, receipt, argumentsValue, toolEvent
   requireValue(receipt.request_binding.validated_request_sha256 === record.generation_contract.request_identity_sha256 && receipt.request_binding.actual_request_sha256 === canonicalSha256(argumentsValue) && receipt.request_binding.match === true, 'CLOUD_WORK_REQUEST_BINDING_MISMATCH');
   requireValue(receipt.tool_event_binding?.event_sha256 === await fileSha256(toolEventPath) && receipt.tool_event_binding?.event_id === toolEvent.event_id && receipt.tool_event_binding?.contract_identity_sha256 === record.generation_contract.contract_identity_sha256, 'CLOUD_WORK_TOOL_EVENT_BINDING_MISMATCH');
   requireValue(receipt.tool_event_binding?.invocation_arguments_sha256 === canonicalSha256(argumentsValue) && receipt.tool_event_binding?.generated_asset_sha256 === toolEvent.generated_asset.sha256, 'CLOUD_WORK_TOOL_EVENT_BINDING_MISMATCH');
+  requireValue(receipt.tool_event_binding?.raw_asset_locator === toolEvent.generated_asset.tool_output_locator && receipt.tool_event_binding?.raw_asset_width === toolEvent.generated_asset.dimensions.width && receipt.tool_event_binding?.raw_asset_height === toolEvent.generated_asset.dimensions.height, 'CLOUD_WORK_RAW_ASSET_BINDING_MISMATCH');
   requireValue(receipt.boundary?.platform_enforced === false && receipt.boundary?.acknowledged === true, 'CLOUD_WORK_PLATFORM_BOUNDARY_NOT_ACKNOWLEDGED');
   return { receipt_sha256: await fileSha256(receiptPath), tool_event_sha256: await fileSha256(toolEventPath) };
 }
 
-export async function completeAssetQa({ repositoryRoot, recordPath, receiptPath, argumentsPath, toolEventPath, qaEvidencePath, outputPath, assetCanonicalPointer }) {
+function normalizationIdentity(evidence) {
+  return canonicalSha256({
+    task_id: evidence.task_id,
+    production_version: evidence.production_version,
+    contract_identity_sha256: evidence.contract_identity_sha256,
+    runtime_receipt_sha256: evidence.runtime_receipt_sha256,
+    tool_event_sha256: evidence.input.tool_event_sha256,
+    raw_asset: { locator: evidence.input.locator, sha256: evidence.input.sha256, width: evidence.input.dimensions.width, height: evidence.input.dimensions.height },
+    transform: evidence.transform,
+    normalized_asset: { sha256: evidence.output.sha256, width: evidence.output.dimensions.width, height: evidence.output.dimensions.height },
+    execution_event_id: evidence.execution.event_id
+  });
+}
+
+async function validateNormalizationEvidence({ record, receiptPath, toolEventPath, toolEvent, evidencePath, expectedOutputPath }) {
+  const evidence = await readJson(evidencePath, 'HEADER_NORMALIZATION_EVIDENCE_INVALID');
+  exactKeys(evidence, ['schema_version','evidence_origin','environment','task_id','production_version','contract_identity_sha256','runtime_receipt_sha256','normalization_identity_sha256','input','transform','output','execution'], ['schema_version','evidence_origin','environment','task_id','production_version','contract_identity_sha256','runtime_receipt_sha256','normalization_identity_sha256','input','transform','output','execution'], 'HEADER_NORMALIZATION_SCHEMA_FAIL');
+  exactKeys(evidence.input, ['locator','local_path','sha256','dimensions','tool_event_sha256'], ['locator','local_path','sha256','dimensions','tool_event_sha256'], 'HEADER_NORMALIZATION_SCHEMA_FAIL');
+  exactKeys(evidence.input.dimensions, ['width','height'], ['width','height'], 'HEADER_NORMALIZATION_SCHEMA_FAIL');
+  exactKeys(evidence.transform, ['tool','version','method','encoding','crop','target_dimensions'], ['tool','version','method','encoding','crop','target_dimensions'], 'HEADER_NORMALIZATION_SCHEMA_FAIL');
+  exactKeys(evidence.transform.crop, ['x','y','width','height'], ['x','y','width','height'], 'HEADER_NORMALIZATION_SCHEMA_FAIL');
+  exactKeys(evidence.transform.target_dimensions, ['width','height'], ['width','height'], 'HEADER_NORMALIZATION_SCHEMA_FAIL');
+  exactKeys(evidence.output, ['local_path','sha256','dimensions'], ['local_path','sha256','dimensions'], 'HEADER_NORMALIZATION_SCHEMA_FAIL');
+  exactKeys(evidence.output.dimensions, ['width','height'], ['width','height'], 'HEADER_NORMALIZATION_SCHEMA_FAIL');
+  exactKeys(evidence.execution, ['event_id','started_at','completed_at'], ['event_id','started_at','completed_at'], 'HEADER_NORMALIZATION_SCHEMA_FAIL');
+  requireValue(evidence.schema_version === 'header-asset-normalization/v1' && evidence.evidence_origin === 'repository-normalization-execution' && evidence.environment === 'cloud-work', 'HEADER_NORMALIZATION_ORIGIN_INVALID');
+  requireValue(evidence.task_id === record.task_id && evidence.production_version === record.production_version && evidence.contract_identity_sha256 === record.generation_contract.contract_identity_sha256, 'HEADER_NORMALIZATION_CONTRACT_MISMATCH');
+  requireValue(evidence.runtime_receipt_sha256 === await fileSha256(receiptPath) && evidence.input.tool_event_sha256 === await fileSha256(toolEventPath), 'HEADER_NORMALIZATION_UPSTREAM_BINDING_MISMATCH');
+  requireValue(evidence.input.locator === toolEvent.generated_asset.tool_output_locator && evidence.input.sha256 === toolEvent.generated_asset.sha256, 'HEADER_NORMALIZATION_RAW_ASSET_BINDING_MISMATCH');
+  requireValue(evidence.input.dimensions.width === toolEvent.generated_asset.dimensions.width && evidence.input.dimensions.height === toolEvent.generated_asset.dimensions.height, 'HEADER_NORMALIZATION_RAW_DIMENSIONS_MISMATCH');
+  requireValue(evidence.transform.tool === NORMALIZER_TOOL && evidence.transform.version === NORMALIZER_VERSION && evidence.transform.method === NORMALIZER_METHOD && evidence.transform.encoding === PNG_ENCODING, 'HEADER_NORMALIZATION_TRANSFORM_MISMATCH');
+  requireValue(evidence.transform.target_dimensions.width === 1280 && evidence.transform.target_dimensions.height === 670 && evidence.output.dimensions.width === 1280 && evidence.output.dimensions.height === 670, 'HEADER_NORMALIZATION_OUTPUT_DIMENSIONS_MISMATCH');
+  requireValue(iso(evidence.execution.started_at, 'HEADER_NORMALIZATION_TIME_INVALID') >= iso(toolEvent.completed_at, 'CLOUD_WORK_TOOL_EVENT_TIME_INVALID') && iso(evidence.execution.completed_at, 'HEADER_NORMALIZATION_TIME_INVALID') >= iso(evidence.execution.started_at, 'HEADER_NORMALIZATION_TIME_INVALID'), 'HEADER_NORMALIZATION_TIME_INVALID');
+  requireValue(evidence.normalization_identity_sha256 === normalizationIdentity(evidence), 'HEADER_NORMALIZATION_IDENTITY_MISMATCH');
+  const rawPath = path.resolve(evidence.input.local_path);
+  const normalizedPath = path.resolve(evidence.output.local_path);
+  requireValue(rawPath === path.resolve(toolEvent.generated_asset.local_path) && await fileSha256(rawPath) === evidence.input.sha256, 'HEADER_NORMALIZATION_RAW_BYTES_MISMATCH');
+  const rawDims = await pngDimensions(rawPath);
+  requireValue(rawDims.width === evidence.input.dimensions.width && rawDims.height === evidence.input.dimensions.height, 'HEADER_NORMALIZATION_RAW_DIMENSIONS_MISMATCH');
+  const recomputed = resizeCoverFixedPoint(decodePng(await fs.readFile(rawPath)), 1280, 670);
+  requireValue(canonicalSha256(recomputed.crop) === canonicalSha256(evidence.transform.crop), 'HEADER_NORMALIZATION_CROP_MISMATCH');
+  requireValue(sha256Bytes(encodeRgbaPng(recomputed)) === evidence.output.sha256, 'HEADER_NORMALIZATION_DETERMINISTIC_OUTPUT_MISMATCH');
+  if (expectedOutputPath) requireValue(normalizedPath === path.resolve(expectedOutputPath), 'HEADER_NORMALIZATION_OUTPUT_PATH_MISMATCH');
+  requireValue(await fileSha256(normalizedPath) === evidence.output.sha256, 'HEADER_NORMALIZATION_OUTPUT_BYTES_MISMATCH');
+  const normalizedDims = await pngDimensions(normalizedPath);
+  requireValue(normalizedDims.width === 1280 && normalizedDims.height === 670, 'HEADER_NORMALIZATION_OUTPUT_DIMENSIONS_MISMATCH');
+  return { evidence, evidence_sha256: await fileSha256(evidencePath), raw_path: rawPath, normalized_path: normalizedPath };
+}
+
+export async function normalizeGeneratedAsset({ repositoryRoot, recordPath, receiptPath, argumentsPath, toolEventPath, outputAssetPath, outputEvidencePath, eventId, startedAt, completedAt }) {
+  const record = await readJson(recordPath, 'VISUAL_RECORD_INVALID');
+  await validateVisualRecord({ repositoryRoot, record });
+  const receipt = await readJson(receiptPath, 'RUNTIME_RECEIPT_INVALID');
+  const args = await readJson(argumentsPath, 'IMAGEGEN_ARGUMENTS_INVALID');
+  const event = await readJson(toolEventPath, 'CLOUD_WORK_TOOL_EVENT_INVALID');
+  await validateCloudReceipt({ record, receipt, argumentsValue: args, toolEvent: event, receiptPath, toolEventPath });
+  requireValue(eventId, 'HEADER_NORMALIZATION_EVENT_ID_REQUIRED');
+  const rawPath = path.resolve(event.generated_asset.local_path);
+  const rawShaBefore = await fileSha256(rawPath);
+  const start = startedAt || new Date().toISOString();
+  requireValue(iso(start, 'HEADER_NORMALIZATION_TIME_INVALID') >= iso(event.completed_at, 'CLOUD_WORK_TOOL_EVENT_TIME_INVALID'), 'HEADER_NORMALIZATION_BEFORE_GENERATION');
+  const normalizedPath = path.resolve(outputAssetPath);
+  await fs.mkdir(path.dirname(normalizedPath), { recursive: true });
+  const result = await normalizePng({ inputPath: rawPath, outputPath: normalizedPath, targetWidth: 1280, targetHeight: 670 });
+  requireValue(await fileSha256(rawPath) === rawShaBefore, 'HEADER_NORMALIZATION_MUTATED_RAW_ASSET');
+  const completion = completedAt || new Date().toISOString();
+  requireValue(iso(completion, 'HEADER_NORMALIZATION_TIME_INVALID') >= iso(start, 'HEADER_NORMALIZATION_TIME_INVALID'), 'HEADER_NORMALIZATION_TIME_INVALID');
+  const evidence = {
+    schema_version: 'header-asset-normalization/v1', evidence_origin: 'repository-normalization-execution', environment: 'cloud-work',
+    task_id: record.task_id, production_version: record.production_version, contract_identity_sha256: record.generation_contract.contract_identity_sha256,
+    runtime_receipt_sha256: await fileSha256(receiptPath), normalization_identity_sha256: '',
+    input: { locator: event.generated_asset.tool_output_locator, local_path: rawPath, sha256: rawShaBefore, dimensions: result.input, tool_event_sha256: await fileSha256(toolEventPath) },
+    transform: { ...result.transform, crop: result.crop, target_dimensions: result.output },
+    output: { local_path: normalizedPath, sha256: await fileSha256(normalizedPath), dimensions: result.output },
+    execution: { event_id: eventId, started_at: start, completed_at: completion }
+  };
+  evidence.normalization_identity_sha256 = normalizationIdentity(evidence);
+  await writeImmutableJson(path.resolve(outputEvidencePath), evidence, 'HEADER_NORMALIZATION_EVIDENCE_IMMUTABLE_CONFLICT');
+  await validateNormalizationEvidence({ record, receiptPath, toolEventPath, toolEvent: event, evidencePath: outputEvidencePath, expectedOutputPath: normalizedPath });
+  return { result: 'PASS', state: 'NORMALIZED_UNVERIFIED', normalization_identity_sha256: evidence.normalization_identity_sha256, evidence_path: path.resolve(outputEvidencePath), evidence_sha256: await fileSha256(outputEvidencePath), raw_asset_sha256: rawShaBefore, normalized_asset_path: normalizedPath, normalized_asset_sha256: evidence.output.sha256, dimensions: evidence.output.dimensions };
+}
+
+export async function completeAssetQa({ repositoryRoot, recordPath, receiptPath, argumentsPath, toolEventPath, normalizationEvidencePath, qaEvidencePath, outputPath, assetCanonicalPointer }) {
   const record = await readJson(recordPath, 'VISUAL_RECORD_INVALID');
   await validateVisualRecord({ repositoryRoot, record });
   const receipt = await readJson(receiptPath, 'RUNTIME_RECEIPT_INVALID');
   const args = await readJson(argumentsPath, 'IMAGEGEN_ARGUMENTS_INVALID');
   const event = await readJson(toolEventPath, 'CLOUD_WORK_TOOL_EVENT_INVALID');
   const binding = await validateCloudReceipt({ record, receipt, argumentsValue: args, toolEvent: event, receiptPath, toolEventPath });
+  const normalization = await validateNormalizationEvidence({ record, receiptPath, toolEventPath, toolEvent: event, evidencePath: normalizationEvidencePath });
   const qa = await readJson(qaEvidencePath, 'CLOUD_WORK_ASSET_QA_INVALID');
-  exactKeys(qa, ['schema_version','evidence_origin','environment','inspection_tool','inspection_event_id','task_id','production_version','contract_identity_sha256','runtime_receipt_sha256','tool_event_sha256','asset_sha256','dimensions','checks','result','performed_at'], ['schema_version','evidence_origin','environment','inspection_tool','inspection_event_id','task_id','production_version','contract_identity_sha256','runtime_receipt_sha256','tool_event_sha256','asset_sha256','dimensions','checks','result','performed_at'], 'CLOUD_WORK_ASSET_QA_SCHEMA_FAIL');
-  requireValue(qa.schema_version === 'cloud-work-header-asset-qa/v1' && qa.evidence_origin === 'current-task-image-inspection-tool-event' && qa.environment === 'cloud-work', 'CLOUD_WORK_ASSET_QA_ORIGIN_INVALID');
+  exactKeys(qa, ['schema_version','evidence_origin','environment','inspection_tool','inspection_event_id','task_id','production_version','contract_identity_sha256','runtime_receipt_sha256','tool_event_sha256','normalization_event_sha256','raw_asset_sha256','asset_sha256','dimensions','checks','result','performed_at'], ['schema_version','evidence_origin','environment','inspection_tool','inspection_event_id','task_id','production_version','contract_identity_sha256','runtime_receipt_sha256','tool_event_sha256','normalization_event_sha256','raw_asset_sha256','asset_sha256','dimensions','checks','result','performed_at'], 'CLOUD_WORK_ASSET_QA_SCHEMA_FAIL');
+  requireValue(qa.schema_version === 'cloud-work-header-asset-qa/v2' && qa.evidence_origin === 'current-task-image-inspection-tool-event' && qa.environment === 'cloud-work', 'CLOUD_WORK_ASSET_QA_ORIGIN_INVALID');
   requireValue(['view_image','platform-image-inspection'].includes(qa.inspection_tool) && qa.inspection_event_id, 'CLOUD_WORK_ASSET_QA_TOOL_INVALID');
   requireValue(qa.task_id === record.task_id && qa.production_version === record.production_version && qa.contract_identity_sha256 === record.generation_contract.contract_identity_sha256, 'CLOUD_WORK_ASSET_QA_CONTRACT_MISMATCH');
-  requireValue(qa.runtime_receipt_sha256 === binding.receipt_sha256 && qa.tool_event_sha256 === binding.tool_event_sha256 && qa.asset_sha256 === event.generated_asset.sha256, 'CLOUD_WORK_ASSET_QA_BINDING_MISMATCH');
+  requireValue(qa.runtime_receipt_sha256 === binding.receipt_sha256 && qa.tool_event_sha256 === binding.tool_event_sha256 && qa.normalization_event_sha256 === normalization.evidence_sha256 && qa.raw_asset_sha256 === event.generated_asset.sha256 && qa.asset_sha256 === normalization.evidence.output.sha256, 'CLOUD_WORK_ASSET_QA_BINDING_MISMATCH');
   requireValue(qa.dimensions?.width === 1280 && qa.dimensions?.height === 670 && qa.result === 'PASS', 'CLOUD_WORK_ASSET_QA_FAIL');
-  requireValue(iso(qa.performed_at, 'CLOUD_WORK_ASSET_QA_TIME_INVALID') >= iso(event.completed_at, 'CLOUD_WORK_TOOL_EVENT_TIME_INVALID'), 'CLOUD_WORK_ASSET_QA_BEFORE_GENERATION');
+  requireValue(iso(qa.performed_at, 'CLOUD_WORK_ASSET_QA_TIME_INVALID') >= iso(normalization.evidence.execution.completed_at, 'HEADER_NORMALIZATION_TIME_INVALID'), 'CLOUD_WORK_ASSET_QA_BEFORE_NORMALIZATION');
   const checks = new Map((qa.checks || []).map((item) => [item.requirement_id, item]));
   const mandatory = record.resolved_requirements.filter((item) => ['MUST','MUST_NOT'].includes(item.level)).map((item) => item.id);
   for (const id of [...mandatory, 'dimensions']) requireValue(checks.get(id)?.result === 'PASS' && checks.get(id)?.evidence, 'CLOUD_WORK_ASSET_QA_MISSING_CHECK', id);
   const updated = structuredClone(record);
-  const assetPath = path.resolve(event.generated_asset.local_path);
-  updated.asset = { status: 'QA_PASS', retry_count: record.asset.retry_count || 0, provenance: `cloud-work-image-generation-event:${event.event_id}`, file: assetCanonicalPointer, local_path: assetPath, sha256: event.generated_asset.sha256, width: 1280, height: 670 };
+  const assetPath = normalization.normalized_path;
+  updated.raw_asset = { status: 'RAW_GENERATED_UNVERIFIED', provenance: `cloud-work-image-generation-event:${event.event_id}`, locator: event.generated_asset.tool_output_locator, local_path: normalization.raw_path, sha256: event.generated_asset.sha256, width: event.generated_asset.dimensions.width, height: event.generated_asset.dimensions.height };
+  updated.normalization = { status: 'PASS', identity_sha256: normalization.evidence.normalization_identity_sha256, evidence_path: path.resolve(normalizationEvidencePath), evidence_sha256: normalization.evidence_sha256, input_sha256: normalization.evidence.input.sha256, output_sha256: normalization.evidence.output.sha256, tool: NORMALIZER_TOOL, version: NORMALIZER_VERSION, method: NORMALIZER_METHOD };
+  updated.asset = { status: 'QA_PASS', retry_count: record.asset.retry_count || 0, provenance: `post-generation-normalization:${normalization.evidence.execution.event_id}`, file: assetCanonicalPointer, local_path: assetPath, sha256: normalization.evidence.output.sha256, width: 1280, height: 670 };
   updated.asset_qa = { performed: true, result: 'PASS', evidence_origin: qa.evidence_origin, evidence_path: path.resolve(qaEvidencePath), evidence_sha256: await fileSha256(qaEvidencePath), checks: qa.checks };
   updated.runtime.state = 'ASSET_QA_PASS';
   updated.transition = { requested_target: 'HUMAN_REVIEW_CANDIDATE', stop_reason: '' };
@@ -307,19 +401,24 @@ function formalIdentity(formal) {
     asset_qa: { status: formal.asset_qa.status, visual_record_sha256: formal.asset_qa.visual_record_sha256.toLowerCase() },
     human_approval: { event_id: formal.human_approval.event_id, evidence_sha256: formal.human_approval.evidence_sha256.toLowerCase() }
   };
+  if (formal.raw_asset || formal.normalization) {
+    requireValue(formal.raw_asset && formal.normalization, 'FORMAL_HEADER_NORMALIZATION_BINDING_MISSING');
+    payload.raw_asset = { locator: formal.raw_asset.locator, sha256: formal.raw_asset.sha256.toLowerCase(), width: formal.raw_asset.width, height: formal.raw_asset.height, provenance: formal.raw_asset.provenance };
+    payload.normalization = { identity_sha256: formal.normalization.identity_sha256.toLowerCase(), evidence_sha256: formal.normalization.evidence_sha256.toLowerCase(), tool: formal.normalization.tool, version: formal.normalization.version, method: formal.normalization.method, input_sha256: formal.normalization.input_sha256.toLowerCase(), output_sha256: formal.normalization.output_sha256.toLowerCase() };
+  }
   const identity = canonicalSha256(payload);
   return { identity_sha256: identity, formal_asset_id: `FHA-${safeArticle(formal.article_id)}-${identity}` };
 }
 
 export async function validateFormalHeaderAsset({ repositoryRoot, formalAssetPath, expectedArticleId, expectedHeaderTitle, expectedHeaderPath, recordOnly = false }) {
   const formal = await readJson(formalAssetPath, 'FORMAL_HEADER_ASSET_INVALID');
-  requireValue(formal.schema_version === 'note-formal-header-asset/v1' && formal.promotion_version === 'note-header-promotion/v1' && formal.state === 'FORMAL_HEADER_ASSET', 'FORMAL_HEADER_ASSET_SCHEMA_FAIL');
+  requireValue(formal.schema_version === 'note-formal-header-asset/v1' && ['note-header-promotion/v1','note-header-promotion/v2'].includes(formal.promotion_version) && formal.state === 'FORMAL_HEADER_ASSET', 'FORMAL_HEADER_ASSET_SCHEMA_FAIL');
   const identity = formalIdentity(formal);
   requireValue(formal.formal_asset_id === identity.formal_asset_id && formal.identity_sha256 === identity.identity_sha256, 'FORMAL_HEADER_ASSET_IDENTITY_MISMATCH');
   if (expectedArticleId) requireValue(formal.article_id === expectedArticleId, 'FORMAL_HEADER_ARTICLE_ID_MISMATCH');
   if (expectedHeaderTitle) requireValue(formal.approved_header_title === expectedHeaderTitle, 'FORMAL_HEADER_TITLE_MISMATCH');
   const localRoute = formal.route_evidence?.implementation_id === 'repo-skill:visual-production-bridge/v1' && formal.route_evidence?.route === 'repository-skill-request-bound';
-  const cloudRoute = formal.route_evidence?.implementation_id === CLOUD_IMPLEMENTATION && formal.route_evidence?.route === CLOUD_ROUTE;
+  const cloudRoute = formal.route_evidence?.implementation_id === CLOUD_IMPLEMENTATION && formal.route_evidence?.route === CLOUD_ROUTE && formal.promotion_version === 'note-header-promotion/v2';
   requireValue((localRoute || cloudRoute) && formal.route_evidence?.result === 'REQUEST_BOUND', 'FORMAL_HEADER_BRIDGE_ROUTE_MISSING');
   requireValue(formal.master_template?.asset_id === MASTER_ID && formal.master_template?.version === MASTER_VERSION && formal.master_template?.expected_sha256 === formal.master_template?.actual_sha256, 'FORMAL_HEADER_MASTER_BINDING_MISMATCH');
   requireValue(formal.generation_contract?.profile_id === PROFILE_ID && formal.asset_qa?.status === 'PASS' && formal.eligibility?.final_review_package === true && formal.eligibility?.direct_generation_retroactive_promotion === false, 'FORMAL_HEADER_ELIGIBILITY_INVALID');
@@ -334,6 +433,21 @@ export async function validateFormalHeaderAsset({ repositoryRoot, formalAssetPat
   requireValue(await fileSha256(evidencePath(formal.human_approval.evidence_local_path)) === formal.human_approval.evidence_sha256, 'FORMAL_HEADER_HUMAN_APPROVAL_SHA_MISMATCH');
   const dims = await pngDimensions(headerPath);
   requireValue(dims.width === 1280 && dims.height === 670, 'FORMAL_HEADER_DIMENSIONS_MISMATCH');
+  if (cloudRoute) {
+    requireValue(formal.raw_asset && formal.normalization, 'FORMAL_HEADER_NORMALIZATION_BINDING_MISSING');
+    const rawPath = evidencePath(formal.raw_asset.local_path);
+    const normalizationPath = evidencePath(formal.normalization.evidence_local_path);
+    requireValue(await fileSha256(rawPath) === formal.raw_asset.sha256, 'FORMAL_HEADER_RAW_ASSET_BYTES_MISMATCH');
+    const rawDims = await pngDimensions(rawPath);
+    requireValue(rawDims.width === formal.raw_asset.width && rawDims.height === formal.raw_asset.height, 'FORMAL_HEADER_RAW_ASSET_DIMENSIONS_MISMATCH');
+    requireValue(await fileSha256(normalizationPath) === formal.normalization.evidence_sha256, 'FORMAL_HEADER_NORMALIZATION_EVIDENCE_SHA_MISMATCH');
+    const normalizationEvidence = await readJson(normalizationPath, 'FORMAL_HEADER_NORMALIZATION_EVIDENCE_INVALID');
+    requireValue(normalizationEvidence.normalization_identity_sha256 === normalizationIdentity(normalizationEvidence) && normalizationEvidence.normalization_identity_sha256 === formal.normalization.identity_sha256, 'FORMAL_HEADER_NORMALIZATION_IDENTITY_MISMATCH');
+    requireValue(normalizationEvidence.input.sha256 === formal.raw_asset.sha256 && normalizationEvidence.output.sha256 === formal.asset.sha256 && formal.normalization.input_sha256 === formal.raw_asset.sha256 && formal.normalization.output_sha256 === formal.asset.sha256, 'FORMAL_HEADER_NORMALIZATION_CHAIN_MISMATCH');
+    requireValue(normalizationEvidence.transform.tool === formal.normalization.tool && normalizationEvidence.transform.version === formal.normalization.version && normalizationEvidence.transform.method === formal.normalization.method, 'FORMAL_HEADER_NORMALIZATION_TRANSFORM_MISMATCH');
+    const recomputed = resizeCoverFixedPoint(decodePng(await fs.readFile(rawPath)), 1280, 670);
+    requireValue(canonicalSha256(recomputed.crop) === canonicalSha256(normalizationEvidence.transform.crop) && sha256Bytes(encodeRgbaPng(recomputed)) === formal.asset.sha256, 'FORMAL_HEADER_NORMALIZATION_DETERMINISTIC_OUTPUT_MISMATCH');
+  }
   if (!recordOnly) {
     const record = await readJson(evidencePath(formal.generation_contract.visual_record_local_path));
     await validateVisualRecord({ repositoryRoot, record, requireCandidate: true });
@@ -342,16 +456,17 @@ export async function validateFormalHeaderAsset({ repositoryRoot, formalAssetPat
   return { result: 'PASS', state: 'FORMAL_HEADER_ASSET', formal_asset_id: formal.formal_asset_id, identity_sha256: formal.identity_sha256, header_sha256: formal.asset.sha256 };
 }
 
-export async function promoteFormalHeader({ repositoryRoot, visualRecordPath, runtimeReceiptPath, argumentsPath, toolEventPath, generatedAssetPath, assetCanonicalPointer, humanApprovalPath, profileSourcePath, outputPath }) {
+export async function promoteFormalHeader({ repositoryRoot, visualRecordPath, runtimeReceiptPath, argumentsPath, toolEventPath, normalizationEvidencePath, generatedAssetPath, assetCanonicalPointer, humanApprovalPath, profileSourcePath, outputPath }) {
   const record = await readJson(visualRecordPath, 'VISUAL_RECORD_INVALID');
   await validateVisualRecord({ repositoryRoot, record, requireCandidate: true });
   const receipt = await readJson(runtimeReceiptPath, 'RUNTIME_RECEIPT_INVALID');
   const args = await readJson(argumentsPath, 'IMAGEGEN_ARGUMENTS_INVALID');
   const event = await readJson(toolEventPath, 'CLOUD_WORK_TOOL_EVENT_INVALID');
   await validateCloudReceipt({ record, receipt, argumentsValue: args, toolEvent: event, receiptPath: runtimeReceiptPath, toolEventPath });
+  const normalization = await validateNormalizationEvidence({ record, receiptPath: runtimeReceiptPath, toolEventPath, toolEvent: event, evidencePath: normalizationEvidencePath, expectedOutputPath: generatedAssetPath });
   const approval = await readJson(humanApprovalPath, 'HEADER_HUMAN_APPROVAL_INVALID');
   exactKeys(approval, ['schema_version','event_id','actor_type','evidence_origin','occurred_at','statement','context'], ['schema_version','event_id','actor_type','evidence_origin','occurred_at','statement','context'], 'HEADER_HUMAN_APPROVAL_SCHEMA_FAIL');
-  exactKeys(approval.context, ['stage','presented_at','article_id','approved_header_title','generated_asset_sha256','visual_record_sha256','runtime_receipt_sha256','actual_tool_request_sha256','destination','purpose'], ['stage','presented_at','article_id','approved_header_title','generated_asset_sha256','visual_record_sha256','runtime_receipt_sha256','actual_tool_request_sha256','destination','purpose'], 'HEADER_HUMAN_APPROVAL_SCHEMA_FAIL');
+  exactKeys(approval.context, ['stage','presented_at','article_id','approved_header_title','raw_asset_sha256','normalization_identity_sha256','generated_asset_sha256','visual_record_sha256','runtime_receipt_sha256','actual_tool_request_sha256','destination','purpose'], ['stage','presented_at','article_id','approved_header_title','raw_asset_sha256','normalization_identity_sha256','generated_asset_sha256','visual_record_sha256','runtime_receipt_sha256','actual_tool_request_sha256','destination','purpose'], 'HEADER_HUMAN_APPROVAL_SCHEMA_FAIL');
   requireValue(approval.schema_version === 'note-header-human-approval/v1' && approval.actor_type === 'human' && approval.evidence_origin === 'human-response-event', 'HEADER_HUMAN_APPROVAL_SCHEMA_FAIL');
   requireValue(explicitHeaderApproval(approval.statement), 'HEADER_HUMAN_APPROVAL_NOT_EXPLICIT');
   const presentedAt = iso(approval.context?.presented_at, 'HEADER_HUMAN_APPROVAL_TIME_INVALID');
@@ -370,6 +485,8 @@ export async function promoteFormalHeader({ repositoryRoot, visualRecordPath, ru
   for (const [actual, expected, code] of [
     [context.article_id, record.generation_contract.article_id, 'HEADER_HUMAN_APPROVAL_ARTICLE_MISMATCH'],
     [context.approved_header_title, record.generation_contract.approved_text.title, 'HEADER_HUMAN_APPROVAL_TITLE_MISMATCH'],
+    [context.raw_asset_sha256, normalization.evidence.input.sha256, 'HEADER_HUMAN_APPROVAL_RAW_ASSET_SHA_MISMATCH'],
+    [context.normalization_identity_sha256, normalization.evidence.normalization_identity_sha256, 'HEADER_HUMAN_APPROVAL_NORMALIZATION_MISMATCH'],
     [context.generated_asset_sha256, assetSha, 'HEADER_HUMAN_APPROVAL_ASSET_SHA_MISMATCH'],
     [context.visual_record_sha256, visualSha, 'HEADER_HUMAN_APPROVAL_VISUAL_RECORD_SHA_MISMATCH'],
     [context.runtime_receipt_sha256, receiptSha, 'HEADER_HUMAN_APPROVAL_RUNTIME_RECEIPT_SHA_MISMATCH'],
@@ -377,12 +494,14 @@ export async function promoteFormalHeader({ repositoryRoot, visualRecordPath, ru
     [context.destination, 'NOTE_FINAL_REVIEW_PACKAGE', 'HEADER_HUMAN_APPROVAL_DESTINATION_MISMATCH'],
     [context.purpose, 'NOTE_HEADER_ASSET_PROMOTION', 'HEADER_HUMAN_APPROVAL_PURPOSE_MISMATCH']
   ]) requireValue(actual === expected, code);
-  requireValue(record.asset.sha256 === assetSha && record.asset.file === assetCanonicalPointer, 'FORMAL_HEADER_GENERATED_ASSET_MISMATCH');
+  requireValue(record.asset.sha256 === assetSha && record.asset.file === assetCanonicalPointer && record.raw_asset.sha256 === normalization.evidence.input.sha256 && record.normalization.identity_sha256 === normalization.evidence.normalization_identity_sha256, 'FORMAL_HEADER_GENERATED_ASSET_MISMATCH');
   const master = await resolveMaster({ repositoryRoot, profileSourcePath });
   const formal = {
-    schema_version: 'note-formal-header-asset/v1', promotion_version: 'note-header-promotion/v1', state: 'FORMAL_HEADER_ASSET', formal_asset_id: '', identity_sha256: '',
+    schema_version: 'note-formal-header-asset/v1', promotion_version: 'note-header-promotion/v2', state: 'FORMAL_HEADER_ASSET', formal_asset_id: '', identity_sha256: '',
     article_id: record.generation_contract.article_id, approved_header_title: record.generation_contract.approved_text.title,
     asset: { file: assetCanonicalPointer, local_path: assetPath, sha256: assetSha, width: 1280, height: 670, provenance: record.asset.provenance },
+    raw_asset: { locator: record.raw_asset.locator, local_path: record.raw_asset.local_path, sha256: record.raw_asset.sha256, width: record.raw_asset.width, height: record.raw_asset.height, provenance: record.raw_asset.provenance },
+    normalization: { identity_sha256: record.normalization.identity_sha256, evidence_sha256: record.normalization.evidence_sha256, evidence_local_path: path.resolve(normalizationEvidencePath), tool: record.normalization.tool, version: record.normalization.version, method: record.normalization.method, input_sha256: record.normalization.input_sha256, output_sha256: record.normalization.output_sha256 },
     master_template: { asset_id: master.asset_id, version: master.version, canonical_locator: master.canonical_locator, expected_sha256: master.expected_sha256, actual_sha256: master.actual_sha256, width: master.width, height: master.height, provenance: master.provenance },
     generation_contract: { profile_id: PROFILE_ID, production_version: record.production_version, source_manifest_identity: record.source_manifest.fingerprint_sha256, visual_record_sha256: visualSha, visual_record_local_path: path.resolve(visualRecordPath), actual_tool_request_sha256: argsHash, actual_tool_request_local_path: path.resolve(argumentsPath), request_identity_sha256: record.generation_contract.request_identity_sha256, profile_source_local_path: path.resolve(profileSourcePath), master_asset_local_path: master.actual_path },
     route_evidence: { implementation_id: CLOUD_IMPLEMENTATION, route: CLOUD_ROUTE, runtime_receipt_sha256: receiptSha, runtime_receipt_local_path: path.resolve(runtimeReceiptPath), result: 'REQUEST_BOUND' },
@@ -413,12 +532,13 @@ async function main() {
   let result;
   if (command === 'prepare') result = await prepareGeneration({ ...common, sourceManifestPath: path.resolve(args['source-manifest']), profileSourcePath: path.resolve(args['profile-source']), taskId: args['task-id'], articleId: args['article-id'], productionVersion: args['production-version'], approvedTitle: args.title, outputDirectory: path.resolve(args['output-directory']) });
   else if (command === 'bind-runtime') result = await bindRuntime({ ...common, recordPath: path.resolve(args.record), argumentsPath: path.resolve(args.arguments), toolEventPath: path.resolve(args['tool-event']), outputPath: path.resolve(args.output) });
-  else if (command === 'complete-qa') result = await completeAssetQa({ ...common, recordPath: path.resolve(args.record), receiptPath: path.resolve(args.receipt), argumentsPath: path.resolve(args.arguments), toolEventPath: path.resolve(args['tool-event']), qaEvidencePath: path.resolve(args['qa-evidence']), outputPath: path.resolve(args.output), assetCanonicalPointer: args['asset-canonical-pointer'] });
-  else if (command === 'promote') result = await promoteFormalHeader({ ...common, visualRecordPath: path.resolve(args.record), runtimeReceiptPath: path.resolve(args.receipt), argumentsPath: path.resolve(args.arguments), toolEventPath: path.resolve(args['tool-event']), generatedAssetPath: path.resolve(args.asset), assetCanonicalPointer: args['asset-canonical-pointer'], humanApprovalPath: path.resolve(args.approval), profileSourcePath: path.resolve(args['profile-source']), outputPath: path.resolve(args.output) });
-  else fail('CLOUD_WORK_HEADER_BRIDGE_USAGE', 'prepare|bind-runtime|complete-qa|promote');
+  else if (command === 'normalize') result = await normalizeGeneratedAsset({ ...common, recordPath: path.resolve(args.record), receiptPath: path.resolve(args.receipt), argumentsPath: path.resolve(args.arguments), toolEventPath: path.resolve(args['tool-event']), outputAssetPath: path.resolve(args['output-asset']), outputEvidencePath: path.resolve(args['output-evidence']), eventId: args['event-id'], startedAt: args['started-at'], completedAt: args['completed-at'] });
+  else if (command === 'complete-qa') result = await completeAssetQa({ ...common, recordPath: path.resolve(args.record), receiptPath: path.resolve(args.receipt), argumentsPath: path.resolve(args.arguments), toolEventPath: path.resolve(args['tool-event']), normalizationEvidencePath: path.resolve(args.normalization), qaEvidencePath: path.resolve(args['qa-evidence']), outputPath: path.resolve(args.output), assetCanonicalPointer: args['asset-canonical-pointer'] });
+  else if (command === 'promote') result = await promoteFormalHeader({ ...common, visualRecordPath: path.resolve(args.record), runtimeReceiptPath: path.resolve(args.receipt), argumentsPath: path.resolve(args.arguments), toolEventPath: path.resolve(args['tool-event']), normalizationEvidencePath: path.resolve(args.normalization), generatedAssetPath: path.resolve(args.asset), assetCanonicalPointer: args['asset-canonical-pointer'], humanApprovalPath: path.resolve(args.approval), profileSourcePath: path.resolve(args['profile-source']), outputPath: path.resolve(args.output) });
+  else fail('CLOUD_WORK_HEADER_BRIDGE_USAGE', 'prepare|bind-runtime|normalize|complete-qa|promote');
   console.log(JSON.stringify(result));
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) main().catch((error) => { console.error(error.message); process.exitCode = 1; });
 
-export const constants = { MASTER_ID, MASTER_VERSION, PROFILE_ID, CLOUD_IMPLEMENTATION, CLOUD_ROUTE, CANONICAL_HEADER_IDS };
+export const constants = { MASTER_ID, MASTER_VERSION, PROFILE_ID, CLOUD_IMPLEMENTATION, CLOUD_ROUTE, CANONICAL_HEADER_IDS, NORMALIZER_TOOL, NORMALIZER_VERSION, NORMALIZER_METHOD, PNG_ENCODING };

@@ -71,7 +71,7 @@
     "tool_event_binding": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["event_id", "event_sha256", "evidence_origin", "tool", "contract_identity_sha256", "invocation_arguments_sha256", "generated_asset_sha256"],
+      "required": ["event_id", "event_sha256", "evidence_origin", "tool", "contract_identity_sha256", "invocation_arguments_sha256", "generated_asset_sha256", "raw_asset_locator", "raw_asset_width", "raw_asset_height"],
       "properties": {
         "event_id": { "type": "string", "minLength": 1 },
         "event_sha256": { "$ref": "#/$defs/sha256" },
@@ -79,7 +79,10 @@
         "tool": { "const": "image_gen.imagegen" },
         "contract_identity_sha256": { "$ref": "#/$defs/sha256" },
         "invocation_arguments_sha256": { "$ref": "#/$defs/sha256" },
-        "generated_asset_sha256": { "$ref": "#/$defs/sha256" }
+        "generated_asset_sha256": { "$ref": "#/$defs/sha256" },
+        "raw_asset_locator": { "type": "string", "minLength": 1 },
+        "raw_asset_width": { "type": "integer", "minimum": 1 },
+        "raw_asset_height": { "type": "integer", "minimum": 1 }
       }
     },
     "result": { "enum": ["REQUEST_BOUND", "BLOCKED_PLATFORM_BOUNDARY"] },
@@ -91,7 +94,7 @@
       "then": {
         "required": ["tool_event_binding"],
         "properties": {
-          "implementation_id": { "const": "repo-skill:visual-production-bridge/cloud-work-v1" },
+          "implementation_id": { "const": "repo-skill:visual-production-bridge/cloud-work-v2" },
           "route": { "const": "repository-cloud-work-request-bound" },
           "result": { "const": "REQUEST_BOUND" }
         }

@@ -1,7 +1,7 @@
-# Repository横断監査基準 v1.11
+# Repository横断監査基準 v1.12
 
 **Document type:** Repository Governance Standard<br>
-**Status:** Current / Operational v1.11<br>
+**Status:** Current / Operational v1.12<br>
 **Scope:** Repository全体へ影響する正式Sourceの新規追加・更新・移動・廃止<br>
 **Purpose:** 正式Sourceを「置いただけ」にせず、既存責任・参照構造・運用・履歴へ一貫して接続する
 
@@ -100,6 +100,7 @@
 - [ ] Repository Sourceの実読またはvalidatorの存在だけを、Chat／Work built-in image generationへの直接強制と誤認していない
 - [ ] Cloud Workをgoverned Visual Runtimeとして追加する場合、Repository checkout、cross-platform Source Resolution、Master実体のSHA／寸法実測、exact native Tool arguments、current-task Tool event、生成Asset bytes、画像検査eventおよび環境ID `cloud-work`が一つのreceipt chainで検証される
 - [ ] Cloud Work Tool event欠落、別Task event、`agent-self-report`、Master未参照、実引数改変またはAsset QA欠落をFormal Asset Promotionへ通さず、System SourceのWRITE ownerをLocal Codexのまま保持する
+- [ ] native Raw Assetのlocator／SHA／実測寸法／Tool eventを改変せず保持し、Post-generation Normalizationを別工程・別Assetとして記録する。Raw上書き、Normalization Evidence欠落、入力／出力tamperまたは1280×670以外のNormalized AssetをQA／Human Candidate／Formal Promotionへ通さない
 - [ ] `platform_enforced`を主張する場合、Repository文書ではなく実際のorchestrator、tool-choice controlおよびE2E evidenceが存在する。未実装境界をPASSにしていない
 - [ ] Review／Source QA／Human Approval／Publish等の非生成Phaseから、画像生成Toolを暗黙起動できない
 - [ ] QA未確認またはQA FAILのAssetをAsset Ready、G5、公開候補または通常のHuman Review Candidateへ昇格できない
@@ -136,6 +137,7 @@
 - [ ] Visual Runtime変更では、Contract未生成、Current Source未解決、Contract／Prompt QA未PASS、actual request不一致、QA前昇格、偽装Platform PASSおよび環境Capability記録のnegative／positive testを実行した
 - [ ] Formal Header Promotion変更では、Master未解決／SHA不一致、title・series label・speech bubble・説明／infographic・背景・寸法QA不一致、direct出力、Human OK遡及、Bridge Evidence欠落、QA前昇格、非Formal PNGのCompiler投入をFAILとし、全binding一致とCompiler受領をpositive testした
 - [ ] Cloud Work Header Bridge変更では、PowerShell／PC上AssetなしのRepository Master解決からHuman Review Candidate、Human Approval fixture、Formal Promotionおよびcross-platform Final Review Package Compilerまでをpositive testし、direct生成、Master未参照、SHA不一致、title改変、QA欠落、Human Approval流用をFAILにした
+- [ ] Post-generation Normalization変更では、1734×907等のRawをそのままTool eventへbindingし、Windows／Linux共通の決定論的変換で1280×670 Candidateを再現できる。Raw寸法虚偽、Raw／Normalized bytes改変、Normalization Evidence／identity不一致、QA／Approval流用をFAILにし、既存Local routeとFinal Review／Publication chainを回帰testした
 - [ ] commitが意味のある単位で、branch・remote・push対象が正しい
 - [ ] 本文QA制御変更では、改行過多FAIL、同一内容の自然段落PASS可能、QA後改変、Production直結、提示版不一致、Source変更、未確認Runtimeおよび許容短段落の回帰テストを実行した
 - [ ] Approval Gate変更では、質問のみ、回答前retry、Agent自己申告、後着承認、payload／destination／目的不一致をFAILとし、正しいHuman Evidenceのpositive testと実送信停止を別々に検証した

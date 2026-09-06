@@ -1,6 +1,6 @@
 # 07_Note_Production
 
-**Status:** Current / Operational v1.22 / Cloud Work Header Bridge
+**Status:** Current / Operational v1.23 / Header Normalization Chain
 **責任:** noteの企画・制作・Marketing Review・Header Production・公開準備・Publication Transaction・公開後記録およびSession単位のSNS展開を、既存AI Production Pipelineへ接続する媒体別運用
 
 ## この領域の入口
@@ -45,7 +45,7 @@ AIDAILY HeaderのCurrent Visual Sourceは`00_note制作・公開システム.md`
 
 Statusは、Section制作台本と全体ロードマップで `Planning`／`Production`／`Review`／`Decision Pending`／`Redesign Required`／`Revision Required`／`Approved`／`Scheduled`／`Published/Complete`／`Update Candidate` を記録する。`Redesign Required`は現行baselineを保持して構成・完了条件から再設計する状態、`Revision Required`は現行baselineの限定修正が必要な状態であり、どちらもPublish前で外部公開を意味しない。完成判定は固定の3記事数ではなく、当該Sectionの承認済み公開構成Profileに基づく。公開済み最終稿では `Published`、公開停止または置換済みでは `Superseded` と記録する。`Published` は公開事実であり、上位Sourceの承認を代替しない。公開済み最終稿だけが将来の参照・SNS再展開・Repository還元に用いる記事本文の正本であり、Work稿や下書きを代替正本にしない。
 
-Marketing ReviewはSection Statusを増やさず、`Marketing Input Pending`／`Marketing Revision Required`／`Marketing Approved`／`Human Decision Required`のsubstatusとしてSection制作台本へ記録する。Marketingは内容完成稿である第2稿から開始し、本文を直接修正せずRequirementを返し、無料／Membership境界、Membership、Magazine、price、tagsその他の必要条件を含むPublication Decisionを確定する。Marketing Approved後にHeader Productionを別Phaseで開始し、共通Visual Production ControlのGeneration Contract、Prompt Assembly QA、Runtime Request Binding、生成後Header QAを通す。Local Codexと検証済みCloud Workのrequest-bound経路をgoverned生成として使用し、Bridge外のdirect生成はPlatform BoundaryでBLOCKする。QA PASS候補へのHuman Approval後にFormal Promotion Gateを通したHeader、D3全文、Marketing PASS Evidence、Publication Conditions、Source Manifestおよび公開先を`Publication_Approval/`の決定論的Compilerへ渡し、Schema／実file SHA／Formal Header provenance／identity／Human提示8区分を検証した`READY_FOR_FINAL_REVIEW / PENDING`のPackageだけをHumanへ一括提示する。Cloud Workではcross-platform Compilerを使用できる。PackageへのHumanの明示的進行意思を別ArtifactのFinal Approval / Publication Approvalとしてbindingし、承認後はsealed Publication Bundleと単一ZIPを自動生成する。HumanはZIPを常設note公開Workへ一度渡し、WorkはBundleとPackage IDを再検証して`HANDOFF_VERIFIED`後にG5へ進む。同一ならnote反映からpublish、PPVまで再承認なしで継続する。完全自動Chat→Work Transportは未実装である。
+Marketing ReviewはSection Statusを増やさず、`Marketing Input Pending`／`Marketing Revision Required`／`Marketing Approved`／`Human Decision Required`のsubstatusとしてSection制作台本へ記録する。Marketingは内容完成稿である第2稿から開始し、本文を直接修正せずRequirementを返し、無料／Membership境界、Membership、Magazine、price、tagsその他の必要条件を含むPublication Decisionを確定する。Marketing Approved後にHeader Productionを別Phaseで開始し、共通Visual Production ControlのGeneration Contract、Prompt Assembly QA、Runtime Request Binding、Raw Asset保存、決定論的Post-generation Normalization、Normalized Header QAを通す。Local Codexと検証済みCloud Workのrequest-bound経路をgoverned生成として使用し、Bridge外のdirect生成はPlatform BoundaryでBLOCKする。QA PASSした1280×670のNormalized CandidateへのHuman Approval後に、Raw／Normalization／Normalized identityを含むFormal Promotion Gateを通したHeaderだけを`Publication_Approval/`の決定論的Compilerへ渡す。以降のD3、Marketing Evidence、Publication Conditions、Final Approval、Publication Bundle、G5、publish、PPVの既存契約は変更しない。
 
 未公開本文を含む詳細Marketing Review、Requirementおよび第2稿・第3稿は、本文と同じ承認範囲のWork、Private Sourceまたは指定Archiveに保持する。Public側のSection制作台本には安全なRun ID、status、locator、Decision要約、Gateおよび再開条件だけを置き、公開済み最終稿領域へ先行配置しない。
 

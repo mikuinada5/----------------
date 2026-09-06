@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://repository.local/schemas/header-asset-normalization-v1.json",
+  "title": "Post-generation note Header Normalization Evidence v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "evidence_origin", "environment", "task_id", "production_version", "contract_identity_sha256", "runtime_receipt_sha256", "normalization_identity_sha256", "input", "transform", "output", "execution"],
+  "properties": {
+    "schema_version": { "const": "header-asset-normalization/v1" },
+    "evidence_origin": { "const": "repository-normalization-execution" },
+    "environment": { "const": "cloud-work" },
+    "task_id": { "type": "string", "minLength": 1 },
+    "production_version": { "type": "string", "minLength": 1 },
+    "contract_identity_sha256": { "$ref": "#/$defs/sha256" },
+    "runtime_receipt_sha256": { "$ref": "#/$defs/sha256" },
+    "normalization_identity_sha256": { "$ref": "#/$defs/sha256" },
+    "input": {
+      "type": "object", "additionalProperties": false,
+      "required": ["locator", "local_path", "sha256", "dimensions", "tool_event_sha256"],
+      "properties": {
+        "locator": { "type": "string", "minLength": 1 }, "local_path": { "type": "string", "minLength": 1 }, "sha256": { "$ref": "#/$defs/sha256" },
+        "dimensions": { "$ref": "#/$defs/dimensions" }, "tool_event_sha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "transform": {
+      "type": "object", "additionalProperties": false,
+      "required": ["tool", "version", "method", "encoding", "crop", "target_dimensions"],
+      "properties": {
+        "tool": { "const": "repository-node-png-normalizer" }, "version": { "const": "1.0.0" },
+        "method": { "const": "center-crop-cover-fixedpoint-bilinear-rgba8-png" }, "encoding": { "const": "rgba8-filter-none-zlib-fixed-level9" },
+        "crop": {
+          "type": "object", "additionalProperties": false, "required": ["x", "y", "width", "height"],
+          "properties": { "x": { "type": "integer", "minimum": 0 }, "y": { "type": "integer", "minimum": 0 }, "width": { "type": "integer", "minimum": 1 }, "height": { "type": "integer", "minimum": 1 } }
+        },
+        "target_dimensions": { "$ref": "#/$defs/formal_dimensions" }
+      }
+    },
+    "output": {
+      "type": "object", "additionalProperties": false, "required": ["local_path", "sha256", "dimensions"],
+      "properties": { "local_path": { "type": "string", "minLength": 1 }, "sha256": { "$ref": "#/$defs/sha256" }, "dimensions": { "$ref": "#/$defs/formal_dimensions" } }
+    },
+    "execution": {
+      "type": "object", "additionalProperties": false, "required": ["event_id", "started_at", "completed_at"],
+      "properties": { "event_id": { "type": "string", "minLength": 1 }, "started_at": { "type": "string", "format": "date-time" }, "completed_at": { "type": "string", "format": "date-time" } }
+    }
+  },
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "dimensions": { "type": "object", "additionalProperties": false, "required": ["width", "height"], "properties": { "width": { "type": "integer", "minimum": 1 }, "height": { "type": "integer", "minimum": 1 } } },
+    "formal_dimensions": { "type": "object", "additionalProperties": false, "required": ["width", "height"], "properties": { "width": { "const": 1280 }, "height": { "const": 670 } } }
+  }
+}

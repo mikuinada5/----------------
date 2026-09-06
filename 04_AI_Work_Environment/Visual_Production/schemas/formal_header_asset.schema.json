@@ -7,7 +7,7 @@
   "required": ["schema_version", "promotion_version", "state", "formal_asset_id", "identity_sha256", "article_id", "approved_header_title", "asset", "master_template", "generation_contract", "route_evidence", "asset_qa", "human_approval", "eligibility"],
   "properties": {
     "schema_version": { "const": "note-formal-header-asset/v1" },
-    "promotion_version": { "const": "note-header-promotion/v1" },
+    "promotion_version": { "enum": ["note-header-promotion/v1", "note-header-promotion/v2"] },
     "state": { "const": "FORMAL_HEADER_ASSET" },
     "formal_asset_id": { "type": "string", "pattern": "^FHA-.+-[0-9a-f]{64}$" },
     "identity_sha256": { "$ref": "#/$defs/sha256" },
@@ -19,6 +19,23 @@
       "properties": {
         "file": { "type": "string", "minLength": 1 }, "local_path": { "type": "string", "minLength": 1 },
         "sha256": { "$ref": "#/$defs/sha256" }, "width": { "const": 1280 }, "height": { "const": 670 }, "provenance": { "type": "string", "minLength": 1 }
+      }
+    },
+    "raw_asset": {
+      "type": "object", "additionalProperties": false,
+      "required": ["locator", "local_path", "sha256", "width", "height", "provenance"],
+      "properties": {
+        "locator": { "type": "string", "minLength": 1 }, "local_path": { "type": "string", "minLength": 1 }, "sha256": { "$ref": "#/$defs/sha256" },
+        "width": { "type": "integer", "minimum": 1 }, "height": { "type": "integer", "minimum": 1 }, "provenance": { "type": "string", "minLength": 1 }
+      }
+    },
+    "normalization": {
+      "type": "object", "additionalProperties": false,
+      "required": ["identity_sha256", "evidence_sha256", "evidence_local_path", "tool", "version", "method", "input_sha256", "output_sha256"],
+      "properties": {
+        "identity_sha256": { "$ref": "#/$defs/sha256" }, "evidence_sha256": { "$ref": "#/$defs/sha256" }, "evidence_local_path": { "type": "string", "minLength": 1 },
+        "tool": { "const": "repository-node-png-normalizer" }, "version": { "const": "1.0.0" }, "method": { "const": "center-crop-cover-fixedpoint-bilinear-rgba8-png" },
+        "input_sha256": { "$ref": "#/$defs/sha256" }, "output_sha256": { "$ref": "#/$defs/sha256" }
       }
     },
     "master_template": {
@@ -44,12 +61,13 @@
       "type": "object", "additionalProperties": false,
       "required": ["implementation_id", "route", "runtime_receipt_sha256", "runtime_receipt_local_path", "result"],
       "properties": {
-        "implementation_id": { "enum": ["repo-skill:visual-production-bridge/v1", "repo-skill:visual-production-bridge/cloud-work-v1"] }, "route": { "enum": ["repository-skill-request-bound", "repository-cloud-work-request-bound"] },
+        "implementation_id": { "enum": ["repo-skill:visual-production-bridge/v1", "repo-skill:visual-production-bridge/cloud-work-v1", "repo-skill:visual-production-bridge/cloud-work-v2"] }, "route": { "enum": ["repository-skill-request-bound", "repository-cloud-work-request-bound"] },
         "runtime_receipt_sha256": { "$ref": "#/$defs/sha256" }, "runtime_receipt_local_path": { "type": "string", "minLength": 1 }, "result": { "const": "REQUEST_BOUND" }
       },
       "oneOf": [
         { "properties": { "implementation_id": { "const": "repo-skill:visual-production-bridge/v1" }, "route": { "const": "repository-skill-request-bound" } } },
-        { "properties": { "implementation_id": { "const": "repo-skill:visual-production-bridge/cloud-work-v1" }, "route": { "const": "repository-cloud-work-request-bound" } } }
+        { "properties": { "implementation_id": { "const": "repo-skill:visual-production-bridge/cloud-work-v1" }, "route": { "const": "repository-cloud-work-request-bound" } } },
+        { "properties": { "implementation_id": { "const": "repo-skill:visual-production-bridge/cloud-work-v2" }, "route": { "const": "repository-cloud-work-request-bound" } } }
       ]
     },
     "asset_qa": {
@@ -68,5 +86,11 @@
       "properties": { "final_review_package": { "const": true }, "direct_generation_retroactive_promotion": { "const": false } }
     }
   },
+  "allOf": [
+    {
+      "if": { "properties": { "route_evidence": { "properties": { "implementation_id": { "const": "repo-skill:visual-production-bridge/cloud-work-v2" } }, "required": ["implementation_id"] } }, "required": ["route_evidence"] },
+      "then": { "required": ["raw_asset", "normalization"], "properties": { "promotion_version": { "const": "note-header-promotion/v2" } } }
+    }
+  ],
   "$defs": { "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" } }
 }

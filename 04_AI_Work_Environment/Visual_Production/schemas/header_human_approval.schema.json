@@ -21,6 +21,8 @@
         "presented_at": { "type": "string", "format": "date-time" },
         "article_id": { "type": "string", "minLength": 1 },
         "approved_header_title": { "type": "string", "minLength": 1 },
+        "raw_asset_sha256": { "$ref": "#/$defs/sha256" },
+        "normalization_identity_sha256": { "$ref": "#/$defs/sha256" },
         "generated_asset_sha256": { "$ref": "#/$defs/sha256" },
         "visual_record_sha256": { "$ref": "#/$defs/sha256" },
         "runtime_receipt_sha256": { "$ref": "#/$defs/sha256" },

@@ -1,12 +1,12 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://repository.local/schemas/cloud-work-header-asset-qa-v1.json",
-  "title": "Cloud Work note Header Asset QA evidence v1",
+  "$id": "https://repository.local/schemas/cloud-work-header-asset-qa-v2.json",
+  "title": "Cloud Work normalized note Header Asset QA evidence v2",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema_version", "evidence_origin", "environment", "inspection_tool", "inspection_event_id", "task_id", "production_version", "contract_identity_sha256", "runtime_receipt_sha256", "tool_event_sha256", "asset_sha256", "dimensions", "checks", "result", "performed_at"],
+  "required": ["schema_version", "evidence_origin", "environment", "inspection_tool", "inspection_event_id", "task_id", "production_version", "contract_identity_sha256", "runtime_receipt_sha256", "tool_event_sha256", "normalization_event_sha256", "raw_asset_sha256", "asset_sha256", "dimensions", "checks", "result", "performed_at"],
   "properties": {
-    "schema_version": { "const": "cloud-work-header-asset-qa/v1" },
+    "schema_version": { "const": "cloud-work-header-asset-qa/v2" },
     "evidence_origin": { "const": "current-task-image-inspection-tool-event" },
     "environment": { "const": "cloud-work" },
     "inspection_tool": { "enum": ["view_image", "platform-image-inspection"] },
@@ -16,6 +16,8 @@
     "contract_identity_sha256": { "$ref": "#/$defs/sha256" },
     "runtime_receipt_sha256": { "$ref": "#/$defs/sha256" },
     "tool_event_sha256": { "$ref": "#/$defs/sha256" },
+    "normalization_event_sha256": { "$ref": "#/$defs/sha256" },
+    "raw_asset_sha256": { "$ref": "#/$defs/sha256" },
     "asset_sha256": { "$ref": "#/$defs/sha256" },
     "dimensions": {
       "type": "object", "additionalProperties": false, "required": ["width", "height"],

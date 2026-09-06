@@ -8,6 +8,16 @@
 
 ------------------------------------------------------------------------
 
+## 2026-09-07｜Cloud Work Header Post-generation Normalizationを正式接続
+
+実運用でcanonical requestが1280×670を指定していても、native imagegenが1734×907のRaw PNG（SHA-256 `40690887aec9223c8e78a71efd5847fba023f348dadae3dce9c8a2c705c5ea5c`）を返し、Cloud Bridgeが生成実体へ直接1280×670を要求して停止した。Pipeline v1.20、Visual Production v1.6、note SOP v2.14、note README v1.23、Publication Approval v1.6、Repository横断監査基準v1.12へ更新した。
+
+Cloud Bridge v2はnative Raw Assetを上書きせず、locator／SHA／実測寸法／Tool eventへbindingする。Node.js標準libraryだけの`repository-node-png-normalizer` v1.0.0でcenter-crop cover、固定小数点bilinear、canonical RGBA8 PNG encodingを実行し、入力／出力SHA・寸法、crop、tool／version／method、実行event／timestampをNormalization Evidenceへ固定する。1280×670のNormalized Assetだけをview image、Asset QA、Human Candidate、Approval、Formal Promotionへ進め、Formal identityがRaw、Normalization、Normalizedを一つのchainとして保持する。
+
+Raw寸法の不一致はRequest bindingと分離した。Raw／Normalized tamper、寸法虚偽、Normalization欠落、旧Approval流用および1280×670以外のFormal CandidateはFAILする。System SourceのWRITE owner、Final Review Package、Publication Approval、G5、Publication BundleおよびPPVの既存保証は維持した。実運用Raw binaryおよびAIDAILY-006の既存作業差分は本commitへ含めない。
+
+------------------------------------------------------------------------
+
 ## 2026-09-07｜Cloud Work Formal Header Production Bridgeを正式接続
 
 Pipeline v1.19、Source Resolution v1.1、Visual Production v1.5、note SOP v2.13、note README v1.22、Publication Approval v1.5、Repository横断監査基準v1.11へ更新した。Root Causeは、Canonical MasterがGitHubに存在しても、Runtime Receipt、Formal Header Schema、Repository SkillおよびFinal Review Package CompilerがLocal Codex／PowerShell経路へ固定され、Cloud Workのnative image requestとcurrent-task Tool eventをFormal identityへ接続できなかったことである。

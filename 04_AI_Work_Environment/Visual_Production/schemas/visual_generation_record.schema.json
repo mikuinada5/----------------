@@ -124,9 +124,28 @@
       "required": ["environment", "implementation_id", "route", "state"],
       "properties": {
         "environment": { "const": "cloud-work" },
-        "implementation_id": { "const": "repo-skill:visual-production-bridge/cloud-work-v1" },
+        "implementation_id": { "const": "repo-skill:visual-production-bridge/cloud-work-v2" },
         "route": { "const": "repository-cloud-work-request-bound" },
-        "state": { "enum": ["REQUEST_READY", "ASSET_QA_PASS"] }
+        "state": { "enum": ["REQUEST_READY", "NORMALIZED_UNVERIFIED", "ASSET_QA_PASS"] }
+      }
+    },
+    "raw_asset": {
+      "type": "object",
+      "required": ["status", "provenance", "locator", "local_path", "sha256", "width", "height"],
+      "properties": {
+        "status": { "const": "RAW_GENERATED_UNVERIFIED" }, "provenance": { "type": "string", "minLength": 1 }, "locator": { "type": "string", "minLength": 1 },
+        "local_path": { "type": "string", "minLength": 1 }, "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "width": { "type": "integer", "minimum": 1 }, "height": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "normalization": {
+      "type": "object",
+      "required": ["status", "identity_sha256", "evidence_path", "evidence_sha256", "input_sha256", "output_sha256", "tool", "version", "method"],
+      "properties": {
+        "status": { "const": "PASS" }, "identity_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "evidence_path": { "type": "string", "minLength": 1 }, "evidence_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "input_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }, "output_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "tool": { "const": "repository-node-png-normalizer" }, "version": { "const": "1.0.0" }, "method": { "const": "center-crop-cover-fixedpoint-bilinear-rgba8-png" }
       }
     }
   }

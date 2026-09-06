@@ -1,7 +1,7 @@
-# AI Production Pipeline v1.19
+# AI Production Pipeline v1.20
 
 **Document type:** Standard Operating Procedure（SOP）<br>
-**Status:** Current / Operational v1.19<br>
+**Status:** Current / Operational v1.20<br>
 **Owner:** 稲田美来<br>
 **Scope:** Story Candidate、教材、note、SNS、運営文書、Brand／Education／AI Organization関連Source、その他AI制作物<br>
 **Purpose:** 既存OS・Sourceを毎回確実に選択・実読・適用し、成果物と新知見を正しい責任単位へ戻すためのAI組織共通運用<br>
@@ -516,7 +516,9 @@ Schema、fail-closed validatorおよびnegative testsは`04_AI_Work_Environment/
 
 Repository Sourceを読めること、Generation Contractが存在すること、実際の画像生成Tool RequestをRepository Controlが拘束したことは別々に判定する。画像生成直前に、実行環境、利用可能Capability、Bridge implementation、制御範囲、validated request SHA-256、actual request SHA-256および両者の一致を`Visual Runtime Receipt`へ記録し、同Receiptを機械検証する。
 
-検証済み経路は、Repository Skill `visual-production-bridge`を使用するLocal Codexの`repository-skill-request-bound`と、Repository checkout上のcross-platform validatorを使用するCloud Workの`repository-cloud-work-request-bound`である。Cloud Work経路はNode.jsでSource Manifest v2、canonical profile、Repository Master実体、Generation Contractおよびexact native Tool argumentsを検証し、同一Taskの`image_gen.imagegen` Tool event、生成Asset bytes、画像検査eventをreceiptへbindingする。いずれも当該Taskの**client-visible request**を拘束し、ChatGPT Platform全体のbuilt-in tool routingをinterceptまたは無効化するものではない。
+検証済み経路は、Repository Skill `visual-production-bridge`を使用するLocal Codexの`repository-skill-request-bound`と、Repository checkout上のcross-platform validatorを使用するCloud Workの`repository-cloud-work-request-bound`である。Cloud Work経路はNode.jsでSource Manifest v2、canonical profile、Repository Master実体、Generation Contractおよびexact native Tool argumentsを検証し、同一Taskの`image_gen.imagegen` Tool eventと改変しないRaw Asset locator／SHA／実測寸法をreceiptへbindingする。native寸法が媒体要件と異なる場合はRequestを偽装せず、決定論的Post-generation Normalizationを独立工程として実行する。いずれも当該Taskの**client-visible request**を拘束し、ChatGPT Platform全体のbuilt-in tool routingをinterceptまたは無効化するものではない。
+
+Cloud Workのnote Headerでは、Raw Assetを`RAW_GENERATED_UNVERIFIED`、Normalization後の別PNGを`NORMALIZED_UNVERIFIED`として区別する。Normalization Evidenceはtransform tool／version／method、crop、入力／出力SHA・寸法、Tool event SHA、実行event／timestampを保持する。Asset QAとHuman提示は1280×670のNormalized Assetに対して行い、ApprovalとFormal PromotionはRaw SHA、Normalization identity、Normalized SHAを一つのchainとして再検証する。Rawを上書きした場合、Normalization Evidenceがない場合、出力が1280×670でない場合またはEvidence／実体が不一致ならFAILする。
 
 標準ChatまたはRepository runtimeのないWorkからbuilt-in image generationを直接起動する経路は、Repository script実行とactual request bindingが実測・検証されない限り`BLOCKED_PLATFORM_BOUNDARY`とする。SourceをGitHubから実読したこと、AIが制約を復唱できたこと、事後QAを予定したことだけではPASSにしない。Cloud Workは、Repository checkout、Node.js、image generation、生成Asset取得、画像検査およびcurrent-task Tool eventを当該Taskで検証できる場合だけ正式経路となる。
 
@@ -532,7 +534,7 @@ Chat / Work Production Intent
 → Prompt Assembly QA
 → actual request hash binding
 → image generation
-→ GENERATED_UNVERIFIED
+→ RAW_GENERATED_UNVERIFIED → NORMALIZED_UNVERIFIED
 → Asset QA
 → PASS時のみHuman Review Candidate
 ```
@@ -541,7 +543,7 @@ Runtime Receipt Schema、builder、validatorおよび回帰テストは`04_AI_Wo
 
 #### 7.6.6 Formal Asset Promotion
 
-媒体SourceがFormal Assetを要求する場合、Asset QA PASSとHuman Review Candidateは正式登録の前提であり、Formal Assetそのものではない。note Headerは、Repository内Canonical Master binary／manifest、Master identity／expected・actual SHA／寸法／provenance、Generation Contract、Prompt Assembly QA、actual request identity、LocalまたはCloud Workの検証済みBridge receipt、生成Asset SHA／寸法、全必須Asset QA、Human Approval Evidence、Article IDおよびapproved Header display titleを一つのPromotion Recordへbindingする。全一致時だけ`FORMAL_HEADER_ASSET`を生成する。OneDrive上のMaster copyは由来Evidenceであり、Production prerequisiteではない。
+媒体SourceがFormal Assetを要求する場合、Asset QA PASSとHuman Review Candidateは正式登録の前提であり、Formal Assetそのものではない。note Headerは、Repository内Canonical Master binary／manifest、Master identity／expected・actual SHA／寸法／provenance、Generation Contract、Prompt Assembly QA、actual request identity、LocalまたはCloud Workの検証済みBridge receipt、Raw Asset SHA／寸法、Normalization identity／Evidence、1280×670のNormalized Asset SHA／寸法、全必須Asset QA、Human Approval Evidence、Article IDおよびapproved Header display titleを一つのPromotion Recordへbindingする。全一致時だけ`FORMAL_HEADER_ASSET`を生成する。OneDrive上のMaster copyは由来Evidenceであり、Production prerequisiteではない。
 
 Standard Chat／Workのbuilt-in direct生成は`UNVERIFIED_NON_ASSET`とし、Humanが後から画像へOKを示しても遡及昇格しない。Bridgeが利用不能ならdirect生成へfallbackせず`BLOCKED_PLATFORM_BOUNDARY`で停止する。Platform上のdirect生成自体をRepositoryから物理無効化する保証は持たないが、その出力にはFormal Asset ID、正式provenance、Final Review Package eligibilityを付与できない。
 
