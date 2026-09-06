@@ -8,6 +8,16 @@
 
 ------------------------------------------------------------------------
 
+## 2026-09-06｜note Final Review Package Compilerを正式接続
+
+AIDAILY実運用で、Marketing Review後のD3、Header、無料／Membership境界、Membership、Magazine、price、tagsその他のPublication Conditionsが自動で一つのArtifactにならず、本文だけの提示や会話上の最終稿状態が後工程へ渡り得た。現行Approval semanticsは保持し、欠けていた決定論的Package Compilerと上流必須Input Gateを追加した。
+
+Pipeline v1.15、note SOP v2.9、note README v1.18、Section制作台本／公開成果物記録テンプレート各v2.1、Publication Approval v1.1、Repository横断監査基準v1.7へ更新した。CompilerはD3、Marketing PASS Evidence、QA済みHeader、境界を含むPublication Conditions、destination、purposeおよびSource ManifestをSchemaと実file SHAで検証し、immutableな`READY_FOR_FINAL_REVIEW / PENDING` PackageとHuman提示8区分を生成する。不足または不一致は`BLOCKED_FINAL_PACKAGE_INCOMPLETE`で停止する。
+
+Package identityはArticle ID、title、本文／Header SHA、Marketing identity／Evidence、正規化Publication Conditions、destination、purposeおよびSource Manifestへbindingする。変更時は別identity／filenameを生成し、旧Approvalを流用できない。Human event／Approval EvidenceはPackage本体から分離し、G5はPackage ID／identity SHA／file SHAを自動再検証する。Compiler 19件とApproval semantics回帰17件の計36件がPASSした。Chat→Work、常設Work、Cloud Browser、Header生成Routing、Writing Style QA、External Audit Pipeline、既存Published Assetは変更していない。External Auditはdisabled／`NOT OBTAINED`、外部監査通信0件を維持する。
+
+------------------------------------------------------------------------
+
 ## 2026-09-05｜`.codex-runtime/`をRepository-local一時実行領域として整理
 
 未追跡だった`.codex-runtime/`の47ファイルを、正式成果物のruntime重複1件、OneDriveへ保存済みのEvidence重複16件、再生成可能な一時ファイル30件に分類した。AIDAILY-004 H2とStyle QA Incidentの保存必須14組は、OneDrive Personal Archive `Derived`の正式保存コピーとSHA-256一致を確認した。OneDriveクラウド同期状態は未確認のため推測せず、Local保存確認として扱う。

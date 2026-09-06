@@ -1,5 +1,7 @@
 Set-StrictMode -Version Latest
 
+Import-Module (Join-Path $PSScriptRoot 'FinalReviewPackageCompiler.psm1') -Force
+
 function Get-NoteFileSha256 {
     param([Parameter(Mandatory)][string]$LiteralPath)
     if (-not (Test-Path -LiteralPath $LiteralPath -PathType Leaf)) { throw "FILE_NOT_FOUND: $LiteralPath" }
@@ -82,8 +84,11 @@ function Test-NoteG5Approval {
     $headerSha = Get-NoteFileSha256 $HeaderPath
 
     $failures = [System.Collections.Generic.List[string]]::new()
+    try { Test-NoteFinalReviewPackageIdentity $package | Out-Null } catch { $failures.Add('PACKAGE_IDENTITY_INVALID') }
+    try { Test-NoteFinalReviewPackageIdentity $actual | Out-Null } catch { $failures.Add('ACTUAL_PACKAGE_IDENTITY_INVALID') }
     if ($actualSha -ne $packageSha) { $failures.Add('ACTUAL_PACKAGE_MISMATCH') }
     if ($approval.package_id -ne $package.package_id -or $event.context.package_id -ne $package.package_id) { $failures.Add('PACKAGE_ID_MISMATCH') }
+    if ($approval.package_identity_sha256 -ne $package.identity_sha256 -or $event.context.package_identity_sha256 -ne $package.identity_sha256) { $failures.Add('PACKAGE_IDENTITY_MISMATCH') }
     if ($approval.package_sha256 -ne $packageSha -or $event.context.package_sha256 -ne $packageSha) { $failures.Add('PACKAGE_SHA_MISMATCH') }
     if ($approval.human_event_id -ne $event.event_id -or $approval.human_event_sha256 -ne $eventSha) { $failures.Add('HUMAN_EVENT_MISMATCH') }
     if (-not (Test-NoteDestinationEquality $approval.destination $package.destination) -or -not (Test-NoteDestinationEquality $event.context.destination $package.destination)) { $failures.Add('DESTINATION_MISMATCH') }
@@ -94,7 +99,7 @@ function Test-NoteG5Approval {
     if (-not (Test-NoteExplicitPublicationIntent -Statement $event.statement -Stage $event.context.stage)) { $failures.Add('EXPLICIT_PUBLICATION_INTENT_MISSING') }
 
     try {
-        $presentedAt = [DateTimeOffset]::Parse($package.presented_at)
+        $presentedAt = [DateTimeOffset]::Parse($event.context.presented_at)
         $eventAt = [DateTimeOffset]::Parse($event.occurred_at)
         $approvedAt = [DateTimeOffset]::Parse($approval.approved_at)
         if ($eventAt -lt $presentedAt) { $failures.Add('HUMAN_EVENT_BEFORE_FINAL_PACKAGE') }

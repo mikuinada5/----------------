@@ -1,12 +1,12 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://repository.local/schemas/note-human-event.schema.json",
-  "title": "note Final Review Human Event v1",
+  "title": "note Final Review Human Event v2",
   "type": "object",
   "additionalProperties": false,
   "required": ["schema_version", "event_id", "actor_type", "evidence_origin", "occurred_at", "statement", "context"],
   "properties": {
-    "schema_version": { "const": "note-human-event/v1" },
+    "schema_version": { "const": "note-human-event/v2" },
     "event_id": { "type": "string", "minLength": 1 },
     "actor_type": { "const": "human" },
     "evidence_origin": { "const": "human-response-event" },
@@ -15,10 +15,12 @@
     "context": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["stage", "package_id", "package_sha256", "destination", "purpose"],
+      "required": ["stage", "presented_at", "package_id", "package_identity_sha256", "package_sha256", "destination", "purpose"],
       "properties": {
         "stage": { "const": "FINAL_REVIEW_PACKAGE_PRESENTED" },
+        "presented_at": { "type": "string", "format": "date-time" },
         "package_id": { "type": "string", "minLength": 1 },
+        "package_identity_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
         "package_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
         "destination": { "$ref": "#/$defs/destination" },
         "purpose": { "const": "NOTE_PUBLICATION" }

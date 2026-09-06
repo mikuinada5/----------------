@@ -4,6 +4,16 @@
 
 ---
 
+## 2026-09-06｜Final Review Package Compiler v1.0を実装
+
+Marketing Approved後のD3、Header、Publication Conditionsが会話状態のまま分散し、本文だけがFinal Review Candidateとして提示され得たことを、Package組立の機械Gate欠落として修正した。note SOP v2.9、README v1.18、Section制作台本／公開成果物記録テンプレート各v2.1、Publication Approval v1.1へ更新した。
+
+`Publication_Approval/`へCompiler Input Schema、Final Review Package v2 Schema、決定論的Compiler／entrypointおよび19件のnegative／identity／immutable／presentation testsを追加した。D3、Marketing PASS Evidence、Header／Header QA Evidence、無料／Membership境界、Membership、Magazine、price、tags、その他条件、destination、purposeおよびSource Manifestを実file SHAとともに検証し、`READY_FOR_FINAL_REVIEW / PENDING`のimmutable Package JSONと8区分のHuman提示Artifactを生成する。Input不足または不一致は`BLOCKED_FINAL_PACKAGE_INCOMPLETE`で停止する。
+
+Package identityはArticle ID、title、本文／Header SHA、Marketing identity／Evidence、正規化Publication Conditions、destination、purposeおよびSource Manifestへbindingする。変更後は旧Packageを上書きせず、新identity／filenameを生成する。Human eventとApproval EvidenceはPackageから分離し、G5はPackage ID／identity SHA／file SHAを再検証する。既存Approval semantics 17件を含む計36件がPASS。Header生成Routing、Writing Style QA、External Audit Pipeline、既存Published Assetは変更していない。External Auditはdisabled／`NOT OBTAINED`、外部監査通信0件を維持する。
+
+---
+
 ## 2026-09-05｜note E2E Approval Semantics／G5 Orchestration恒久修正
 
 AIDAILY-004実運用で、Production後Human Review、Header確認、G5、Dry Run後Publication Approvalが個別承認として増殖した。Current SourceがG5と公開実行承認を明示的に分離し、Package同一性を機械検証する契約を持たなかったことをRoot Causeとして確定した。

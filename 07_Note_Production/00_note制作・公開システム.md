@@ -1,6 +1,6 @@
-# note制作・公開システム v2.8
+# note制作・公開システム v2.9
 
-**Status:** Current / Operational v2.8 / Visual Runtime Bridge compatible
+**Status:** Current / Operational v2.9 / Final Review Package Compiler compatible
 **Scope:** note制作、Marketing Review、Header Production、Final Review、G5自動検証、Publication Transaction、公開後記録、Session単位のSNS展開、Repositoryへの知見還元
 
 ## 1. 責任と非責任
@@ -445,7 +445,7 @@ Human-approved Series Articleを対象とする場合は、承認済みSeries ID
 
 ### Final Review Packageへの進行意思
 
-AIは、第3稿、Header Asset、境界、Publication Decision Summary、必要な自己開示、Marketing Gate、未解決事項、Low Confidence Decisionおよび公開先を一つのFinal Review Packageとして提示する。この提示より前の「noteに反映して」「これでいい」等はHuman Reviewまたは制作指示であり、Final Approvalとして扱わない。
+AIは、Marketing Approvedの第3稿、Header Asset、境界、Publication Decision Summary、必要な自己開示、Marketing Gate、未解決事項、Low Confidence Decision、公開先および必要Source Manifestを`Publication_Approval/scripts/New-FinalReviewPackage.ps1`へ渡す。Compilerが必須Input、実file SHA、Schema、Package identityおよび8区分のHuman提示内容を検証し、`READY_FOR_FINAL_REVIEW / PENDING`のimmutable Final Review Packageを生成した場合だけHumanへ一括提示する。本文だけの提示、会話上だけの最終稿状態、必須Input不足またはSHA不一致は`BLOCKED_FINAL_PACKAGE_INCOMPLETE`で停止する。この提示より前の「noteに反映して」「これでいい」等はHuman Reviewまたは制作指示であり、Final Approvalとして扱わない。
 
 Final Review Package提示後、文脈上そのPackageを指す「OK」「これでいい」「投稿して」「公開して」「いけー」等の明示的進行意思はHuman Final ApprovalとPublication Approvalを同時に成立させる。G5自動検証がPASSしたら、Package差分、新規Human Decision、Source不一致または実行異常がない限り、note反映、公開設定反映、publish、PPVまで再承認なしで継続する。手段または接続がなければ、AIは公開完了と偽らず、未実施状態と最小の再開条件を記録する。
 
@@ -457,7 +457,7 @@ Final Review Package提示後、文脈上そのPackageを指す「OK」「これ
 4. **Human Review → 第2稿**：Humanが実内容を確認し、Practiceでは実際に手順を完遂し、壁打ち、実Screenshotその他の実素材を追加する。note制作部が反映し、内容完成稿である第2稿を作る。このReviewはFinal Approvalではない。
 5. **Marketing Review → 第3稿**：第2稿だけを入力にMarketing Reviewを行う。Must FixはRequirementとしてnote制作部へ返し、必要な修正とMarketing再監査を経て、無料／Membership境界、Membership、Magazine、price、tagsその他の必要条件を含むPublication Decisionを確定し、第3稿を作る。必須条件に未解決DecisionがあればMarketing Approvedにしない。
 6. **Header Production / Header QA**：Marketing Approved後の最終タイトルと第3稿を入力にHeaderを制作し、Asset ID、QA、provenanceおよび表示要件を確定する。
-7. **Human Final Review / Final Approval**：第3稿本文、Header Asset、Publication Conditionsおよび必要な自己開示を一つのFinal Review Packageとして提示する。提示後の明示的進行意思をPackage-bound Human Final Approval / Publication Approvalとして記録する。
+7. **Final Review Package Compiler / Human Final Review**：Marketing Approvedの第3稿本文、Marketing Review Evidence、QA済みHeader Asset、Publication Conditions、必要な自己開示、公開先およびSource Manifestを決定論的Compilerで一つのimmutable Package Artifactへ変換する。Schema、各file SHA、Package identityおよび8区分のHuman提示内容がPASSした`READY_FOR_FINAL_REVIEW / PENDING`だけを一括提示し、提示後の明示的進行意思を別ArtifactのPackage-bound Human Final Approval / Publication Approvalとして記録する。
 8. **G5 Automated Package Verification**：Approval Evidence、Final Review Package、実際の公開対象、destination、purposeおよび必要Sourceを自動照合する。同一ならPASSし、新しい承認を求めない。
 9. **Publication E2E / Transaction**：G5検証済みPackageをnote下書きへ反映し、Decisionと対象Series ProfileからSettingsを構成・再照合して最終操作を実行する。下書き前、設定画面またはpublish直前に再承認を求めない。
 10. **Post-Publication Verification**：公開URL、表示、Header、本文、境界、Membership、対象プラン、価格、加入導線、Magazine、Tags、日時をDecisionと対象Series Profileに対して照合し、全項目一致でG9／Publication E2EをPASSとする。後続Human QAでGapが判明した場合は初回判定を保持したまま再オープンする。
@@ -498,7 +498,12 @@ Pre-Human Review QA / G4（FAILなら修正→新exact versionを再QA）
                                          ↓
                              Header Production / QA
                                          ↓
-                           Final Review Package提示
+                    required inputs verification
+                                         ↓
+                    Final Review Package Compiler
+              （不足／不一致→BLOCKED_FINAL_PACKAGE_INCOMPLETE）
+                                         ↓
+               READY_FOR_FINAL_REVIEW / PENDING → 一括提示
                                          ↓
                    Human Final Approval / Publication Approval
                                          ↓
@@ -519,7 +524,9 @@ Pre-Human Review QA / G4（FAILなら修正→新exact versionを再QA）
 - 初稿に限らず、第2稿、第3稿、追記・再Production後の本文をHumanへ提示するたびに、Pipeline §8.5.1のexact-version Gateを実行する。制作記録からQA record／review／export receiptと本文SHAを参照できなければCandidateとして受領しない。Marketing ReviewおよびG5でも同じ本文とreceiptを再照合し、旧PASSの流用を拒否する。未公開本文とQA詳細はその公開範囲に合う既存保存先へ置き、Public Repositoryへ複製しない。この本文QAの失効は、別AssetであるHuman-approved Headerの自動失効、既存Marketing判断またはPublication Decisionの変更承認を意味しない。
 - `Review`では初稿の実内容、Practice完遂、実素材および修正範囲をHumanが確認する。これはFinal Approvalではない。note制作部の反映が完了した稿だけを第2稿とする。
 - Marketing Inputが不足する場合は`Marketing Input Pending`とし、Marketing担当が未完成稿を直接修正しない。Must Fixがある場合は`Marketing Revision Required`とし、Requirement、所有者および再開条件を記録する。
-- `Marketing Approved`後に第3稿とPublication Decision Summaryを作り、Header Production／QAを完了してFinal Review Packageを提示する状態をSection Statusの`Decision Pending`とする。
+- `Marketing Approved`後に第3稿とPublication Decision Summaryを作り、Header Production／QAを完了したら、`Publication_Approval/`のCompilerへ必須Inputを渡す。Compilerは本文、Marketing Evidence、Header／Header QA Evidence、無料／Membership境界、Membership、Magazine、price、tags、その他条件、Source Manifest、destinationおよびpurposeの存在と実file SHAを検証する。
+- Compilerの検証／生成中を`FINAL_REVIEW_PACKAGE_BUILDING`とし、Package JSONとHuman提示用ArtifactのSchema／identity／一括提示検証がPASSした場合だけ`READY_FOR_FINAL_REVIEW / PENDING`へ進める。Input不足、MarketingまたはHeader QA未PASS、SHA不一致、本文だけの提示は`BLOCKED_FINAL_PACKAGE_INCOMPLETE`としてSTOPし、Section Statusは`Decision Pending`のまま不足Inputの責任元へ戻す。
+- Package生成後にD3、title、Header、境界、Membership、Magazine、price、tags、その他条件、Marketing Evidence、destinationまたはSource Manifestが変わった場合は既存Packageを上書きせず、新identityのPackageを生成する。Human eventとApproval EvidenceはPackage本体から分離し、提示前Packageは`approval=PENDING`を保持する。
 - Final Reviewで本文、HeaderまたはDecisionが差し戻された場合は、未変更の第3稿、Marketing Review結果およびDecisionを有効なまま保持する。影響範囲だけを修正・再監査して`Decision Pending`へ戻す。
 - Package-bound Human Final Approval / Publication Approval後、G5がApproval Evidence、実Packageおよび必要Sourceの一致を自動検証する。G5がPASSした場合だけ最終Publication Packageを`Approved`とし、そのままG8／G9まで継続する。
 - Final Approval後にD3、Header、無料／Membership境界、price、Membership、Magazine、tags、その他の承認条件またはHuman判断が必要な新規条件を変更した場合はApprovalを失効させる。Package不変の内部処理では再承認しない。差分、Source不一致または異常を検出した場合、Approvalを利用して設定を推測変更せずSTOPし、必要なReview／Approvalへ戻す。

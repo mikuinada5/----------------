@@ -1,5 +1,6 @@
 $module = Join-Path $PSScriptRoot '../scripts/PublicationApproval.psm1'
 Import-Module $module -Force
+Import-Module (Join-Path $PSScriptRoot '../scripts/FinalReviewPackageCompiler.psm1') -Force
 
 function Save-TestJson([string]$Path, $Value) {
     $Value | ConvertTo-Json -Depth 40 | Set-Content -LiteralPath $Path -Encoding utf8 -NoNewline
@@ -12,6 +13,7 @@ function Test-Throws([scriptblock]$Action, [string]$Expected = '') {
 
 Describe 'note Final Approval semantics and G5 orchestration' {
     BeforeEach {
+        Import-Module (Join-Path $PSScriptRoot '../scripts/FinalReviewPackageCompiler.psm1') -Force -Global
         $caseRoot = Join-Path $TestDrive ([guid]::NewGuid().ToString())
         New-Item -ItemType Directory -Path $caseRoot | Out-Null
         $sourcePath = Join-Path $caseRoot 'source-manifest.json'
@@ -27,13 +29,24 @@ Describe 'note Final Approval semantics and G5 orchestration' {
         $approvalPath = Join-Path $caseRoot 'approval.json'
         $destination = [ordered]@{ service = 'note'; account_id = 'miku_inada'; publication_target = 'article/AIDAILY-TEST' }
         $package = [ordered]@{
-            schema_version = 'note-final-review-package/v1'
-            package_id = 'FRP-AIDAILY-TEST-D3-H1'
+            schema_version = 'note-final-review-package/v2'
+            compiler_version = 'note-final-review-package-compiler/v1'
+            package_id = ''
+            identity_sha256 = ''
+            state = 'READY_FOR_FINAL_REVIEW'
             article_id = 'AIDAILY-TEST'
-            d3_body = [ordered]@{ artifact_id = 'AIDAILY-TEST-D3'; sha256 = (Get-NoteFileSha256 $bodyPath) }
-            header = [ordered]@{ artifact_id = 'AIDAILY-TEST-H1'; sha256 = (Get-NoteFileSha256 $headerPath) }
+            title = 'Final title'
+            d3_body = [ordered]@{ artifact_id = 'AIDAILY-TEST-D3'; file = 'private://AIDAILY-TEST/D3.md'; sha256 = (Get-NoteFileSha256 $bodyPath); content = 'Final D3 body bytes' }
+            marketing_review = [ordered]@{
+                status = 'PASS'; identity = 'MR-AIDAILY-TEST-v3'; version = 'v3'
+                evidence = [ordered]@{ artifact_id = 'MR-AIDAILY-TEST-v3-EVIDENCE'; file = 'private://AIDAILY-TEST/marketing.json'; sha256 = ('1' * 64) }
+            }
+            header = [ordered]@{
+                asset_id = 'AIDAILY-TEST-H1'; file = 'archive://AIDAILY-TEST/header.png'; sha256 = (Get-NoteFileSha256 $headerPath)
+                asset_qa = [ordered]@{ status = 'PASS'; evidence = [ordered]@{ artifact_id = 'AIDAILY-TEST-H1-QA'; file = 'archive://AIDAILY-TEST/header-qa.json'; sha256 = ('2' * 64) } }
+            }
             publication_conditions = [ordered]@{
-                access_boundary = [ordered]@{ mode = 'MEMBERSHIP'; locator = 'after-paragraph-4' }
+                access_boundary = [ordered]@{ mode = 'MEMBERSHIP'; free_end_marker = 'free ends here'; membership_start_marker = 'membership starts here' }
                 membership = [ordered]@{ enabled = $true; name = '稲田みく'; plan = 'AIとの日常' }
                 magazine = [ordered]@{ enabled = $true; name = 'AIとの日常' }
                 price = [ordered]@{ currency = 'JPY'; amount = 1500 }
@@ -42,14 +55,17 @@ Describe 'note Final Approval semantics and G5 orchestration' {
             }
             destination = $destination
             purpose = 'NOTE_PUBLICATION'
-            source_manifest = [ordered]@{ manifest_id = 'SM-TEST-D3'; sha256 = $sourceSha }
-            presented_at = '2026-09-05T01:00:00+09:00'
+            source_manifest = [ordered]@{ manifest_id = 'SM-TEST-D3'; file = 'private://AIDAILY-TEST/source-manifest.json'; sha256 = $sourceSha }
+            approval = [ordered]@{ status = 'PENDING' }
         }
+        $identity = FinalReviewPackageCompiler\Get-NoteFinalReviewPackageIdentity $package
+        $package.package_id = $identity.package_id
+        $package.identity_sha256 = $identity.identity_sha256
         Save-TestJson $packagePath $package
         Copy-Item -LiteralPath $packagePath -Destination $actualPath
         $packageSha = Get-NoteFileSha256 $packagePath
         $event = [ordered]@{
-            schema_version = 'note-human-event/v1'
+            schema_version = 'note-human-event/v2'
             event_id = 'HE-TEST-001'
             actor_type = 'human'
             evidence_origin = 'human-response-event'
@@ -57,7 +73,9 @@ Describe 'note Final Approval semantics and G5 orchestration' {
             statement = '投稿して'
             context = [ordered]@{
                 stage = 'FINAL_REVIEW_PACKAGE_PRESENTED'
+                presented_at = '2026-09-05T01:00:00+09:00'
                 package_id = $package.package_id
+                package_identity_sha256 = $package.identity_sha256
                 package_sha256 = $packageSha
                 destination = $destination
                 purpose = 'NOTE_PUBLICATION'
@@ -66,12 +84,13 @@ Describe 'note Final Approval semantics and G5 orchestration' {
         Save-TestJson $eventPath $event
         $eventSha = Get-NoteFileSha256 $eventPath
         $approval = [ordered]@{
-            schema_version = 'note-publication-approval/v1'
+            schema_version = 'note-publication-approval/v2'
             approval_id = 'PA-TEST-001'
             approval_scope = 'NOTE_PUBLICATION'
             approval_type = 'FINAL_AND_PUBLICATION'
             decision = 'APPROVED'
             package_id = $package.package_id
+            package_identity_sha256 = $package.identity_sha256
             package_sha256 = $packageSha
             human_event_id = $event.event_id
             human_event_sha256 = $eventSha
@@ -120,7 +139,7 @@ Describe 'note Final Approval semantics and G5 orchestration' {
     }
 
     It 'G: a free or Membership boundary change after Final Approval invalidates approval' {
-        $package.publication_conditions.access_boundary.locator = 'after-paragraph-5'
+        $package.publication_conditions.access_boundary.free_end_marker = 'new free end'
         Save-TestJson $actualPath $package
         (Test-Throws { Test-NoteG5Approval @gateArgs } 'ACTUAL_PACKAGE_MISMATCH') | Should Be $true
     }

@@ -1,6 +1,6 @@
 # 07_Note_Production
 
-**Status:** Current / Operational v1.17 / Master-bound Visual Runtime Bridge compatible
+**Status:** Current / Operational v1.18 / Final Review Package Compiler compatible
 **責任:** noteの企画・制作・Marketing Review・Header Production・公開準備・Publication Transaction・公開後記録およびSession単位のSNS展開を、既存AI Production Pipelineへ接続する媒体別運用
 
 ## この領域の入口
@@ -15,7 +15,7 @@
 | `03_SNS展開基準.md` | Session単位のSNS制作・投稿承認・接続状態 |
 | `10_Section制作台本テンプレート.md` | 意味づけ・企画で採用されたSectionの制作台本、稿状態、Marketing Review／Header／Publication Decision記録テンプレート |
 | `11_公開成果物記録テンプレート.md` | Final Review Package、Human Final / Publication Approval、G5、Transaction、公開済み最終稿・Header・公開事実の記録テンプレート |
-| `Publication_Approval/` | note専用Final Review Package／Human event／Approval Schema、G5 identity validator、無停止Publication E2E検証 |
+| `Publication_Approval/` | note専用Final Review Package Compiler、Package／Human event／Approval Schema、G5 identity validator、無停止Publication E2E検証 |
 | `CHANGELOG.md` | 本領域の意味ある変更履歴 |
 
 AIDAILY HeaderのCurrent Visual Sourceは`00_note制作・公開システム.md`内の`NOTE HEADER MASTER TEMPLATE v1.0`とmachine-readable profile `aidaily-header-v1`である。Master画像binaryは同SOPに記録したOneDrive AI Archiveの論理locator／SHAから解決し、Public Repositoryへ複製しない。
@@ -43,7 +43,7 @@ AIDAILY HeaderのCurrent Visual Sourceは`00_note制作・公開システム.md`
 
 Statusは、Section制作台本と全体ロードマップで `Planning`／`Production`／`Review`／`Decision Pending`／`Redesign Required`／`Revision Required`／`Approved`／`Scheduled`／`Published/Complete`／`Update Candidate` を記録する。`Redesign Required`は現行baselineを保持して構成・完了条件から再設計する状態、`Revision Required`は現行baselineの限定修正が必要な状態であり、どちらもPublish前で外部公開を意味しない。完成判定は固定の3記事数ではなく、当該Sectionの承認済み公開構成Profileに基づく。公開済み最終稿では `Published`、公開停止または置換済みでは `Superseded` と記録する。`Published` は公開事実であり、上位Sourceの承認を代替しない。公開済み最終稿だけが将来の参照・SNS再展開・Repository還元に用いる記事本文の正本であり、Work稿や下書きを代替正本にしない。
 
-Marketing ReviewはSection Statusを増やさず、`Marketing Input Pending`／`Marketing Revision Required`／`Marketing Approved`／`Human Decision Required`のsubstatusとしてSection制作台本へ記録する。Marketingは内容完成稿である第2稿から開始し、本文を直接修正せずRequirementを返し、無料／Membership境界、Membership、Magazine、price、tagsその他の必要条件を含むPublication Decisionを確定する。Marketing Approved後にHeader Productionを別Phaseで開始し、共通Visual Production ControlのGeneration Contract、Prompt Assembly QA、Runtime Request Binding、生成後Header QAを通す。現行ではLocal CodexのRepository Skill request-bound経路だけをgoverned生成として使用し、Chat／Work built-in direct生成はPlatform BoundaryでBLOCKする。QA PASSしたHeaderだけをD3とPublication Conditionsを含むFinal Review Packageへ組み込む。PackageへのHumanの明示的進行意思をFinal Approval / Publication Approvalとしてbindingし、G5はApproval Evidenceと実Packageを自動照合する。同一ならnote反映からpublish、PPVまで再承認なしで継続する。
+Marketing ReviewはSection Statusを増やさず、`Marketing Input Pending`／`Marketing Revision Required`／`Marketing Approved`／`Human Decision Required`のsubstatusとしてSection制作台本へ記録する。Marketingは内容完成稿である第2稿から開始し、本文を直接修正せずRequirementを返し、無料／Membership境界、Membership、Magazine、price、tagsその他の必要条件を含むPublication Decisionを確定する。Marketing Approved後にHeader Productionを別Phaseで開始し、共通Visual Production ControlのGeneration Contract、Prompt Assembly QA、Runtime Request Binding、生成後Header QAを通す。現行ではLocal CodexのRepository Skill request-bound経路だけをgoverned生成として使用し、Chat／Work built-in direct生成はPlatform BoundaryでBLOCKする。QA PASSしたHeader、D3全文、Marketing PASS Evidence、Publication Conditions、Source Manifestおよび公開先を`Publication_Approval/`の決定論的Compilerへ渡し、Schema／実file SHA／identity／Human提示8区分を検証した`READY_FOR_FINAL_REVIEW / PENDING`のPackageだけをHumanへ一括提示する。PackageへのHumanの明示的進行意思を別ArtifactのFinal Approval / Publication Approvalとしてbindingし、G5はApproval Evidenceと実Packageを自動照合する。同一ならnote反映からpublish、PPVまで再承認なしで継続する。
 
 未公開本文を含む詳細Marketing Review、Requirementおよび第2稿・第3稿は、本文と同じ承認範囲のWork、Private Sourceまたは指定Archiveに保持する。Public側のSection制作台本には安全なRun ID、status、locator、Decision要約、Gateおよび再開条件だけを置き、公開済み最終稿領域へ先行配置しない。
 

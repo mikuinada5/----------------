@@ -1,7 +1,7 @@
-# AI Production Pipeline v1.14
+# AI Production Pipeline v1.15
 
 **Document type:** Standard Operating Procedure（SOP）<br>
-**Status:** Current / Operational v1.14<br>
+**Status:** Current / Operational v1.15<br>
 **Owner:** 稲田美来<br>
 **Scope:** Story Candidate、教材、note、SNS、運営文書、Brand／Education／AI Organization関連Source、その他AI制作物<br>
 **Purpose:** 既存OS・Sourceを毎回確実に選択・実読・適用し、成果物と新知見を正しい責任単位へ戻すためのAI組織共通運用<br>
@@ -117,7 +117,7 @@ flowchart TD
 | G2 Source QA Gate | Input品質 | 現行正本・Version・実読・漏れ・依存・矛盾が解決 | Source Router／Source管理責任者 |
 | G3 Production Completeness Gate | 制作完了 | 指示された成果物一式と参照証跡が揃い、実行を表明した作業が実施済み | Production |
 | G4 Output QA Gate | 成果物品質 | 内容・Source整合・形式・安全・媒体要件を満たす | Production |
-| G5 Human Approval Evidence Gate | 成果物最終判断 | 人間責任者のFinal Approval Evidenceが対象Package identity、公開先、目的へbindingされ、実行対象と一致する。noteでは新しい承認を求めず自動検証する | Production／Output QA／Human Final Review |
+| G5 Human Approval Evidence Gate | 成果物最終判断 | 人間責任者のFinal Approval Evidenceが、必須Inputと実file SHAを検証済みのimmutable Package identity、公開先、目的へbindingされ、実行対象と一致する。noteでは新しい承認を求めず自動検証する | Production／Output QA／Human Final Review |
 | G6 Repository Integration Gate | 正式配置 | 保存先・波及更新・Version・INDEX・CHANGELOGが整う | Repository Integration |
 | G7 Git Gate | 正式反映 | diff・テスト・追跡対象・commit範囲が妥当 | Repository Integration |
 | G8 Publish Gate | 公開実行 | 公開版がG5検証済みPackageと一致し、媒体別Approval Evidenceとチャネル要件を満たす | Publish／G5／Human Decision |
@@ -958,17 +958,21 @@ Story Candidate「Voice OSは存在したのに読まれなかった」を、AI�
 
 Humanが初稿の実内容を確認し、Practiceでは実機完遂、壁打ち、Screenshot等の実素材追加を行う。このHuman Reviewは制作途中の内容確認であり、Final ApprovalまたはPublication Approvalではない。note制作担当が反映した内容完成稿を第2稿とし、ここから`07_Note_Production/00_note制作・公開システム.md`のMarketing Reviewへ渡す。Marketing担当は本文を直接書き換えず、Must Fix／Nice to ImproveのRequirementを返し、無料／Membership境界、Membership、Magazine、price、tagsおよび必要な公開条件を含むPublication Decisionを確定する。必要なProduction修正とMarketing再監査を経て、Marketing Approved＋Publication Decisionが揃った稿を第3稿とする。
 
-### Header Production／Human Final Review
+### Header Production／Final Review Package Compiler／Human Final Review
 
-Marketing Approved後、第3稿と最終タイトルを確定し、`07_Note_Production/00_note制作・公開システム.md`に従ってHeader Productionを開始する。媒体固有TemplateをMUST／MUST NOT／MAYへ解決したGeneration Contractと実Tool Requestを作り、Prompt Assembly QA後にだけ画像生成を起動する。生成物をHeader QAし、PASSしたAssetだけをFinal Review Packageへ組み込む。第3稿本文、Header Asset、無料／有料またはMembership境界、Membership、Magazine、price、tags、その他のPublication Conditionsおよび必要な自己開示を一つのFinal Review Packageとしてみくへ提示する。提示後の明示的進行意思は、同PackageへのHuman Final ApprovalとPublication Approvalとしてbindingする。Humanは一括承認または特定Decisionだけを理由付きでOverrideできる。Marketing評価へ影響する本文差分は影響範囲だけ再監査し、HeaderまたはPublication Conditionsの差替えは該当QAとFinal Reviewへ戻す。制作途中のHuman ReviewをFinal Approvalへ流用しない。
+Marketing Approved後、第3稿と最終タイトルを確定し、`07_Note_Production/00_note制作・公開システム.md`に従ってHeader Productionを開始する。媒体固有TemplateをMUST／MUST NOT／MAYへ解決したGeneration Contractと実Tool Requestを作り、Prompt Assembly QA後にだけ画像生成を起動する。生成物をHeader QAし、PASSしたAssetだけをFinal Review Package Compilerへ渡す。
+
+noteでは、D3全文、canonical pointer／SHA、Marketing Review PASS Evidence／identity／version、Header Asset／QA Evidence、無料／Membership境界、Membership、Magazine、price、tags、その他のPublication Conditions、destination、purposeおよびSource Manifestを`07_Note_Production/Publication_Approval/`の決定論的Compilerで検証する。`MARKETING_APPROVED → FINAL_REVIEW_PACKAGE_BUILDING → READY_FOR_FINAL_REVIEW / PENDING`を通過し、本文、Header、境界、Membership、Magazine、price、tags、その他条件の8区分を持つ提示ArtifactがPASSした場合だけみくへ一括提示する。不足またはSHA不一致は`BLOCKED_FINAL_PACKAGE_INCOMPLETE`で停止する。
+
+提示後の明示的進行意思は、Package本体とは別のHuman event／Approval Evidenceとして、同PackageへのHuman Final ApprovalとPublication Approvalへbindingする。Humanは一括承認または特定Decisionだけを理由付きでOverrideできる。Marketing評価へ影響する本文差分は影響範囲だけ再監査し、HeaderまたはPublication Conditionsの差替えは該当QAとFinal Reviewへ戻す。制作途中のHuman ReviewをFinal Approvalへ流用しない。
 
 ### Integration／Git
 
-公開前はFinal Review Package、Human event、Approval RecordおよびHeader Asset locatorを、その公開範囲に合うWork／Private Source／指定Archiveへ保持し、未公開本文をPublic Repositoryの公開済み領域へ先行配置しない。G9 PASS後、公開版と照合済みの最終稿、Header Asset記録および公開成果物記録を`07_Note_Production/`のcanonical pathへ配置する。Work稿や下書きを将来参照する正本にせず、実際の公開対象全体をPackage-bound Approval Recordと照合する。
+公開前はCompiler Input、immutable Final Review Package、Human提示Artifact、Human event、Approval RecordおよびHeader Asset locatorを、その公開範囲に合うWork／Private Source／指定Archiveへ保持し、未公開本文をPublic Repositoryの公開済み領域へ先行配置しない。Package本体は`approval=PENDING`のまま変更せず、Approval Evidenceを別Artifactとして保持する。G9 PASS後、公開版と照合済みの最終稿、Header Asset記録および公開成果物記録を`07_Note_Production/`のcanonical pathへ配置する。Work稿や下書きを将来参照する正本にせず、実際の公開対象全体をPackage-bound Approval Recordと照合する。
 
 ### G5 Verification／Publish／Feedback
 
-Final Approval成立後、G5はHuman event、Approval Record、Final Review Package、実際の公開対象および必要Sourceのidentityを自動検証する。一致すれば、Publication Decision SummaryをCanonical Inputとしてnote下書き、本文、Header、公開設定を反映し、設定を再照合してPublication Transactionを実行する。同一PackageのDry Run、下書き作成、設定画面またはpublish直前を理由にHumanへ戻さない。Transaction時は下書きへ永続化されない設定をSummaryから再構成する。Package差分、新しいHuman Decision、Source不一致、想定外UI、認証問題または公開先異常がある場合だけ停止する。公開後は利用者側表示、Header、境界、価格、Membership、Magazine、CTA、tags、日時をPost-Publication Verificationし、全項目一致で初めてE2E PASSとする。未決の別コンテンツを同時公開しない。Session単位のSNS展開は `07_Note_Production/03_SNS展開基準.md` の別Gateに従い、Publication E2Eへ自動包含しない。制作中に得たSource QA改善をAI Organization改善候補へ、記事化できる派生事件を対象SectionのStory Hubへ戻す。
+Final Approval成立後、G5はHuman event、Approval Record、Compilerが生成したFinal Review Package、実際の公開対象および必要Sourceのidentityを自動検証する。Package IDを本文／Header SHA、正規化Publication Conditions、Article ID、Marketing identity、destinationおよびSource Manifestから再計算し、ApprovalのPackage ID／identity SHA／file SHAと一致する場合だけPASSする。一致すれば、Publication Decision SummaryをCanonical Inputとしてnote下書き、本文、Header、公開設定を反映し、設定を再照合してPublication Transactionを実行する。同一PackageのDry Run、下書き作成、設定画面またはpublish直前を理由にHumanへ戻さない。Transaction時は下書きへ永続化されない設定をSummaryから再構成する。Package差分、新しいHuman Decision、Source不一致、想定外UI、認証問題または公開先異常がある場合だけ停止する。公開後は利用者側表示、Header、境界、価格、Membership、Magazine、CTA、tags、日時をPost-Publication Verificationし、全項目一致で初めてE2E PASSとする。未決の別コンテンツを同時公開しない。Session単位のSNS展開は `07_Note_Production/03_SNS展開基準.md` の別Gateに従い、Publication E2Eへ自動包含しない。制作中に得たSource QA改善をAI Organization改善候補へ、記事化できる派生事件を対象SectionのStory Hubへ戻す。
 
 ---
 

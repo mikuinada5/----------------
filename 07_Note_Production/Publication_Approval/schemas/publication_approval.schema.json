@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://repository.local/schemas/note-publication-approval.schema.json",
-  "title": "note Final and Publication Approval v1",
+  "title": "note Final and Publication Approval v2",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -11,6 +11,7 @@
     "approval_type",
     "decision",
     "package_id",
+    "package_identity_sha256",
     "package_sha256",
     "human_event_id",
     "human_event_sha256",
@@ -19,12 +20,13 @@
     "approved_at"
   ],
   "properties": {
-    "schema_version": { "const": "note-publication-approval/v1" },
+    "schema_version": { "const": "note-publication-approval/v2" },
     "approval_id": { "type": "string", "minLength": 1 },
     "approval_scope": { "const": "NOTE_PUBLICATION" },
     "approval_type": { "const": "FINAL_AND_PUBLICATION" },
     "decision": { "const": "APPROVED" },
     "package_id": { "type": "string", "minLength": 1 },
+    "package_identity_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
     "package_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
     "human_event_id": { "type": "string", "minLength": 1 },
     "human_event_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },

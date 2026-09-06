@@ -1,6 +1,6 @@
 # Section制作台本テンプレート
 
-**Status:** Current / Operational v2.0 / Visual Production Control compatible
+**Status:** Current / Operational v2.1 / Final Review Package Compiler compatible
 **使用先:** 実データ発生後、`01_Sections/<Section-ID>_<短い識別名>/00_Section制作台本.md` として複製して使用する。
 
 ## 0. 意味づけ・企画フェーズからの引き継ぎ
@@ -94,7 +94,8 @@ Marketingは第2稿から開始し、本文を直接書き換えず、Requiremen
 | Marketing Gate | Marketing Input Pending / Marketing Revision Required / Marketing Approved / Human Decision Required |
 | 第3稿識別 / 差分範囲 |  |
 | Header Contract / Prompt Assembly QA / Asset QA | Contract ID、Production version、Source fingerprint、実Tool Request識別、Prompt QA、Asset provenance、Header QA結果、Human Review Candidate化。QA未確認／FAILはAsset ID・G5へ進めない |
-| Final Review Package / Human Event | 本文、Header、Publication Conditions、自己開示、公開先、目的、Package ID／SHA、Human event ID／時刻、statement |
+| Final Review Package Compiler | Input locator、D3／Header／Marketing／Source Manifest SHA検証、Compiler version、Package ID／identity SHA／file SHA、`READY_FOR_FINAL_REVIEW`、8区分提示Artifact locator。不足時は`BLOCKED_FINAL_PACKAGE_INCOMPLETE` |
+| Human Event / Approval Evidence | 提示済みPackage ID／identity SHA／file SHA、提示時刻、Human event ID／時刻／statement、公開先、目的。Package本体とは別Artifact |
 | G5 Automated Verification | Approval Evidence、実Package、destination、purpose、Source Manifestの照合結果。G5で新しい承認を求めない |
 | Publication Transaction / Verification | Not Started / Published / PASS / FAIL |
 | Pipeline Gap / 再開条件 |  |
@@ -126,7 +127,7 @@ Marketingは第2稿から開始し、本文を直接書き換えず、Requiremen
 |---|---|---|---|---|---|---|---|---|
 |  |  |  |  |  |  | Human提供後に記録 | Factと分離 | 一度の結果で一般則化しない |
 
-Human Final Review時は、第3稿本文、Header Asset、必要な自己開示と一画面のPublication Decision Summaryを一つのFinal Review Packageとして提示する。SummaryにはPrice＋Confidence、Free/Membership Boundary＋Confidence、Campaign、Publication Date/Time、CTA、Magazine、Membership、Tags、SNS Distribution、Marketing Gate、unresolved issues、Low Confidence Decisionsおよび今回検証するHypothesisを含める。提示後の明示的進行意思をHuman Final Approval / Publication ApprovalとしてPackage identityへbindingする。G5はApproval Evidenceと実Packageの一致を自動検証し、同一ならTransaction／PPVへ継続する。
+Human Final Review時は、第3稿全文、Marketing PASS Evidence、Header Asset／QA Evidence、必要な自己開示、Publication Decision Summary、公開先およびSource Manifestを決定論的Compilerへ渡す。本文、Header、無料／Membership境界、Membership、Magazine、price、tags、その他Publication Conditionsの8区分を含む`READY_FOR_FINAL_REVIEW / PENDING`のPackageと提示Artifactが検証済みの場合だけ一括提示する。Package IDはArticle ID、本文／Header SHA、Publication Conditions、Marketing identity、destinationおよびSource Manifestへbindingし、変更時は上書きせず新identityを生成する。提示後の明示的進行意思を別ArtifactのHuman Final Approval / Publication ApprovalとしてPackage identityへbindingする。G5はApproval Evidenceと実Packageの一致を自動検証し、同一ならTransaction／PPVへ継続する。
 
 ## 8. 公開後・Feedback
 

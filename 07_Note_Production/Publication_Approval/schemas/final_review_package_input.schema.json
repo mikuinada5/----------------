@@ -1,45 +1,16 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://repository.local/schemas/note-final-review-package.schema.json",
-  "title": "note Final Review Package v2",
+  "$id": "https://repository.local/schemas/note-final-review-package-input.schema.json",
+  "title": "note Final Review Package Compiler Input v1",
   "type": "object",
   "additionalProperties": false,
-  "required": [
-    "schema_version",
-    "compiler_version",
-    "package_id",
-    "identity_sha256",
-    "state",
-    "article_id",
-    "title",
-    "d3_body",
-    "marketing_review",
-    "header",
-    "publication_conditions",
-    "destination",
-    "purpose",
-    "source_manifest",
-    "approval"
-  ],
+  "required": ["schema_version", "workflow_state", "article_id", "title", "d3_body", "marketing_review", "header", "publication_conditions", "destination", "purpose", "source_manifest"],
   "properties": {
-    "schema_version": { "const": "note-final-review-package/v2" },
-    "compiler_version": { "const": "note-final-review-package-compiler/v1" },
-    "package_id": { "type": "string", "pattern": "^FRP-.+-[0-9a-f]{64}$" },
-    "identity_sha256": { "$ref": "#/$defs/sha256" },
-    "state": { "const": "READY_FOR_FINAL_REVIEW" },
+    "schema_version": { "const": "note-final-review-package-input/v1" },
+    "workflow_state": { "const": "MARKETING_APPROVED" },
     "article_id": { "type": "string", "minLength": 1 },
     "title": { "type": "string", "minLength": 1 },
-    "d3_body": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["artifact_id", "file", "sha256", "content"],
-      "properties": {
-        "artifact_id": { "type": "string", "minLength": 1 },
-        "file": { "type": "string", "minLength": 1 },
-        "sha256": { "$ref": "#/$defs/sha256" },
-        "content": { "type": "string", "minLength": 1 }
-      }
-    },
+    "d3_body": { "$ref": "#/$defs/local_artifact" },
     "marketing_review": {
       "type": "object",
       "additionalProperties": false,
@@ -48,24 +19,25 @@
         "status": { "const": "PASS" },
         "identity": { "type": "string", "minLength": 1 },
         "version": { "type": "string", "minLength": 1 },
-        "evidence": { "$ref": "#/$defs/evidence" }
+        "evidence": { "$ref": "#/$defs/local_artifact" }
       }
     },
     "header": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["asset_id", "file", "sha256", "asset_qa"],
+      "required": ["asset_id", "file", "local_path", "sha256", "asset_qa"],
       "properties": {
         "asset_id": { "type": "string", "minLength": 1 },
         "file": { "type": "string", "minLength": 1 },
-        "sha256": { "$ref": "#/$defs/sha256" },
+        "local_path": { "type": "string", "minLength": 1 },
+        "sha256": { "$ref": "#/$defs/input_sha256" },
         "asset_qa": {
           "type": "object",
           "additionalProperties": false,
           "required": ["status", "evidence"],
           "properties": {
             "status": { "const": "PASS" },
-            "evidence": { "$ref": "#/$defs/evidence" }
+            "evidence": { "$ref": "#/$defs/local_artifact" }
           }
         }
       }
@@ -76,30 +48,26 @@
     "source_manifest": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["manifest_id", "file", "sha256"],
+      "required": ["manifest_id", "file", "local_path", "sha256"],
       "properties": {
         "manifest_id": { "type": "string", "minLength": 1 },
         "file": { "type": "string", "minLength": 1 },
-        "sha256": { "$ref": "#/$defs/sha256" }
+        "local_path": { "type": "string", "minLength": 1 },
+        "sha256": { "$ref": "#/$defs/input_sha256" }
       }
-    },
-    "approval": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["status"],
-      "properties": { "status": { "const": "PENDING" } }
     }
   },
   "$defs": {
-    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
-    "evidence": {
+    "input_sha256": { "type": "string", "pattern": "^[0-9A-Fa-f]{64}$" },
+    "local_artifact": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["artifact_id", "file", "sha256"],
+      "required": ["artifact_id", "file", "local_path", "sha256"],
       "properties": {
         "artifact_id": { "type": "string", "minLength": 1 },
         "file": { "type": "string", "minLength": 1 },
-        "sha256": { "$ref": "#/$defs/sha256" }
+        "local_path": { "type": "string", "minLength": 1 },
+        "sha256": { "$ref": "#/$defs/input_sha256" }
       }
     },
     "publication_conditions": {
