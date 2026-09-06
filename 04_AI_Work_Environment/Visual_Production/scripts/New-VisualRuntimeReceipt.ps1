@@ -2,7 +2,7 @@
 param(
     [Parameter(Mandatory = $true)] [string]$RepositoryRoot,
     [Parameter(Mandatory = $true)] [string]$RecordPath,
-    [Parameter(Mandatory = $true)] [ValidateSet('chat','work','local-codex','responses-api')] [string]$Environment,
+    [Parameter(Mandatory = $true)] [ValidateSet('chat','work','cloud-work','local-codex','responses-api')] [string]$Environment,
     [Parameter(Mandatory = $true)] [string]$OutputPath,
     [string]$ActualToolRequestPath,
     [string]$ImageGenerationToolEvidence,
@@ -54,6 +54,10 @@ if ($Environment -in @('chat','work')) {
 
 if ($Environment -eq 'responses-api') {
     throw 'VISUAL_RUNTIME_BLOCKED: no approved Responses API visual orchestrator is implemented in this Repository'
+}
+
+if ($Environment -eq 'cloud-work') {
+    throw 'VISUAL_RUNTIME_BLOCKED: Cloud Work receipts must be built from a current-task native Tool event by cloud-work-header-bridge.mjs'
 }
 
 if (-not $ActualToolRequestPath) { throw 'VISUAL_RUNTIME_QA FAIL: Local Codex requires the exact actual Tool Request file' }

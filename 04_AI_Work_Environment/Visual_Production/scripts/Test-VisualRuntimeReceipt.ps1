@@ -50,10 +50,15 @@ if ($ActualToolRequestPath) {
     try { $actualRequest = Get-Content -Raw -LiteralPath $ActualToolRequestPath -Encoding UTF8 | ConvertFrom-Json }
     catch { Stop-RuntimeValidation "Actual Tool Request is unreadable: $($_.Exception.Message)" }
     $actualHash = Get-CanonicalJsonHash $actualRequest
-    if ($actualHash -ne $validatedHash) { Stop-RuntimeValidation 'Actual Tool Request differs from the validated request' }
-    if ([string]$receipt.request_binding.actual_request_sha256 -ne $actualHash -or $receipt.request_binding.match -ne $true) {
-        Stop-RuntimeValidation 'Actual Tool Request binding evidence is missing or false'
+    if ([string]$receipt.environment -eq 'cloud-work') {
+        $expectedCloudRequest = [ordered]@{ prompt = [string]$record.tool_request.prompt; referenced_image_paths = @($record.tool_request.referenced_image_paths) }
+        $expectedCloudHash = Get-CanonicalJsonHash $expectedCloudRequest
+        if ($actualHash -ne $expectedCloudHash) { Stop-RuntimeValidation 'Cloud Work image generation arguments differ from the validated prompt and Master reference' }
+        if ([string]$receipt.tool_event_binding.invocation_arguments_sha256 -ne $actualHash) { Stop-RuntimeValidation 'Cloud Work Tool event is not bound to the exact invocation arguments' }
+    } elseif ($actualHash -ne $validatedHash) {
+        Stop-RuntimeValidation 'Actual Tool Request differs from the validated request'
     }
+    if ([string]$receipt.request_binding.actual_request_sha256 -ne $actualHash -or $receipt.request_binding.match -ne $true) { Stop-RuntimeValidation 'Actual Tool Request binding evidence is missing or false' }
 }
 elseif ($receipt.result -eq 'REQUEST_BOUND') {
     Stop-RuntimeValidation 'REQUEST_BOUND requires the actual Tool Request to be supplied to validation'
@@ -81,6 +86,18 @@ elseif ($environment -eq 'local-codex') {
     if ($receipt.result -ne 'REQUEST_BOUND' -or $receipt.request_binding.match -ne $true) {
         Stop-RuntimeValidation 'Local Codex generation requires an exact request binding PASS'
     }
+}
+elseif ($environment -eq 'cloud-work') {
+    if ($route -ne 'repository-cloud-work-request-bound' -or $receipt.implementation_id -ne 'repo-skill:visual-production-bridge/cloud-work-v1') { Stop-RuntimeValidation 'Cloud Work must use the cross-platform Repository request-bound bridge' }
+    foreach ($capability in @('current_source_resolution','repository_script_execution','image_generation_tool','asset_inspection','client_visible_request_binding')) {
+        if ([string]$receipt.capabilities.$capability -ne 'VERIFIED') { Stop-RuntimeValidation "Cloud Work capability is not VERIFIED: $capability" }
+    }
+    if ($receipt.capabilities.platform_tool_choice_control -eq 'VERIFIED' -or $receipt.boundary.platform_enforced -ne $false) { Stop-RuntimeValidation 'Cloud Work bridge must not claim platform-wide tool-choice enforcement' }
+    if ($receipt.boundary.repository_enforcement_scope -ne 'client-visible-request' -or $receipt.result -ne 'REQUEST_BOUND' -or $receipt.request_binding.match -ne $true) { Stop-RuntimeValidation 'Cloud Work request binding is incomplete' }
+    foreach ($field in @('event_id','event_sha256','evidence_origin','tool','contract_identity_sha256','invocation_arguments_sha256','generated_asset_sha256')) {
+        if ([string]::IsNullOrWhiteSpace([string]$receipt.tool_event_binding.$field)) { Stop-RuntimeValidation "Cloud Work Tool event binding is missing: $field" }
+    }
+    if ($receipt.tool_event_binding.evidence_origin -ne 'current-task-cloud-work-tool-event' -or $receipt.tool_event_binding.tool -ne 'image_gen.imagegen') { Stop-RuntimeValidation 'Cloud Work Tool event origin or tool is invalid' }
 }
 elseif ($environment -eq 'responses-api') {
     Stop-RuntimeValidation 'No approved Responses API visual orchestrator is implemented in this Repository'

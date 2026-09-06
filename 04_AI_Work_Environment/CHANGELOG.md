@@ -6,6 +6,14 @@
 
 ------------------------------------------------------------------------
 
+## 2026-09-07｜Cloud Work Formal Header Production Bridgeを実装
+
+Visual Production v1.5、Source Resolution v1.1として、Local Codex／PowerShellだけに固定されていたAIDAILY Header経路を、Repository checkoutとNode.js標準libraryで動く`cloud-work` Runtimeへ接続した。GitHub Current SourceのMaster binary／manifestを解決してSHA-256と1280×670を実測し、Article ID、approved exact title、Source fingerprint、Master identity、canonical requirementsおよびexact native imagegen argumentsをGeneration Contractへbindingする。
+
+Cloud Workのcurrent-task `image_gen.imagegen` Tool event、生成Asset bytes、`view_image`等のinspection event、全Asset QAおよびHuman Approval EvidenceをRuntime ReceiptとFormal Header Assetへ連結した。Tool event欠落、自己申告origin、Master未参照、SHA／title／request不一致、QA欠落およびApproval流用はFAILする。`platform_enforced=false`を維持し、通常Chat／Work direct生成やevent evidenceを取得できない環境は`BLOCKED_PLATFORM_BOUNDARY`のままとする。System SourceのWRITE ownerはLocal Codex、Cloud WRITEは新規Article-local Published Artifactだけで変更していない。
+
+------------------------------------------------------------------------
+
 ## 2026-09-06｜Cloud note Production RuntimeのRepository基盤を実装
 
 GitHub Current SourceだけではAIDAILY Header Master binaryへ到達できず、Cloud WorkとLocal CodexのGit WRITE範囲およびremote入荷時のLocal同期判定も機械化されていなかった。Visual Production v1.4として`NOTE-HEADER-MASTER-v1.0`のbyte-identical PNGとmanifestを`Visual_Production/assets/`へ配置し、ResolverをRepository-onlyへ変更した。SHA-256は`579aecaeb724228b86088445ffd3dc9d424a43757169c85f2f6149944beafc13`、寸法は1280×670である。OneDrive copyは保持するがProduction prerequisiteではない。

@@ -140,6 +140,8 @@ GitHubをCanonical Source／Version管理、常設Cloud Workを日常のnote制�
 
 Cloud Workは原則として`07_Note_Production/02_Published/AIDAILY/<Article-ID>/`配下の**新規Article ID領域**だけをappend-onlyで作成できる。公開済み最終本文、Formal Header Asset／record、Publication Conditions、Final Review Package、Approval／Publication Evidence、Publication Bundle manifest、公開URL／日時、PPV resultおよびarticle-local provenanceをArticle単位で保持する。既存Article IDの上書き、同一pathへの更新、共通System SourceへのWRITEは行わない。
 
+Cloud WorkはSystem SourceをREADしてportable validatorを実行できる。AIDAILY Headerでは`cloud-work`環境を明示し、Repository Master、exact native Tool request、current-task Tool event、生成Asset、Asset QAおよびHuman ApprovalをCloud Work Bridgeでbindingする。これはCloudへのSystem Source WRITE権を与えない。Bridge、Schema、SOPまたは共通Sourceの改修は引き続きLocal Codex専有である。
+
 `REPOSITORY_RULES.md`、`AI_PRODUCTION_PIPELINE.md`、note SOP／README、schema、validator、script／module、Visual Production Control、Publication Approval実装、Repository横断監査基準、Repository-level configuration、`.gitignore`、Repository-wide CHANGELOGおよびSystem-level Timeline／governanceはLocal Codex専有とする。Cloud Workが変更必要性を検出した場合は`LOCAL_MAINTENANCE_REQUIRED`として分離し、Cloud側のArticle commitへ混ぜない。Cloudの公開履歴はArticle-local recordへ書き、Repository-wide CHANGELOGへの集約はLocal maintenanceで行う。
 
 一つのpathへCloud／Local双方のownerを与えない。Matrixのprefix包含またはexact path重複によって異なるownerが衝突する場合、Ownership QAをFAILする。GitHubへのWRITE可否、credentialおよび通信Approvalはこの所有権とは別に検証する。
@@ -305,7 +307,7 @@ Human-in-the-loop領域に関する意味のある変更は `03_Human_in_the_Loo
 
 `Visual_Production/` は、同Pipelineが定めるPhase Tool Routing、Generation Contract、Prompt Assembly QA、生成後Asset QAおよび状態遷移を機械検証する実装である。媒体固有のVisual Template、禁止事項、教育内容または承認責任を保持せず、各責任Sourceから解決した要件と実際のTool Request／Asset QAの一致だけを検証する。
 
-Repository rootの`.agents/skills/visual-production-bridge/`は、`Visual_Production/`の既存ControlをLocal Codexの実Tool起動へ接続するRepository Skillである。新しいVisual専門Source、Template正本、AI部署または承認者ではなく、規範は`AI_PRODUCTION_PIPELINE.md`、媒体要件は各専門Source、実装は`04_AI_Work_Environment/Visual_Production/`を参照する。Skill内へ媒体要件本文を複製せず、canonical profileから機械生成する。Chat／Workへ同Skillを配布・配置したと推測せず、環境ごとのRuntime Capability Receiptを必須とする。note Headerは同Skillのrequest-bound経路とFormal Asset Promotionを通ったrecordだけをFinal Review Packageへ接続し、built-in direct画像の遡及昇格を認めない。
+Repository rootの`.agents/skills/visual-production-bridge/`は、`Visual_Production/`の既存ControlをLocal CodexまたはRepository checkoutを持つCloud Workの実Tool起動へ接続するRepository Skillである。新しいVisual専門Source、Template正本、AI部署または承認者ではなく、規範は`AI_PRODUCTION_PIPELINE.md`、媒体要件は各専門Source、実装は`04_AI_Work_Environment/Visual_Production/`を参照する。Skill内へ媒体要件本文を複製せず、canonical profileから機械生成する。環境ごとのRuntime Capability Receiptを必須とし、Cloud Workを`local-codex`と記録しない。note Headerはrequest-bound経路とFormal Asset Promotionを通ったrecordだけをFinal Review Packageへ接続し、built-in direct画像の遡及昇格を認めない。
 
 OneDrive上の `AI/00_Inbox` および `AI/04_Personal_Archive` は、AI作業環境領域が管理するRepository外の運用対象であり、Repositoryまたは正式Source置場として扱わない。詳細は `INBOX_AND_PERSONAL_ARCHIVE.md` を正とする。
 

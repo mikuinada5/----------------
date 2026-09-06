@@ -1,6 +1,6 @@
-# note制作・公開システム v2.12
+# note制作・公開システム v2.13
 
-**Status:** Current / Operational v2.12 / Repository Master Asset compatible
+**Status:** Current / Operational v2.13 / Cloud Work Header Bridge
 **Scope:** note制作、Marketing Review、Header Production、Final Review、G5自動検証、Publication Transaction、公開後記録、Session単位のSNS展開、Repositoryへの知見還元
 
 ## 1. 責任と非責任
@@ -248,7 +248,7 @@ note記事ではHeader Assetを本文と同じPublication Packageの構成要素
 
 Header Productionは`AI_PRODUCTION_PIPELINE.md` §7.6のVisual Production Controlを必須とする。画像生成前に、本節の媒体固有Templateを`MUST`、`MUST_NOT`、`MAY`へ解決したGeneration Contractと実際のTool Requestを作り、Prompt Assembly QAをPASSさせる。生成直後の画像は`GENERATED_UNVERIFIED`であり、本節のHeader QAがPASSするまでFinal Review Package候補、Header Asset登録または`ASSET_READY`へ進めない。
 
-Chat／WorkでCurrent Sourceを実読できても、built-in image generationへ直接進まない。現行のgoverned Header生成は、Production IntentをLocal CodexのRepository Skill `visual-production-bridge`へ接続し、本節のmachine-readable profileからContract／Requestを生成、Runtime Request BindingをPASSさせた経路に限定する。Runtime Receiptがない、actual request hashが一致しない、またはPlatform BoundaryをPASSと偽装した生成物はRejected / non-assetとして扱う。
+Chat／WorkでCurrent Sourceを実読できても、built-in image generationへ直接進まない。governed Header生成は、Local CodexのRepository Skill経路、またはRepository checkout、Node.js、画像生成・取得・検査Toolを持つCloud Workのcross-platform Bridge経路に限定する。Cloud Workでは本節のprofileからContractとexact native Tool argumentsを生成し、current-task Tool eventとAsset inspection evidenceをRuntime Receiptへbindingする。Receipt欠落、actual request hash不一致、別Task event、自己申告eventまたはPlatform Boundaryの偽装はRejected / non-assetとする。
 
 公開記事ごとのHeader Asset本体は、公開画像の責任に従って承認済みOneDrive AI Archive等の指定Archiveへ保持し、Public Repositoryへバイナリを重複配置しない。共通制作Sourceである`NOTE-HEADER-MASTER-v1.0`だけはCloud WorkがGitHub Current Sourceから実体を解決できるよう、RepositoryのVisual Production正式Asset領域にbyte-identicalなCanonical binaryを保持する。記事AssetについてRepositoryにはAsset ID、承認対象、provenance locator、SHA-256、寸法、Header QA、G5 Approval Package ID、note上の公開asset URLおよび表示検証結果を記録する。G5後の差替えは新AssetとしてHeader QAとG5へ戻す。
 
@@ -315,7 +315,7 @@ AIDAILYの公開記事titleが`AIとの日常｜<記事固有title>`である場
 
 #### 2.5.2.2 Canonical Header Route
 
-`NOTE_HEADER_REQUIRED`ではStandard Chat／Workのbuilt-in image generationへ直接進まない。Current Visual Sourceと`NOTE-HEADER-MASTER-v1.0`のID、canonical locator、expected／actual SHA-256、1280×670 pxおよびprovenanceを解決し、Article ID、approved Header display title、Master、全MUST／MUST NOT／MAY、Creative Direction、Source Manifest identity、Production version、actual request identityをGeneration Contractへ固定する。Prompt Assembly QA後、Local Codexの`visual-production-bridge`でrequestをbindingして生成する。
+`NOTE_HEADER_REQUIRED`ではStandard Chat／Workのbuilt-in image generationへ直接進まない。Current Visual Sourceと`NOTE-HEADER-MASTER-v1.0`のID、canonical locator、expected／actual SHA-256、1280×670 pxおよびprovenanceを解決し、Article ID、approved Header display title、Master、全MUST／MUST NOT／MAY、Creative Direction、Source Manifest identity、Production version、actual request identityをGeneration Contractへ固定する。Prompt Assembly QA後、Local Codexまたは`cloud-work`として検証された`visual-production-bridge`でrequestをbindingして生成する。
 
 ```text
 NOTE_HEADER_REQUIRED
@@ -324,7 +324,7 @@ NOTE_HEADER_REQUIRED
 → Header Generation Contract / Prompt Assembly QA
 → Visual Production Bridge / request binding
 → GENERATED_UNVERIFIED
-→ Asset QA
+→ current-task image inspection / Asset QA
 → HUMAN_REVIEW_CANDIDATE
 → Human Approval
 → FORMAL_HEADER_ASSET
@@ -350,7 +350,7 @@ Chat／Work built-in direct出力は`UNVERIFIED_NON_ASSET`であり、Formal Ass
 - [ ] 説明ポスター／インフォグラフィックのような情報過多構成になっていない
 - [ ] note下書きへの設定、crop後表示および公開後表示を確認した、または後続Gateの確認項目として記録した
 
-Header QAは生成物の実物を確認して判定する。QA FAIL画像は正式Asset IDを付与せず、Header Asset記録、`ASSET_READY`またはFinal Review Packageへ接続しない。Asset QA PASS後の`HUMAN_REVIEW_CANDIDATE`もまだ正式Assetではない。Human approval eventを候補提示時刻、Article ID、approved display title、生成Asset SHA、Visual Record SHA、Runtime Receipt SHA、actual request SHA、destination／purposeへbindingし、`New-FormalHeaderAsset.ps1`が全Evidenceを再検証して初めて`FORMAL_HEADER_ASSET`へ昇格する。既存Contractから一意に修正可能で再試行上限内なら再生成し、上限到達、Source矛盾、新しいCreative Decisionまたは検査不能ではPipelineのSTOP条件へ戻す。AIが画像を検査できない場合のHuman提示は`HUMAN_ASSET_QA_REQUIRED`の検査依頼に限定し、承認候補の提示と混同しない。
+Header QAは生成物の実物を確認して判定する。QA FAIL画像は正式Asset IDを付与せず、Header Asset記録、`ASSET_READY`またはFinal Review Packageへ接続しない。Asset QA PASS後の`HUMAN_REVIEW_CANDIDATE`もまだ正式Assetではない。Human approval eventを候補提示時刻、Article ID、approved display title、生成Asset SHA、Visual Record SHA、Runtime Receipt SHA、actual request SHA、destination／purposeへbindingし、Localの`New-FormalHeaderAsset.ps1`またはCloudの`cloud-work-header-bridge.mjs promote`が全Evidenceを再検証して初めて`FORMAL_HEADER_ASSET`へ昇格する。既存Contractから一意に修正可能で再試行上限内なら再生成し、上限到達、Source矛盾、新しいCreative Decisionまたは検査不能ではPipelineのSTOP条件へ戻す。AIが画像を検査できない場合のHuman提示は`HUMAN_ASSET_QA_REQUIRED`の検査依頼に限定し、承認候補の提示と混同しない。
 
 #### 2.5.4 Section Header Visual Family
 

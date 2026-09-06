@@ -9,6 +9,8 @@
 
 `ownership-matrix.json`を唯一のmachine-readable matrixとする。Cloud Workは`07_Note_Production/02_Published/AIDAILY/<Article-ID>/`の新規Article ID領域だけをappend-onlyで作成できる。既存Article ID、共通Source、Repository-wide CHANGELOG、System Timeline、schema、validator、scriptおよび設定は変更できない。
 
+Cloud Work Header BridgeはSystem Source、Master、SchemaおよびvalidatorをREAD／実行するが、WRITE ownershipを変更しない。日常制作で生成した正式Header、Final Review Packageおよび関連Evidenceは新規Article-local Published Artifactとしてだけ統合でき、Bridge本体の改修は`local-codex` ownerへ戻す。
+
 Local Codexはmatrixの`local-codex` domainに属するSystem Sourceを保守する。CloudがSystem変更の必要性を検出した場合は`LOCAL_MAINTENANCE_REQUIRED`として別Taskへ渡し、Cloud commitへ混ぜない。未登録pathはdefault denyである。異なるownerのdomainが同一pathまたは包含関係を持つmatrixはvalidatorが拒否する。
 
 Cloud WRITEは、開始時のbaseline remote HEADとWRITE直前のcurrent remote HEAD、Git tree inspection実行済みEvidenceを必要とする。対象がCloud-ownedの新規Article IDで、current remote treeにもlocal checkoutにも同一Article pathがない場合だけ許可する。remoteが進んでいても同一Article pathが存在しなければ正常な並行入荷として扱える。remote確認能力がない場合は`BLOCKED_PLATFORM_BOUNDARY`であり、成功扱いしない。

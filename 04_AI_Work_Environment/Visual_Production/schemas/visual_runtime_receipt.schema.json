@@ -21,9 +21,9 @@
     "schema_version": { "const": "visual-runtime-receipt/v1" },
     "task_id": { "type": "string", "minLength": 1 },
     "production_version": { "type": "string", "minLength": 1 },
-    "environment": { "enum": ["chat", "work", "local-codex", "responses-api"] },
+    "environment": { "enum": ["chat", "work", "cloud-work", "local-codex", "responses-api"] },
     "implementation_id": { "type": "string", "minLength": 1 },
-    "route": { "enum": ["builtin-direct", "repository-skill-request-bound", "platform-tool-choice"] },
+    "route": { "enum": ["builtin-direct", "repository-skill-request-bound", "repository-cloud-work-request-bound", "platform-tool-choice"] },
     "capabilities": {
       "type": "object",
       "additionalProperties": false,
@@ -68,10 +68,38 @@
       "type": "array",
       "items": { "type": "string", "minLength": 1 }
     },
+    "tool_event_binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["event_id", "event_sha256", "evidence_origin", "tool", "contract_identity_sha256", "invocation_arguments_sha256", "generated_asset_sha256"],
+      "properties": {
+        "event_id": { "type": "string", "minLength": 1 },
+        "event_sha256": { "$ref": "#/$defs/sha256" },
+        "evidence_origin": { "const": "current-task-cloud-work-tool-event" },
+        "tool": { "const": "image_gen.imagegen" },
+        "contract_identity_sha256": { "$ref": "#/$defs/sha256" },
+        "invocation_arguments_sha256": { "$ref": "#/$defs/sha256" },
+        "generated_asset_sha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
     "result": { "enum": ["REQUEST_BOUND", "BLOCKED_PLATFORM_BOUNDARY"] },
     "checked_at": { "type": "string", "format": "date-time" }
   },
+  "allOf": [
+    {
+      "if": { "properties": { "environment": { "const": "cloud-work" } }, "required": ["environment"] },
+      "then": {
+        "required": ["tool_event_binding"],
+        "properties": {
+          "implementation_id": { "const": "repo-skill:visual-production-bridge/cloud-work-v1" },
+          "route": { "const": "repository-cloud-work-request-bound" },
+          "result": { "const": "REQUEST_BOUND" }
+        }
+      }
+    }
+  ],
   "$defs": {
-    "capability": { "enum": ["VERIFIED", "UNVERIFIED", "UNAVAILABLE"] }
+    "capability": { "enum": ["VERIFIED", "UNVERIFIED", "UNAVAILABLE"] },
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
   }
 }

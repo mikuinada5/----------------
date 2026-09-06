@@ -8,6 +8,16 @@
 
 ------------------------------------------------------------------------
 
+## 2026-09-07｜Cloud Work Formal Header Production Bridgeを正式接続
+
+Pipeline v1.19、Source Resolution v1.1、Visual Production v1.5、note SOP v2.13、note README v1.22、Publication Approval v1.5、Repository横断監査基準v1.11へ更新した。Root Causeは、Canonical MasterがGitHubに存在しても、Runtime Receipt、Formal Header Schema、Repository SkillおよびFinal Review Package CompilerがLocal Codex／PowerShell経路へ固定され、Cloud Workのnative image requestとcurrent-task Tool eventをFormal identityへ接続できなかったことである。
+
+Node.js標準libraryだけで動くSource Resolution、Cloud Header BridgeおよびFinal Review Package Compilerを追加した。Repository MasterのSHA／寸法実測、Article ID／approved exact title、exact prompt／Master reference、actual native request、Tool event、生成Asset SHA、画像検査、全Asset QA、Human Approvalを一つのidentity chainへbindingし、Cloudを`local-codex`と記録しない。通常Chat／Work direct生成、event evidence欠落、Master未参照、SHA／title不一致、QA欠落またはApproval流用はFormal PromotionをFAILする。Platform-wide interceptionや署名付きreceiptは主張せず、証拠を取得できないRuntimeは`BLOCKED_PLATFORM_BOUNDARY`を維持する。
+
+System SourceのWRITE ownerはLocal Codex、Cloud WorkのGit WRITEは新規Article-local Published Artifactだけで維持した。Final Review Package、Human Final Approval、G5、Publication BundleおよびPPVの既存identity保証を変更していない。本Taskでは記事Headerを生成せず、External Audit Pipelineはdisabled／`NOT OBTAINED`のままで、Claudeその他の外部監査通信は行っていない。
+
+------------------------------------------------------------------------
+
 ## 2026-09-06｜Cloud note Production RuntimeのRepository契約を正式化
 
 Pipeline v1.18、Visual Production v1.4、Repository Governance Runtime v1.0、note SOP v2.12、note README v1.21、Publication Approval v1.4、Repository横断監査基準v1.10へ更新した。`NOTE-HEADER-MASTER-v1.0`のbyte-identical PNG／manifestをRepository正式Asset領域へ配置し、GitHub Current SourceだけでMaster ID、Version、SHA-256 `579aecaeb724228b86088445ffd3dc9d424a43757169c85f2f6149944beafc13`、1280×670、provenanceおよびVisual specificationを解決可能にした。OneDrive copyは保持し、Production prerequisiteから外した。

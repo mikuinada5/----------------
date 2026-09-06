@@ -118,11 +118,14 @@ function Resolve-NoteHeaderMaster {
 function Resolve-NoteHeaderProductionRoute {
     [CmdletBinding()]
     param(
-        [Parameter(Mandatory)][ValidateSet('local-codex','chat','work','responses-api')][string]$Environment,
+        [Parameter(Mandatory)][ValidateSet('local-codex','cloud-work','chat','work','responses-api')][string]$Environment,
         [bool]$BridgeAvailable = $true
     )
     if ($Environment -eq 'local-codex' -and $BridgeAvailable) {
         return [pscustomobject]@{ result = 'PASS'; state = 'NOTE_HEADER_REQUIRED'; route = 'visual-production-bridge'; next_state = 'CURRENT_VISUAL_SOURCE_RESOLUTION'; formal_asset_eligible = $true }
+    }
+    if ($Environment -eq 'cloud-work' -and $BridgeAvailable) {
+        return [pscustomobject]@{ result = 'PASS'; state = 'NOTE_HEADER_REQUIRED'; route = 'cloud-work-header-bridge'; next_state = 'CURRENT_VISUAL_SOURCE_RESOLUTION'; formal_asset_eligible = $true }
     }
     if ($Environment -in @('chat','work')) {
         return [pscustomobject]@{ result = 'FAIL'; state = 'UNVERIFIED_NON_ASSET'; route = 'builtin-direct'; next_state = 'BLOCKED_PLATFORM_BOUNDARY'; formal_asset_eligible = $false }

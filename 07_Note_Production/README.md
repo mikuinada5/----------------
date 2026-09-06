@@ -1,6 +1,6 @@
 # 07_Note_Production
 
-**Status:** Current / Operational v1.21 / Repository Master Asset compatible
+**Status:** Current / Operational v1.22 / Cloud Work Header Bridge
 **責任:** noteの企画・制作・Marketing Review・Header Production・公開準備・Publication Transaction・公開後記録およびSession単位のSNS展開を、既存AI Production Pipelineへ接続する媒体別運用
 
 ## この領域の入口
@@ -20,7 +20,7 @@
 | `Publication_Approval/` | note専用Final Review Package Compiler、Publication Bundle Builder／Work受取validator、Package／Approval Schema、G5 identity validator、無停止Publication E2E検証 |
 | `CHANGELOG.md` | 本領域の意味ある変更履歴 |
 
-AIDAILY HeaderのCurrent Visual Sourceは`00_note制作・公開システム.md`内の`NOTE HEADER MASTER TEMPLATE v1.0`とmachine-readable profile `aidaily-header-v1`である。Master binaryとmanifestは`04_AI_Work_Environment/Visual_Production/assets/`のGitHub Current Sourceから自己完結して解決する。OneDrive版は由来保存でありProduction依存ではない。`NOTE_HEADER_REQUIRED`はLocal Codex `visual-production-bridge`へrouteし、Master／Contract／actual request／Bridge receipt／Asset QA／Human Approval／Article ID／exact display titleが全一致した`FORMAL_HEADER_ASSET`だけをFinal Review Packageへ渡す。Chat／Work built-in direct画像は`UNVERIFIED_NON_ASSET`であり、Human OKでも遡及昇格しない。
+AIDAILY HeaderのCurrent Visual Sourceは`00_note制作・公開システム.md`内の`NOTE HEADER MASTER TEMPLATE v1.0`とmachine-readable profile `aidaily-header-v1`である。Master binaryとmanifestは`04_AI_Work_Environment/Visual_Production/assets/`のGitHub Current Sourceから自己完結して解決する。OneDrive版は由来保存でありProduction依存ではない。`NOTE_HEADER_REQUIRED`はLocal CodexまたはRepository checkoutを持つ`cloud-work`の`visual-production-bridge`へrouteし、Master／Contract／exact native request／current-task Tool event／Bridge receipt／Asset QA／Human Approval／Article ID／exact display titleが全一致した`FORMAL_HEADER_ASSET`だけをFinal Review Packageへ渡す。通常Chat／Workのdirect画像は`UNVERIFIED_NON_ASSET`であり、Human OKでも遡及昇格しない。
 
 ## 現行・Archive・実データ
 
@@ -45,7 +45,7 @@ AIDAILY HeaderのCurrent Visual Sourceは`00_note制作・公開システム.md`
 
 Statusは、Section制作台本と全体ロードマップで `Planning`／`Production`／`Review`／`Decision Pending`／`Redesign Required`／`Revision Required`／`Approved`／`Scheduled`／`Published/Complete`／`Update Candidate` を記録する。`Redesign Required`は現行baselineを保持して構成・完了条件から再設計する状態、`Revision Required`は現行baselineの限定修正が必要な状態であり、どちらもPublish前で外部公開を意味しない。完成判定は固定の3記事数ではなく、当該Sectionの承認済み公開構成Profileに基づく。公開済み最終稿では `Published`、公開停止または置換済みでは `Superseded` と記録する。`Published` は公開事実であり、上位Sourceの承認を代替しない。公開済み最終稿だけが将来の参照・SNS再展開・Repository還元に用いる記事本文の正本であり、Work稿や下書きを代替正本にしない。
 
-Marketing ReviewはSection Statusを増やさず、`Marketing Input Pending`／`Marketing Revision Required`／`Marketing Approved`／`Human Decision Required`のsubstatusとしてSection制作台本へ記録する。Marketingは内容完成稿である第2稿から開始し、本文を直接修正せずRequirementを返し、無料／Membership境界、Membership、Magazine、price、tagsその他の必要条件を含むPublication Decisionを確定する。Marketing Approved後にHeader Productionを別Phaseで開始し、共通Visual Production ControlのGeneration Contract、Prompt Assembly QA、Runtime Request Binding、生成後Header QAを通す。現行ではLocal CodexのRepository Skill request-bound経路だけをgoverned生成として使用し、Chat／Work built-in direct生成はPlatform BoundaryでBLOCKする。QA PASS候補へのHuman Approval後にFormal Promotion Gateを通したHeader、D3全文、Marketing PASS Evidence、Publication Conditions、Source Manifestおよび公開先を`Publication_Approval/`の決定論的Compilerへ渡し、Schema／実file SHA／Formal Header provenance／identity／Human提示8区分を検証した`READY_FOR_FINAL_REVIEW / PENDING`のPackageだけをHumanへ一括提示する。PackageへのHumanの明示的進行意思を別ArtifactのFinal Approval / Publication Approvalとしてbindingし、承認後はsealed Publication Bundleと単一ZIPを自動生成する。HumanはZIPを常設note公開Workへ一度渡し、WorkはBundleとPackage IDを再検証して`HANDOFF_VERIFIED`後にG5へ進む。同一ならnote反映からpublish、PPVまで再承認なしで継続する。完全自動Chat→Work Transportは未実装である。
+Marketing ReviewはSection Statusを増やさず、`Marketing Input Pending`／`Marketing Revision Required`／`Marketing Approved`／`Human Decision Required`のsubstatusとしてSection制作台本へ記録する。Marketingは内容完成稿である第2稿から開始し、本文を直接修正せずRequirementを返し、無料／Membership境界、Membership、Magazine、price、tagsその他の必要条件を含むPublication Decisionを確定する。Marketing Approved後にHeader Productionを別Phaseで開始し、共通Visual Production ControlのGeneration Contract、Prompt Assembly QA、Runtime Request Binding、生成後Header QAを通す。Local Codexと検証済みCloud Workのrequest-bound経路をgoverned生成として使用し、Bridge外のdirect生成はPlatform BoundaryでBLOCKする。QA PASS候補へのHuman Approval後にFormal Promotion Gateを通したHeader、D3全文、Marketing PASS Evidence、Publication Conditions、Source Manifestおよび公開先を`Publication_Approval/`の決定論的Compilerへ渡し、Schema／実file SHA／Formal Header provenance／identity／Human提示8区分を検証した`READY_FOR_FINAL_REVIEW / PENDING`のPackageだけをHumanへ一括提示する。Cloud Workではcross-platform Compilerを使用できる。PackageへのHumanの明示的進行意思を別ArtifactのFinal Approval / Publication Approvalとしてbindingし、承認後はsealed Publication Bundleと単一ZIPを自動生成する。HumanはZIPを常設note公開Workへ一度渡し、WorkはBundleとPackage IDを再検証して`HANDOFF_VERIFIED`後にG5へ進む。同一ならnote反映からpublish、PPVまで再承認なしで継続する。完全自動Chat→Work Transportは未実装である。
 
 未公開本文を含む詳細Marketing Review、Requirementおよび第2稿・第3稿は、本文と同じ承認範囲のWork、Private Sourceまたは指定Archiveに保持する。Public側のSection制作台本には安全なRun ID、status、locator、Decision要約、Gateおよび再開条件だけを置き、公開済み最終稿領域へ先行配置しない。
 

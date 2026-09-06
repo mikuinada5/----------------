@@ -1,6 +1,6 @@
 # note Publication Approval Gate
 
-**Status:** Current / Operational v1.4 / Repository Canonical Header Master compatible
+**Status:** Current / Operational v1.5 / Cloud Work Header Bridge compatible
 **Responsibility:** note Final Review PackageへのHuman Final Approval / Publication Approvalを実際の公開対象へbindingし、承認後のsealed Publication Bundle、Phase 1 Work handoff、G5からPPVまでの継続可否を機械検証する。
 
 ## Contract
@@ -14,7 +14,9 @@ Final Review Packageは、D3本文、Header、無料／Membership境界、Member
 
 ## Deterministic Compiler
 
-`MARKETING_APPROVED`からHuman Final Reviewへ進む前に、`New-FinalReviewPackage.ps1`を必ず実行する。CompilerはLLMによる自由生成ではなく、D3本文file、Marketing Review PASS evidence、`FORMAL_HEADER_ASSET` record、Header実体、Publication Conditions、Source Manifest、destinationおよびpurposeをSchemaと実file SHAで検証し、一つのimmutable Package JSONとHuman提示用Markdownを決定論的に生成する。 Formal Header recordのID／identity、Article ID、approved display title、Header SHA／canonical pointer、Master identity／SHA、Asset QA、Bridge route receiptおよびHeader Human Approvalを再照合し、単なるPNGまたはHuman OKだけを拒否する。
+`MARKETING_APPROVED`からHuman Final Reviewへ進む前に、Local Codexでは`New-FinalReviewPackage.ps1`、Cloud Workでは`final-review-package-compiler.mjs`を必ず実行する。CompilerはLLMによる自由生成ではなく、D3本文file、Marketing Review PASS evidence、`FORMAL_HEADER_ASSET` record、Header実体、Publication Conditions、Source Manifest、destinationおよびpurposeをSchemaと実file SHAで検証し、一つのimmutable Package JSONとHuman提示用Markdownを決定論的に生成する。 Formal Header recordのID／identity、Article ID、approved display title、Header SHA／canonical pointer、Master identity／SHA、Asset QA、Bridge route receiptおよびHeader Human Approvalを再照合し、単なるPNGまたはHuman OKだけを拒否する。
+
+Cloud Workでは同じCompiler identity contractを`final-review-package-compiler.mjs`で実行する。PowerShell版とcross-platform版は同じInput／Package Schema、Formal Header再検証、identity payload、immutable出力および8区分提示を使用する。Cloud Bridge経路の`implementation_id`と`route`をそのままPackageへ保持し、Local経路へ偽装しない。
 
 ```text
 MARKETING_APPROVED
@@ -80,6 +82,7 @@ Publication ApprovalはExternal Audit、OneDrive保存、Git通信、credential�
 - `schemas/publication_bundle_manifest.schema.json`: sealed Bundle identity、構成file、Package／Approval／destination binding
 - `schemas/publication_conditions.schema.json`: Bundle内の正規化Publication Conditions
 - `scripts/FinalReviewPackageCompiler.psm1`: 必須Input／SHA検証、identity計算、immutable出力、Human提示検証
+- `scripts/final-review-package-compiler.mjs`: Cloud Work用の同一identity contractを持つcross-platform Compiler
 - `scripts/New-FinalReviewPackage.ps1`: Compiler entrypoint
 - `scripts/PublicationApproval.psm1`: Schema、identity、時系列、intent、scope、継続工程のvalidator
 - `scripts/Test-PublicationApproval.ps1`: G5／工程検証entrypoint
@@ -89,3 +92,4 @@ Publication ApprovalはExternal Audit、OneDrive保存、Git通信、credential�
 - `tests/FinalReviewPackageCompiler.Tests.ps1`: Compiler negative／identity／presentation tests
 - `tests/PublicationApproval.Tests.ps1`: Approval semantics negative / regression tests
 - `tests/PublicationBundle.Tests.ps1`: Bundle欠落／改変／Seal／handoff／G5接続negative and regression tests
+- `../../04_AI_Work_Environment/Visual_Production/tests/CloudWorkHeaderBridge.Tests.mjs`: Cloud HeaderからCompilerまでのPowerShell非依存E2E

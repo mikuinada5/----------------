@@ -64,6 +64,10 @@
       "properties": {
         "article_id": { "type": "string", "minLength": 1 },
         "request_identity_sha256": { "type": "string", "pattern": "^[0-9a-fA-F]{64}$" },
+        "contract_identity_sha256": { "type": "string", "pattern": "^[0-9a-fA-F]{64}$" },
+        "invocation_arguments_sha256": { "type": "string", "pattern": "^[0-9a-fA-F]{64}$" },
+        "destination": { "const": "NOTE_FINAL_REVIEW_PACKAGE" },
+        "purpose": { "const": "NOTE_HEADER_ASSET_PRODUCTION" },
         "reference_assets": {
           "type": "array",
           "items": {
@@ -113,6 +117,16 @@
       "required": ["performed", "result", "checks"],
       "properties": {
         "result": { "enum": ["NOT_RUN", "PASS", "FAIL", "HUMAN_REQUIRED"] }
+      }
+    },
+    "runtime": {
+      "type": "object",
+      "required": ["environment", "implementation_id", "route", "state"],
+      "properties": {
+        "environment": { "const": "cloud-work" },
+        "implementation_id": { "const": "repo-skill:visual-production-bridge/cloud-work-v1" },
+        "route": { "const": "repository-cloud-work-request-bound" },
+        "state": { "enum": ["REQUEST_READY", "ASSET_QA_PASS"] }
       }
     }
   }

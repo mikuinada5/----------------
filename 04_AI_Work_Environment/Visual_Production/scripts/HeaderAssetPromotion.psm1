@@ -94,8 +94,12 @@ function Test-NoteFormalHeaderAsset {
     if ($record.generation_contract.article_id -cne $formal.article_id -or $record.generation_contract.approved_text.title -cne $formal.approved_header_title) { throw 'FORMAL_HEADER_CONTRACT_BINDING_MISMATCH' }
     if ($record.asset.sha256 -ne $formal.asset.sha256 -or $record.asset.file -cne $formal.asset.file) { throw 'FORMAL_HEADER_ASSET_BINDING_MISMATCH' }
     if ($record.asset.width -ne 1280 -or $record.asset.height -ne 670) { throw 'FORMAL_HEADER_ASSET_DIMENSIONS_MISMATCH' }
-    if ($requestIdentity -ne $formal.generation_contract.actual_tool_request_sha256 -or $requestIdentity -ne $formal.generation_contract.request_identity_sha256) { throw 'FORMAL_HEADER_REQUEST_BINDING_MISMATCH' }
-    if ($receipt.environment -ne 'local-codex' -or $receipt.route -ne 'repository-skill-request-bound' -or $receipt.implementation_id -ne 'repo-skill:visual-production-bridge/v1' -or $receipt.result -ne 'REQUEST_BOUND') { throw 'FORMAL_HEADER_BRIDGE_ROUTE_MISSING' }
+    if ($receipt.environment -eq 'cloud-work') {
+        if ($requestIdentity -ne $formal.generation_contract.actual_tool_request_sha256 -or [string]$record.generation_contract.request_identity_sha256 -ne [string]$formal.generation_contract.request_identity_sha256 -or [string]$receipt.tool_event_binding.invocation_arguments_sha256 -ne $requestIdentity) { throw 'FORMAL_HEADER_REQUEST_BINDING_MISMATCH' }
+    } elseif ($requestIdentity -ne $formal.generation_contract.actual_tool_request_sha256 -or $requestIdentity -ne $formal.generation_contract.request_identity_sha256) { throw 'FORMAL_HEADER_REQUEST_BINDING_MISMATCH' }
+    $validLocalRoute = $receipt.environment -eq 'local-codex' -and $receipt.route -eq 'repository-skill-request-bound' -and $receipt.implementation_id -eq 'repo-skill:visual-production-bridge/v1'
+    $validCloudRoute = $receipt.environment -eq 'cloud-work' -and $receipt.route -eq 'repository-cloud-work-request-bound' -and $receipt.implementation_id -eq 'repo-skill:visual-production-bridge/cloud-work-v1'
+    if ((-not $validLocalRoute -and -not $validCloudRoute) -or $receipt.result -ne 'REQUEST_BOUND') { throw 'FORMAL_HEADER_BRIDGE_ROUTE_MISSING' }
     if ($master.asset_id -ne $formal.master_template.asset_id -or $master.actual_sha256 -ne $formal.master_template.actual_sha256 -or $master.canonical_locator -ne $formal.master_template.canonical_locator) { throw 'FORMAL_HEADER_MASTER_BINDING_MISMATCH' }
     if ([DateTimeOffset]$approval.occurred_at -lt [DateTimeOffset]$approval.context.presented_at) { throw 'HEADER_HUMAN_APPROVAL_BEFORE_PRESENTATION' }
     foreach ($binding in @(
@@ -132,7 +136,9 @@ function New-NoteFormalHeaderAsset {
     Assert-HeaderApprovalIntent ([string]$approval.statement)
     if ($record.artifact_type -ne 'note-header' -or $record.generation_contract.profile_id -ne 'aidaily-header-v1') { throw 'FORMAL_HEADER_WRONG_PROFILE' }
     if ($record.transition.requested_target -ne 'HUMAN_REVIEW_CANDIDATE' -or $record.asset_qa.result -ne 'PASS' -or $record.asset.status -ne 'QA_PASS') { throw 'FORMAL_HEADER_ASSET_QA_NOT_PASS' }
-    if ($receipt.environment -ne 'local-codex' -or $receipt.route -ne 'repository-skill-request-bound' -or $receipt.implementation_id -ne 'repo-skill:visual-production-bridge/v1' -or $receipt.result -ne 'REQUEST_BOUND') { throw 'FORMAL_HEADER_BRIDGE_ROUTE_MISSING' }
+    $validLocalRoute = $receipt.environment -eq 'local-codex' -and $receipt.route -eq 'repository-skill-request-bound' -and $receipt.implementation_id -eq 'repo-skill:visual-production-bridge/v1'
+    $validCloudRoute = $receipt.environment -eq 'cloud-work' -and $receipt.route -eq 'repository-cloud-work-request-bound' -and $receipt.implementation_id -eq 'repo-skill:visual-production-bridge/cloud-work-v1'
+    if ((-not $validLocalRoute -and -not $validCloudRoute) -or $receipt.result -ne 'REQUEST_BOUND') { throw 'FORMAL_HEADER_BRIDGE_ROUTE_MISSING' }
     $resolveMasterArgs = @{ ProfileSourcePath = $ProfileSourcePath; ProfileId = 'aidaily-header-v1' }
     if (-not [string]::IsNullOrWhiteSpace($MasterAssetPath)) { $resolveMasterArgs.MasterAssetPath = $MasterAssetPath }
     $master = Resolve-NoteHeaderMaster @resolveMasterArgs

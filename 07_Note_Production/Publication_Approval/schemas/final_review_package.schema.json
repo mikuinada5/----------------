@@ -74,9 +74,13 @@
           "type": "object", "additionalProperties": false,
           "required": ["implementation_id", "route", "runtime_receipt_sha256"],
           "properties": {
-            "implementation_id": { "const": "repo-skill:visual-production-bridge/v1" }, "route": { "const": "repository-skill-request-bound" },
+            "implementation_id": { "enum": ["repo-skill:visual-production-bridge/v1", "repo-skill:visual-production-bridge/cloud-work-v1"] }, "route": { "enum": ["repository-skill-request-bound", "repository-cloud-work-request-bound"] },
             "runtime_receipt_sha256": { "$ref": "#/$defs/sha256" }
-          }
+          },
+          "oneOf": [
+            { "properties": { "implementation_id": { "const": "repo-skill:visual-production-bridge/v1" }, "route": { "const": "repository-skill-request-bound" } } },
+            { "properties": { "implementation_id": { "const": "repo-skill:visual-production-bridge/cloud-work-v1" }, "route": { "const": "repository-cloud-work-request-bound" } } }
+          ]
         },
         "asset_qa": {
           "type": "object",

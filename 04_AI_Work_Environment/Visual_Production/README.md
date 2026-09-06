@@ -1,6 +1,6 @@
 # Visual Production Control
 
-**Status:** Current / Operational v1.4 / Repository Canonical Master<br>
+**Status:** Current / Operational v1.5 / Cloud Work Bridge<br>
 **Owner:** Production / Internal QA<br>
 **Authority:** `AI_PRODUCTION_PIPELINE.md` Visual Production Control
 
@@ -38,30 +38,34 @@ AIDAILY note HeaderのCanonical Master binaryとmanifestは`assets/NOTE_HEADER_M
 8. AIが画像を検査できない場合は`HUMAN_ASSET_QA`へ限定して渡す。これは通常のHuman Review Candidateではなく、QA未確認Assetの検査依頼であり、承認・G5・Asset Readyを意味しない。
 9. QA FAILで既存Sourceから一意に修正でき、Contractの上限内なら再生成する。既定は初回後2回まで。上限到達、Source矛盾、新しい価値判断またはTool不適合ではSTOPする。
 10. 画像生成直前にRuntime Receiptを作り、環境Capability、Bridge implementationおよびvalidated request／actual request SHA-256完全一致を検証する。
-11. 現行で許可するRuntimeはLocal CodexのRepository Skill request-bound経路だけである。Chat／Work built-in directおよび未実装Responses API orchestratorは`BLOCKED_PLATFORM_BOUNDARY`とする。
-12. note HeaderはHuman Review Candidateへの明示的Human Approval後、`New-FormalHeaderAsset.ps1`でMaster、Contract、request、Bridge receipt、生成Asset、QA、Human event、Article IDおよびexact display titleを再検証する。全一致時だけ`FORMAL_HEADER_ASSET`とし、Final Review Packageへ渡せる。
+11. 許可するRuntimeはLocal CodexのRepository Skill経路と、Repository checkout、Node.js、組み込み`image_gen.imagegen`、画像検査Toolを同一Taskで利用できる`cloud-work`経路である。通常Chat／Workのdirect生成、Tool eventを取得できないCloud環境および未実装Responses API orchestratorは`BLOCKED_PLATFORM_BOUNDARY`とする。
+12. `cloud-work`は`source-resolution.mjs`と`cloud-work-header-bridge.mjs`でSource、Master、Contract、exact Tool arguments、current-task Tool event、生成Asset bytesおよびAsset QAを照合する。環境を`local-codex`と記録せず、implementation IDを`repo-skill:visual-production-bridge/cloud-work-v1`へ固定する。
+13. note HeaderはHuman Review Candidateへの明示的Human Approval後、Localでは`New-FormalHeaderAsset.ps1`、Cloudでは`cloud-work-header-bridge.mjs promote`でMaster、Contract、request、Bridge receipt、生成Asset、QA、Human event、Article IDおよびexact display titleを再検証する。全一致時だけ`FORMAL_HEADER_ASSET`とし、Final Review Packageへ渡せる。
 
 ## Runtime boundary
 
-この実装が直接拘束できるのは、Local Codex Skillが同一Task内で組み立て、照合し、実Toolへ渡すclient-visible requestである。標準Chat／Workのbuilt-in image generationへのRepository側interception、tool availabilityの無効化またはplatform-wide enforcementは実装していない。その境界を`platform_enforced: true`として記録するとvalidatorがFAILする。
+この実装が拘束するのは、同一Task内で組み立てたclient-visible requestと、Cloud Workのcurrent-task native Tool eventへ記録された実引数である。Repositoryはplatform-wideのtool routingをinterceptせず、署名付きPlatform receiptも主張しない。`platform_enforced: true`、`agent-self-report`、Tool event欠落、別Task eventまたは実引数不一致はFAILする。
 
 安全な現行経路は次のとおりとする。
 
 ```text
-Chat / Work Production Intent
-→ Local Codex $visual-production-bridge
+Cloud Work Production Intent
+→ Repository checkout / source-resolution.mjs
 → Source Manifest v2 PASS
 → canonical profileからGeneration Record生成
-→ actual request export
-→ Runtime Receipt REQUEST_BOUND
-→ image generation
+→ exact imagegen-arguments.json export
+→ image_gen.imagegenへexact prompt＋Repository Masterを渡す
+→ current-task Tool event＋Runtime Receipt REQUEST_BOUND
 → GENERATED_UNVERIFIED
-→ visual inspection / Asset QA
+→ view_image等のcurrent-task visual inspection / Asset QA
 → Visual Production validator PASS
 → Human Review Candidate
 → Human Approval Evidence
 → Formal Header Asset Promotion PASS
+→ cross-platform Final Review Package Compiler
 ```
+
+Local Codexの既存`repository-skill-request-bound`経路も引き続き有効である。通常Chat、Repository shellのないWork、event evidenceを保存できない組み込み生成およびBridge外の直接生成は`UNVERIFIED_NON_ASSET`のままFormal Promotionへ進めない。
 
 ## Command
 
@@ -102,6 +106,16 @@ pwsh -File 04_AI_Work_Environment/Visual_Production/scripts/New-FormalHeaderAsse
 ```
 
 PASSしたGeneration RecordだけをHuman Review Candidateへ提示できる。note Final Review Packageへ接続できるのは、さらにHuman ApprovalとFormal PromotionをPASSした`FORMAL_HEADER_ASSET`だけである。direct built-in生成は`UNVERIFIED_NON_ASSET`であり、Human OKでも遡及昇格しない。
+
+Cloud Workの標準入口は次である。各commandはNode.js標準libraryだけを使用し、PowerShellやPC上のAssetを要求しない。
+
+```bash
+node 04_AI_Work_Environment/Visual_Production/scripts/cloud-work-header-bridge.mjs prepare ...
+node 04_AI_Work_Environment/Visual_Production/scripts/cloud-work-header-bridge.mjs bind-runtime ...
+node 04_AI_Work_Environment/Visual_Production/scripts/cloud-work-header-bridge.mjs complete-qa ...
+node 04_AI_Work_Environment/Visual_Production/scripts/cloud-work-header-bridge.mjs promote ...
+node 07_Note_Production/Publication_Approval/scripts/final-review-package-compiler.mjs compile ...
+```
 
 ## Privacy and storage
 

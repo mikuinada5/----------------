@@ -4,6 +4,14 @@
 
 ---
 
+## 2026-09-07｜Cloud Work Formal Header Production Bridgeをnote E2Eへ接続
+
+note SOP v2.13、README v1.22、Publication Approval v1.5へ更新した。AIDAILY HeaderはLocal Codexだけでなく、Repository checkout、Node.js、組み込み画像生成と画像検査Toolを持つ`cloud-work`で、Source ResolutionからMaster検証、Article／title-bound Contract、exact Tool request、current-task Tool event、`GENERATED_UNVERIFIED`、Asset QA、`HUMAN_REVIEW_CANDIDATE`、Human Approval、`FORMAL_HEADER_ASSET`、Final Review Package Compilerまで実行できる。
+
+cross-platform CompilerはPowerShell版と同じPackage identityを生成する。Bridge外のdirect生成、Master未参照、SHA／title不一致、QA欠落、別Article Approvalは引き続きFAILする。Final Review Package、Human Final Approval、G5、Publication BundleおよびPPVのidentity contractは変更していない。System SourceのWRITE ownerはLocal Codex、Cloud WRITEは新規Article-local Published Artifactのままである。
+
+---
+
 ## 2026-09-06｜Cloud note Runtime向けMaster／WRITE Ownership／Sync Contractを接続
 
 note SOP v2.12、README v1.21、Publication Approval v1.4へ更新した。AIDAILY Headerの`NOTE-HEADER-MASTER-v1.0` binary／manifestをRepository Visual Production正式Asset領域へ置き、GitHub Current SourceだけでSHA-256 `579aecaeb724228b86088445ffd3dc9d424a43757169c85f2f6149944beafc13`、1280×670、provenanceおよびVisual specificationを解決可能にした。OneDrive copyは保持するがProduction依存から外した。
