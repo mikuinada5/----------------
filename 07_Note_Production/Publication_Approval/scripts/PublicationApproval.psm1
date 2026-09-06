@@ -53,7 +53,7 @@ function Test-NoteDestinationEquality {
         $Left.publication_target -ceq $Right.publication_target
 }
 
-function Test-NoteG5Approval {
+function Test-NoteApprovedPackageBinding {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)][string]$PackagePath,
@@ -110,11 +110,37 @@ function Test-NoteG5Approval {
 
     [pscustomobject]@{
         result = 'PASS'
-        gate = 'G5_AUTOMATED_PACKAGE_VERIFICATION'
+        gate = 'APPROVED_PACKAGE_BINDING_VERIFICATION'
         package_id = $package.package_id
+        package_identity_sha256 = $package.identity_sha256
         package_sha256 = $packageSha
         approval_id = $approval.approval_id
         approval_scope = $approval.approval_scope
+        next_step = 'BUNDLE_BUILD'
+        requires_additional_human_approval = $false
+    }
+}
+
+function Test-NoteG5Approval {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)][string]$PackagePath,
+        [Parameter(Mandatory)][string]$HumanEventPath,
+        [Parameter(Mandatory)][string]$ApprovalPath,
+        [Parameter(Mandatory)][string]$ActualPackagePath,
+        [Parameter(Mandatory)][string]$SourceManifestPath,
+        [Parameter(Mandatory)][string]$D3BodyPath,
+        [Parameter(Mandatory)][string]$HeaderPath
+    )
+    $binding = Test-NoteApprovedPackageBinding @PSBoundParameters
+    [pscustomobject]@{
+        result = 'PASS'
+        gate = 'G5_AUTOMATED_PACKAGE_VERIFICATION'
+        package_id = $binding.package_id
+        package_identity_sha256 = $binding.package_identity_sha256
+        package_sha256 = $binding.package_sha256
+        approval_id = $binding.approval_id
+        approval_scope = $binding.approval_scope
         next_step = 'NOTE_DRAFT_CREATE'
         requires_additional_human_approval = $false
     }
@@ -163,4 +189,4 @@ function Test-NotePublicationE2EPlan {
     [pscustomobject]@{ result = 'PASS'; steps = @($results); stopped_for_human = $false }
 }
 
-Export-ModuleMember -Function Get-NoteFileSha256, Test-NoteExplicitPublicationIntent, Test-NoteG5Approval, Assert-NotePublicationStep, Test-NotePublicationE2EPlan
+Export-ModuleMember -Function Get-NoteFileSha256, Test-NoteExplicitPublicationIntent, Test-NoteApprovedPackageBinding, Test-NoteG5Approval, Assert-NotePublicationStep, Test-NotePublicationE2EPlan

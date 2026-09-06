@@ -1,6 +1,6 @@
 # Section制作台本テンプレート
 
-**Status:** Current / Operational v2.1 / Final Review Package Compiler compatible
+**Status:** Current / Operational v2.2 / Publication Bundle Phase 1 compatible
 **使用先:** 実データ発生後、`01_Sections/<Section-ID>_<短い識別名>/00_Section制作台本.md` として複製して使用する。
 
 ## 0. 意味づけ・企画フェーズからの引き継ぎ
@@ -61,7 +61,7 @@ Story Candidateは公開許可ではない。本人以外の個人情報、未�
 
 ## 5. Section完成条件と価格キャリブレーション
 
-Sectionは、全Sessionについて承認済み公開構成Profileの成果物がProduction・Output QAを通過した時点で `Review` とする。Human Review、Practiceの実機完遂、壁打ちおよび実素材をnote制作部が反映した内容完成稿を第2稿とし、同稿だけをMarketing Reviewへ渡す。このHuman ReviewはFinal Approvalではない。Marketing Requirementの必要な修正・再監査を通過し、無料／Membership境界、Membership、Magazine、price、tagsその他のPublication Conditionsが揃った`Marketing Approved`稿を第3稿とする。最終タイトル／第3稿確定後にHeader Production／QAを行い、本文、Header、Publication Conditionsおよび必要な自己開示をFinal Review PackageとしてHumanへ渡す。Package-bound Human Final Approval / Publication ApprovalとG5自動検証PASS後のPackageを最終稿／`Approved`とし、再承認なしのTransactionとPost-Publication Verification、公開成果物記録の更新まで完了して `Published/Complete` とする。
+Sectionは、全Sessionについて承認済み公開構成Profileの成果物がProduction・Output QAを通過した時点で `Review` とする。Human Review、Practiceの実機完遂、壁打ちおよび実素材をnote制作部が反映した内容完成稿を第2稿とし、同稿だけをMarketing Reviewへ渡す。このHuman ReviewはFinal Approvalではない。Marketing Requirementの必要な修正・再監査を通過し、無料／Membership境界、Membership、Magazine、price、tagsその他のPublication Conditionsが揃った`Marketing Approved`稿を第3稿とする。最終タイトル／第3稿確定後にHeader Production／QAを行い、本文、Header、Publication Conditionsおよび必要な自己開示をFinal Review PackageとしてHumanへ渡す。Package-bound Human Final Approval / Publication Approval後、sealed Publication Bundleを生成し、Phase 1ではHumanが単一ZIPを公開Workへ一度渡す。Workの`HANDOFF_VERIFIED`とG5自動検証PASS後のPackageを最終稿／`Approved`とし、再承認なしのTransactionとPost-Publication Verification、公開成果物記録の更新まで完了して `Published/Complete` とする。
 
 Human Final Reviewで本文、HeaderまたはDecisionの一部が差し戻された場合は `Revision Required` とする。差し戻し理由、修正対象、所有者、再開条件を§6へ記録し、未変更の第3稿、Output QA、Human Review、Marketing Review結果およびHeader QAは有効なまま保持する。変更が必要な成果物と影響Decisionだけを修正・再監査して `Decision Pending` へ戻す。Final Approval後の承認Package変更はApprovalを失効させる。公開後の修正候補、反応、価格仮説の見直しは `Update Candidate` とし、既存正本を自動変更しない。
 
@@ -69,9 +69,9 @@ Section 1の全Sessionについて第2稿が揃った後、Marketingは各Sessio
 
 ## 6. Production / Content Review / QA / Approval
 
-| Session ID | G2 Source QA | 初稿 / G4 | Human Review・実機完遂 | 第2稿 | Marketing substatus / Conditions | 第3稿 | Header Contract / Prompt QA / Asset QA | Final Review Package / Human Event | G5 Automated Verification | Transaction / G8 | Verification / G9 | 次アクション |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|
-|  |  |  |  | Not Ready / Ready | Input Pending / Review / Revision Required / Approved / Human Decision Required | Not Ready / Ready | Pending / PASS / Returned | Pending / Approved / Returned | Not Started / PASS / FAIL | Not Started / Published / Failed | Not Started / PASS / FAIL |  |
+| Session ID | G2 Source QA | 初稿 / G4 | Human Review・実機完遂 | 第2稿 | Marketing substatus / Conditions | 第3稿 | Header Contract / Prompt QA / Asset QA | Final Review Package / Human Event | Publication Bundle / Handoff | G5 Automated Verification | Transaction / G8 | Verification / G9 | 次アクション |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+|  |  |  |  | Not Ready / Ready | Input Pending / Review / Revision Required / Approved / Human Decision Required | Not Ready / Ready | Pending / PASS / Returned | Pending / Approved / Returned | Not Started / Sealed / Pending / Verified / Failed | Not Started / PASS / FAIL | Not Started / Published / Failed | Not Started / PASS / FAIL |  |
 
 ## 7. Marketing Review / Header / Publication Decision
 
@@ -96,6 +96,7 @@ Marketingは第2稿から開始し、本文を直接書き換えず、Requiremen
 | Header Contract / Prompt Assembly QA / Asset QA | Contract ID、Production version、Source fingerprint、実Tool Request識別、Prompt QA、Asset provenance、Header QA結果、Human Review Candidate化。QA未確認／FAILはAsset ID・G5へ進めない |
 | Final Review Package Compiler | Input locator、D3／Header／Marketing／Source Manifest SHA検証、Compiler version、Package ID／identity SHA／file SHA、`READY_FOR_FINAL_REVIEW`、8区分提示Artifact locator。不足時は`BLOCKED_FINAL_PACKAGE_INCOMPLETE` |
 | Human Event / Approval Evidence | 提示済みPackage ID／identity SHA／file SHA、提示時刻、Human event ID／時刻／statement、公開先、目的。Package本体とは別Artifact |
+| Publication Bundle / Work Handoff | Bundle ID／identity SHA、Builder version、sealed directory／ZIP locator、Package ID、`BUNDLE_SEALED / HANDOFF_PENDING`、Humanによる単一ZIP受け渡し、Work側`HANDOFF_VERIFIED`。ZIP SHAをBundle identityにしない |
 | G5 Automated Verification | Approval Evidence、実Package、destination、purpose、Source Manifestの照合結果。G5で新しい承認を求めない |
 | Publication Transaction / Verification | Not Started / Published / PASS / FAIL |
 | Pipeline Gap / 再開条件 |  |
@@ -127,7 +128,7 @@ Marketingは第2稿から開始し、本文を直接書き換えず、Requiremen
 |---|---|---|---|---|---|---|---|---|
 |  |  |  |  |  |  | Human提供後に記録 | Factと分離 | 一度の結果で一般則化しない |
 
-Human Final Review時は、第3稿全文、Marketing PASS Evidence、Header Asset／QA Evidence、必要な自己開示、Publication Decision Summary、公開先およびSource Manifestを決定論的Compilerへ渡す。本文、Header、無料／Membership境界、Membership、Magazine、price、tags、その他Publication Conditionsの8区分を含む`READY_FOR_FINAL_REVIEW / PENDING`のPackageと提示Artifactが検証済みの場合だけ一括提示する。Package IDはArticle ID、本文／Header SHA、Publication Conditions、Marketing identity、destinationおよびSource Manifestへbindingし、変更時は上書きせず新identityを生成する。提示後の明示的進行意思を別ArtifactのHuman Final Approval / Publication ApprovalとしてPackage identityへbindingする。G5はApproval Evidenceと実Packageの一致を自動検証し、同一ならTransaction／PPVへ継続する。
+Human Final Review時は、第3稿全文、Marketing PASS Evidence、Header Asset／QA Evidence、必要な自己開示、Publication Decision Summary、公開先およびSource Manifestを決定論的Compilerへ渡す。本文、Header、無料／Membership境界、Membership、Magazine、price、tags、その他Publication Conditionsの8区分を含む`READY_FOR_FINAL_REVIEW / PENDING`のPackageと提示Artifactが検証済みの場合だけ一括提示する。Package IDはArticle ID、本文／Header SHA、Publication Conditions、Marketing identity、destinationおよびSource Manifestへbindingし、変更時は上書きせず新identityを生成する。提示後の明示的進行意思を別ArtifactのHuman Final Approval / Publication ApprovalとしてPackage identityへbindingする。承認後はBuilderがPackage全体をimmutable Publication BundleへSealする。公開WorkはBundle ZIPとPackage IDだけを受領し、全fileを再検証して`HANDOFF_VERIFIED`後にG5へ進む。同一BundleならTransaction／PPVまで再承認を要求しない。
 
 ## 8. 公開後・Feedback
 

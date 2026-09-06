@@ -1,7 +1,7 @@
-# Repository横断監査基準 v1.7
+# Repository横断監査基準 v1.8
 
 **Document type:** Repository Governance Standard<br>
-**Status:** Current / Operational v1.7<br>
+**Status:** Current / Operational v1.8<br>
 **Scope:** Repository全体へ影響する正式Sourceの新規追加・更新・移動・廃止<br>
 **Purpose:** 正式Sourceを「置いただけ」にせず、既存責任・参照構造・運用・履歴へ一貫して接続する
 
@@ -110,6 +110,9 @@
 - [ ] Package本体は`READY_FOR_FINAL_REVIEW / PENDING`でimmutableとし、本文だけのHuman提示、既存Package上書き、変更後Packageへの旧Approval流用およびHuman event／Approval EvidenceのPackage内追記を許さない
 - [ ] noteのG5は新しい承認を要求せず、Human event／Approval Evidenceと実際の公開Packageが同一なら、下書き、設定、publish、PPVの工程移行だけを理由に再承認を求めない
 - [ ] noteのFinal Approval後にD3、Header、無料／Membership境界、price、Membership、Magazine、tags、その他の承認条件または新規Human Decisionが変われば失効し、同一Packageの内部処理だけでは失効しない
+- [ ] Human Final Approval後のnote Publication Bundleは本文、Header、Publication Conditions、Approval Evidence、Human event、Source ManifestおよびFinal Review Packageを一つのsealed論理Artifactへbindingし、ZIP SHAをidentityへ使用しない
+- [ ] 公開WorkはPublication BundleとPackage IDだけを正式入力とし、Chat履歴または「このChatを正本」という参照文を受領根拠にしない。全構成物のSchema／実体／SHA／Approval binding／destination／purpose一致後だけ`HANDOFF_VERIFIED`からG5へ進む
+- [ ] Bundle Seal後の承認対象変更は旧Bundleを上書きせず新Package／Approval／Bundleへ戻し、同一Bundleの単一ZIP運搬だけでは再承認を要求しない。完全自動Transportを未実装のまま保証済みと表現しない
 - [ ] Publication ApprovalをExternal Audit、Archive保存、Git通信、credentialまたは他サービス送信へ流用できない
 
 ### 4.6 Change Propagation
@@ -131,6 +134,7 @@
 - [ ] Approval Gate変更では、質問のみ、回答前retry、Agent自己申告、後着承認、payload／destination／目的不一致をFAILとし、正しいHuman Evidenceのpositive testと実送信停止を別々に検証した
 - [ ] note Approval semantics変更では、Human Reviewのみ、Marketing変更前Review、同一Packageへの再承認要求、本文／境界／Header変更および別目的Approval流用をFAILとし、Final Packageへの明示的進行意思、G5自動PASS、publish／PPVまでの無停止継続をpositive testした
 - [ ] note Final Review Package Compiler変更では、D3、Marketing PASS、Header、Header QA、境界、Membership、Magazine、price、tags、Source Manifest、本文／Header SHAの欠落・不一致をFAILとし、同一Input同一identity、各承認対象変更時の新identity、旧Approval拒否および8区分一括提示をtestした
+- [ ] note Publication Bundle変更では、本文／Header欠落、manifestのみ、本文／Header SHA不一致、Approval Package ID、destination／purpose、Publication Conditions、Source Manifest、Seal後変更およびChat参照だけをFAILとし、完全一致Bundle、単一ZIP handoff、G5以降無停止およびStep①回帰をtestした
 - [ ] push後にlocal HEADとremoteの一致を確認する計画がある
 
 ---

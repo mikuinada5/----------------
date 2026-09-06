@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://repository.local/schemas/note-publication-bundle-manifest.schema.json",
+  "title": "note Publication Bundle Manifest v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "builder_version",
+    "bundle_id",
+    "identity_sha256",
+    "state",
+    "handoff_state",
+    "article_id",
+    "package",
+    "body",
+    "header",
+    "publication_conditions",
+    "approval_evidence",
+    "human_event",
+    "source_manifest",
+    "destination",
+    "purpose"
+  ],
+  "properties": {
+    "schema_version": { "const": "note-publication-bundle-manifest/v1" },
+    "builder_version": { "const": "note-publication-bundle-builder/v1" },
+    "bundle_id": { "type": "string", "pattern": "^PB-.+-[0-9a-f]{64}$" },
+    "identity_sha256": { "$ref": "#/$defs/sha256" },
+    "state": { "const": "BUNDLE_SEALED" },
+    "handoff_state": { "const": "HANDOFF_PENDING" },
+    "article_id": { "type": "string", "minLength": 1 },
+    "package": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["package_id", "identity_sha256", "path", "sha256"],
+      "properties": {
+        "package_id": { "type": "string", "pattern": "^FRP-.+-[0-9a-f]{64}$" },
+        "identity_sha256": { "$ref": "#/$defs/sha256" },
+        "path": { "const": "final-review-package.json" },
+        "sha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "body": { "$ref": "#/$defs/file" },
+    "header": { "$ref": "#/$defs/file" },
+    "publication_conditions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256", "identity_sha256"],
+      "properties": {
+        "path": { "const": "publication-conditions.json" },
+        "sha256": { "$ref": "#/$defs/sha256" },
+        "identity_sha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "approval_evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "approval_id", "sha256"],
+      "properties": {
+        "path": { "const": "approval-evidence.json" },
+        "approval_id": { "type": "string", "minLength": 1 },
+        "sha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "human_event": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "event_id", "sha256"],
+      "properties": {
+        "path": { "const": "human-event.json" },
+        "event_id": { "type": "string", "minLength": 1 },
+        "sha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "source_manifest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "manifest_id", "sha256"],
+      "properties": {
+        "path": { "const": "source-manifest.json" },
+        "manifest_id": { "type": "string", "minLength": 1 },
+        "sha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "destination": { "$ref": "#/$defs/destination" },
+    "purpose": { "const": "publish" }
+  },
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "file": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": { "type": "string", "minLength": 1, "pattern": "^[^/\\\\]+$" },
+        "sha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "destination": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["service", "account_id", "publication_target"],
+      "properties": {
+        "service": { "const": "note" },
+        "account_id": { "type": "string", "minLength": 1 },
+        "publication_target": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}

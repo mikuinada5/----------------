@@ -8,6 +8,16 @@
 
 ------------------------------------------------------------------------
 
+## 2026-09-06｜note Publication Bundle Phase 1を正式接続
+
+Human Final Approval後のFinal Review Package、本文、Header、Publication Conditions、Approval EvidenceおよびSource Manifestを、公開Workへ機械検証可能な一つのArtifactとして渡す契約がなかった。Pipeline v1.16、note SOP v2.10、note README v1.19、templates各v2.2、Publication Approval v1.2、Repository横断監査基準v1.8へ更新し、Publication Bundle Builder／SealerとWork受取Gateを追加した。
+
+Bundle identityはArticle ID、Final Review Package ID／identity／SHA、本文／Header SHA、Publication Conditions identity／SHA、Source Manifest identity／SHA、Human Final Approval／Publication Approval identity、destination=`note`、purpose=`publish`へ決定論的にbindingする。ZIPはTransport Containerであり、そのbytes／SHAをidentityへ使用しない。Seal後の変更は既存Bundleを書き換えず、新Package／Approval／Bundleを要求する。
+
+Phase 1ではHumanが`<Article ID>_PublicationBundle.zip`一つを常設note公開Workへ一度渡す。WorkはBundle Manifest、全file実体／SHA、Package ID、Approval binding、destination／purposeおよびSource Manifestを再検証し、全一致時だけ`HANDOFF_VERIFIED`からG5、publish、PPVへ再承認なしで進む。完全自動Chat→Work Transportは未実装として明示し、Platform固有処理は将来のTransport Adapterに限定した。Bundle tests 16件とStep①／Approval semantics回帰36件の計52件がPASSした。External Audit Pipelineはdisabled／`NOT OBTAINED`、外部監査通信0件を維持する。
+
+------------------------------------------------------------------------
+
 ## 2026-09-06｜note Final Review Package Compilerを正式接続
 
 AIDAILY実運用で、Marketing Review後のD3、Header、無料／Membership境界、Membership、Magazine、price、tagsその他のPublication Conditionsが自動で一つのArtifactにならず、本文だけの提示や会話上の最終稿状態が後工程へ渡り得た。現行Approval semanticsは保持し、欠けていた決定論的Package Compilerと上流必須Input Gateを追加した。

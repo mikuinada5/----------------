@@ -1,7 +1,7 @@
-# AI Production Pipeline v1.15
+# AI Production Pipeline v1.16
 
 **Document type:** Standard Operating Procedure（SOP）<br>
-**Status:** Current / Operational v1.15<br>
+**Status:** Current / Operational v1.16<br>
 **Owner:** 稲田美来<br>
 **Scope:** Story Candidate、教材、note、SNS、運営文書、Brand／Education／AI Organization関連Source、その他AI制作物<br>
 **Purpose:** 既存OS・Sourceを毎回確実に選択・実読・適用し、成果物と新知見を正しい責任単位へ戻すためのAI組織共通運用<br>
@@ -966,13 +966,23 @@ noteでは、D3全文、canonical pointer／SHA、Marketing Review PASS Evidence
 
 提示後の明示的進行意思は、Package本体とは別のHuman event／Approval Evidenceとして、同PackageへのHuman Final ApprovalとPublication Approvalへbindingする。Humanは一括承認または特定Decisionだけを理由付きでOverrideできる。Marketing評価へ影響する本文差分は影響範囲だけ再監査し、HeaderまたはPublication Conditionsの差替えは該当QAとFinal Reviewへ戻す。制作途中のHuman ReviewをFinal Approvalへ流用しない。
 
+### Publication Bundle／Work Handoff Phase 1
+
+Human Final Approval成立後、承認済みFinal Review Package、D3本文、Header、正規化Publication Conditions、Approval Evidence、Human eventおよびSource Manifestを`07_Note_Production/Publication_Approval/`のPublication Bundle Builderへ渡す。BuilderはG5と共通のpure binding validatorで承認bindingと実file SHAを再検証し、G5自体を先行実行せず、論理Bundle identityを確定して`HUMAN_APPROVED → BUNDLE_SEALED → HANDOFF_PENDING`へ進める。ZIP bytesまたはZIP SHAはidentityへ含めず、ZIPをTransport Containerとして扱う。
+
+Phase 1の公開Workへの正式入力は`<Article ID>_PublicationBundle.zip`一つとPackage IDだけである。「このChatを正本」等の会話参照、本文、Header、設定の個別手渡しまたはChat履歴を正本として受領しない。Work受取validatorは安全にZIPを展開し、Bundle Manifest Schema、Package ID、本文／Header実体とSHA、Publication Conditions、Approval Evidence／Human eventのPackage binding、destination=`note`、purpose=`publish`およびSource Manifestを再検証する。全一致時のみ`HANDOFF_VERIFIED`とし、その後G5へ渡す。
+
+Seal後に本文、Header、Publication Conditions、Source Manifest、destinationまたはpurposeが変わった場合、既存Bundleを更新しない。変更後のFinal Review Package、Human Final Approvalおよび新Bundleへ戻す。同一Bundleを運搬・展開・検証しただけではApprovalを失効させず、新しいHuman承認を要求しない。ChatからWorkへの完全自動TransportはPlatform Boundaryとして未実装であり、Phase 1ではHumanが単一ZIPを一度渡す。将来はTransport Adapterだけを交換し、PipelineのBundle／Approval／G5契約を変更しない。
+
+標準状態は`HUMAN_APPROVED → BUNDLE_SEALED → HANDOFF_PENDING → HANDOFF_VERIFIED → G5_PASS → PUBLISHED → PPV_PASS`とする。
+
 ### Integration／Git
 
-公開前はCompiler Input、immutable Final Review Package、Human提示Artifact、Human event、Approval RecordおよびHeader Asset locatorを、その公開範囲に合うWork／Private Source／指定Archiveへ保持し、未公開本文をPublic Repositoryの公開済み領域へ先行配置しない。Package本体は`approval=PENDING`のまま変更せず、Approval Evidenceを別Artifactとして保持する。G9 PASS後、公開版と照合済みの最終稿、Header Asset記録および公開成果物記録を`07_Note_Production/`のcanonical pathへ配置する。Work稿や下書きを将来参照する正本にせず、実際の公開対象全体をPackage-bound Approval Recordと照合する。
+公開前はCompiler Input、immutable Final Review Package、Human提示Artifact、Human event、Approval Record、sealed Publication BundleおよびHeader Asset locatorを、その公開範囲に合うWork／Private Source／指定Archiveへ保持し、未公開本文をPublic Repositoryの公開済み領域へ先行配置しない。Package本体は`approval=PENDING`のまま変更せず、Approval Evidenceを別Artifactとして保持する。G9 PASS後、公開版と照合済みの最終稿、Header Asset記録および公開成果物記録を`07_Note_Production/`のcanonical pathへ配置する。Work稿、Chat履歴や下書きを将来参照する正本にせず、実際の公開対象全体をPackage-bound Approval Recordと照合する。
 
 ### G5 Verification／Publish／Feedback
 
-Final Approval成立後、G5はHuman event、Approval Record、Compilerが生成したFinal Review Package、実際の公開対象および必要Sourceのidentityを自動検証する。Package IDを本文／Header SHA、正規化Publication Conditions、Article ID、Marketing identity、destinationおよびSource Manifestから再計算し、ApprovalのPackage ID／identity SHA／file SHAと一致する場合だけPASSする。一致すれば、Publication Decision SummaryをCanonical Inputとしてnote下書き、本文、Header、公開設定を反映し、設定を再照合してPublication Transactionを実行する。同一PackageのDry Run、下書き作成、設定画面またはpublish直前を理由にHumanへ戻さない。Transaction時は下書きへ永続化されない設定をSummaryから再構成する。Package差分、新しいHuman Decision、Source不一致、想定外UI、認証問題または公開先異常がある場合だけ停止する。公開後は利用者側表示、Header、境界、価格、Membership、Magazine、CTA、tags、日時をPost-Publication Verificationし、全項目一致で初めてE2E PASSとする。未決の別コンテンツを同時公開しない。Session単位のSNS展開は `07_Note_Production/03_SNS展開基準.md` の別Gateに従い、Publication E2Eへ自動包含しない。制作中に得たSource QA改善をAI Organization改善候補へ、記事化できる派生事件を対象SectionのStory Hubへ戻す。
+Final Approval成立後、公開WorkはPublication BundleとPackage IDを受け取り、`HANDOFF_VERIFIED`後にだけG5へ進む。G5はHuman event、Approval Record、Compilerが生成したFinal Review Package、実際の公開対象および必要Sourceのidentityを自動検証する。Package IDを本文／Header SHA、正規化Publication Conditions、Article ID、Marketing identity、destinationおよびSource Manifestから再計算し、ApprovalのPackage ID／identity SHA／file SHAと一致する場合だけPASSする。一致すれば、Bundle内のPublication ConditionsをCanonical Inputとしてnote下書き、本文、Header、公開設定を反映し、設定を再照合してPublication Transactionを実行する。同一Package／BundleのDry Run、下書き作成、設定画面またはpublish直前を理由にHumanへ戻さない。Transaction時は下書きへ永続化されない設定をBundleから再構成する。Package／Bundle差分、新しいHuman Decision、Source不一致、想定外UI、認証問題または公開先異常がある場合だけ停止する。公開後は利用者側表示、Header、境界、価格、Membership、Magazine、CTA、tags、日時をPost-Publication Verificationし、全項目一致で初めてE2E PASSとする。未決の別コンテンツを同時公開しない。Session単位のSNS展開は `07_Note_Production/03_SNS展開基準.md` の別Gateに従い、Publication E2Eへ自動包含しない。制作中に得たSource QA改善をAI Organization改善候補へ、記事化できる派生事件を対象SectionのStory Hubへ戻す。
 
 ---
 

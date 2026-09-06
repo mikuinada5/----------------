@@ -4,6 +4,16 @@
 
 ---
 
+## 2026-09-06｜Publication Bundle / Work Handoff Phase 1を実装
+
+Human Final Approval成立後の承認済みFinal Review Packageを常設note公開Workへ安全に渡す正式Artifactがなく、本文、Header、設定またはChat参照を個別handoffする必要があった。note SOP v2.10、README v1.19、Section制作台本／公開成果物記録テンプレート各v2.2、Publication Approval v1.2へ更新し、Platform Boundary内の単一ZIP handoff契約を接続した。
+
+`Publication_Approval/`へPublication Bundle Manifest／Publication Conditions Schema、決定論的Builder／Sealer、secure ZIP受取validator、Work handoff／E2E entrypointおよび16件のnegative／seal／handoff testsを追加した。Bundleはbody、Header、Publication Conditions、Approval Evidence、Human event、Source Manifest、Final Review Packageを含み、論理identityをArticle ID、各SHA、Package／Approval／Source identity、destination=`note`、purpose=`publish`へbindingする。ZIP bytes／SHAはidentityに含めない。
+
+`HUMAN_APPROVED → BUNDLE_SEALED → HANDOFF_PENDING → HANDOFF_VERIFIED → G5_PASS → PUBLISHED → PPV_PASS`を機械接続した。Phase 1で残るHuman HITLは、単一`<Article ID>_PublicationBundle.zip`をWorkへ一度渡す操作だけである。完全自動Chat→Work Transportは未実装として保持し、Chat履歴または「このChatを正本」という参照だけで公開を開始できない。既存Step①／Approval semantics 36件を含む計52件がPASSした。External Audit Pipelineはdisabled／`NOT OBTAINED`のまま変更せず、外部監査通信0件を維持する。
+
+---
+
 ## 2026-09-06｜Final Review Package Compiler v1.0を実装
 
 Marketing Approved後のD3、Header、Publication Conditionsが会話状態のまま分散し、本文だけがFinal Review Candidateとして提示され得たことを、Package組立の機械Gate欠落として修正した。note SOP v2.9、README v1.18、Section制作台本／公開成果物記録テンプレート各v2.1、Publication Approval v1.1へ更新した。

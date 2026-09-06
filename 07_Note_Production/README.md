@@ -1,6 +1,6 @@
 # 07_Note_Production
 
-**Status:** Current / Operational v1.18 / Final Review Package Compiler compatible
+**Status:** Current / Operational v1.19 / Publication Bundle Phase 1 compatible
 **責任:** noteの企画・制作・Marketing Review・Header Production・公開準備・Publication Transaction・公開後記録およびSession単位のSNS展開を、既存AI Production Pipelineへ接続する媒体別運用
 
 ## この領域の入口
@@ -14,8 +14,8 @@
 | `02_全体ロードマップ.md` | **全体ロードマップ正本**。採用済みSectionの優先順位・現在地を管理 |
 | `03_SNS展開基準.md` | Session単位のSNS制作・投稿承認・接続状態 |
 | `10_Section制作台本テンプレート.md` | 意味づけ・企画で採用されたSectionの制作台本、稿状態、Marketing Review／Header／Publication Decision記録テンプレート |
-| `11_公開成果物記録テンプレート.md` | Final Review Package、Human Final / Publication Approval、G5、Transaction、公開済み最終稿・Header・公開事実の記録テンプレート |
-| `Publication_Approval/` | note専用Final Review Package Compiler、Package／Human event／Approval Schema、G5 identity validator、無停止Publication E2E検証 |
+| `11_公開成果物記録テンプレート.md` | Final Review Package、Human Final / Publication Approval、Publication Bundle handoff、G5、Transaction、公開済み最終稿・Header・公開事実の記録テンプレート |
+| `Publication_Approval/` | note専用Final Review Package Compiler、Publication Bundle Builder／Work受取validator、Package／Approval Schema、G5 identity validator、無停止Publication E2E検証 |
 | `CHANGELOG.md` | 本領域の意味ある変更履歴 |
 
 AIDAILY HeaderのCurrent Visual Sourceは`00_note制作・公開システム.md`内の`NOTE HEADER MASTER TEMPLATE v1.0`とmachine-readable profile `aidaily-header-v1`である。Master画像binaryは同SOPに記録したOneDrive AI Archiveの論理locator／SHAから解決し、Public Repositoryへ複製しない。
@@ -43,11 +43,11 @@ AIDAILY HeaderのCurrent Visual Sourceは`00_note制作・公開システム.md`
 
 Statusは、Section制作台本と全体ロードマップで `Planning`／`Production`／`Review`／`Decision Pending`／`Redesign Required`／`Revision Required`／`Approved`／`Scheduled`／`Published/Complete`／`Update Candidate` を記録する。`Redesign Required`は現行baselineを保持して構成・完了条件から再設計する状態、`Revision Required`は現行baselineの限定修正が必要な状態であり、どちらもPublish前で外部公開を意味しない。完成判定は固定の3記事数ではなく、当該Sectionの承認済み公開構成Profileに基づく。公開済み最終稿では `Published`、公開停止または置換済みでは `Superseded` と記録する。`Published` は公開事実であり、上位Sourceの承認を代替しない。公開済み最終稿だけが将来の参照・SNS再展開・Repository還元に用いる記事本文の正本であり、Work稿や下書きを代替正本にしない。
 
-Marketing ReviewはSection Statusを増やさず、`Marketing Input Pending`／`Marketing Revision Required`／`Marketing Approved`／`Human Decision Required`のsubstatusとしてSection制作台本へ記録する。Marketingは内容完成稿である第2稿から開始し、本文を直接修正せずRequirementを返し、無料／Membership境界、Membership、Magazine、price、tagsその他の必要条件を含むPublication Decisionを確定する。Marketing Approved後にHeader Productionを別Phaseで開始し、共通Visual Production ControlのGeneration Contract、Prompt Assembly QA、Runtime Request Binding、生成後Header QAを通す。現行ではLocal CodexのRepository Skill request-bound経路だけをgoverned生成として使用し、Chat／Work built-in direct生成はPlatform BoundaryでBLOCKする。QA PASSしたHeader、D3全文、Marketing PASS Evidence、Publication Conditions、Source Manifestおよび公開先を`Publication_Approval/`の決定論的Compilerへ渡し、Schema／実file SHA／identity／Human提示8区分を検証した`READY_FOR_FINAL_REVIEW / PENDING`のPackageだけをHumanへ一括提示する。PackageへのHumanの明示的進行意思を別ArtifactのFinal Approval / Publication Approvalとしてbindingし、G5はApproval Evidenceと実Packageを自動照合する。同一ならnote反映からpublish、PPVまで再承認なしで継続する。
+Marketing ReviewはSection Statusを増やさず、`Marketing Input Pending`／`Marketing Revision Required`／`Marketing Approved`／`Human Decision Required`のsubstatusとしてSection制作台本へ記録する。Marketingは内容完成稿である第2稿から開始し、本文を直接修正せずRequirementを返し、無料／Membership境界、Membership、Magazine、price、tagsその他の必要条件を含むPublication Decisionを確定する。Marketing Approved後にHeader Productionを別Phaseで開始し、共通Visual Production ControlのGeneration Contract、Prompt Assembly QA、Runtime Request Binding、生成後Header QAを通す。現行ではLocal CodexのRepository Skill request-bound経路だけをgoverned生成として使用し、Chat／Work built-in direct生成はPlatform BoundaryでBLOCKする。QA PASSしたHeader、D3全文、Marketing PASS Evidence、Publication Conditions、Source Manifestおよび公開先を`Publication_Approval/`の決定論的Compilerへ渡し、Schema／実file SHA／identity／Human提示8区分を検証した`READY_FOR_FINAL_REVIEW / PENDING`のPackageだけをHumanへ一括提示する。PackageへのHumanの明示的進行意思を別ArtifactのFinal Approval / Publication Approvalとしてbindingし、承認後はsealed Publication Bundleと単一ZIPを自動生成する。HumanはZIPを常設note公開Workへ一度渡し、WorkはBundleとPackage IDを再検証して`HANDOFF_VERIFIED`後にG5へ進む。同一ならnote反映からpublish、PPVまで再承認なしで継続する。完全自動Chat→Work Transportは未実装である。
 
 未公開本文を含む詳細Marketing Review、Requirementおよび第2稿・第3稿は、本文と同じ承認範囲のWork、Private Sourceまたは指定Archiveに保持する。Public側のSection制作台本には安全なRun ID、status、locator、Decision要約、Gateおよび再開条件だけを置き、公開済み最終稿領域へ先行配置しない。
 
-実データの作成・更新はProduction／Repository Integrationが担い、Final Review PackageへのHuman Final Approval / Publication Approvalと、未解決の価格・自己開示その他のHuman DecisionはHuman Owner／Approverが担う。G5は新しい承認を取りに行かず、Package-bound Evidenceと実際の公開対象を検証する。Publication Decision SummaryはTransaction時のPublication Settings再構成に使うCanonical Inputであり、設定が下書きへ永続化されることを前提にしない。配置、Archive、CHANGELOG、Gitは `REPOSITORY_RULES.md` に従う。
+実データの作成・更新はProduction／Repository Integrationが担い、Final Review PackageへのHuman Final Approval / Publication Approvalと、未解決の価格・自己開示その他のHuman DecisionはHuman Owner／Approverが担う。G5は新しい承認を取りに行かず、`HANDOFF_VERIFIED`のBundle内Evidenceと実際の公開対象を検証する。Bundle内Publication ConditionsはTransaction時のPublication Settings再構成に使うCanonical Inputであり、設定が下書きへ永続化されることを前提にしない。配置、Archive、CHANGELOG、Gitは `REPOSITORY_RULES.md` に従う。
 
 Primary Evidence Packageは、記事本文、唯一のTimeline正本、Section制作台本、Human-approved成果物またはPersonal Archiveを代替しない。Packageの`READY`、Cloud AIがHumanの資料運搬なしで正式Sourceへ到達できる`Source Retrieval Readiness`、SourceのStatusと必要Gateを含め最終成果物まで進められる`Production Completion Readiness`は分けて判定する。
 

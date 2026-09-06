@@ -1,7 +1,7 @@
 # note Publication Approval Gate
 
-**Status:** Current / Operational v1.1
-**Responsibility:** note Final Review PackageへのHuman Final Approval / Publication Approvalを、実際の公開対象へbindingし、G5からPPVまでの継続可否を機械検証する。
+**Status:** Current / Operational v1.2
+**Responsibility:** note Final Review PackageへのHuman Final Approval / Publication Approvalを実際の公開対象へbindingし、承認後のsealed Publication Bundle、Phase 1 Work handoff、G5からPPVまでの継続可否を機械検証する。
 
 ## Contract
 
@@ -33,6 +33,32 @@ Package identityは、Article ID、title、D3 artifact ID／canonical pointer／
 
 Package本体はHuman提示前に`READY_FOR_FINAL_REVIEW`、`approval.status=PENDING`として完成する。Human eventとApproval Evidenceは別Artifactであり、Packageへ追記しない。Human提示用Markdownは、最終本文、Header、無料／Membership境界、Membership、Magazine、price、tags、その他Publication Conditionsの8区分を一括生成し、本文だけの提示をvalidatorが拒否する。未公開本文を含むPackageと提示用Artifactは、D3と同じ公開範囲のWork、Private Sourceまたは指定Archiveへ保存し、Public Repositoryの公開済み領域へ先行配置しない。
 
+## Publication Bundle / Work Handoff Phase 1
+
+Human Final Approval / Publication Approval成立後、`New-PublicationBundle.ps1`を実行する。BuilderはG5と共通のpure binding validatorで承認済みFinal Review Packageと実fileを再検証し、G5自体を先行実行せず、次のflat構造を`PublicationBundle/`へ生成する。Final Review PackageとHuman eventは、既存Approval semanticsをWork側で再検証するための追加必須fileである。
+
+```text
+PublicationBundle/
+├─ manifest.json
+├─ body.md
+├─ header.png
+├─ publication-conditions.json
+├─ approval-evidence.json
+├─ source-manifest.json
+├─ human-event.json
+└─ final-review-package.json
+```
+
+Bundle identityはArticle ID、Final Review Package ID／identity／file SHA、body SHA、Header SHA、Publication Conditions identity／file SHA、Source Manifest ID／SHA、Approval ID／file SHA、Human event ID／SHA、destination=`note`およびpurpose=`publish`のcanonical JSONをUTF-8でSHA-256化する。`bundle_id`は`PB-<safe article id>-<identity SHA-256>`とする。ZIP bytes、ZIP SHA、local path、生成時刻または展開先はidentityへ含めない。
+
+Builderは`HUMAN_APPROVED → BUNDLE_SEALED → HANDOFF_PENDING`を返し、logical BundleをBundle IDごとのdirectoryへ固定する。Seal後にbody、Header、境界、Membership、Magazine、price、tags、その他Conditions、Source Manifest、destinationまたはpurposeが変わった場合、既存Bundleを上書きしない。変更後のFinal Review Package、Approval Evidenceおよび新Bundleを生成する。同一承認入力は同一Bundle IDと同じlogical contentsを生成し、運搬ZIP名は`<Article ID>_PublicationBundle.zip`とする。
+
+Phase 1ではHumanがこのZIP一つを常設note公開Workへ一度渡す。公開Workが信用する正式入力はPublication BundleとExpected Package IDだけである。Chat履歴、「このChatを正本」という参照文、本文／Header／設定の個別手渡しは正式入力ではない。`Test-PublicationBundleHandoff.ps1`はpath escapeを拒否してZIPを展開し、Manifest Schema、構成fileの完全性、各SHA、Package identity、Publication Conditions、Approval Evidence／Human eventのPackage binding、destination、purposeおよびSource Manifestを再検証する。全一致時だけ`HANDOFF_VERIFIED`を返し、G5へ進める。
+
+Chat→Workの完全自動file転送は現行Platformで保証しない。Phase 1で残るHuman HITLは`HANDOFF_PENDING → HANDOFF_VERIFIED`間の単一ZIP受け渡し一回である。将来の自動化はTransport Adapterを交換して実装し、本Builder、Bundle Manifest、ApprovalまたはG5の契約へ特定Platformの会話状態を埋め込まない。
+
+標準状態は`HUMAN_APPROVED → BUNDLE_SEALED → HANDOFF_PENDING → HANDOFF_VERIFIED → G5_PASS → PUBLISHED → PPV_PASS`とする。
+
 G5は新しい承認を依頼しない。`Test-NoteG5Approval`が次をすべて検証してPASSした場合、同一Packageのまま`NOTE_DRAFT_CREATE → BODY_APPLY → HEADER_APPLY → PUBLICATION_CONDITIONS_APPLY → SETTINGS_VERIFY → PUBLISH → PPV`を継続できる。
 
 - 三つのJSONが各Schemaへ適合する。
@@ -50,9 +76,15 @@ Publication ApprovalはExternal Audit、OneDrive保存、Git通信、credential�
 - `schemas/final_review_package.schema.json`: `READY_FOR_FINAL_REVIEW`のimmutable承認対象Package
 - `schemas/human_event.schema.json`: Package提示時刻とPackage identityへbindingするHuman response event
 - `schemas/publication_approval.schema.json`: Package identityへbindingするFinal / Publication Approval record
+- `schemas/publication_bundle_manifest.schema.json`: sealed Bundle identity、構成file、Package／Approval／destination binding
+- `schemas/publication_conditions.schema.json`: Bundle内の正規化Publication Conditions
 - `scripts/FinalReviewPackageCompiler.psm1`: 必須Input／SHA検証、identity計算、immutable出力、Human提示検証
 - `scripts/New-FinalReviewPackage.ps1`: Compiler entrypoint
 - `scripts/PublicationApproval.psm1`: Schema、identity、時系列、intent、scope、継続工程のvalidator
 - `scripts/Test-PublicationApproval.ps1`: G5／工程検証entrypoint
+- `scripts/PublicationBundle.psm1`: Bundle Builder／Sealer、identity、secure ZIP受取、Work検証、G5接続
+- `scripts/New-PublicationBundle.ps1`: Human Approval後のBundle生成entrypoint
+- `scripts/Test-PublicationBundleHandoff.ps1`: Phase 1 Work受取／E2E検証entrypoint
 - `tests/FinalReviewPackageCompiler.Tests.ps1`: Compiler negative／identity／presentation tests
 - `tests/PublicationApproval.Tests.ps1`: Approval semantics negative / regression tests
+- `tests/PublicationBundle.Tests.ps1`: Bundle欠落／改変／Seal／handoff／G5接続negative and regression tests
