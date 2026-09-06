@@ -345,6 +345,14 @@ AIは作業開始時に現在の差分を確認し、既存の未commit変更を
 
 Private Sourceの本文更新、SHA照合、Source QA、commitおよびpushも、権限を持つLocal working treeで行う。Work CloudからPrivate本文を直接更新・承認しない。
 
+### 10.2.1 Cloud／Local WRITEと同期
+
+常設Cloud Workは日常のnote制作・公開運用を担い、Public RepositoryへWRITEできる範囲は新規Article IDの公開成果物領域に限る。Local CodexはPipeline、SOP、schema、validator、script、Visual／Publication実装、Repository設定およびRepository-wide履歴を保守する。単一ownerの具体pathとappend-only判定は`Repository_Governance/ownership-matrix.json`およびvalidatorを使用する。
+
+Local CodexはSystem maintenance開始前にRepository Preflightを実行する。cleanでremoteだけが進んでいる場合はCloud成果物等の正常入荷としてfast-forwardし、同期後のcleanとdivergence 0を確認して開始する。dirty、true divergenceまたはGit状態確認不能では停止し、自動stash、merge、resetまたは上書きをしない。
+
+Cloud WorkはWRITE開始時のbaseline remote HEADとWRITE直前のcurrent remote HEADを検証し、Cloud-ownedの新規Article pathだけを作成する。既存Article、System-owned pathまたは検証不能なGit capabilityでは停止する。PlatformがこのGit checkを実行できない場合は`BLOCKED_PLATFORM_BOUNDARY`であり、契約の記述だけを実行成功Evidenceにしない。
+
 ### 10.3 Git commit
 
 Git commitは、確認済みの変更単位について変更履歴を確定する。

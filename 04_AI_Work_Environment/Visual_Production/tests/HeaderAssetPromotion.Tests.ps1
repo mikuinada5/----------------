@@ -16,9 +16,15 @@ function Header-Sha([string]$Path) { (Get-FileHash -LiteralPath $Path -Algorithm
 function Header-Throws([scriptblock]$Action, [string]$Expected = '') { try { & $Action | Out-Null; $false } catch { (-not $Expected -or $_.Exception.Message.Contains($Expected)) } }
 
 function New-PromotionFixture([string]$Root) {
+    New-Item -ItemType Directory -Path $Root -Force | Out-Null
+    'test repository' | Set-Content -LiteralPath (Join-Path $Root 'REPOSITORY_RULES.md') -Encoding utf8
     $noteRoot = Join-Path $Root '07_Note_Production'; New-Item -ItemType Directory -Path $noteRoot -Force | Out-Null
-    $masterPath = Join-Path $Root 'master.png'; Write-HeaderPng $masterPath
+    $masterLocator = '04_AI_Work_Environment/Visual_Production/assets/NOTE_HEADER_MASTER_TEMPLATE_v1.0.png'
+    $masterManifestLocator = '04_AI_Work_Environment/Visual_Production/assets/NOTE_HEADER_MASTER_TEMPLATE_v1.0.json'
+    $masterPath = Join-Path $Root $masterLocator; New-Item -ItemType Directory -Path (Split-Path $masterPath -Parent) -Force | Out-Null; Write-HeaderPng $masterPath
     $masterSha = Header-Sha $masterPath
+    $masterManifest=[ordered]@{schema_version='note-header-master-asset/v1';asset_id='NOTE-HEADER-MASTER-v1.0';version='v1.0';file='NOTE_HEADER_MASTER_TEMPLATE_v1.0.png';repository_locator=$masterLocator;sha256=$masterSha;dimensions=@{width=1280;height=670};provenance=@{human_approved_origin='test';repository_copy_relationship='byte-identical';original_archive_locator='AI/test/master.png';origin_locator='AI/test/origin.png';repository_verified_on='2026-09-06'};visual_specification=@{canonical_source='07_Note_Production/00_note制作・公開システム.md';profile_id='aidaily-header-v1';role='test role';title_reuse='replace title'}}
+    Save-HeaderJson (Join-Path $Root $masterManifestLocator) $masterManifest
     $profilePath = Join-Path $noteRoot '00_note制作・公開システム.md'
     $rules = @(
         @('master-reference','MUST','use the approved Master image'),@('note-horizontal','MUST','use a horizontal note header'),
@@ -37,7 +43,7 @@ function New-PromotionFixture([string]$Root) {
 # note system
 **Status:** Current / Operational v2.11
 <!-- VISUAL_PROFILE_BEGIN:aidaily-header-v1 -->
-<!-- VISUAL_PROFILE_META:{"width":1280,"height":670,"master_asset_id":"NOTE-HEADER-MASTER-v1.0","master_asset_version":"v1.0","master_asset_locator":"AI/04_Personal_Archive/Original/ChatGPT/NOTE_HEADER_MASTER_TEMPLATE_v1.0.png","master_asset_sha256":"$masterSha"} -->
+<!-- VISUAL_PROFILE_META:{"width":1280,"height":670,"master_asset_id":"NOTE-HEADER-MASTER-v1.0","master_asset_version":"v1.0","master_asset_locator":"$masterLocator","master_asset_manifest":"$masterManifestLocator","master_asset_sha256":"$masterSha"} -->
 | ID | Level | Requirement |
 |---|---|---|
 $table

@@ -1,7 +1,7 @@
-# Repository横断監査基準 v1.9
+# Repository横断監査基準 v1.10
 
 **Document type:** Repository Governance Standard<br>
-**Status:** Current / Operational v1.9<br>
+**Status:** Current / Operational v1.10<br>
 **Scope:** Repository全体へ影響する正式Sourceの新規追加・更新・移動・廃止<br>
 **Purpose:** 正式Sourceを「置いただけ」にせず、既存責任・参照構造・運用・履歴へ一貫して接続する
 
@@ -102,6 +102,7 @@
 - [ ] Review／Source QA／Human Approval／Publish等の非生成Phaseから、画像生成Toolを暗黙起動できない
 - [ ] QA未確認またはQA FAILのAssetをAsset Ready、G5、公開候補または通常のHuman Review Candidateへ昇格できない
 - [ ] note Headerは`NOTE_HEADER_REQUIRED`からVisual Production Bridgeへrouteし、Master identity／expected・actual SHA／寸法／provenance、Contract、actual request、Bridge receipt、Asset QA、Human Approval、Article ID／display titleが全一致した場合だけ`FORMAL_HEADER_ASSET`へ昇格する
+- [ ] note Header Master binary／manifestはRepository Current Sourceから自己完結して解決でき、Repository locator、SHA、1280×670、provenanceおよびVisual specificationが一致する。OneDrive参照をProduction prerequisiteにしていない
 - [ ] Chat／Work built-in direct画像を`UNVERIFIED_NON_ASSET`として隔離し、Human OKによる遡及昇格、Formal Asset ID付与またはFinal Review Package投入を拒否する。Bridge不能時は`BLOCKED_PLATFORM_BOUNDARY`で停止する
 - [ ] Writing Style OS適用長文のProductionとPre-Human Review QAが別工程であり、本文SHA・Source identity・全文段落／境界／検出結果・チェックリスト・修正／再QA・提示fileの一致を検証してからCandidateを受領する
 - [ ] 本文変更後の旧QA、Source参照だけの自己申告PASS、検出ゼロの自動PASSおよびChat送信interceptの未実証主張を受領しない。許容される短段落を根拠なく禁止していない
@@ -138,6 +139,8 @@
 - [ ] note Approval semantics変更では、Human Reviewのみ、Marketing変更前Review、同一Packageへの再承認要求、本文／境界／Header変更および別目的Approval流用をFAILとし、Final Packageへの明示的進行意思、G5自動PASS、publish／PPVまでの無停止継続をpositive testした
 - [ ] note Final Review Package Compiler変更では、D3、Marketing PASS、Header、Header QA、境界、Membership、Magazine、price、tags、Source Manifest、本文／Header SHAの欠落・不一致をFAILとし、同一Input同一identity、各承認対象変更時の新identity、旧Approval拒否および8区分一括提示をtestした
 - [ ] note Publication Bundle変更では、本文／Header欠落、manifestのみ、本文／Header SHA不一致、Approval Package ID、destination／purpose、Publication Conditions、Source Manifest、Seal後変更およびChat参照だけをFAILとし、完全一致Bundle、単一ZIP handoff、G5以降無停止およびStep①回帰をtestした
+- [ ] Repository WRITE Ownership変更では、Cloud新規Article pathをPASSし、CloudによるSystem Source／Repository-wide CHANGELOG／既存ArticleのWRITEと異なるownerのpath collisionをFAILにした
+- [ ] Repository Sync変更では、clean equal、clean remote-only aheadのfast-forward、Cloud Article正常入荷をPASSし、dirty＋remote ahead、local ahead、true divergenceおよびGit capability未確認を区別している
 - [ ] push後にlocal HEADとremoteの一致を確認する計画がある
 
 ---
@@ -188,6 +191,7 @@ Repository横断監査の完了は、文書の作成または監査表の記入�
 - `AI_PRODUCTION_PIPELINE.md`
 - `03_Human_in_the_Loop/HUMAN_IN_THE_LOOP.md`
 - `04_AI_Work_Environment/AI_WORK_ENVIRONMENT.md`
+- `04_AI_Work_Environment/Repository_Governance/README.md`
 - `00_Brand/00_ブランドOS概要・参照ガイド.md`
 - `02_Voice_OS/VOICE_OS.md`
 - `01_Education/` 配下の適用される正式Source

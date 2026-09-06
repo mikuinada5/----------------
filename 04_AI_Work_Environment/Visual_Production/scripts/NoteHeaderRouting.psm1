@@ -28,15 +28,36 @@ function Get-NoteHeaderPngDimensions {
     [pscustomobject]@{ width = [int]$width; height = [int]$height }
 }
 
+function Get-NoteHeaderRepositoryRoot {
+    param([Parameter(Mandatory)][string]$StartPath)
+    $item = Get-Item -LiteralPath $StartPath -ErrorAction Stop
+    $directory = if ($item.PSIsContainer) { $item.FullName } else { $item.DirectoryName }
+    while ($directory) {
+        if (Test-Path -LiteralPath (Join-Path $directory 'REPOSITORY_RULES.md') -PathType Leaf) { return $directory }
+        $parent = [IO.Directory]::GetParent($directory)
+        if ($null -eq $parent) { break }
+        $directory = $parent.FullName
+    }
+    throw 'HEADER_MASTER_REPOSITORY_ROOT_UNRESOLVED'
+}
+
+function Get-NoteHeaderRepositoryPath {
+    param([Parameter(Mandatory)][string]$RepositoryRoot, [Parameter(Mandatory)][string]$RelativePath)
+    if ([IO.Path]::IsPathRooted($RelativePath) -or $RelativePath -match '(^|/)\.\.(/|$)' -or $RelativePath -match '\\') { throw 'HEADER_MASTER_LOCATOR_INVALID' }
+    $root = [IO.Path]::GetFullPath($RepositoryRoot).TrimEnd([IO.Path]::DirectorySeparatorChar)
+    $full = [IO.Path]::GetFullPath((Join-Path $root $RelativePath))
+    if (-not $full.StartsWith($root + [IO.Path]::DirectorySeparatorChar, [StringComparison]::OrdinalIgnoreCase)) { throw 'HEADER_MASTER_LOCATOR_INVALID' }
+    $full
+}
+
 function Resolve-NoteHeaderMaster {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)][string]$ProfileSourcePath,
         [Parameter(Mandatory)][string]$ProfileId,
-        [Parameter(Mandatory)][string]$MasterAssetPath
+        [string]$MasterAssetPath
     )
     if (-not (Test-Path -LiteralPath $ProfileSourcePath -PathType Leaf)) { throw 'HEADER_MASTER_PROFILE_SOURCE_UNRESOLVED' }
-    if (-not (Test-Path -LiteralPath $MasterAssetPath -PathType Leaf)) { throw 'HEADER_MASTER_UNRESOLVED' }
     $profileText = Get-Content -LiteralPath $ProfileSourcePath -Raw -Encoding UTF8
     $escaped = [Regex]::Escape($ProfileId)
     $block = [Regex]::Match($profileText, "(?s)<!--\s*VISUAL_PROFILE_BEGIN:$escaped\s*-->(.*?)<!--\s*VISUAL_PROFILE_END:$escaped\s*-->")
@@ -45,14 +66,38 @@ function Resolve-NoteHeaderMaster {
     if (-not $metaMatch.Success) { throw 'HEADER_MASTER_METADATA_MISSING' }
     try { $meta = $metaMatch.Groups[1].Value | ConvertFrom-Json }
     catch { throw "HEADER_MASTER_METADATA_INVALID: $($_.Exception.Message)" }
-    foreach ($field in @('width','height','master_asset_id','master_asset_version','master_asset_locator','master_asset_sha256')) {
+    foreach ($field in @('width','height','master_asset_id','master_asset_version','master_asset_locator','master_asset_manifest','master_asset_sha256')) {
         if ($null -eq $meta.PSObject.Properties[$field] -or [string]::IsNullOrWhiteSpace([string]$meta.$field)) { throw "HEADER_MASTER_METADATA_INCOMPLETE: $field" }
     }
     if ([string]$meta.master_asset_sha256 -notmatch '^[0-9a-fA-F]{64}$') { throw 'HEADER_MASTER_EXPECTED_SHA_INVALID' }
-    if ([string]$meta.master_asset_locator -notmatch '^AI/(?!.*(?:^|/)\.\.(?:/|$))[^\\]+$') { throw 'HEADER_MASTER_LOCATOR_INVALID' }
-    $actualSha = Get-NoteHeaderFileSha256 $MasterAssetPath
+    if ([string]$meta.master_asset_locator -notmatch '^04_AI_Work_Environment/Visual_Production/assets/[^/]+\.png$') { throw 'HEADER_MASTER_LOCATOR_INVALID' }
+    if ([string]$meta.master_asset_manifest -notmatch '^04_AI_Work_Environment/Visual_Production/assets/[^/]+\.json$') { throw 'HEADER_MASTER_MANIFEST_LOCATOR_INVALID' }
+    $repositoryRoot = Get-NoteHeaderRepositoryRoot $ProfileSourcePath
+    $canonicalMasterPath = Get-NoteHeaderRepositoryPath $repositoryRoot ([string]$meta.master_asset_locator)
+    $manifestPath = Get-NoteHeaderRepositoryPath $repositoryRoot ([string]$meta.master_asset_manifest)
+    if (-not (Test-Path -LiteralPath $canonicalMasterPath -PathType Leaf)) { throw 'HEADER_MASTER_UNRESOLVED' }
+    if (-not (Test-Path -LiteralPath $manifestPath -PathType Leaf)) { throw 'HEADER_MASTER_MANIFEST_UNRESOLVED' }
+    if ($MasterAssetPath) {
+        $providedPath = [IO.Path]::GetFullPath($MasterAssetPath)
+        if ($providedPath -cne [IO.Path]::GetFullPath($canonicalMasterPath)) { throw 'HEADER_MASTER_NOT_REPOSITORY_CANONICAL' }
+    }
+    $manifestSchemaPath = Join-Path (Split-Path $PSScriptRoot -Parent) 'schemas/note_header_master_asset.schema.json'
+    try { if (-not (Test-Json -LiteralPath $manifestPath -SchemaFile $manifestSchemaPath -ErrorAction Stop)) { throw 'schema mismatch' } }
+    catch { throw "HEADER_MASTER_MANIFEST_SCHEMA_FAIL: $($_.Exception.Message)" }
+    try { $manifest = Get-Content -LiteralPath $manifestPath -Raw -Encoding UTF8 | ConvertFrom-Json }
+    catch { throw "HEADER_MASTER_MANIFEST_INVALID: $($_.Exception.Message)" }
+    foreach ($field in @('schema_version','asset_id','version','file','repository_locator','sha256','dimensions','provenance','visual_specification')) {
+        if ($null -eq $manifest.PSObject.Properties[$field]) { throw "HEADER_MASTER_MANIFEST_INCOMPLETE: $field" }
+    }
+    if ($manifest.schema_version -cne 'note-header-master-asset/v1' -or $manifest.asset_id -cne [string]$meta.master_asset_id -or $manifest.version -cne [string]$meta.master_asset_version) { throw 'HEADER_MASTER_MANIFEST_IDENTITY_MISMATCH' }
+    if ($manifest.repository_locator -cne [string]$meta.master_asset_locator -or $manifest.sha256 -cne ([string]$meta.master_asset_sha256).ToLowerInvariant()) { throw 'HEADER_MASTER_MANIFEST_BINDING_MISMATCH' }
+    if ($manifest.file -cne [IO.Path]::GetFileName($canonicalMasterPath)) { throw 'HEADER_MASTER_MANIFEST_FILE_MISMATCH' }
+    if ([int]$manifest.dimensions.width -ne [int]$meta.width -or [int]$manifest.dimensions.height -ne [int]$meta.height) { throw 'HEADER_MASTER_MANIFEST_DIMENSIONS_MISMATCH' }
+    if ($manifest.visual_specification.profile_id -cne $ProfileId -or [string]::IsNullOrWhiteSpace([string]$manifest.visual_specification.role)) { throw 'HEADER_MASTER_VISUAL_SPECIFICATION_MISMATCH' }
+    if ($manifest.provenance.repository_copy_relationship -cne 'byte-identical' -or [string]::IsNullOrWhiteSpace([string]$manifest.provenance.original_archive_locator)) { throw 'HEADER_MASTER_PROVENANCE_INVALID' }
+    $actualSha = Get-NoteHeaderFileSha256 $canonicalMasterPath
     if ($actualSha -ne ([string]$meta.master_asset_sha256).ToLowerInvariant()) { throw 'HEADER_MASTER_SHA_MISMATCH' }
-    $dimensions = Get-NoteHeaderPngDimensions $MasterAssetPath
+    $dimensions = Get-NoteHeaderPngDimensions $canonicalMasterPath
     if ($dimensions.width -ne [int]$meta.width -or $dimensions.height -ne [int]$meta.height) { throw 'HEADER_MASTER_DIMENSIONS_MISMATCH' }
     [pscustomobject]@{
         asset_id = [string]$meta.master_asset_id
@@ -62,8 +107,11 @@ function Resolve-NoteHeaderMaster {
         actual_sha256 = $actualSha
         width = $dimensions.width
         height = $dimensions.height
-        provenance = "canonical-profile:$ProfileId"
-        actual_path = [IO.Path]::GetFullPath($MasterAssetPath)
+        manifest_locator = [string]$meta.master_asset_manifest
+        provenance = "repository-master-manifest:$([string]$meta.master_asset_manifest)"
+        original_archive_locator = [string]$manifest.provenance.original_archive_locator
+        actual_path = [IO.Path]::GetFullPath($canonicalMasterPath)
+        manifest_path = [IO.Path]::GetFullPath($manifestPath)
     }
 }
 
@@ -82,4 +130,4 @@ function Resolve-NoteHeaderProductionRoute {
     [pscustomobject]@{ result = 'FAIL'; state = 'BLOCKED_PLATFORM_BOUNDARY'; route = 'unavailable'; next_state = 'STOP'; formal_asset_eligible = $false }
 }
 
-Export-ModuleMember -Function Get-NoteHeaderFileSha256, Get-NoteHeaderCanonicalJsonSha256, Get-NoteHeaderPngDimensions, Resolve-NoteHeaderMaster, Resolve-NoteHeaderProductionRoute
+Export-ModuleMember -Function Get-NoteHeaderFileSha256, Get-NoteHeaderCanonicalJsonSha256, Get-NoteHeaderPngDimensions, Get-NoteHeaderRepositoryRoot, Resolve-NoteHeaderMaster, Resolve-NoteHeaderProductionRoute

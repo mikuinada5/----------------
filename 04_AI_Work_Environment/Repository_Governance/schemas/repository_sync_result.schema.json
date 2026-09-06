@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://repository.local/schemas/repository-sync-result-v1.json",
+  "title": "Repository preflight sync result v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "classification", "action", "ready", "local_ahead", "remote_ahead", "working_tree_clean", "reason"],
+  "properties": {
+    "schema_version": { "const": "repository-sync-result/v1" },
+    "classification": { "enum": ["READY", "AUTO_FAST_FORWARD", "STOP_DIRTY_WORKTREE", "STOP_DIRTY_REMOTE_AHEAD", "LOCAL_AHEAD_REVIEW", "STOP_DIVERGED", "BLOCKED_GIT_CAPABILITY"] },
+    "action": { "enum": ["NONE", "FAST_FORWARD", "STOP", "PUSH_POLICY_REVIEW"] },
+    "ready": { "type": "boolean" },
+    "local_ahead": { "type": "integer", "minimum": 0 },
+    "remote_ahead": { "type": "integer", "minimum": 0 },
+    "working_tree_clean": { "type": "boolean" },
+    "reason": { "type": "string", "minLength": 1 }
+  }
+}

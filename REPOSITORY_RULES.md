@@ -134,6 +134,26 @@ Repositoryルートの`.codex-runtime/`は、Task実行中に再生成可能な�
 
 ------------------------------------------------------------------------
 
+### 2.9 Cloud Work／Local CodexのGit WRITE所有権
+
+GitHubをCanonical Source／Version管理、常設Cloud Workを日常のnote制作・公開実行、Local CodexをSystem maintenanceの実行環境とする。WRITE可能pathは`04_AI_Work_Environment/Repository_Governance/ownership-matrix.json`をmachine-readableな正本とし、未登録pathはdenyする。
+
+Cloud Workは原則として`07_Note_Production/02_Published/AIDAILY/<Article-ID>/`配下の**新規Article ID領域**だけをappend-onlyで作成できる。公開済み最終本文、Formal Header Asset／record、Publication Conditions、Final Review Package、Approval／Publication Evidence、Publication Bundle manifest、公開URL／日時、PPV resultおよびarticle-local provenanceをArticle単位で保持する。既存Article IDの上書き、同一pathへの更新、共通System SourceへのWRITEは行わない。
+
+`REPOSITORY_RULES.md`、`AI_PRODUCTION_PIPELINE.md`、note SOP／README、schema、validator、script／module、Visual Production Control、Publication Approval実装、Repository横断監査基準、Repository-level configuration、`.gitignore`、Repository-wide CHANGELOGおよびSystem-level Timeline／governanceはLocal Codex専有とする。Cloud Workが変更必要性を検出した場合は`LOCAL_MAINTENANCE_REQUIRED`として分離し、Cloud側のArticle commitへ混ぜない。Cloudの公開履歴はArticle-local recordへ書き、Repository-wide CHANGELOGへの集約はLocal maintenanceで行う。
+
+一つのpathへCloud／Local双方のownerを与えない。Matrixのprefix包含またはexact path重複によって異なるownerが衝突する場合、Ownership QAをFAILする。GitHubへのWRITE可否、credentialおよび通信Approvalはこの所有権とは別に検証する。
+
+### 2.10 Repository Preflight Sync
+
+Local CodexはSystem maintenance開始前に、`fetch → local／remote HEAD確認 → working tree確認 → divergence判定 → safe sync → clean確認`を`04_AI_Work_Environment/Repository_Governance/scripts/Invoke-RepositoryPreflightSync.ps1`で行う。cleanかつremote-only aheadはCloud成果物等の正常入荷として`--ff-only`で自動同期し、同期後にahead 0／behind 0とcleanを再確認する。これを競合としてHumanへ報告しない。
+
+dirty、dirtyかつremote ahead、local／remote双方の独立commit、fetch／Git状態確認不能またはfast-forward不能ではSTOPする。自動merge、stash、resetまたは上書きは行わない。local ahead onlyは既存のcommit／push承認範囲に従い`LOCAL_AHEAD_REVIEW`として分類する。
+
+Cloud WorkがArticle成果物をWRITEする場合は、開始時のbaseline remote HEADとWRITE直前のcurrent remote HEADを記録し、current treeに同一Article IDがないこと、全対象pathがCloud-ownedの新規Article領域内であることを検証する。remoteが進んでいても同一Article pathがなければ正常WRITE可能である。Current remote確認を実行できないRuntimeは成功扱いせず`BLOCKED_PLATFORM_BOUNDARY`とする。
+
+------------------------------------------------------------------------
+
 ## 3. Brand領域の基本構造
 
 Brand領域は、単一の巨大な仕様書ではなく、責任本籍ごとに分割したBrand OSとして管理する。
@@ -238,6 +258,12 @@ Human-in-the-loop領域に関する意味のある変更は `03_Human_in_the_Loo
 │   ├── schemas/
 │   ├── scripts/
 │   └── tests/
+├── Repository_Governance/
+│   ├── README.md
+│   ├── ownership-matrix.json
+│   ├── schemas/
+│   ├── scripts/
+│   └── tests/
 ├── Visual_Production/
 │   ├── README.md
 │   ├── schemas/
@@ -272,6 +298,8 @@ Human-in-the-loop領域に関する意味のある変更は `03_Human_in_the_Loo
 `External_Audit_Pipeline/` は、内部監査PASS後のFinal Candidateから必要最小限の監査Inputを構築し、助言的外部AIへAPI送信し、応答Schema検証とSeverity Routingを行う再利用可能な自動化実装である。外部AIへ制作、承認またはRepository WRITE責任を付与しない。
 
 `Source_Resolution/` は、`AI_PRODUCTION_PIPELINE.md`が定めるSource Router／Source QA／Source Manifestを機械検証する実装である。新しいSource責任または承認者を作らず、Current Canonical Delta、責任root内のCurrent候補未列挙、前Taskの読了証跡、依存漏れおよびSource fingerprint変更をG2またはPre-Human ReviewでFAILさせる。
+
+`Repository_Governance/`は、Cloud Work／Local Codexの単一WRITE owner、Cloudの新規Article append-only check、およびLocal maintenance開始前のGit同期状態を機械検証する実装である。CloudのGit capabilityやpush権限を推測で補わず、検証不能はBLOCKする。
 
 `Pre_Human_Review_QA/`とRepository Skill `.agents/skills/pre-human-review-qa/`は、同Pipeline §8.5.1の長文本文QA／提示file bindingを実行する実装である。新しい文体Source・役職・承認者を作らず、Writing Style OS、Source Resolutionおよび既存G4へ接続する。Public Repositoryには実装・安全な合成tests・最小provenanceだけを置き、未公開事故稿・QA詳細・提示本文は当該成果物の公開範囲を維持する。
 

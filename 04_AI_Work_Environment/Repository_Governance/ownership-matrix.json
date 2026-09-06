@@ -1,0 +1,93 @@
+{
+  "schema_version": "repository-write-ownership/v1",
+  "matrix_version": "v1.0",
+  "default_policy": "DENY",
+  "domains": [
+    {
+      "id": "cloud-aidaily-published-artifacts",
+      "owner": "cloud-work",
+      "mode": "append-only-new-article",
+      "path_prefix": "07_Note_Production/02_Published/AIDAILY/"
+    },
+    {
+      "id": "local-root-governance",
+      "owner": "local-codex",
+      "mode": "maintain",
+      "exact_paths": [
+        ".gitignore",
+        "REPOSITORY_RULES.md",
+        "AI_PRODUCTION_PIPELINE.md",
+        "REPOSITORY_CROSS_AUDIT_STANDARD.md",
+        "CHANGELOG.md"
+      ]
+    },
+    {
+      "id": "local-repository-configuration",
+      "owner": "local-codex",
+      "mode": "maintain",
+      "path_prefix": ".github/"
+    },
+    {
+      "id": "local-repository-skills",
+      "owner": "local-codex",
+      "mode": "maintain",
+      "path_prefix": ".agents/skills/"
+    },
+    {
+      "id": "local-ai-work-environment-governance",
+      "owner": "local-codex",
+      "mode": "maintain",
+      "exact_paths": [
+        "04_AI_Work_Environment/AI_WORK_ENVIRONMENT.md",
+        "04_AI_Work_Environment/CHANGELOG.md"
+      ]
+    },
+    {
+      "id": "local-source-resolution",
+      "owner": "local-codex",
+      "mode": "maintain",
+      "path_prefix": "04_AI_Work_Environment/Source_Resolution/"
+    },
+    {
+      "id": "local-visual-production",
+      "owner": "local-codex",
+      "mode": "maintain",
+      "path_prefix": "04_AI_Work_Environment/Visual_Production/"
+    },
+    {
+      "id": "local-pre-human-review-qa",
+      "owner": "local-codex",
+      "mode": "maintain",
+      "path_prefix": "04_AI_Work_Environment/Pre_Human_Review_QA/"
+    },
+    {
+      "id": "local-external-audit-pipeline",
+      "owner": "local-codex",
+      "mode": "maintain",
+      "path_prefix": "04_AI_Work_Environment/External_Audit_Pipeline/"
+    },
+    {
+      "id": "local-repository-governance-runtime",
+      "owner": "local-codex",
+      "mode": "maintain",
+      "path_prefix": "04_AI_Work_Environment/Repository_Governance/"
+    },
+    {
+      "id": "local-note-system-sources",
+      "owner": "local-codex",
+      "mode": "maintain",
+      "exact_paths": [
+        "07_Note_Production/00_note制作・公開システム.md",
+        "07_Note_Production/01_Timeline.md",
+        "07_Note_Production/README.md",
+        "07_Note_Production/CHANGELOG.md"
+      ]
+    },
+    {
+      "id": "local-publication-approval-implementation",
+      "owner": "local-codex",
+      "mode": "maintain",
+      "path_prefix": "07_Note_Production/Publication_Approval/"
+    }
+  ]
+}

@@ -120,7 +120,7 @@ function New-NoteFormalHeaderAsset {
         [Parameter(Mandatory)][string]$AssetCanonicalPointer,
         [Parameter(Mandatory)][string]$HumanApprovalPath,
         [Parameter(Mandatory)][string]$ProfileSourcePath,
-        [Parameter(Mandatory)][string]$MasterAssetPath,
+        [string]$MasterAssetPath,
         [Parameter(Mandatory)][string]$OutputPath
     )
     & (Join-Path $PSScriptRoot 'Test-VisualProduction.ps1') -RepositoryRoot $RepositoryRoot -RecordPath $VisualRecordPath | Out-Null
@@ -133,7 +133,9 @@ function New-NoteFormalHeaderAsset {
     if ($record.artifact_type -ne 'note-header' -or $record.generation_contract.profile_id -ne 'aidaily-header-v1') { throw 'FORMAL_HEADER_WRONG_PROFILE' }
     if ($record.transition.requested_target -ne 'HUMAN_REVIEW_CANDIDATE' -or $record.asset_qa.result -ne 'PASS' -or $record.asset.status -ne 'QA_PASS') { throw 'FORMAL_HEADER_ASSET_QA_NOT_PASS' }
     if ($receipt.environment -ne 'local-codex' -or $receipt.route -ne 'repository-skill-request-bound' -or $receipt.implementation_id -ne 'repo-skill:visual-production-bridge/v1' -or $receipt.result -ne 'REQUEST_BOUND') { throw 'FORMAL_HEADER_BRIDGE_ROUTE_MISSING' }
-    $master = Resolve-NoteHeaderMaster -ProfileSourcePath $ProfileSourcePath -ProfileId 'aidaily-header-v1' -MasterAssetPath $MasterAssetPath
+    $resolveMasterArgs = @{ ProfileSourcePath = $ProfileSourcePath; ProfileId = 'aidaily-header-v1' }
+    if (-not [string]::IsNullOrWhiteSpace($MasterAssetPath)) { $resolveMasterArgs.MasterAssetPath = $MasterAssetPath }
+    $master = Resolve-NoteHeaderMaster @resolveMasterArgs
     $dimensions = Get-NoteHeaderPngDimensions $GeneratedAssetPath
     if ($dimensions.width -ne 1280 -or $dimensions.height -ne 670) { throw 'FORMAL_HEADER_DIMENSIONS_MISMATCH' }
     $assetSha = Get-NoteHeaderFileSha256 $GeneratedAssetPath
@@ -157,7 +159,7 @@ function New-NoteFormalHeaderAsset {
         article_id = [string]$record.generation_contract.article_id; approved_header_title = [string]$record.generation_contract.approved_text.title
         asset = [ordered]@{ file = $AssetCanonicalPointer; local_path = [IO.Path]::GetFullPath($GeneratedAssetPath); sha256 = $assetSha; width = 1280; height = 670; provenance = [string]$record.asset.provenance }
         master_template = [ordered]@{ asset_id = $master.asset_id; version = $master.version; canonical_locator = $master.canonical_locator; expected_sha256 = $master.expected_sha256; actual_sha256 = $master.actual_sha256; width = $master.width; height = $master.height; provenance = $master.provenance }
-        generation_contract = [ordered]@{ profile_id = 'aidaily-header-v1'; production_version = [string]$record.production_version; source_manifest_identity = [string]$record.source_manifest.fingerprint_sha256; visual_record_sha256 = $visualSha; visual_record_local_path = [IO.Path]::GetFullPath($VisualRecordPath); actual_tool_request_sha256 = $requestIdentity; actual_tool_request_local_path = [IO.Path]::GetFullPath($ActualToolRequestPath); request_identity_sha256 = [string]$record.generation_contract.request_identity_sha256; profile_source_local_path = [IO.Path]::GetFullPath($ProfileSourcePath); master_asset_local_path = [IO.Path]::GetFullPath($MasterAssetPath) }
+        generation_contract = [ordered]@{ profile_id = 'aidaily-header-v1'; production_version = [string]$record.production_version; source_manifest_identity = [string]$record.source_manifest.fingerprint_sha256; visual_record_sha256 = $visualSha; visual_record_local_path = [IO.Path]::GetFullPath($VisualRecordPath); actual_tool_request_sha256 = $requestIdentity; actual_tool_request_local_path = [IO.Path]::GetFullPath($ActualToolRequestPath); request_identity_sha256 = [string]$record.generation_contract.request_identity_sha256; profile_source_local_path = [IO.Path]::GetFullPath($ProfileSourcePath); master_asset_local_path = $master.actual_path }
         route_evidence = [ordered]@{ implementation_id = [string]$receipt.implementation_id; route = [string]$receipt.route; runtime_receipt_sha256 = $receiptSha; runtime_receipt_local_path = [IO.Path]::GetFullPath($RuntimeReceiptPath); result = [string]$receipt.result }
         asset_qa = [ordered]@{ status = 'PASS'; visual_record_sha256 = $visualSha }
         human_approval = [ordered]@{ event_id = [string]$approval.event_id; evidence_sha256 = $approvalSha; evidence_local_path = [IO.Path]::GetFullPath($HumanApprovalPath) }

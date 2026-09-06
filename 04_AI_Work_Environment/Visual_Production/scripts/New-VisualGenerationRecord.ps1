@@ -58,7 +58,7 @@ if ([int]$profileMetadata.width -ne $Width -or [int]$profileMetadata.height -ne 
 
 $referenceAssets = @()
 $referencedImagePaths = @()
-$masterMetadataFields = @('master_asset_id', 'master_asset_version', 'master_asset_locator', 'master_asset_sha256')
+$masterMetadataFields = @('master_asset_id', 'master_asset_version', 'master_asset_locator', 'master_asset_manifest', 'master_asset_sha256')
 $masterMetadataValues = @($masterMetadataFields | ForEach-Object { [string]$profileMetadata.PSObject.Properties[$_].Value })
 $hasAnyMasterMetadata = @($masterMetadataValues | Where-Object { -not [string]::IsNullOrWhiteSpace($_) }).Count -gt 0
 if ($hasAnyMasterMetadata) {
@@ -67,10 +67,9 @@ if ($hasAnyMasterMetadata) {
             throw "VISUAL_CONTRACT_BUILD FAIL: canonical profile master metadata is incomplete: $field"
         }
     }
-    if ([string]::IsNullOrWhiteSpace($MasterAssetPath)) {
-        throw 'VISUAL_CONTRACT_BUILD FAIL: canonical profile requires -MasterAssetPath'
-    }
-    try { $resolvedMaster = Resolve-NoteHeaderMaster -ProfileSourcePath $profileFullPath -ProfileId $ProfileId -MasterAssetPath $MasterAssetPath }
+    $resolveMasterArgs = @{ ProfileSourcePath = $profileFullPath; ProfileId = $ProfileId }
+    if (-not [string]::IsNullOrWhiteSpace($MasterAssetPath)) { $resolveMasterArgs.MasterAssetPath = $MasterAssetPath }
+    try { $resolvedMaster = Resolve-NoteHeaderMaster @resolveMasterArgs }
     catch { throw "VISUAL_CONTRACT_BUILD FAIL: $($_.Exception.Message)" }
     $masterFullPath = $resolvedMaster.actual_path
     $masterHash = $resolvedMaster.actual_sha256
@@ -78,6 +77,7 @@ if ($hasAnyMasterMetadata) {
         asset_id = $resolvedMaster.asset_id
         version = $resolvedMaster.version
         logical_locator = $resolvedMaster.canonical_locator
+        manifest_locator = $resolvedMaster.manifest_locator
         sha256 = $masterHash
         expected_sha256 = $resolvedMaster.expected_sha256
         actual_sha256 = $resolvedMaster.actual_sha256

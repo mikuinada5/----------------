@@ -1,11 +1,13 @@
 # 07_Note_Production
 
-**Status:** Current / Operational v1.20 / Formal Header Asset Promotion compatible
+**Status:** Current / Operational v1.21 / Repository Master Asset compatible
 **責任:** noteの企画・制作・Marketing Review・Header Production・公開準備・Publication Transaction・公開後記録およびSession単位のSNS展開を、既存AI Production Pipelineへ接続する媒体別運用
 
 ## この領域の入口
 
 `07_Note_Production/` は、noteの本文とSNS展開に固有の制作・公開運用を担うトップレベル責任領域である。人間承認、Source Router／Source QA、Output QA、Repository横断監査、Gitの判断を複製せず、それぞれの現行Sourceを呼び出す。
+
+常設Cloud WorkからGitHubへWRITEできるのは、原則として`02_Published/AIDAILY/<Article-ID>/`の新規Article ID領域だけである。既存Articleの上書き、Timeline、領域／Repository CHANGELOG、SOP、Publication Approval実装その他の共通Source更新はLocal Codexへ分離する。具体的なownerとpreflightは`04_AI_Work_Environment/Repository_Governance/`を正とする。
 
 | 正本 | 用途 |
 |---|---|
@@ -18,7 +20,7 @@
 | `Publication_Approval/` | note専用Final Review Package Compiler、Publication Bundle Builder／Work受取validator、Package／Approval Schema、G5 identity validator、無停止Publication E2E検証 |
 | `CHANGELOG.md` | 本領域の意味ある変更履歴 |
 
-AIDAILY HeaderのCurrent Visual Sourceは`00_note制作・公開システム.md`内の`NOTE HEADER MASTER TEMPLATE v1.0`とmachine-readable profile `aidaily-header-v1`である。Master画像binaryは同SOPに記録したOneDrive AI Archiveの論理locator／SHAから解決し、Public Repositoryへ複製しない。`NOTE_HEADER_REQUIRED`はLocal Codex `visual-production-bridge`へrouteし、Master／Contract／actual request／Bridge receipt／Asset QA／Human Approval／Article ID／exact display titleが全一致した`FORMAL_HEADER_ASSET`だけをFinal Review Packageへ渡す。Chat／Work built-in direct画像は`UNVERIFIED_NON_ASSET`であり、Human OKでも遡及昇格しない。
+AIDAILY HeaderのCurrent Visual Sourceは`00_note制作・公開システム.md`内の`NOTE HEADER MASTER TEMPLATE v1.0`とmachine-readable profile `aidaily-header-v1`である。Master binaryとmanifestは`04_AI_Work_Environment/Visual_Production/assets/`のGitHub Current Sourceから自己完結して解決する。OneDrive版は由来保存でありProduction依存ではない。`NOTE_HEADER_REQUIRED`はLocal Codex `visual-production-bridge`へrouteし、Master／Contract／actual request／Bridge receipt／Asset QA／Human Approval／Article ID／exact display titleが全一致した`FORMAL_HEADER_ASSET`だけをFinal Review Packageへ渡す。Chat／Work built-in direct画像は`UNVERIFIED_NON_ASSET`であり、Human OKでも遡及昇格しない。
 
 ## 現行・Archive・実データ
 

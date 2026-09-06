@@ -26,7 +26,7 @@
       "required": ["asset_id", "version", "canonical_locator", "expected_sha256", "actual_sha256", "width", "height", "provenance"],
       "properties": {
         "asset_id": { "const": "NOTE-HEADER-MASTER-v1.0" }, "version": { "const": "v1.0" },
-        "canonical_locator": { "type": "string", "pattern": "^AI/" }, "expected_sha256": { "$ref": "#/$defs/sha256" }, "actual_sha256": { "$ref": "#/$defs/sha256" },
+        "canonical_locator": { "type": "string", "pattern": "^04_AI_Work_Environment/Visual_Production/assets/" }, "expected_sha256": { "$ref": "#/$defs/sha256" }, "actual_sha256": { "$ref": "#/$defs/sha256" },
         "width": { "const": 1280 }, "height": { "const": 670 }, "provenance": { "type": "string", "minLength": 1 }
       }
     },

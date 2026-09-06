@@ -44,7 +44,7 @@ Describe 'note Final Approval semantics and G5 orchestration' {
             header = [ordered]@{
                 asset_id = ('FHA-AIDAILY-TEST-' + ('a' * 64)); display_title = 'Final title'; formal_asset_state = 'FORMAL_HEADER_ASSET'; formal_asset_identity_sha256 = ('a' * 64)
                 file = 'archive://AIDAILY-TEST/header.png'; sha256 = (Get-NoteFileSha256 $headerPath)
-                master_template = [ordered]@{ asset_id = 'NOTE-HEADER-MASTER-v1.0'; version = 'v1.0'; canonical_locator = 'AI/04_Personal_Archive/Original/ChatGPT/NOTE_HEADER_MASTER_TEMPLATE_v1.0.png'; sha256 = ('b' * 64) }
+                master_template = [ordered]@{ asset_id = 'NOTE-HEADER-MASTER-v1.0'; version = 'v1.0'; canonical_locator = '04_AI_Work_Environment/Visual_Production/assets/NOTE_HEADER_MASTER_TEMPLATE_v1.0.png'; sha256 = ('b' * 64) }
                 route_evidence = [ordered]@{ implementation_id = 'repo-skill:visual-production-bridge/v1'; route = 'repository-skill-request-bound'; runtime_receipt_sha256 = ('c' * 64) }
                 asset_qa = [ordered]@{ status = 'PASS'; evidence = [ordered]@{ artifact_id = 'AIDAILY-TEST-H1-QA'; file = 'archive://AIDAILY-TEST/header-qa.json'; sha256 = ('2' * 64) } }
                 human_approval = [ordered]@{ event_id = 'HE-HEADER-TEST'; evidence_sha256 = ('d' * 64) }

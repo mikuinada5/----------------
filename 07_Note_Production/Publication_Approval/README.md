@@ -1,6 +1,6 @@
 # note Publication Approval Gate
 
-**Status:** Current / Operational v1.3
+**Status:** Current / Operational v1.4 / Repository Canonical Header Master compatible
 **Responsibility:** note Final Review PackageへのHuman Final Approval / Publication Approvalを実際の公開対象へbindingし、承認後のsealed Publication Bundle、Phase 1 Work handoff、G5からPPVまでの継続可否を機械検証する。
 
 ## Contract

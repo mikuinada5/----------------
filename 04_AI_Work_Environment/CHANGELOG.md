@@ -6,6 +6,14 @@
 
 ------------------------------------------------------------------------
 
+## 2026-09-06｜Cloud note Production RuntimeのRepository基盤を実装
+
+GitHub Current SourceだけではAIDAILY Header Master binaryへ到達できず、Cloud WorkとLocal CodexのGit WRITE範囲およびremote入荷時のLocal同期判定も機械化されていなかった。Visual Production v1.4として`NOTE-HEADER-MASTER-v1.0`のbyte-identical PNGとmanifestを`Visual_Production/assets/`へ配置し、ResolverをRepository-onlyへ変更した。SHA-256は`579aecaeb724228b86088445ffd3dc9d424a43757169c85f2f6149944beafc13`、寸法は1280×670である。OneDrive copyは保持するがProduction prerequisiteではない。
+
+`Repository_Governance/` v1.0を追加し、Cloud Workを新規AIDAILY Article領域のappend-only owner、Local CodexをSystem Source ownerとする単一Ownership matrix、Cloud WRITE preflight、Local fetch／divergence classifier／safe fast-forwardを実装した。既存Article、System Source、Repository-wide CHANGELOG、ownership collision、Git確認不能をFAILまたはBLOCKし、dirty、local ahead、true divergenceを別状態としてSTOPする。Source Resolution、Repository Governance、Visual、Final Review Package、Approval semantics、Publication Bundleの全123件をPASSした。External Audit Pipelineはdisabled／`NOT OBTAINED`のまま変更せず、外部監査通信は行っていない。
+
+------------------------------------------------------------------------
+
 ## 2026-09-06｜note Header Formal Asset Promotion Gateを実装
 
 Visual Production v1.3として、AIDAILY HeaderのMaster Resolver、Article ID／actual request identityを含むGeneration Contract、Canonical Route判定、Header Human Approval SchemaおよびFormal Asset Promotion Gateを追加した。`NOTE_HEADER_REQUIRED`はLocal Codex `visual-production-bridge`へrouteし、Master expected／actual SHAと1280×670、Contract、Prompt QA、actual request、Bridge receipt、生成Asset SHA／寸法、全Asset QA、Human event、Article ID／display titleが一致した場合だけ`FORMAL_HEADER_ASSET`を生成する。

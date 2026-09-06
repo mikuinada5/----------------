@@ -1,6 +1,6 @@
 # Visual Production Control
 
-**Status:** Current / Operational v1.3 / Formal Header Asset Promotion<br>
+**Status:** Current / Operational v1.4 / Repository Canonical Master<br>
 **Owner:** Production / Internal QA<br>
 **Authority:** `AI_PRODUCTION_PIPELINE.md` Visual Production Control
 
@@ -24,11 +24,13 @@ Phase Tool Routing
 
 本ディレクトリは、新しいVisual専門Source、媒体Template、AI組織上の役割または承認者を作らない。共通Gateの規範は`AI_PRODUCTION_PIPELINE.md`、媒体・成果物固有の要件はnote、SNS、Brand、Education／Material Productionその他の責任Sourceを正とする。ここにはSchema、contract／request builder、fail-closed validatorおよび回帰テストだけを置く。
 
+AIDAILY note HeaderのCanonical Master binaryとmanifestは`assets/NOTE_HEADER_MASTER_TEMPLATE_v1.0.png`および同名JSONに置く。ResolverはRepository rootからこの実体を解決し、manifest、Asset ID、Version、SHA-256、1280×670、provenanceおよびVisual specificationを照合する。OneDriveの既存copyは由来Evidenceであり、Production prerequisiteではない。Repository外の同一bytesを`-MasterAssetPath`で渡しても正式Masterとして受理しない。
+
 ## Runtime contract
 
 1. Work Charterの`phase`と`artifact_type`から、画像生成Toolを使用できるProductionか判定する。Marketing Review、Source QA、通常の文章QA、Human Review、G5およびPublishでは画像生成を起動しない。
 2. G2 PASS済みSource Manifestから、媒体・成果物固有のVisual要件を`MUST`、`MUST_NOT`、`MAY`へ分け、Generation Contractへ固定する。
-3. canonical profileがMaster／reference Assetを要求する場合、profile内のAsset ID、Version、論理locatorおよびSHA-256と、Runtimeで解決した実在fileを照合する。未到達、SHA不一致またはactual requestへのreference欠落はFAILとし、referenceなし生成へfallbackしない。
+3. canonical profileがMaster／reference Assetを要求する場合、profile内のAsset ID、Version、Repository／manifest locatorおよびSHA-256と、Repository内の実在file・manifestを照合する。未到達、SHA不一致、Repository外binaryまたはactual requestへのreference欠落はFAILとし、OneDriveやreferenceなし生成へfallbackしない。
 4. Creative Directionは`MAY`の範囲だけで使用する。`MUST`または`MUST_NOT`と競合する指示は削除し、競合を残したContractを生成へ渡さない。
 5. 実際に画像生成Toolへ渡すRequestに、承認済み文字列、全`MUST`、全`MUST_NOT`、必須reference、寸法および禁止要素が含まれることをPrompt Assembly QAで確認する。
 6. Source file SHA-256、Production versionまたは承認済み文字列が変わったContractはstaleとして破棄し、Source Resolutionから再構築する。
@@ -72,7 +74,6 @@ pwsh -File 04_AI_Work_Environment/Visual_Production/scripts/New-VisualGeneration
   -TaskId <task-id> -ArticleId <article-id> -ProductionVersion <version> `
   -Phase 'Header Production' -ArtifactType <type> `
   -ApprovedTitle <exact-title> -Width 1280 -Height 670 `
-  -MasterAssetPath <runtime-resolved-master-image> `
   -OutputPath <visual-production-record.json>
 
 pwsh -File 04_AI_Work_Environment/Visual_Production/scripts/Test-VisualProduction.ps1 `
@@ -97,7 +98,6 @@ pwsh -File 04_AI_Work_Environment/Visual_Production/scripts/New-FormalHeaderAsse
   -AssetCanonicalPointer <archive-or-private-pointer> `
   -HumanApprovalPath <header-human-approval.json> `
   -ProfileSourcePath <canonical-profile-source.md> `
-  -MasterAssetPath <runtime-resolved-master-image> `
   -OutputPath <formal-header-asset.json>
 ```
 

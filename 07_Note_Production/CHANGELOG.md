@@ -4,6 +4,14 @@
 
 ---
 
+## 2026-09-06｜Cloud note Runtime向けMaster／WRITE Ownership／Sync Contractを接続
+
+note SOP v2.12、README v1.21、Publication Approval v1.4へ更新した。AIDAILY Headerの`NOTE-HEADER-MASTER-v1.0` binary／manifestをRepository Visual Production正式Asset領域へ置き、GitHub Current SourceだけでSHA-256 `579aecaeb724228b86088445ffd3dc9d424a43757169c85f2f6149944beafc13`、1280×670、provenanceおよびVisual specificationを解決可能にした。OneDrive copyは保持するがProduction依存から外した。
+
+Cloud WorkのWRITEは新規`02_Published/AIDAILY/<Article-ID>/`へappend-onlyとし、既存Article、Timeline、note／Repository CHANGELOG、SOPおよび実装変更を拒否する。Local CodexはSystem maintenance開始前にfetchとGit状態を検証し、cleanなremote-only aheadを正常入荷としてfast-forwardする。Step①〜③、Approval semanticsおよびPublication Bundleを含む全123件をPASSした。External Auditはdisabled／`NOT OBTAINED`、外部監査通信0件を維持した。
+
+---
+
 ## 2026-09-06｜Header Routing / Formal Asset Promotion Gateを実装
 
 note SOP v2.11、README v1.20、templates各v2.3、Publication Approval v1.3へ更新した。従来はMaster-bound RequestとAsset QAまで実装済みだったが、Human Review Candidateから正式Assetへの独立昇格Gateがなく、Final Review Package CompilerもPNGとQA自己申告だけを受け取り得た。Master／Contract／actual request／Bridge／生成Asset／QA／Header Human Approval／Article ID／exact display titleを一つのdeterministic Formal Header Asset identityへbindingし、Compiler v2／Package v3がsealed recordと実Headerを再照合するよう修正した。

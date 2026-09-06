@@ -1,6 +1,6 @@
-# note制作・公開システム v2.11
+# note制作・公開システム v2.12
 
-**Status:** Current / Operational v2.11 / Formal Header Asset Promotion compatible
+**Status:** Current / Operational v2.12 / Repository Master Asset compatible
 **Scope:** note制作、Marketing Review、Header Production、Final Review、G5自動検証、Publication Transaction、公開後記録、Session単位のSNS展開、Repositoryへの知見還元
 
 ## 1. 責任と非責任
@@ -250,25 +250,27 @@ Header Productionは`AI_PRODUCTION_PIPELINE.md` §7.6のVisual Production Contro
 
 Chat／WorkでCurrent Sourceを実読できても、built-in image generationへ直接進まない。現行のgoverned Header生成は、Production IntentをLocal CodexのRepository Skill `visual-production-bridge`へ接続し、本節のmachine-readable profileからContract／Requestを生成、Runtime Request BindingをPASSさせた経路に限定する。Runtime Receiptがない、actual request hashが一致しない、またはPlatform BoundaryをPASSと偽装した生成物はRejected / non-assetとして扱う。
 
-Header Asset本体は、公開画像の責任に従って承認済みOneDrive AI Archive等の指定Archiveへ保持し、Public Repositoryへバイナリを重複配置しない。RepositoryにはAsset ID、承認対象、provenance locator、SHA-256、寸法、Header QA、G5 Approval Package ID、note上の公開asset URLおよび表示検証結果を記録する。G5後の差替えは新AssetとしてHeader QAとG5へ戻す。
+公開記事ごとのHeader Asset本体は、公開画像の責任に従って承認済みOneDrive AI Archive等の指定Archiveへ保持し、Public Repositoryへバイナリを重複配置しない。共通制作Sourceである`NOTE-HEADER-MASTER-v1.0`だけはCloud WorkがGitHub Current Sourceから実体を解決できるよう、RepositoryのVisual Production正式Asset領域にbyte-identicalなCanonical binaryを保持する。記事AssetについてRepositoryにはAsset ID、承認対象、provenance locator、SHA-256、寸法、Header QA、G5 Approval Package ID、note上の公開asset URLおよび表示検証結果を記録する。G5後の差替えは新AssetとしてHeader QAとG5へ戻す。
 
 note公式の現行記事見出し画像推奨サイズは1280×670 pxである（[noteヘルプセンター「登録画像の推奨サイズ一覧」](https://www.help-note.com/hc/ja/articles/360000231642-%E7%99%BB%E9%8C%B2%E7%94%BB%E5%83%8F%E3%81%AE%E6%8E%A8%E5%A5%A8%E3%82%B5%E3%82%A4%E3%82%BA%E4%B8%80%E8%A6%A7)、2026-07-10更新）。仕様は変動し得るため、制作時にはnote公式Helpの現行値を確認する。推奨値と異なる場合はトリミング表示を前提にせず、表示結果と安全領域をQAする。
 
 #### 2.5.1 NOTE HEADER MASTER TEMPLATE v1.0
 
-「AIとの日常」AIDAILY HeaderのHuman-approvedな完成見本は、`NOTE-HEADER-MASTER-v1.0`を唯一のCurrent Masterとする。画像binaryはRepositoryへ重複保存せず、OneDrive AI Archiveの論理path `AI/04_Personal_Archive/Original/ChatGPT/NOTE_HEADER_MASTER_TEMPLATE_v1.0.png`に保持する。実在rootは現在のOneDrive設定から発見し、Windowsユーザー名を含む絶対pathをSourceへ固定しない。
+「AIとの日常」AIDAILY HeaderのHuman-approvedな完成見本は、`NOTE-HEADER-MASTER-v1.0`を唯一のCurrent Masterとする。Canonical binaryは`04_AI_Work_Environment/Visual_Production/assets/NOTE_HEADER_MASTER_TEMPLATE_v1.0.png`、登録情報とprovenanceは同階層の`NOTE_HEADER_MASTER_TEMPLATE_v1.0.json`を正とする。OneDrive AI Archiveの既存binaryは保持し、Repository版がbyte-identicalであることをmanifestへ記録する。ProductionはRepository版を使用し、OneDrive参照を前提にしない。
 
 | Field | Current value |
 |---|---|
 | Asset ID / Version | `NOTE-HEADER-MASTER-v1.0` / `v1.0` |
 | Human-approved origin | Published / Verified `AIDAILY-002-H1`をbyte-identical Masterとして採用 |
-| Original asset logical locator | `AI/04_Personal_Archive/Original/ChatGPT/NOTE_HEADER_MASTER_TEMPLATE_v1.0.png` |
+| Canonical Repository locator | `04_AI_Work_Environment/Visual_Production/assets/NOTE_HEADER_MASTER_TEMPLATE_v1.0.png` |
+| Canonical manifest | `04_AI_Work_Environment/Visual_Production/assets/NOTE_HEADER_MASTER_TEMPLATE_v1.0.json` |
+| Original Archive locator | `AI/04_Personal_Archive/Original/ChatGPT/NOTE_HEADER_MASTER_TEMPLATE_v1.0.png` |
 | Origin locator | `AI/04_Personal_Archive/Derived/AIDAILY-002-D3_Header_G5-Candidate_v1.png` |
 | SHA-256 | `579aecaeb724228b86088445ffd3dc9d424a43757169c85f2f6149944beafc13` |
 | Dimensions | 1280 × 670 px |
 | Role | 構図、左右配置、中央Title領域、白背景、黒＋ピンク、漫画調のVisual reference。Master内のAIDAILY-002固有titleは再利用しない |
 
-MasterはVisual Sourceの実物参照Assetであり、規範と固定／可変／禁止境界のcanonical本文は本節と次のmachine-readable profileを正とする。Generation ContractはAsset ID、Version、論理locatorおよびSHA-256を保持し、Local Runtimeで発見した実在fileのSHAを照合してから、実Tool Requestのreference imageへbindingする。未到達、複数候補、SHA不一致、Contractまたはactual requestへの参照欠落はFAILとし、文章だけのTemplateへfallbackしない。
+MasterはVisual Sourceの実物参照Assetであり、規範と固定／可変／禁止境界のcanonical本文は本節と次のmachine-readable profileを正とする。Generation ContractはAsset ID、Version、Repository locator、manifest locatorおよびSHA-256を保持し、Repository内の実在fileとmanifestを照合してから、実Tool Requestのreference imageへbindingする。未到達、複数候補、SHA不一致、Repository外binary、Contractまたはactual requestへの参照欠落はFAILとし、OneDriveまたは文章だけのTemplateへfallbackしない。
 
 AIDAILYの公開記事titleが`AIとの日常｜<記事固有title>`である場合、Headerへrenderするapproved exact titleはHumanが承認した`<記事固有title>`部分であり、Series／Magazine識別子`AIとの日常｜`はHeaderへ入れない。これは公開記事titleの変更ではなく、記事titleとHeader render titleの責任を分ける既存Visual規則である。Generation ContractはHeaderへrenderする文字列を`approved_text.title`として完全一致で保持し、prefix除去以外の要約、言い換え、短縮または追加を行わない。
 
@@ -277,10 +279,10 @@ AIDAILYの公開記事titleが`AIとの日常｜<記事固有title>`である場
 次のmarker内は本文であると同時に、Repository Runtime BridgeがGeneration Contractを機械生成するcanonical profileである。ID、LevelまたはRequirementを変更する場合は、本節の意味変更としてVersion、CHANGELOGおよびVisual回帰テストを同期する。
 
 <!-- VISUAL_PROFILE_BEGIN:aidaily-header-v1 -->
-<!-- VISUAL_PROFILE_META:{"width":1280,"height":670,"master_asset_id":"NOTE-HEADER-MASTER-v1.0","master_asset_version":"v1.0","master_asset_locator":"AI/04_Personal_Archive/Original/ChatGPT/NOTE_HEADER_MASTER_TEMPLATE_v1.0.png","master_asset_sha256":"579aecaeb724228b86088445ffd3dc9d424a43757169c85f2f6149944beafc13"} -->
+<!-- VISUAL_PROFILE_META:{"width":1280,"height":670,"master_asset_id":"NOTE-HEADER-MASTER-v1.0","master_asset_version":"v1.0","master_asset_locator":"04_AI_Work_Environment/Visual_Production/assets/NOTE_HEADER_MASTER_TEMPLATE_v1.0.png","master_asset_manifest":"04_AI_Work_Environment/Visual_Production/assets/NOTE_HEADER_MASTER_TEMPLATE_v1.0.json","master_asset_sha256":"579aecaeb724228b86088445ffd3dc9d424a43757169c85f2f6149944beafc13"} -->
 | ID | Level | Requirement |
 |---|---|---|
-| master-reference | MUST | NOTE HEADER MASTER TEMPLATE v1.0を実Tool Requestのreference imageとして使用し、Asset ID、Version、論理locatorおよびSHA-256を一致させる |
+| master-reference | MUST | Repository内のNOTE HEADER MASTER TEMPLATE v1.0を実Tool Requestのreference imageとして使用し、Asset ID、Version、Repository／manifest locatorおよびSHA-256を一致させる |
 | note-horizontal | MUST | note記事用の横長Headerにする |
 | current-dimensions | MUST | 制作時に確認したnote公式の現行推奨寸法／比率を使用する。現行確認値は1280×670 px |
 | human-left | MUST | 左側にHumanを置く |
@@ -494,6 +496,8 @@ Final Review Package提示後、文脈上そのPackageを指す「OK」「これ
 11. **Post-Publication Verification**：公開URL、表示、Header、本文、境界、Membership、対象プラン、価格、加入導線、Magazine、Tags、日時をDecisionと対象Series Profileに対して照合し、全項目一致でG9／Publication E2EをPASSとする。後続Human QAでGapが判明した場合は初回判定を保持したまま再オープンする。
 12. **Record / Resume／Pending Link確認**：公開済み最終稿、Header Asset記録および公開成果物記録をcanonical pathへ配置する。公開されたArticle IDをTargetとする未解決Pending Linkを確認し、実在URL取得後は§2.6.8の`Target Published → Backfill → Post-Publication Verification → Resolved`へ進める。未公開の第2稿・第3稿・最終稿候補や詳細Marketing EvidenceをPublic公開済み正本へ混入させず、制作台本には安全な状態・locator・再開条件だけを残す。
 13. **Feedback / Repository還元**：反応、誤読、導線、制作上の発見をFeedback Candidateとして分類する。単発反応を自動でOSやSOPへ反映しない。SNS Distributionは別Gateで扱う。
+
+常設Cloud WorkがRecordをGitHubへ反映する場合は、`07_Note_Production/02_Published/AIDAILY/<Article-ID>/`の新規Article ID領域だけをappend-onlyで作成する。baseline／current remote HEADと同一Article path不存在をWRITE直前に検証し、既存Article、Timeline、note／Repository CHANGELOG、SOP、schemaまたはscriptを変更しない。これらの変更必要性は`LOCAL_MAINTENANCE_REQUIRED`としてLocal Codexへ渡す。Cloud RuntimeでGit preflightを実行できなければ成功扱いせず停止する。
 
 ### 4.1 AI Organization SeriesのExternal Audit
 

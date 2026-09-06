@@ -1,0 +1,25 @@
+{
+  "schema_version": "note-header-master-asset/v1",
+  "asset_id": "NOTE-HEADER-MASTER-v1.0",
+  "version": "v1.0",
+  "file": "NOTE_HEADER_MASTER_TEMPLATE_v1.0.png",
+  "repository_locator": "04_AI_Work_Environment/Visual_Production/assets/NOTE_HEADER_MASTER_TEMPLATE_v1.0.png",
+  "sha256": "579aecaeb724228b86088445ffd3dc9d424a43757169c85f2f6149944beafc13",
+  "dimensions": {
+    "width": 1280,
+    "height": 670
+  },
+  "provenance": {
+    "human_approved_origin": "Published / Verified AIDAILY-002-H1",
+    "repository_copy_relationship": "byte-identical",
+    "original_archive_locator": "AI/04_Personal_Archive/Original/ChatGPT/NOTE_HEADER_MASTER_TEMPLATE_v1.0.png",
+    "origin_locator": "AI/04_Personal_Archive/Derived/AIDAILY-002-D3_Header_G5-Candidate_v1.png",
+    "repository_verified_on": "2026-09-06"
+  },
+  "visual_specification": {
+    "canonical_source": "07_Note_Production/00_note制作・公開システム.md",
+    "profile_id": "aidaily-header-v1",
+    "role": "AIDAILY Header composition, left/right character placement, central title area, white background, black and pink palette, and comic style reference",
+    "title_reuse": "The AIDAILY-002 title rendered in the Master must be replaced with the approved article-specific Header title"
+  }
+}

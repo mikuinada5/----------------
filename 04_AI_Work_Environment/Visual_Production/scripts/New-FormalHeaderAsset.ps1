@@ -8,7 +8,7 @@ param(
     [Parameter(Mandatory)][string]$AssetCanonicalPointer,
     [Parameter(Mandatory)][string]$HumanApprovalPath,
     [Parameter(Mandatory)][string]$ProfileSourcePath,
-    [Parameter(Mandatory)][string]$MasterAssetPath,
+    [string]$MasterAssetPath,
     [Parameter(Mandatory)][string]$OutputPath
 )
 Import-Module (Join-Path $PSScriptRoot 'HeaderAssetPromotion.psm1') -Force

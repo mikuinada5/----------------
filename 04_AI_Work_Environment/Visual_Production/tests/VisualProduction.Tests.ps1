@@ -18,14 +18,18 @@ function New-VisualRecord {
     $sourcePath = if ($ArtifactType -eq 'education-visual') { '01_Education/02_Material_Production/10_PPT制作基準.md' } else { '07_Note_Production/00_note制作・公開システム.md' }
     New-TestSource -Path (Join-Path $RepositoryRoot $sourcePath)
     $sha = (Get-FileHash -LiteralPath (Join-Path $RepositoryRoot $sourcePath) -Algorithm SHA256).Hash.ToLowerInvariant()
-    $masterPath = Join-Path $RepositoryRoot 'runtime-assets/NOTE_HEADER_MASTER_TEMPLATE_v1.0.png'
+    $masterLocator = '04_AI_Work_Environment/Visual_Production/assets/NOTE_HEADER_MASTER_TEMPLATE_v1.0.png'
+    $masterManifestLocator = '04_AI_Work_Environment/Visual_Production/assets/NOTE_HEADER_MASTER_TEMPLATE_v1.0.json'
+    $masterPath = Join-Path $RepositoryRoot $masterLocator
     if ($ArtifactType -eq 'note-header') {
         New-Item -ItemType Directory -Path (Split-Path -Parent $masterPath) -Force | Out-Null
         [IO.File]::WriteAllBytes($masterPath, [Text.Encoding]::UTF8.GetBytes('approved-master-image'))
+        '{}' | Set-Content -LiteralPath (Join-Path $RepositoryRoot $masterManifestLocator) -Encoding utf8 -NoNewline
     }
     $masterSha = if ($ArtifactType -eq 'note-header') { (Get-FileHash -LiteralPath $masterPath -Algorithm SHA256).Hash.ToLowerInvariant() } else { '' }
     $generatedPath = Join-Path $RepositoryRoot 'runtime-assets/generated.png'
     if ($ArtifactType -eq 'note-header') {
+        New-Item -ItemType Directory -Path (Split-Path -Parent $generatedPath) -Force | Out-Null
         [IO.File]::WriteAllBytes($generatedPath, [byte[]](137,80,78,71,13,10,26,10,0,0,0,13,73,72,68,82,0,0,5,0,0,0,2,158))
     }
     $generatedSha = if ($ArtifactType -eq 'note-header') { (Get-FileHash -LiteralPath $generatedPath -Algorithm SHA256).Hash.ToLowerInvariant() } else { ('c' * 64) }
@@ -40,6 +44,7 @@ function New-VisualRecord {
             @{ id = 'comic-style'; level = 'MUST'; text = 'Use comic style'; source_path = $sourcePath },
             @{ id = 'white-background'; level = 'MUST'; text = 'Keep the background white'; source_path = $sourcePath },
             @{ id = 'black-pink-palette'; level = 'MUST'; text = 'Use black as main color and pink as accent'; source_path = $sourcePath },
+            @{ id = 'master-title-replace'; level = 'MUST'; text = 'Replace the Master title'; source_path = $sourcePath },
             @{ id = 'title-exact'; level = 'MUST'; text = 'Use approved title verbatim'; source_path = $sourcePath },
             @{ id = 'title-central'; level = 'MUST'; text = 'Title is the central visual element'; source_path = $sourcePath },
             @{ id = 'no-series-label'; level = 'MUST_NOT'; text = 'Do not include AIとの日常'; source_path = $sourcePath },
@@ -67,7 +72,7 @@ function New-VisualRecord {
 
     $mandatory = @($requirements | Where-Object { $_.level -in @('MUST', 'MUST_NOT') } | ForEach-Object { $_.id })
     $mandatoryText = @($requirements | Where-Object { $_.level -in @('MUST', 'MUST_NOT') } | ForEach-Object { $_.text }) -join "`n"
-    $masterPromptIdentity = if ($ArtifactType -eq 'note-header') { "`nNOTE-HEADER-MASTER-v1.0`nv1.0`nAI/04_Personal_Archive/Original/ChatGPT/NOTE_HEADER_MASTER_TEMPLATE_v1.0.png`n$masterSha" } else { '' }
+    $masterPromptIdentity = if ($ArtifactType -eq 'note-header') { "`nNOTE-HEADER-MASTER-v1.0`nv1.0`n$masterLocator`n$masterSha" } else { '' }
     $qaChecks = @($mandatory | ForEach-Object { @{ requirement_id = $_; result = 'PASS' } }) + @(@{ requirement_id = 'dimensions'; result = 'PASS' })
     $title = 'AIに仕事を任せたら、私の仕事が増えた話'
 
@@ -91,7 +96,7 @@ function New-VisualRecord {
             source_fingerprint_sha256 = ('b' * 64)
             approved_text = @{ title = $title }
             dimensions = @{ width = 1280; height = 670 }
-            reference_assets = if ($ArtifactType -eq 'note-header') { @(@{ asset_id = 'NOTE-HEADER-MASTER-v1.0'; version = 'v1.0'; logical_locator = 'AI/04_Personal_Archive/Original/ChatGPT/NOTE_HEADER_MASTER_TEMPLATE_v1.0.png'; sha256 = $masterSha; expected_sha256 = $masterSha; actual_sha256 = $masterSha; dimensions = @{ width = 1280; height = 670 }; provenance = 'canonical-profile:test' }) } else { @() }
+            reference_assets = if ($ArtifactType -eq 'note-header') { @(@{ asset_id = 'NOTE-HEADER-MASTER-v1.0'; version = 'v1.0'; logical_locator = $masterLocator; manifest_locator = $masterManifestLocator; sha256 = $masterSha; expected_sha256 = $masterSha; actual_sha256 = $masterSha; dimensions = @{ width = 1280; height = 670 }; provenance = 'repository-master-manifest:test' }) } else { @() }
             request_identity_sha256 = ''
             requirement_ids = $mandatory
             creative_direction = @(@{ id = 'warm-expression'; text = 'Warm expression'; conflicts_with = @(); resolution = 'kept' })

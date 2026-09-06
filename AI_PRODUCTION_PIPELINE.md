@@ -1,7 +1,7 @@
-# AI Production Pipeline v1.17
+# AI Production Pipeline v1.18
 
 **Document type:** Standard Operating Procedure（SOP）<br>
-**Status:** Current / Operational v1.17<br>
+**Status:** Current / Operational v1.18<br>
 **Owner:** 稲田美来<br>
 **Scope:** Story Candidate、教材、note、SNS、運営文書、Brand／Education／AI Organization関連Source、その他AI制作物<br>
 **Purpose:** 既存OS・Sourceを毎回確実に選択・実読・適用し、成果物と新知見を正しい責任単位へ戻すためのAI組織共通運用<br>
@@ -541,7 +541,7 @@ Runtime Receipt Schema、builder、validatorおよび回帰テストは`04_AI_Wo
 
 #### 7.6.6 Formal Asset Promotion
 
-媒体SourceがFormal Assetを要求する場合、Asset QA PASSとHuman Review Candidateは正式登録の前提であり、Formal Assetそのものではない。note Headerは、Master identity／expected・actual SHA／寸法／provenance、Generation Contract、Prompt Assembly QA、actual request identity、Local Codex Visual Production Bridge receipt、生成Asset SHA／寸法、全必須Asset QA、Human Approval Evidence、Article IDおよびapproved Header display titleを一つのPromotion Recordへbindingする。全一致時だけ`FORMAL_HEADER_ASSET`を生成する。
+媒体SourceがFormal Assetを要求する場合、Asset QA PASSとHuman Review Candidateは正式登録の前提であり、Formal Assetそのものではない。note Headerは、Repository内Canonical Master binary／manifest、Master identity／expected・actual SHA／寸法／provenance、Generation Contract、Prompt Assembly QA、actual request identity、Local Codex Visual Production Bridge receipt、生成Asset SHA／寸法、全必須Asset QA、Human Approval Evidence、Article IDおよびapproved Header display titleを一つのPromotion Recordへbindingする。全一致時だけ`FORMAL_HEADER_ASSET`を生成する。OneDrive上のMaster copyは由来Evidenceであり、Production prerequisiteではない。
 
 Standard Chat／Workのbuilt-in direct生成は`UNVERIFIED_NON_ASSET`とし、Humanが後から画像へOKを示しても遡及昇格しない。Bridgeが利用不能ならdirect生成へfallbackせず`BLOCKED_PLATFORM_BOUNDARY`で停止する。Platform上のdirect生成自体をRepositoryから物理無効化する保証は持たないが、その出力にはFormal Asset ID、正式provenance、Final Review Package eligibilityを付与できない。
 
@@ -752,6 +752,14 @@ AIが代行できない価値判断、公開判断、正式採用判断を人間
 ---
 
 ## 11. Phase 7 — Repository QA & Git
+
+### 11.0 Environment ownership／Preflight
+
+RepositoryへのWRITE前に、実行環境のownerを`04_AI_Work_Environment/Repository_Governance/ownership-matrix.json`で検証する。Cloud Workは新規Article IDの公開成果物領域だけをappend-onlyで作成し、Local CodexはSystem SourceとRepository-wide履歴を保守する。Cloudは既存Article、Pipeline、SOP、schema、validator、script、Repository設定、System TimelineまたはRepository-wide CHANGELOGを変更しない。
+
+Local CodexのSystem maintenanceは、fetch、local／remote HEAD、working treeおよびdivergenceを機械判定するPreflightから開始する。cleanでremote-only aheadなら正常入荷としてfast-forwardし、同期後のcleanとahead 0／behind 0を確認する。dirty、true divergence、fast-forward不能またはGit状態確認不能ではSTOPし、自動stash、merge、resetまたは上書きをしない。
+
+Cloud WRITEはbaseline remote HEADとWRITE直前のcurrent remote HEAD、対象Article pathがcurrent treeに存在しないことを検証する。検証能力がない場合は`BLOCKED_PLATFORM_BOUNDARY`とし、成功扱いしない。WRITE OwnershipはGitHub通信、credentialまたはpush承認を代替しない。
 
 ### 11.1 目的
 

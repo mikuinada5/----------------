@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://repository.local/schemas/note-header-master-asset-v1.json",
+  "title": "Canonical note Header Master Asset v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "asset_id", "version", "file", "repository_locator", "sha256", "dimensions", "provenance", "visual_specification"],
+  "properties": {
+    "schema_version": { "const": "note-header-master-asset/v1" },
+    "asset_id": { "const": "NOTE-HEADER-MASTER-v1.0" },
+    "version": { "const": "v1.0" },
+    "file": { "const": "NOTE_HEADER_MASTER_TEMPLATE_v1.0.png" },
+    "repository_locator": { "const": "04_AI_Work_Environment/Visual_Production/assets/NOTE_HEADER_MASTER_TEMPLATE_v1.0.png" },
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "dimensions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["width", "height"],
+      "properties": { "width": { "const": 1280 }, "height": { "const": 670 } }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["human_approved_origin", "repository_copy_relationship", "original_archive_locator", "origin_locator", "repository_verified_on"],
+      "properties": {
+        "human_approved_origin": { "type": "string", "minLength": 1 },
+        "repository_copy_relationship": { "const": "byte-identical" },
+        "original_archive_locator": { "type": "string", "pattern": "^AI/" },
+        "origin_locator": { "type": "string", "pattern": "^AI/" },
+        "repository_verified_on": { "type": "string", "format": "date" }
+      }
+    },
+    "visual_specification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["canonical_source", "profile_id", "role", "title_reuse"],
+      "properties": {
+        "canonical_source": { "const": "07_Note_Production/00_note制作・公開システム.md" },
+        "profile_id": { "const": "aidaily-header-v1" },
+        "role": { "type": "string", "minLength": 1 },
+        "title_reuse": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}

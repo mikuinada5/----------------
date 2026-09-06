@@ -177,7 +177,7 @@ for ($i = 0; $i -lt $referenceAssets.Count; $i++) {
         }
     }
     if ([string]$record.artifact_type -eq 'note-header') {
-        foreach ($field in @('expected_sha256','actual_sha256','dimensions','provenance')) {
+        foreach ($field in @('manifest_locator','expected_sha256','actual_sha256','dimensions','provenance')) {
             if ($null -eq $reference.PSObject.Properties[$field]) { Stop-VisualProductionValidation "Master resolution field is missing: $field" }
         }
         if ([string]$reference.expected_sha256 -ne [string]$reference.sha256 -or [string]$reference.actual_sha256 -ne [string]$reference.sha256) {
@@ -188,8 +188,14 @@ for ($i = 0; $i -lt $referenceAssets.Count; $i++) {
         }
         if ([string]::IsNullOrWhiteSpace([string]$reference.provenance)) { Stop-VisualProductionValidation 'Master provenance is missing' }
     }
-    if ([string]$reference.logical_locator -notmatch '^AI/(?!.*(?:^|/)\.\.(?:/|$))[^\\]+$') {
-        Stop-VisualProductionValidation 'Reference asset logical locator must be AI-root-relative and must not contain a machine-specific path'
+    if ([string]$record.artifact_type -eq 'note-header' -and [string]$reference.logical_locator -notmatch '^04_AI_Work_Environment/Visual_Production/assets/[^/]+\.png$') {
+        Stop-VisualProductionValidation 'note Header Master locator must resolve to the Repository Visual Production asset area'
+    }
+    if ([string]$record.artifact_type -eq 'note-header' -and [string]$reference.manifest_locator -notmatch '^04_AI_Work_Environment/Visual_Production/assets/[^/]+\.json$') {
+        Stop-VisualProductionValidation 'note Header Master manifest locator must resolve to the Repository Visual Production asset area'
+    }
+    if ([string]$record.artifact_type -ne 'note-header' -and [string]$reference.logical_locator -match '(^|/)\.\.(/|$)|\\') {
+        Stop-VisualProductionValidation 'Reference asset logical locator is unsafe'
     }
     if ([string]$reference.sha256 -notmatch '^[0-9a-fA-F]{64}$') {
         Stop-VisualProductionValidation 'Reference asset SHA-256 is invalid'
@@ -200,6 +206,12 @@ for ($i = 0; $i -lt $referenceAssets.Count; $i++) {
     }
     if (-not (Test-Path -LiteralPath $actualReferencePath -PathType Leaf)) {
         Stop-VisualProductionValidation "Actual referenced image is not reachable: $actualReferencePath"
+    }
+    if ([string]$record.artifact_type -eq 'note-header') {
+        $canonicalReferencePath = Resolve-RepositoryPath ([string]$reference.logical_locator)
+        $canonicalManifestPath = Resolve-RepositoryPath ([string]$reference.manifest_locator)
+        if (-not (Test-Path -LiteralPath $canonicalManifestPath -PathType Leaf)) { Stop-VisualProductionValidation 'Canonical note Header Master manifest is not reachable' }
+        if ([IO.Path]::GetFullPath($actualReferencePath) -cne [IO.Path]::GetFullPath($canonicalReferencePath)) { Stop-VisualProductionValidation 'Actual note Header Master reference is not the Repository canonical asset' }
     }
     $actualReferenceHash = (Get-FileHash -LiteralPath $actualReferencePath -Algorithm SHA256).Hash.ToLowerInvariant()
     if ($actualReferenceHash -ne ([string]$reference.sha256).ToLowerInvariant()) {

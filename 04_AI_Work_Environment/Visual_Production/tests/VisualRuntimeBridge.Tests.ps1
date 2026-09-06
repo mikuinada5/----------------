@@ -12,18 +12,24 @@ function Write-TestPngHeader([string]$Path, [int]$Width = 1280, [int]$Height = 6
 
 function New-RuntimeFixture {
     param([string]$Root)
+    New-Item -ItemType Directory -Path $Root -Force | Out-Null
+    'test repository' | Set-Content -LiteralPath (Join-Path $Root 'REPOSITORY_RULES.md') -Encoding utf8
     $noteRoot = Join-Path $Root '07_Note_Production'
     New-Item -ItemType Directory -Path $noteRoot -Force | Out-Null
-    $masterPath = Join-Path $Root 'runtime-assets/NOTE_HEADER_MASTER_TEMPLATE_v1.0.png'
+    $masterLocator = '04_AI_Work_Environment/Visual_Production/assets/NOTE_HEADER_MASTER_TEMPLATE_v1.0.png'
+    $masterManifestLocator = '04_AI_Work_Environment/Visual_Production/assets/NOTE_HEADER_MASTER_TEMPLATE_v1.0.json'
+    $masterPath = Join-Path $Root $masterLocator
     New-Item -ItemType Directory -Path (Split-Path -Parent $masterPath) -Force | Out-Null
     Write-TestPngHeader $masterPath
     $masterSha = (Get-FileHash -LiteralPath $masterPath -Algorithm SHA256).Hash.ToLowerInvariant()
+    $masterManifest=[ordered]@{schema_version='note-header-master-asset/v1';asset_id='NOTE-HEADER-MASTER-v1.0';version='v1.0';file='NOTE_HEADER_MASTER_TEMPLATE_v1.0.png';repository_locator=$masterLocator;sha256=$masterSha;dimensions=@{width=1280;height=670};provenance=@{human_approved_origin='test';repository_copy_relationship='byte-identical';original_archive_locator='AI/test/master.png';origin_locator='AI/test/origin.png';repository_verified_on='2026-09-06'};visual_specification=@{canonical_source='07_Note_Production/00_note制作・公開システム.md';profile_id='aidaily-header-v1';role='test role';title_reuse='replace title'}}
+    $masterManifest | ConvertTo-Json -Depth 20 | Set-Content -LiteralPath (Join-Path $Root $masterManifestLocator) -Encoding utf8
     $profilePath = Join-Path $noteRoot '00_note制作・公開システム.md'
     $profileText = @'
 # note system
 **Status:** Current / Operational v2.4
 <!-- VISUAL_PROFILE_BEGIN:aidaily-header-v1 -->
-<!-- VISUAL_PROFILE_META:{"width":1280,"height":670,"master_asset_id":"NOTE-HEADER-MASTER-v1.0","master_asset_version":"v1.0","master_asset_locator":"AI/04_Personal_Archive/Original/ChatGPT/NOTE_HEADER_MASTER_TEMPLATE_v1.0.png","master_asset_sha256":"__MASTER_SHA__"} -->
+<!-- VISUAL_PROFILE_META:{"width":1280,"height":670,"master_asset_id":"NOTE-HEADER-MASTER-v1.0","master_asset_version":"v1.0","master_asset_locator":"04_AI_Work_Environment/Visual_Production/assets/NOTE_HEADER_MASTER_TEMPLATE_v1.0.png","master_asset_manifest":"04_AI_Work_Environment/Visual_Production/assets/NOTE_HEADER_MASTER_TEMPLATE_v1.0.json","master_asset_sha256":"__MASTER_SHA__"} -->
 | ID | Level | Requirement |
 |---|---|---|
 | master-reference | MUST | use the approved Master image |
@@ -203,14 +209,13 @@ Describe 'Visual Runtime Bridge' {
 
     It '10c. fails before generation when the supplied Master SHA does not match the canonical profile' {
         $fixture = New-RuntimeFixture -Root $repo
-        $wrongMaster = Join-Path $repo 'runtime-assets/wrong-master.png'
-        [IO.File]::WriteAllBytes($wrongMaster, [Text.Encoding]::UTF8.GetBytes('wrong-master-image'))
-        (Test-Throws { & $builder -RepositoryRoot $repo -SourceManifestPath $fixture.ManifestPath -ProfileSourcePath $fixture.ProfilePath -ProfileId 'aidaily-header-v1' -TaskId 'AIDAILY-003-HEADER' -ProductionVersion 'H2' -Phase 'Header Production' -ArtifactType 'note-header' -ApprovedTitle 'approved title' -Width 1280 -Height 670 -MasterAssetPath $wrongMaster -OutputPath $recordPath }) | Should Be $true
+        [IO.File]::WriteAllBytes($fixture.MasterPath, [Text.Encoding]::UTF8.GetBytes('wrong-master-image'))
+        (Test-Throws { & $builder -RepositoryRoot $repo -SourceManifestPath $fixture.ManifestPath -ProfileSourcePath $fixture.ProfilePath -ProfileId 'aidaily-header-v1' -TaskId 'AIDAILY-003-HEADER' -ProductionVersion 'H2' -Phase 'Header Production' -ArtifactType 'note-header' -ApprovedTitle 'approved title' -Width 1280 -Height 670 -OutputPath $recordPath }) | Should Be $true
     }
 
-    It '10d. fails before generation when a Master-bound profile has no runtime Master path' {
+    It '10d. resolves a Master-bound profile from Repository Current Sources without an external runtime path' {
         $fixture = New-RuntimeFixture -Root $repo
-        (Test-Throws { & $builder -RepositoryRoot $repo -SourceManifestPath $fixture.ManifestPath -ProfileSourcePath $fixture.ProfilePath -ProfileId 'aidaily-header-v1' -TaskId 'AIDAILY-003-HEADER' -ProductionVersion 'H2' -Phase 'Header Production' -ArtifactType 'note-header' -ApprovedTitle 'approved title' -Width 1280 -Height 670 -OutputPath $recordPath }) | Should Be $true
+        { & $builder -RepositoryRoot $repo -SourceManifestPath $fixture.ManifestPath -ProfileSourcePath $fixture.ProfilePath -ProfileId 'aidaily-header-v1' -TaskId 'AIDAILY-003-HEADER' -ProductionVersion 'H2' -Phase 'Header Production' -ArtifactType 'note-header' -ApprovedTitle 'approved title' -Width 1280 -Height 670 -OutputPath $recordPath | Out-Null } | Should Not Throw
     }
 
     It '11. records Chat direct generation as a Platform-boundary block' {

@@ -67,7 +67,7 @@
           "required": ["asset_id", "version", "canonical_locator", "sha256"],
           "properties": {
             "asset_id": { "const": "NOTE-HEADER-MASTER-v1.0" }, "version": { "const": "v1.0" },
-            "canonical_locator": { "type": "string", "pattern": "^AI/" }, "sha256": { "$ref": "#/$defs/sha256" }
+            "canonical_locator": { "type": "string", "pattern": "^04_AI_Work_Environment/Visual_Production/assets/" }, "sha256": { "$ref": "#/$defs/sha256" }
           }
         },
         "route_evidence": {

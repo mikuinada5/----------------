@@ -8,6 +8,16 @@
 
 ------------------------------------------------------------------------
 
+## 2026-09-06｜Cloud note Production RuntimeのRepository契約を正式化
+
+Pipeline v1.18、Visual Production v1.4、Repository Governance Runtime v1.0、note SOP v2.12、note README v1.21、Publication Approval v1.4、Repository横断監査基準v1.10へ更新した。`NOTE-HEADER-MASTER-v1.0`のbyte-identical PNG／manifestをRepository正式Asset領域へ配置し、GitHub Current SourceだけでMaster ID、Version、SHA-256 `579aecaeb724228b86088445ffd3dc9d424a43757169c85f2f6149944beafc13`、1280×670、provenanceおよびVisual specificationを解決可能にした。OneDrive copyは保持し、Production prerequisiteから外した。
+
+Cloud Workは新規AIDAILY Article成果物pathだけをappend-onlyでWRITEし、Local CodexはPipeline、SOP、schema、validator、script、Repository設定、System TimelineおよびRepository-wide CHANGELOGを保守する単一Ownership matrixを追加した。Cloudはbaseline／current remote HEADと同一Article不存在をWRITE直前に検証し、能力不足は`BLOCKED_PLATFORM_BOUNDARY`とする。Local Preflightはcleanなremote-only aheadを正常入荷としてfast-forwardし、dirty、local ahead、true divergenceまたはGit状態取得不能を区別してSTOPする。
+
+Source Resolution、Repository Governance、Visual、Final Review Package、Approval semanticsおよびPublication Bundleの全123件をPASSした。Step①〜③の基本責任、Writing Style、Cloud BrowserおよびHuman Approval semanticsは変更していない。External Audit Pipelineはdisabled／`NOT OBTAINED`、外部監査通信0件を維持した。
+
+------------------------------------------------------------------------
+
 ## 2026-09-06｜note Header Routing / Formal Asset Promotion Gateを正式接続
 
 Pipeline v1.17、Visual Production v1.3、note SOP v2.11、note README v1.20、templates各v2.3、Publication Approval v1.3、Repository横断監査基準v1.9へ更新した。Root Causeは、Master-bound Generation Contract、Request Binding、Asset QAが存在しても、Human Review Candidateから正式Headerへ昇格する独立Gateがなく、Final Review Package CompilerもFormal routeのprovenanceを必須にしていなかったことである。
